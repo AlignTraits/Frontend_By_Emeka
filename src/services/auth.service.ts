@@ -1,0 +1,62 @@
+import api from '../api/axios'
+import Cookies from 'js-cookie'
+import { AuthResponse, LoginCredentials, SignUpCredentials} from '../types/auth.types'
+
+const TOKEN_KEY = 'auth_token'
+const COOKIE_EXPIRY = 7 // days
+
+export const setToken = (token: string): void => {
+  Cookies.set(TOKEN_KEY, token, { expires: COOKIE_EXPIRY })
+}
+
+export const getToken = (): string | undefined => {
+  return Cookies.get(TOKEN_KEY)
+}
+
+export const removeToken = (): void => {
+  Cookies.remove(TOKEN_KEY)
+}
+
+export const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
+  const { data } = await api.post('/auth/login', credentials)
+  setToken(data.token)
+  return data
+}
+
+export const signUp = async (credentials: SignUpCredentials): Promise<AuthResponse> => {
+  const { data } = await api.post('/auth/signup', credentials)
+  setToken(data.token)
+  return data
+}
+
+export const forgotPassword = async (email: string): Promise<void> => {
+  await api.post('/auth/forgot-password', { email })
+}
+
+export const resetPassword = async (token: string, password: string): Promise<void> => {
+  await api.post('/auth/reset-password', { token, password })
+}
+
+export const getCurrentUser = async (): Promise<AuthResponse> => {
+  const { data } = await api.get('/auth/me')
+  return data
+}
+
+export const socialLogin = (provider: string): void => {
+  window.location.href = `/api/auth/${provider}`
+}
+
+export const register = async (credentials: SignUpCredentials) => {
+  const response = await api.post('/auth/register', {
+    firstname: credentials.firstname,  
+    lastname: credentials.lastname,
+    email: credentials.email,
+    password: credentials.password
+  })
+  return response.data
+} 
+
+export const logout = async (): Promise<void> => {
+  await api.post('/auth/logout')
+  removeToken()
+}
