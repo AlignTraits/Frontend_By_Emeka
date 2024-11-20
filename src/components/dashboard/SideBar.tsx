@@ -11,7 +11,6 @@ import {
   FiShoppingBag,
   FiSearch,
   FiBookOpen,
-//   FiCheckSquare,
   FiShoppingCart,
   FiShare2,
   FiGlobe,
@@ -36,7 +35,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="w-64 h-screen bg-white shadow-md px-4 py-10 fixed left-0 top-0 flex flex-col">
+    <div className="w-64 h-screen bg-[#F7FAFF] shadow-md px-4 py-10 fixed left-0 top-0 flex flex-col sticky top-0">
       {/* Logo */}
       <div className="flex mb-8">
         <img src={Logo} alt="AlignTraits Logo" />

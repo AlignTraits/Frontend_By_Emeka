@@ -1,6 +1,47 @@
+import { useState, useEffect } from "react";
+import Courses from "../../components/dashboard/Courses";
+import LoanCalculator from "../../components/dashboard/LoanCalculator";
+import { Course } from "../../types/course.types";
+import { dummyCourses } from "../../data/dummyCourses";
 
 export default function Dashboard() {
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setIsLoading(true);
+      
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // const response = await fetch('/api/courses');
+        // const data = await response.json();
+        
+        setCourses(dummyCourses);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
   return (
-    <div>Dashboard</div>
-  )
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto">
+        <div className="flex flex-row gap-10 relative">
+          <Courses 
+            courses={courses} 
+            isLoading={isLoading} 
+            error={error} 
+          />
+          <LoanCalculator />
+        </div>
+      </div>
+    </div>
+  );
 }

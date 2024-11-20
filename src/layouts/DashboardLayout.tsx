@@ -1,7 +1,7 @@
 import { Outlet, Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/useAuth'
 import Sidebar from '../components/dashboard/SideBar'
-// import Navbar from '../components/Navbar'
+import Header from '../components/dashboard/Header'
 
 export default function DashboardLayout() {
   const { user } = useAuth()
@@ -12,11 +12,11 @@ export default function DashboardLayout() {
 //   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* <Navbar /> */}
-      <div className="flex">
-        <Sidebar />
-        <main className="flex-1 p-6">
+    <div className="min-h-screen bg-gray-50 flex">
+      <Sidebar />
+      <div className="flex-1">
+        <Header />
+        <main className="px-20 py-5">
           <Outlet />
         </main>
       </div>

@@ -51,7 +51,7 @@ export default function Register() {
               Already have an account?{" "}
             </span>
             <button
-              onClick={() => navigate("/auth/login")}
+              onClick={() => navigate("/login")}
               className="text-[16px] text-[#007AFF] font-[700] underline"
             >
               Login

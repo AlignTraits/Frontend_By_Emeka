@@ -47,7 +47,7 @@ export default function Login() {
               Don't have an account?{" "}
             </span>
             <button
-              onClick={() => navigate("/auth/register")}
+              onClick={() => navigate("/signup")}
               className="text-[16px] text-[#007AFF] font-[700] underline"
             >
               signup
