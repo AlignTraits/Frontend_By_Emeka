@@ -12,23 +12,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const login = async (email: string, password: string) => {
-    try {
-      setIsLoading(true)
-      setError(null)
-      const response = await authService.login({ email, password })
-      setUser(response.user)
-    } catch (err) {
+ const login = async (email: string, password: string) => {
+   try {
+     setIsLoading(true);
+     setError(null);
+     const response = await authService.login({ email, password });
+     console.log(response)
+    //  setUser(response.user); // You commented this line out, so `user` might remain null.
+   } catch (err) {
       if (err instanceof AuthError) {
-        setError(err.message)
-      }  else {
-        setError('An unexpected error occurred')
+        setError(err.message);
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred');
       }
-      throw err
-    } finally {
-      setIsLoading(false)
-    }
-  }
+     throw err;
+   } finally {
+     setIsLoading(false);
+   }
+ };
+
 
   const logout = async () => {
     try {
@@ -75,10 +79,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     logout,
     register,
     isLoading,
-    error
+    error,
+   
   }
 
   return (
+    
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>

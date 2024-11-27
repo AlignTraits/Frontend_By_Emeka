@@ -17,10 +17,19 @@ export const removeToken = (): void => {
   Cookies.remove(TOKEN_KEY)
 }
 
-export const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
-  const { data } = await api.post('/auth/login', credentials)
-  setToken(data.token)
-  return data
+export const login = async (credentials: LoginCredentials) => {
+  console.log(credentials)
+  try{
+    const response = await api.post('/auth/login', credentials) 
+    console.log(response)
+    return response
+  } catch(err) {
+    console.log(err)
+   throw(err)
+  }
+  
+  // setToken(data.token)
+ 
 }
 
 export const signUp = async (credentials: SignUpCredentials): Promise<AuthResponse> => {

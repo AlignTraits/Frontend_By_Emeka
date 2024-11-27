@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/useAuth';
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login, socialLogin } = useAuth();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,13 +39,13 @@ export const Login: React.FC = () => {
       </form>
 
       <div className="social-login">
-        <button onClick={() => socialLogin('google')}>
+        <button onClick={(e) =>e.preventDefault()}>
           Login with Google
         </button>
-        <button onClick={() => socialLogin('facebook')}>
+        <button onClick={(e) =>e.preventDefault()}>
           Login with Facebook
         </button>
-        <button onClick={() => socialLogin('apple')}>
+        <button onClick={(e) =>e.preventDefault()}>
           Login with Apple
         </button>
       </div>

@@ -5,6 +5,7 @@ import { LoginCredentials } from '../../types/auth.types'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
 import { FaFacebook, FaApple } from 'react-icons/fa'
+// import {login} from '../../services/auth.service'
 // import { AxiosError } from 'axios'
 
 
@@ -19,10 +20,13 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log(isLoading, login)
     e.preventDefault()
+    
     try {
-      await login(credentials.email, credentials.password)
-      navigate('/dashboard')
+     const response =  await login(credentials.email, credentials.password)
+      console.log(response)
+      // navigate('/dashboard')
     } catch (err) {
       // Error is already handled by AuthContext
       // You can add additional UI feedback here if needed

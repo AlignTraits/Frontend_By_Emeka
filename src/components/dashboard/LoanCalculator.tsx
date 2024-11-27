@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import  { useState, useMemo } from "react";
 
 export default function LoanCalculator() {
   const [program, setProgram] = useState<string>("");

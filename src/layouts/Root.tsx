@@ -1,14 +1,20 @@
-import { Outlet, Navigate } from 'react-router-dom'
-import { useAuth } from "../contexts/useAuth";
+import { Outlet, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+// import { useAuth } from "../contexts/useAuth";
 
 export default function Root() {
-  const { user } = useAuth()
+  const navigate = useNavigate()
+  // const { user } = useAuth()
 
-  // Redirect authenticated users to dashboard
-  if (user) {
-    return <Navigate to="/dashboard" replace />
-  }
+  // // Redirect authenticated users to dashboard
+  // if (user) {
+  //   return <Navigate to="/dashboard" replace />
+  // }
+  useEffect(()=>{
+    navigate('/login')
+  })
 
+// navigate('/login')
   return (
     <div className="min-h-screen bg-gray-100">
       <main>

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/useAuth';
-import { useNavigate } from 'react-router-dom';
-import PathfinderIcon from '../../assets/dashboard/icons/PathfinderIcon.svg'
-import Logo from '../../assets/Logo.svg'
+import  { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../../contexts/useAuth";
+import { useNavigate } from "react-router-dom";
+import PathfinderIcon from "../../assets/dashboard/icons/PathfinderIcon.svg";
+import Logo from "../../assets/Logo.svg";
 import {
   FiBook,
   FiSettings,
@@ -12,25 +12,24 @@ import {
   FiSearch,
   FiBookOpen,
   FiShoppingCart,
-  FiShare2,
-  FiGlobe,
-FiGrid,
-FiLogOut,
-FiList
-} from 'react-icons/fi';
 
+  FiGlobe,
+  FiGrid,
+  FiLogOut,
+  FiList,
+} from "react-icons/fi";
 
 const SideBar = () => {
-  const [learningOpen, setLearningOpen] = useState(false);
+  const [learningOpen, setLearningOpen] = useState<boolean>(false);
   const { logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await logout();
-      navigate('/login');
+      navigate("/login");
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     }
   };
 
@@ -43,17 +42,29 @@ const SideBar = () => {
 
       {/* Navigation Links */}
       <nav className="flex flex-col space-y-4 flex-grow">
-        <Link
+        <NavLink
           to="/dashboard"
-          className="flex items-center p-3 text-[#212121] font-[500] rounded-md hover:bg-gray-100 transition-colors"
+          className={({ isActive }) =>
+            `flex items-center p-3 font-[500] rounded-md transition-colors ${
+              isActive
+                ? "bg-gray-200 text-blue-500"
+                : "text-[#212121] hover:bg-gray-100"
+            }`
+          }
         >
           <FiGrid className="w-5 h-5 mr-3" />
           <span>Dashboard</span>
-        </Link>
+        </NavLink>
 
-        <Link
-          to="/pathfinder"
-          className="flex items-center p-3 text-[#212121] font-[500] rounded-md hover:bg-gray-100 transition-colors"
+        <NavLink
+          to="/dashboard/pathfinder"
+          className={({ isActive }) =>
+            `flex items-center p-3 font-[500] rounded-md transition-colors ${
+              isActive
+                ? "bg-gray-200 text-blue-500"
+                : "text-[#212121] hover:bg-gray-100"
+            }`
+          }
         >
           <img
             src={PathfinderIcon}
@@ -61,7 +72,7 @@ const SideBar = () => {
             className="w-5 h-5 mr-3"
           />
           <span>Pathfinder</span>
-        </Link>
+        </NavLink>
 
         {/* Learning Dropdown */}
         <div className="relative">
@@ -79,68 +90,102 @@ const SideBar = () => {
           </button>
           {learningOpen && (
             <div className="pl-4 mt-2 space-y-4">
-              <Link
-                to="/store"
-                className="flex items-center p-3 text-[#212121] font-[500] rounded-md hover:bg-gray-100 transition-colors"
+              <NavLink
+                to="/dashboard/store"
+                className={({ isActive }) =>
+                  `flex items-center p-3 font-[500] rounded-md transition-colors ${
+                    isActive
+                      ? "bg-gray-200 text-blue-500"
+                      : "text-[#212121] hover:bg-gray-100"
+                  }`
+                }
               >
                 <FiShoppingBag className="w-5 h-5 mr-3" />
                 <span>Store</span>
-              </Link>
-              <Link
-                to="/search"
-                className="flex items-center p-3 text-[#212121] font-[500] rounded-md hover:bg-gray-100 transition-colors"
+              </NavLink>
+              <NavLink
+                to="/dashboard/search"
+                className={({ isActive }) =>
+                  `flex items-center p-3 font-[500] rounded-md transition-colors ${
+                    isActive
+                      ? "bg-gray-200 text-blue-500"
+                      : "text-[#212121] hover:bg-gray-100"
+                  }`
+                }
               >
                 <FiSearch className="w-5 h-5 mr-3" />
                 <span>Search</span>
-              </Link>
-              <Link
-                to="/library"
-                className="flex items-center p-3 text-[#212121] font-[500] rounded-md hover:bg-gray-100 transition-colors"
+              </NavLink>
+              <NavLink
+                to="/dashboard/library"
+                className={({ isActive }) =>
+                  `flex items-center p-3 font-[500] rounded-md transition-colors ${
+                    isActive
+                      ? "bg-gray-200 text-blue-500"
+                      : "text-[#212121] hover:bg-gray-100"
+                  }`
+                }
               >
                 <FiBook className="w-5 h-5 mr-3" />
                 <span>Library</span>
-              </Link>
-              <Link
-                to="/task"
-                className="flex items-center p-3 text-[#212121] font-[500] rounded-md hover:bg-gray-100 transition-colors"
+              </NavLink>
+              <NavLink
+                to="/dashboard/task"
+                className={({ isActive }) =>
+                  `flex items-center p-3 font-[500] rounded-md transition-colors ${
+                    isActive
+                      ? "bg-gray-200 text-blue-500"
+                      : "text-[#212121] hover:bg-gray-100"
+                  }`
+                }
               >
                 <FiList className="w-5 h-5 mr-3" />
                 <span>Task</span>
-              </Link>
-              <Link
-                to="/basket"
-                className="flex items-center p-3 text-[#212121]  font-[500] rounded-md hover:bg-gray-100 transition-colors"
+              </NavLink>
+              <NavLink
+                to="/dashboard/basket"
+                className={({ isActive }) =>
+                  `flex items-center p-3 font-[500] rounded-md transition-colors ${
+                    isActive
+                      ? "bg-gray-200 text-blue-500"
+                      : "text-[#212121] hover:bg-gray-100"
+                  }`
+                }
               >
                 <FiShoppingCart className="w-5 h-5 mr-3" />
                 <span>Basket</span>
-              </Link>
+              </NavLink>
             </div>
           )}
         </div>
 
-        <Link
-          to="/community"
-          className="flex items-center p-3 text-[#212121] font-[500] rounded-md hover:bg-gray-100 transition-colors"
-        >
-          <FiShare2 className="w-5 h-5 mr-3" />
-          <span>AlignTraits</span>
-        </Link>
-
-        <Link
-          to="/community"
-          className="flex items-center p-3 text-[#212121] font-[500] rounded-md hover:bg-gray-100 transition-colors"
+        <NavLink
+          to="/dashboard/community"
+          className={({ isActive }) =>
+            `flex items-center p-3 font-[500] rounded-md transition-colors ${
+              isActive
+                ? "bg-gray-200 text-blue-500"
+                : "text-[#212121] hover:bg-gray-100"
+            }`
+          }
         >
           <FiGlobe className="w-5 h-5 mr-3" />
           <span>Community</span>
-        </Link>
+        </NavLink>
 
-        <Link
-          to="/settings"
-          className="flex items-center p-3 text-[#212121] font-[500] rounded-md hover:bg-gray-100 transition-colors"
+        <NavLink
+          to="/dashboard/settings"
+          className={({ isActive }) =>
+            `flex items-center p-3 font-[500] rounded-md transition-colors ${
+              isActive
+                ? "bg-gray-200 text-blue-500"
+                : "text-[#212121] hover:bg-gray-100"
+            }`
+          }
         >
           <FiSettings className="w-5 h-5 mr-3" />
           <span>Settings</span>
-        </Link>
+        </NavLink>
       </nav>
 
       {/* Logout Button */}

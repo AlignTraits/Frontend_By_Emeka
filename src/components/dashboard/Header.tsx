@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { useAuth } from '../../contexts/useAuth';
 import { 
   FiBell, 
@@ -10,13 +10,13 @@ const Header = () => {
   const { user } = useAuth();
 
   return (
-    <div className="bg-white shadow-sm px-20 py-5 sticky top-0 z-10 w-full">
+    <div className="bg-white shadow-sm px-10 py-5 sticky top-0 z-10 w-full">
       <div className="flex items-center justify-between">
         {/* Welcome Message */}
         <div className="flex items-center space-x-4">
           <div>
             <h1 className="text-xl font-semibold text-[#004085]">
-              Hello, {user?.firstname || 'User'}
+              Hello, {user?.firstName || 'User'}
             </h1>
             <p className="text-sm text-[#00408533]">Welcome to your dashboard</p>
           </div>
@@ -52,14 +52,14 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             <div className="text-right">
               <p className="text-sm font-medium text-gray-900">
-                {user?.firstname} {user?.lastname}
+                {user?.firstName} {user?.lastName}
               </p>
               <p className="text-xs text-gray-500">{user?.email}</p>
             </div>
             <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-              {user?.profileImage ? (
+              {user?.image ? (
                 <img 
-                  src={user.profileImage} 
+                  src={user.image} 
                   alt="Profile" 
                   className="h-full w-full rounded-full object-cover"
                 />
