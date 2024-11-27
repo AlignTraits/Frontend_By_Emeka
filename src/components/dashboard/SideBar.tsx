@@ -12,7 +12,6 @@ import {
   FiSearch,
   FiBookOpen,
   FiShoppingCart,
-
   FiGlobe,
   FiGrid,
   FiLogOut,
