@@ -18,7 +18,7 @@ interface FilterProps {
 
 const LoadingSkeleton = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       {[...Array(6)].map((_, index) => (
         <div 
           key={index} 
@@ -176,7 +176,7 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
       ) : error ? (
         <div className="text-red-500">{error}</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-4">
           {filteredCourses.map((course) => (
             <CourseCard key={course.id} course={course} />
           ))}

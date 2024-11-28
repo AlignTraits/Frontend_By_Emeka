@@ -10,10 +10,10 @@ const Header = () => {
   const { user } = useAuth();
 
   return (
-    <div className="bg-white shadow-sm px-10 py-5 sticky top-0 z-10 w-full">
-      <div className="flex items-center justify-between">
+    <div className="bg-white shadow-sm px-10 py-5 sticky top-0 z-10 w-full overflow-hidden">
+      <div className="flex items-center justify-between lg:gap-2 xl:gap-0">
         {/* Welcome Message */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center">
           <div>
             <h1 className="text-xl font-semibold text-[#004085]">
               Hello, {user?.firstName || 'User'}
@@ -33,9 +33,9 @@ const Header = () => {
         </div>
 
      
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-4">
         
-          <button className="flex items-center px-4 py-2 bg-[#004085] text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button className="flex items-center px-4 py-2 bg-[#004085] text-white rounded-lg hover:bg-blue-700 transition-colors w-[220px]">
             Career Recommendations
           </button>
 
@@ -49,7 +49,7 @@ const Header = () => {
           </button>
 
       
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
             <div className="text-right">
               <p className="text-sm font-medium text-gray-900">
                 {user?.firstName} {user?.lastName}

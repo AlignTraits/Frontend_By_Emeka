@@ -31,7 +31,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 px-20 py-5">
+    <div className="min-h-screen bg-gray-50  px-10 py-5">
       <div className="container mx-auto">
         <div className="flex flex-row gap-10 relative">
           <Courses 
