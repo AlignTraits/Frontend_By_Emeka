@@ -5,8 +5,8 @@ import compSci from './compsci.png';
 import cattleFarm from './cattlefarm.png';
 
 // Logos
-import landmarkLogo from './logos/landmark-logo.png';
-import harvardLogo from './logos/harvard-logo.png';
+import landmarkLogo from './logos/Landmark-Logo.png';
+import harvardLogo from './logos/Harvard-Logo.png';
 
 export const CourseImages = {
   cropFarming,
