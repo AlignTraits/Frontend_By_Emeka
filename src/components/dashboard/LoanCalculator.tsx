@@ -21,10 +21,10 @@ export default function LoanCalculator() {
 
   return (
     <div className="sticky top-4 h-fit border-[0.8px] border-[#007BFF] p-4 space-y-6 rounded-lg basis-[40%] bg-white">
-      <h1 className="text-xl font-[500] text-[#F6C648]">Loan Calculator</h1>
+      <h1 className="text-xl font-[700] text-[#F6C648]">Loan Calculator</h1>
       <form action="" className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <label htmlFor="program" className="text-[#212121] font-[600] text-[14px]">
+          <label htmlFor="program" className="text-[#212121] font-[500] text-[14px]">
             What program do you seek financing in?
           </label>
           <div className="w-full p-2 rounded-md border border-[#000000]">
@@ -40,7 +40,7 @@ export default function LoanCalculator() {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="school" className="text-[#212121] font-[600] text-[14px]">
+          <label htmlFor="school" className="text-[#212121] font-[500] text-[14px]">
             What School will you like to study in?
           </label>
           <div className="w-full p-2 rounded-md border border-[#000000]">
@@ -56,7 +56,7 @@ export default function LoanCalculator() {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="work" className="text-[#212121] font-[600] text-[14px]">
+          <label htmlFor="work" className="text-[#212121] font-[500] text-[14px]">
             Do you have a work?
           </label>
           <div className="w-full p-2 rounded-md border border-[#000000]">
@@ -72,7 +72,7 @@ export default function LoanCalculator() {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="currency" className="text-[#212121] font-[600] text-[14px]">
+          <label htmlFor="currency" className="text-[#212121] font-[500] text-[14px]">
             What currency works for you?
           </label>
           <div className="w-full p-2 rounded-md border border-[#000000]">
@@ -91,7 +91,7 @@ export default function LoanCalculator() {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="annualIncome" className="text-[#212121] font-[600] text-[14px]">
+          <label htmlFor="annualIncome" className="text-[#212121] font-[500] text-[14px]">
             How much do you earn annually?
           </label>
           <div className="w-full p-2 rounded-md border border-[#000000]">
@@ -110,7 +110,7 @@ export default function LoanCalculator() {
         <div className="relative mb-6">
           <label
             htmlFor="labels-range-input"
-            className="text-[#212121] font-[600] text-[14px]"
+            className="text-[#212121] font-[500] text-[14px]"
           >
             How much are you intrested in?
           </label>
@@ -130,29 +130,29 @@ export default function LoanCalculator() {
             }
           />
           <span
-            className="text-sm text-[#212121] font-[600] absolute start-0 -bottom-6 cursor-pointer"
+            className="text-sm text-[#212121] font-[500] absolute start-0 -bottom-6 cursor-pointer"
             onClick={() => setRange(5000 * 1.036)}
           >
             C$5000
           </span>
           <span
-            className="text-sm text-[#212121] font-[600] absolute start-[30%] -translate-x-1/2 rtl:translate-x-1/2 -bottom-6 cursor-pointer"
+            className="text-sm text-[#212121] font-[500] absolute start-[30%] -translate-x-1/2 rtl:translate-x-1/2 -bottom-6 cursor-pointer"
             onClick={() => setRange(8000 * 1.036)}
           >
             C$8000
           </span>
           <span
-            className="text-sm text-[#212121] font-[600] absolute end-0 -bottom-6 cursor-pointer"
+            className="text-sm text-[#212121] font-[500] absolute end-0 -bottom-6 cursor-pointer"
             onClick={() => setRange(15000 * 1.036)}
           >
             C$15,000
           </span>
         </div>
         <div className="flex flex-row justify-between border-y-[0.8px] border-[#007BFF] py-4">
-          <p className="text-[#212121] font-[600]">
+          <p className="text-[#212121] font-[500]">
             3.6% Interest rate (Fixed):
           </p>
-          <p className="text-[#212121] font-[600]">{range}</p>
+          <p className="text-[#212121] font-[500]">{range}</p>
         </div>
         <button
           className={`w-[50%] mx-auto p-2 rounded-md ${
