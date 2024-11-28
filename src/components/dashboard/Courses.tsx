@@ -15,6 +15,48 @@ interface FilterProps {
 }
 
 
+export default function Courses({ courses, isLoading, error }: CoursesProps) {
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>(courses);
+
+  React.useEffect(() => {
+    setFilteredCourses(courses);
+  }, [courses]);
+
+  return (
+    <div className="basis-[50%]">
+      <div className="flex  items-center mb-6 gap-5">
+        {!isLoading && (
+          <div className="flex space-x-3">
+            <FilterDropdown
+              courses={courses}
+              onFilterChange={setFilteredCourses}
+            />
+            <SortDropdown
+              courses={filteredCourses}
+              onFilterChange={setFilteredCourses}
+            />
+          </div>
+        )}
+        <h2 className="text-[#007BFF] text-2xl font-[400]">
+          Career Opportunities:
+        </h2>
+      </div>
+
+      {isLoading ? (
+        <LoadingSkeleton />
+      ) : error ? (
+        <div className="text-red-500">{error}</div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-4">
+          {filteredCourses.map((course) => (
+            <CourseCard key={course.id} course={course} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 const LoadingSkeleton = () => {
   return (
@@ -146,45 +188,7 @@ const SortDropdown: React.FC<FilterProps> = ({ courses, onFilterChange }) => {
   );
 };
 
-export default function Courses({ courses, isLoading, error }: CoursesProps) {
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>(courses);
 
-  React.useEffect(() => {
-    setFilteredCourses(courses);
-  }, [courses]);
-
-  return (
-    <div className="basis-[50%]">
-      <div className="flex  items-center mb-6 gap-5">
-        {!isLoading && (
-          <div className="flex space-x-3">
-            <FilterDropdown 
-              courses={courses} 
-              onFilterChange={setFilteredCourses} 
-            />
-            <SortDropdown 
-              courses={filteredCourses} 
-              onFilterChange={setFilteredCourses} 
-            />
-          </div>
-        )}
-        <h2 className="text-[#007BFF] text-2xl font-semibold">Career Opportunities:</h2>
-      </div>
-
-      {isLoading ? (
-        <LoadingSkeleton />
-      ) : error ? (
-        <div className="text-red-500">{error}</div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-4">
-          {filteredCourses.map((course) => (
-            <CourseCard key={course.id} course={course} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
 
 // Course Card Component
 const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
@@ -252,7 +256,7 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
   };
 
   return (
-    <div className="bg-white border rounded-lg space-y-4 hover:border-[#00408540] transition-shadow cursor-pointer p-3">
+    <div className="bg-white border rounded-lg  hover:border-[#00408540] transition-shadow cursor-pointer p-3">
       {/* Course Image */}
       <div className="h-50">
         <img
@@ -262,9 +266,9 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
         />
       </div>
 
-      <div className="p-2 py-2 space-y-4">
+      <div className="">
         {/* Title and School */}
-        <div>
+        <div className='py-5'>
           <h3 className="text-[18px] font-[700] text-[#333333]">
             {course.title}
           </h3>
@@ -291,7 +295,7 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
         </div>
 
         {/* Rating and Scholarship */}
-        <div className="flex items-center gap-2 justify-between w-full">
+        <div className=" mt-2 flex items-center gap-2 justify-between w-full">
           <div className="flex items-center ">
             {/* Rating Number */}
             <span className="text-[14px] font-[500] text-[#004085]">
@@ -308,7 +312,7 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
         </div>
 
         {/* Apply Button */}
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-2">
           <button
             className=" w-[70%] py-2 px-8 bg-[#004085] text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             onClick={() => console.log(`Applying for ${course.title}`)}
