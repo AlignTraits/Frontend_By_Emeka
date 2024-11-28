@@ -8,10 +8,8 @@ const SideBar = () => {
         <NavLink
           to="/dashboard/settings"
           className={({ isActive }) =>
-            `flex items-center p-3 font-[500] rounded-md transition-colors ${
-              isActive
-                ? "bg-gray-100 text-blue-600"
-                : "text-[#212121] hover:bg-gray-100"
+            `flex items-center mx-auto p-3 font-[500] rounded-md transition-colors ${
+              isActive ? " text-blue-600" : "text-[#212121] hover:bg-gray-100"
             }`
           }
         >
@@ -21,10 +19,8 @@ const SideBar = () => {
         <NavLink
           to="/dashboard/settings/account-settings"
           className={({ isActive }) =>
-            `flex items-center p-3 font-[500] rounded-md transition-colors ${
-              isActive
-                ? "bg-gray-100 text-blue-600"
-                : "text-[#212121] hover:bg-gray-100"
+            `flex items-center text-center mx-auto  p-3 font-[500] rounded-md transition-colors ${
+              isActive ? " text-blue-600" : "text-[#212121] hover:bg-gray-100"
             }`
           }
         >
@@ -34,10 +30,8 @@ const SideBar = () => {
         <NavLink
           to="/dashboard/settings/career-recommendation"
           className={({ isActive }) =>
-            `flex items-center p-3 font-[500] rounded-md transition-colors ${
-              isActive
-                ? "bg-gray-100 text-blue-600"
-                : "text-[#212121] hover:bg-gray-100"
+            `flex items-center mx-auto p-3 font-[500] rounded-md transition-colors ${
+              isActive ? " text-blue-600" : "text-[#212121] hover:bg-gray-100"
             }`
           }
         >
@@ -47,10 +41,8 @@ const SideBar = () => {
         <NavLink
           to="/dashboard/settings/school-information"
           className={({ isActive }) =>
-            `flex items-center p-3 font-[500] rounded-md transition-colors ${
-              isActive
-                ? "bg-gray-100 text-blue-600"
-                : "text-[#212121] hover:bg-gray-100"
+            `flex items-center mx-auto p-3 font-[500] rounded-md transition-colors ${
+              isActive ? " text-blue-600" : "text-[#212121] hover:bg-gray-100"
             }`
           }
         >
@@ -60,10 +52,8 @@ const SideBar = () => {
         <NavLink
           to="/dashboard/settings/payment"
           className={({ isActive }) =>
-            `flex items-center p-3 font-[500] rounded-md transition-colors ${
-              isActive
-                ? "bg-gray-100 text-blue-600"
-                : "text-[#212121] hover:bg-gray-100"
+            `flex items-center mx-auto p-3 font-[500] rounded-md transition-colors ${
+              isActive ? " text-blue-600" : "text-[#212121] hover:bg-gray-100"
             }`
           }
         >

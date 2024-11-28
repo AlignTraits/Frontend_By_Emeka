@@ -170,7 +170,7 @@ export default function BasicInformation() {
               user.bio.length === 400
                 ? "border-red-900"
                 : "border-[1px] border-[#757575]"
-            } " rounded-md py-10 px-10 h-[300px] "`}
+            } " rounded-md p-5 h-[300px] "`}
             value={user.bio}
             onChange={(e) => handleChange(e)}
             onKeyDown={(e) => {
@@ -197,6 +197,32 @@ export default function BasicInformation() {
           <div className="border-[1px] border-[#757575] px-3 py-2 rounded-lg w-[200px]">
             <select name="" id="" className="w-full">
               <option value="">Lagos, Nigeria</option>
+            </select>
+          </div>
+        </div>
+        <div className="flex   gap-5 items-center py-10 border-b-[1px] border-[#E0E0E0]">
+          <label
+            htmlFor="skills"
+            className="text-[#000000] font-[600] text-[16px] my-auto"
+          >
+            Whats your current skills?:
+          </label>
+          <div className="border-[1px] border-[#757575] px-3 py-2 rounded-lg w-[300px]">
+            <select name="skills" id="" className="w-full">
+              <option value="">Graphic Design</option>
+            </select>
+          </div>
+        </div>
+        <div className="flex   gap-5 items-center py-10 border-b-[1px] border-[#E0E0E0]">
+          <label
+            htmlFor="course"
+            className="text-[#000000] font-[600] text-[16px] my-auto"
+          >
+            What course sparks your interest:
+          </label>
+          <div className="border-[1px] border-[#757575] px-3 py-2 rounded-lg w-[300px]">
+            <select name="" id="" className="w-full">
+              <option value="">Computer Science</option>
             </select>
           </div>
         </div>

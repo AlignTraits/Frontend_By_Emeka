@@ -46,7 +46,7 @@ const SideBar = () => {
           className={({ isActive }) =>
             `flex items-center p-3 font-[500] rounded-md transition-colors ${
               isActive
-                ? "bg-gray-200 text-blue-500"
+                ? " text-blue-500"
                 : "text-[#212121] hover:bg-gray-100"
             }`
           }
@@ -60,7 +60,7 @@ const SideBar = () => {
           className={({ isActive }) =>
             `flex items-center p-3 font-[500] rounded-md transition-colors ${
               isActive
-                ? "bg-gray-200 text-blue-500"
+                ? " text-blue-500"
                 : "text-[#212121] hover:bg-gray-100"
             }`
           }
@@ -94,7 +94,7 @@ const SideBar = () => {
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
-                      ? "bg-gray-200 text-blue-500"
+                      ? " text-blue-500"
                       : "text-[#212121] hover:bg-gray-100"
                   }`
                 }
@@ -107,7 +107,7 @@ const SideBar = () => {
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
-                      ? "bg-gray-200 text-blue-500"
+                      ? " text-blue-500"
                       : "text-[#212121] hover:bg-gray-100"
                   }`
                 }
@@ -120,7 +120,7 @@ const SideBar = () => {
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
-                      ? "bg-gray-200 text-blue-500"
+                      ? " text-blue-500"
                       : "text-[#212121] hover:bg-gray-100"
                   }`
                 }
@@ -133,7 +133,7 @@ const SideBar = () => {
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
-                      ? "bg-gray-200 text-blue-500"
+                      ? " text-blue-500"
                       : "text-[#212121] hover:bg-gray-100"
                   }`
                 }
@@ -146,7 +146,7 @@ const SideBar = () => {
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
-                      ? "bg-gray-200 text-blue-500"
+                      ? " text-blue-500"
                       : "text-[#212121] hover:bg-gray-100"
                   }`
                 }
@@ -163,7 +163,7 @@ const SideBar = () => {
           className={({ isActive }) =>
             `flex items-center p-3 font-[500] rounded-md transition-colors ${
               isActive
-                ? "bg-gray-200 text-blue-500"
+                ? " text-blue-500"
                 : "text-[#212121] hover:bg-gray-100"
             }`
           }
@@ -177,7 +177,7 @@ const SideBar = () => {
           className={({ isActive }) =>
             `flex items-center p-3 font-[500] rounded-md transition-colors ${
               isActive
-                ? "bg-gray-200 text-blue-500"
+                ? " text-blue-500"
                 : "text-[#212121] hover:bg-gray-100"
             }`
           }
