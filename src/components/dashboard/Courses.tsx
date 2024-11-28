@@ -111,7 +111,7 @@ const SortDropdown: React.FC<FilterProps> = ({ courses, onFilterChange }) => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-4 h-10 bg-white text-[#212121] font-[600] border border-[#007BFF66] rounded-lg hover:bg-gray-50"
+        className="flex items-center space-x-4 px-4 h-10 bg-white text-[#212121] font-[600] border border-[#007BFF66] rounded-lg hover:bg-gray-50"
       >
         <span>Sort By</span>
         <FiChevronDown className="w-4 h-4" />
@@ -154,7 +154,7 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
   }, [courses]);
 
   return (
-    <div className="basis-[60%]">
+    <div className="basis-[50%]">
       <div className="flex  items-center mb-6 gap-5">
         {!isLoading && (
           <div className="flex space-x-3">
@@ -202,7 +202,7 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
     return (
       <div className="flex justify-end w-full">
         <span 
-          className={`px-3 py-1 rounded-full text-sm font-semibold text-[#004085]`}
+          className={`px-3 py-1 rounded-full text-[12px] font-[500] text-[#004085]`}
         >
           {getScholarshipText(type)}
         </span>
@@ -252,9 +252,9 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
   };
 
   return (
-    <div className="bg-white border rounded-lg hover:border-[#00408540] transition-shadow cursor-pointer">
+    <div className="bg-white border rounded-lg space-y-4 hover:border-[#00408540] transition-shadow cursor-pointer p-3">
       {/* Course Image */}
-      <div className="h-50 p-2">
+      <div className="h-50">
         <img
           src={course.image}
           alt={course.title}
@@ -265,7 +265,7 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
       <div className="p-2 py-2 space-y-4">
         {/* Title and School */}
         <div>
-          <h3 className="text-[16px] font-[500] text-[#333333]">
+          <h3 className="text-[18px] font-[700] text-[#333333]">
             {course.title}
           </h3>
         </div>
@@ -280,25 +280,25 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
                 className="w-full h-full object-contain"
               />
             </div>
-            <p className="text-[14px] text-[#101828] font-semibold">{course.school}</p>
+            <p className="text-[14px] text-[#101828] font-[500]">
+              {course.school}
+            </p>
           </div>
-          
-          <span className="text-[14px] font-[500] text-blue-600">
+
+          <span className="text-[14px] font-[500] text-[#004085]">
             {formatPrice(course.price)}
           </span>
         </div>
 
         {/* Rating and Scholarship */}
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2 justify-between w-full">
+          <div className="flex items-center ">
             {/* Rating Number */}
-            <span className="text-[14px] font-semibold text-[#004085]">
+            <span className="text-[14px] font-[500] text-[#004085]">
               {course.rating}
             </span>
             {/* Stars */}
-            <div className="flex">
-              {renderStars(course.rating)}
-            </div>
+            <div className="flex w-full">{renderStars(course.rating)}</div>
             {/* Rating Count */}
             <span className="text-sm text-[#969696]">
               ({course.ratingCount.toLocaleString()})
@@ -354,14 +354,14 @@ const FilterDropdown: React.FC<FilterProps> = ({ courses, onFilterChange }) => {
     <div className="relative filter-dropdown ">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-4 h-10 bg-white border border-[#007BFF66] rounded-lg hover:bg-gray-50"
+        className="flex items-center justify-between space-x-4 px-4 h-10 bg-white border border-[#007BFF66] rounded-lg hover:bg-gray-50"
       >
         <FiSliders className="w-5 h-5 text-[#004085]" />
-        <FiChevronDown className="w-4 h-4" />
+        <FiChevronDown className="w-4 h-4 " />
       </button>
 
       {isOpen && (
-        <div className="absolute  left-0 top-12 w-80 bg-white border rounded-lg  shadow-lg  p-4 z-20">
+        <div className="absolute  left-0 top-12 w-56 h-56 overflow-y-scroll bg-white border rounded-lg  shadow-lg  p-4 z-20">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold">Filter Location:</h3>
             <button 
@@ -389,7 +389,7 @@ const FilterDropdown: React.FC<FilterProps> = ({ courses, onFilterChange }) => {
           {/* Country Filter */}
           <div className="mb-4">
             
-            <div className="max-h-48 overflow-y-auto">
+            <div className="max-h-48 ">
               <div 
                 className="cursor-pointer py-2 px-2 hover:bg-gray-50 rounded-md"
                 onClick={() => setSelectedCountry('')}
@@ -411,17 +411,6 @@ const FilterDropdown: React.FC<FilterProps> = ({ courses, onFilterChange }) => {
               ))}
             </div>
           </div>
-
-          {/* Reset Filters */}
-          <button
-            onClick={() => {
-              setSearchTerm('');
-              setSelectedCountry('');
-            }}
-            className="w-full py-2 text-sm text-blue-600 hover:text-blue-700"
-          >
-            Reset Filters
-          </button>
         </div>
       )}
     </div>
