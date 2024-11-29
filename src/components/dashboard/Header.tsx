@@ -10,7 +10,7 @@ const Header = () => {
   const { user } = useAuth();
 
   return (
-    <div className="bg-white border-2 border-[#E0E0E0] px-10 py-5 xl:px-20 sticky top-0 z-10 w-full overflow-hidden">
+    <div className="bg-white border-2 border-[#E0E0E0] px-10 py-5 xl:px-[4rem] sticky top-0 z-10 w-full overflow-hidden">
       <div className="flex items-center justify-between lg:gap-2 xl:gap-0">
         {/* Welcome Message */}
         <div className="flex items-center">

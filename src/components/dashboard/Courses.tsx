@@ -23,7 +23,7 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
   }, [courses]);
 
   return (
-    <div className="basis-[50%]">
+    <div className="basis-[55%]">
       <div className="flex  items-center mb-6 gap-5">
         {!isLoading && (
           <div className="flex space-x-3">
@@ -314,7 +314,7 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
         {/* Apply Button */}
         <div className="flex justify-center mt-2">
           <button
-            className=" w-[70%] py-2 px-8 bg-[#004085] text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className=" w-[70%] py-2 px-8 bg-[#004085] text-[14px] text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             onClick={() => console.log(`Applying for ${course.title}`)}
           >
             Apply
