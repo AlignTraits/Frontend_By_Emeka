@@ -23,8 +23,9 @@ export interface SignUpCredentials extends LoginCredentials {
 
 export class AuthError extends Error {
   constructor(message: string) {
-    super(message)
-    this.name = 'AuthError'
+    super(message);
+    this.name = "AuthError";
   }
 }
+
 

@@ -18,15 +18,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
      setError(null);
      const response = await authService.login({ email, password });
      console.log(response)
-    //  setUser(response.user); // You commented this line out, so `user` might remain null.
+     setUser(response?.user); // You commented this line out, so `user` might remain null.
    } catch (err) {
       if (err instanceof AuthError) {
-        setError(err.message);
-      } else if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('An unexpected error occurred');
-      }
+  setError(err.message);
+} else if ('response' in err && err.response?.data?.errors[0]?.message) {
+  setError(err.response.data?.errors[0].message);
+} else {
+  setError('An unexpected error occurred');
+}
      throw err;
    } finally {
      setIsLoading(false);

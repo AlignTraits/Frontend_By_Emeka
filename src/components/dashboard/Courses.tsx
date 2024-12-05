@@ -24,9 +24,9 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
 
   return (
     <div className="basis-[55%]">
-      <div className="flex  items-center mb-6 gap-5">
+      <div className="flex  items-center mb-6 gap-5 w-full">
         {!isLoading && (
-          <div className="flex space-x-3">
+          <div className="flex space-x-3 w-full">
             <FilterDropdown
               courses={courses}
               onFilterChange={setFilteredCourses}
@@ -37,7 +37,7 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
             />
           </div>
         )}
-        <h2 className="text-[#007BFF] text-2xl font-[400]">
+        <h2 className="text-[#007BFF] text-xl xl:text-2xl font-[400] w-full">
           Career Opportunities:
         </h2>
       </div>
@@ -153,7 +153,7 @@ const SortDropdown: React.FC<FilterProps> = ({ courses, onFilterChange }) => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-4 px-4 h-10 bg-white text-[#212121] font-[600] border border-[#007BFF66] rounded-lg hover:bg-gray-50"
+        className="flex items-center space-x-4 px-4 h-10 bg-white text-[#212121] font-[600] border border-[#007BFF66] rounded-lg hover:bg-gray-50 w-auto"
       >
         <span>Sort By</span>
         <FiChevronDown className="w-4 h-4" />

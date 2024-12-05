@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import Header from "../../../components/Settings/Header";
+import MultiFileUpload from '../../../components/Settings/MultiFileUpload';
 
 export default function Schoolnformation() {
   const [id, setId] = useState('222jj2j22j')
@@ -16,6 +17,15 @@ export default function Schoolnformation() {
   //      [name]: value,
   //    }));
   //  };
+
+const handleFilesSelected = (files: File[]) => {
+  // Process the selected files
+  console.log("Files selected in parent:", files);
+  // Example: upload to server or display additional info
+  files.forEach((file) => {
+    console.log(`File Name: ${file.name}, File Size: ${file.size} bytes`);
+  });
+};
 
   const handleClick = ()=> {
     console.log('click')
@@ -62,7 +72,7 @@ export default function Schoolnformation() {
           </select>
         </div>
       </div>
-      <div className="grid grid-cols-[37%_45%] py-10 w-full ">
+      <div className="grid grid-cols-[37%_45%] py-10 w-full border-b-[1px] border-[#E0E0E0]">
         <label
           htmlFor="id"
           className="text-[#000000] font-[600] text-[16px] my-auto"
@@ -77,6 +87,12 @@ export default function Schoolnformation() {
           value={id}
           onChange={(e) => setId(e.target.value)}
         />
+      </div>
+      <div className="  space-y-4 items-center py-10 border-b-[1px] border-[#E0E0E0]">
+        <h3 className="text-[#000000] font-[600] text-[16px]">
+          Kindly upload your Senior Secondary School Result
+        </h3>
+        <MultiFileUpload onFilesSelected={handleFilesSelected} />
       </div>
     </div>
   );

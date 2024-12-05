@@ -1,15 +1,15 @@
-import { Outlet, } from 'react-router-dom'
+import { Outlet, Navigate} from 'react-router-dom'
 // import { useEffect } from 'react'
-// import { useAuth } from "../contexts/useAuth";
+import { useAuth } from "../contexts/useAuth";
 
 export default function Root() {
-  // const navigate = useNavigate()
-  // const { user } = useAuth()
+ 
+  const { user } = useAuth()
 
   // // Redirect authenticated users to dashboard
-  // if (user) {
-  //   return <Navigate to="/dashboard" replace />
-  // }
+  if (user) {
+    return <Navigate to="/dashboard" replace />
+  }
  
 
   return (
