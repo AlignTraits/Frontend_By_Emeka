@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../../../components/Settings/Header";
 import ImageUploadWithPreview from "../../../components/Settings/ImageUpload";
 import DummyImage from "../../../assets/dashboard/images/dummy-image.png";
+import CustomSelect from "../../../components/dashboard/CustomSelect";
 // import { useAuth } from '../../../hooks/useAuth';
 
 export default function BasicInformation() {
@@ -39,7 +40,7 @@ export default function BasicInformation() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 ">
       <Header
         heading="Personal details"
         text="Update your photo and personal details here."
@@ -128,8 +129,8 @@ export default function BasicInformation() {
             >
               Gender:
             </label>
-            <div className="border-[1px] border-[#757575] px-3 py-2 rounded-lg w-[200px]">
-              <select
+            <div className=" w-[200px]">
+              {/* <select
                 name="gender"
                 id=""
                 className="w-full outline-none focus-none"
@@ -138,7 +139,15 @@ export default function BasicInformation() {
               >
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
-              </select>
+              </select> */}
+              <CustomSelect
+                options={[
+                  { value: "male", label: "male" },
+                  { value: "female", label: "female" },
+                ]}
+                placeholder={user.gender}
+                onChange={() => handleChange}
+              />
             </div>
           </div>
           <div className="flex gap-5">
@@ -187,43 +196,69 @@ export default function BasicInformation() {
             {400 - user.bio.length} characters left.
           </span>
         </div>
-        <div className="flex   gap-5 items-center py-10 border-b-[1px] border-[#E0E0E0]">
+        <div className="grid grid-cols-[30%_70%] items-center py-10 border-b-[1px] border-[#E0E0E0]">
           <label
             htmlFor="region"
             className="text-[#000000] font-[600] text-[16px] my-auto"
           >
             Region:
           </label>
-          <div className="border-[1px] border-[#757575] px-3 py-2 rounded-lg w-[200px]">
-            <select name="" id="" className="w-full">
+          <div className="w-[300px]">
+            {/* <select name="" id="" className="w-full">
               <option value="">Lagos, Nigeria</option>
-            </select>
+            </select> */}
+            <CustomSelect
+              options={[
+                { value: "lagos", label: "Lagos, Nigeria" },
+                { value: "abuja", label: "Abuja, Nigeria" },
+              ]}
+              placeholder={user.region}
+              onChange={() => handleChange}
+            />
           </div>
         </div>
-        <div className="flex   gap-5 items-center py-10 border-b-[1px] border-[#E0E0E0]">
+        <div className="grid grid-cols-[30%_70%] items-center py-10 border-b-[1px] border-[#E0E0E0]">
           <label
             htmlFor="skills"
             className="text-[#000000] font-[600] text-[16px] my-auto"
           >
             Whats your current skills?:
           </label>
-          <div className="border-[1px] border-[#757575] px-3 py-2 rounded-lg w-[300px]">
-            <select name="skills" id="" className="w-full">
+          <div className="w-[300px]">
+            {/* <select name="skills" id="" className="w-full">
               <option value="">Graphic Design</option>
-            </select>
+            </select> */}
+
+            <CustomSelect
+              options={[
+                { value: "graphic-design", label: "Graphic Design" },
+                { value: "web-design", label: "Web Design" },
+              ]}
+              placeholder={user.currentSkill}
+              onChange={() => handleChange}
+            />
           </div>
         </div>
-        <div className="flex   gap-5 items-center py-10 border-b-[1px] border-[#E0E0E0]">
+        <div className="grid grid-cols-[30%_70%] items-center py-10 border-b-[1px] border-[#E0E0E0]">
           <label
             htmlFor="course"
             className="text-[#000000] font-[600] text-[16px] my-auto"
           >
             What course sparks your interest:
           </label>
-          <div className="border-[1px] border-[#757575] px-3 py-2 rounded-lg w-[300px]">
-            <select name="" id="" className="w-full">
+          <div className="w-[300px]">
+            {/* <select name="" id="" className="w-full">
               <option value="">Computer Science</option>
-            </select>
+            </select> */}
+            <CustomSelect
+              options={[
+                { value: "computer-science", label: "Computer Science" },
+                { value: "physics", label: "Physics" },
+                { value: "physics", label: "Physics" },
+              ]}
+              placeholder={user.courseOfInterest}
+              onChange={() => handleChange}
+            />
           </div>
         </div>
       </div>

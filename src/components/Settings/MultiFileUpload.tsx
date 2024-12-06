@@ -64,7 +64,7 @@ const MultiFileUpload: React.FC<FileUploadProps> = ({ onFilesSelected }) => {
           </p>
           <button
             onClick={() => document.getElementById("file-upload")?.click()}
-            className="px-4 py-2 bg-[#004085] text-white rounded hover:bg-indigo-600 mx-auto"
+            className="px-4 bg-[#004085] text-white rounded hover:bg-indigo-600 mx-auto"
           >
             Select files
           </button>

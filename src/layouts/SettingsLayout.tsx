@@ -14,10 +14,9 @@ export default function DashboardLayout() {
   return (
     <div className="min-h-screen bg-gray-50 flex relative">
       <Sidebar />
-        <div className="px-10 py-5 w-full bg-[#FFFFFF]">
-          <Outlet />
-        </div>
-      
+      <div className="px-10 py-5 w-full bg-[#FFFFFF] ">
+        <Outlet />
+      </div>
     </div>
   );
 }

@@ -16,7 +16,7 @@ export default function DashboardLayout() {
   return (
     <div className="min-h-screen bg-gray-50 flex relative">
       <Sidebar />
-      <div className="flex-1">
+      <div className="flex-1 ">
         <Header />
         <main className="">
           <Outlet />

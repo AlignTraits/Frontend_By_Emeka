@@ -1,4 +1,6 @@
-import  { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
+import CustomSelect from "./CustomSelect";
+
 
 export default function LoanCalculator() {
   const [program, setProgram] = useState<string>("");
@@ -20,97 +22,110 @@ export default function LoanCalculator() {
   }, [program, school, work, currency, annualIncome, range]);
 
   return (
-    <div className="sticky top-4 h-fit border-[0.8px] border-[#007BFF] p-4 space-y-6 rounded-lg basis-[38%] bg-white">
-      <h1 className="text-xl font-[700] text-[#F6C648]">Loan Calculator</h1>
-      <form action="" className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="program" className="text-[#212121] font-[500] text-[14px]">
+    <div className="sticky top-4 h-fit border-[0.8px] border-[#007BFF] p-4 space-y-8 rounded-[20px] basis-[38%] bg-white">
+      <h1 className="text-[14px] font-[700] text-[#F6C648]">Loan Calculator:</h1>
+      <form action="" className="flex flex-col space-y-8">
+        <div className="flex flex-col gap-5">
+          <label
+            htmlFor="program"
+            className="text-[#212121] font-[600] text-[14px]"
+          >
             What program do you seek financing in?
           </label>
-          <div className="w-full p-2 rounded-md border border-[#000000]">
-            <select
-              name="program"
-              id="program"
-              value={program}
-              onChange={(e) => setProgram(e.target.value)}
-              className="w-full h-full border-none outline-none text-[14px]"
-            >
-              <option value="">Please Select Program</option>
-            </select>
+          <div className="w-full">
+            <CustomSelect
+              options={[
+                { value: "compsci", label: "Computer Science" },
+                { value: "physics", label: "Physics" },
+              ]}
+              placeholder="Please Select Program"
+              className="text-[14px]"
+              onChange={setProgram}
+            />
           </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="school" className="text-[#212121] font-[500] text-[14px]">
+        <div className="flex flex-col gap-5">
+          <label
+            htmlFor="school"
+            className="text-[#212121] font-[600] text-[14px]"
+          >
             What School will you like to study in?
           </label>
-          <div className="w-full p-2 rounded-md border border-[#000000]">
-            <select
-              name="school"
-              id="school"
-              value={school}
-              onChange={(e) => setSchool(e.target.value)}
-              className="w-full h-full border-none outline-none text-[14px]"
-            >
-              <option value="">Please Select School</option>
-            </select>
+          <div className="w-full">
+            <CustomSelect
+              options={[
+                { value: "lmu", label: "Landmark Uni" },
+                { value: "hav", label: "Havard" },
+              ]}
+              placeholder="Please Select School"
+              className="text-[14px]"
+              onChange={setProgram}
+            />
           </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="work" className="text-[#212121] font-[500] text-[14px]">
+        <div className="flex flex-col gap-5">
+          <label
+            htmlFor="work"
+            className="text-[#212121] font-[600] text-[14px]"
+          >
             Do you have a work?
           </label>
-          <div className="w-full p-2 rounded-md border border-[#000000]">
-            <select
-              name="work"
-              id="work"
-              value={work}
-              onChange={(e) => setWork(e.target.value)}
-              className="w-full h-full border-none outline-none text-[14px]"
-            >
-              <option value="">Kindly Work</option>
-            </select>
+          <div className="w-full">
+            <CustomSelect
+              options={[
+                { value: "compsci", label: "Computer Science" },
+                { value: "physics", label: "Physics" },
+              ]}
+              placeholder="Kindly Select"
+              className="text-[14px]"
+              onChange={setProgram}
+            />
           </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="currency" className="text-[#212121] font-[500] text-[14px]">
+        <div className="flex flex-col gap-5">
+          <label
+            htmlFor="currency"
+            className="text-[#212121] font-[600] text-[14px]"
+          >
             What currency works for you?
           </label>
-          <div className="w-full p-2 rounded-md border border-[#000000]">
-            <select
-              name="currency"
-              id="currency"
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-              className="w-full h-full border-none outline-none text-[14px]"
-            >
-              <option value="">Please Select Currency</option>
-              <option value="dollar">Dollar</option>
-              <option value="euro">Euro</option>
-              <option value="pound">Pound</option>
-            </select>
+          <div className="w-full">
+            <CustomSelect
+              options={[
+                { value: "dollar", label: "Dollar" },
+                { value: "euro", label: "Euro" },
+                { value: "pound", label: "Pound" },
+              ]}
+              placeholder="Please Select Currency"
+              className="text-[14px]"
+              onChange={setProgram}
+            />
           </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="annualIncome" className="text-[#212121] font-[500] text-[14px]">
+        <div className="flex flex-col gap-5">
+          <label
+            htmlFor="annualIncome"
+            className="text-[#212121] font-[600] text-[14px]"
+          >
             How much do you earn annually?
           </label>
-          <div className="w-full p-2 rounded-md border border-[#000000]">
-            <select
-              name="annualIncome"
-              id="annualIncome"
-              value={annualIncome}
-              onChange={(e) => setAnnualIncome(e.target.value)}
-              className="w-full h-full border-none outline-none text-[14px]"
-            >
-              <option value="">Please Select Annual Income</option>
-            </select>
+          <div className="w-full">
+            <CustomSelect
+              options={[
+                { value: "compsci", label: "Computer Science" },
+                { value: "physics", label: "Physics" },
+              ]}
+              placeholder="Please Select Program"
+              className="text-[14px]"
+              onChange={setProgram}
+            />
           </div>
         </div>
 
-        <div className="relative mb-6">
+        <div className="relative space-y-8">
           <label
             htmlFor="labels-range-input"
-            className="text-[#212121] font-[500] text-[14px]"
+            className="text-[#212121] font-[600] text-[14px]"
           >
             How much are you intrested in?
           </label>
@@ -130,29 +145,29 @@ export default function LoanCalculator() {
             }
           />
           <span
-            className="text-sm text-[#212121] font-[500] absolute start-0 -bottom-6 cursor-pointer"
+            className="text-sm text-[#212121] font-[600] absolute start-0 -bottom-6 cursor-pointer "
             onClick={() => setRange(5000 * 1.036)}
           >
             C$5000
           </span>
           <span
-            className="text-sm text-[#212121] font-[500] absolute start-[30%] -translate-x-1/2 rtl:translate-x-1/2 -bottom-6 cursor-pointer"
+            className="text-sm text-[#212121] font-[600] absolute start-[30%] -translate-x-1/2 rtl:translate-x-1/2 -bottom-6 cursor-pointer"
             onClick={() => setRange(8000 * 1.036)}
           >
             C$8000
           </span>
           <span
-            className="text-sm text-[#212121] font-[500] absolute end-0 -bottom-6 cursor-pointer"
+            className="text-sm text-[#212121] font-[600] absolute end-0 -bottom-6 cursor-pointer"
             onClick={() => setRange(15000 * 1.036)}
           >
             C$15,000
           </span>
         </div>
         <div className="flex flex-row justify-between border-y-[0.8px] border-[#007BFF] py-4">
-          <p className="text-[#212121] font-[500]">
+          <p className="text-[#212121] font-[600]">
             3.6% Interest rate (Fixed):
           </p>
-          <p className="text-[#212121] font-[500]">{range}</p>
+          <p className="text-[#212121] font-[600]">{range}</p>
         </div>
         <button
           className={`w-[50%] mx-auto p-2 rounded-md ${

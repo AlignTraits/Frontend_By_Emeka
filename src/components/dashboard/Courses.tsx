@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Course } from '../../types/course.types';
-import { FiStar,   FiSearch, FiX, FiChevronDown, FiSliders } from 'react-icons/fi';
+import { FiStar,   FiSearch, FiX, FiChevronDown, FiSliders, FiCheck } from 'react-icons/fi';
 
 
 interface CoursesProps {
@@ -23,10 +23,10 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
   }, [courses]);
 
   return (
-    <div className="basis-[55%]">
-      <div className="flex  items-center mb-6 gap-5 w-full">
+    <div className="basis-[50%] space-y-4">
+      <div className="flex w-full space-x-4">
         {!isLoading && (
-          <div className="flex space-x-3 w-full">
+          <div className="flex space-x-3 my-auto">
             <FilterDropdown
               courses={courses}
               onFilterChange={setFilteredCourses}
@@ -37,7 +37,7 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
             />
           </div>
         )}
-        <h2 className="text-[#007BFF] text-xl xl:text-2xl font-[400] w-full">
+        <h2 className="text-[#007BFF] text-[30px]  font-[400]">
           Career Opportunities:
         </h2>
       </div>
@@ -150,24 +150,23 @@ const SortDropdown: React.FC<FilterProps> = ({ courses, onFilterChange }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-auto">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-4 px-4 h-10 bg-white text-[#212121] font-[600] border border-[#007BFF66] rounded-lg hover:bg-gray-50 w-auto"
+        className="flex items-center space-x-4 px-2 h-8 my-auto bg-white text-[14px] text-[#212121] font-[600] border border-[#007BFF66] rounded-md hover:bg-gray-50"
       >
-        <span>Sort By</span>
+        <span>Sort by</span>
         <FiChevronDown className="w-4 h-4" />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-12 w-48 bg-white border rounded-lg shadow-lg p-2 z-20">
+        <div className="absolute right-0 top-12 w-48 bg-[#F7FAFF] border border-[#757575] rounded-lg shadow-lg px-2 z-20">
           {[
-            { value: '', label: 'Default' },
-            { value: 'name-asc', label: 'Name (A-Z)' },
-            { value: 'name-desc', label: 'Name (Z-A)' },
-            { value: 'rating', label: 'Rating' },
-            { value: 'scholarship', label: 'Scholarship First' },
-            { value: 'no-scholarship', label: 'No Scholarship First' }
+            { value: "name-asc", label: "A-Z (name)" },
+            { value: "name-desc", label: "Z-A (name)" },
+            { value: "rating", label: "Rating" },
+            { value: "scholarship", label: "Scholarship" },
+            { value: "no-scholarship", label: "No Scholarship" },
           ].map((option) => (
             <button
               key={option.value}
@@ -175,11 +174,14 @@ const SortDropdown: React.FC<FilterProps> = ({ courses, onFilterChange }) => {
                 handleSort(option.value);
                 setIsOpen(false);
               }}
-              className={`w-full text-left px-4 py-2 text-sm rounded-md hover:bg-gray-50 ${
-                sortBy === option.value ? 'text-blue-600' : 'text-gray-700'
+              className={`w-full text-left px-4 py-2 text-sm rounded-md  ${
+                sortBy === option.value
+                  ? " bg-[#E0E0E099]"
+                  : "text-gray-700 hover:bg-gray-50"
               }`}
             >
               {option.label}
+              {sortBy === option.value && <FiCheck className="float-right" />}
             </button>
           ))}
         </div>
@@ -206,7 +208,7 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
     return (
       <div className="flex justify-end w-full">
         <span 
-          className={`px-3 py-1 rounded-full text-[12px] font-[500] text-[#004085]`}
+          className={` py-1 rounded-full text-[14px] font-[600] text-[#004085]`}
         >
           {getScholarshipText(type)}
         </span>
@@ -266,10 +268,10 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
         />
       </div>
 
-      <div className="">
+      <div className="space-y-4">
         {/* Title and School */}
         <div className='py-5'>
-          <h3 className="text-[18px] font-[700] text-[#333333]">
+          <h3 className="text-[15px] font-[500] text-[#333333]">
             {course.title}
           </h3>
         </div>
@@ -284,18 +286,18 @@ const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
                 className="w-full h-full object-contain"
               />
             </div>
-            <p className="text-[14px] text-[#101828] font-[500]">
+            <p className="text-[16px] text-[#101828] font-[600]">
               {course.school}
             </p>
           </div>
 
-          <span className="text-[14px] font-[500] text-[#004085]">
+          <span className="text-[16px] font-[600] text-[#004085]">
             {formatPrice(course.price)}
           </span>
         </div>
 
         {/* Rating and Scholarship */}
-        <div className=" mt-2 flex items-center gap-2 justify-between w-full">
+        <div className=" mt-2 flex justify-between items-center gap-2 justify-between w-full">
           <div className="flex items-center ">
             {/* Rating Number */}
             <span className="text-[14px] font-[500] text-[#004085]">
@@ -358,7 +360,7 @@ const FilterDropdown: React.FC<FilterProps> = ({ courses, onFilterChange }) => {
     <div className="relative filter-dropdown ">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between space-x-4 px-4 h-10 bg-white border border-[#007BFF66] rounded-lg hover:bg-gray-50"
+        className="flex items-center justify-between space-x-4 px-4 h-8 bg-white border border-[#007BFF66] rounded-md hover:bg-gray-50"
       >
         <FiSliders className="w-5 h-5 text-[#004085]" />
         <FiChevronDown className="w-4 h-4 " />
