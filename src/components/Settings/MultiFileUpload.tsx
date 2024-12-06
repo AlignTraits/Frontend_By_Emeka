@@ -28,7 +28,7 @@ const MultiFileUpload: React.FC<FileUploadProps> = ({ onFilesSelected }) => {
     onFilesSelected(filesArray);
 
     // Simulate upload progress
-    filesWithProgress.forEach((fileWithProgress, index) => {
+    filesWithProgress.forEach((_,index) => {
       const interval = setInterval(() => {
         setSelectedFiles((prevFiles) => {
           const newFiles = [...prevFiles];

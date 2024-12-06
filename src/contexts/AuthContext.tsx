@@ -17,16 +17,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
      setIsLoading(true);
      setError(null);
      const response = await authService.login({ email, password });
-     console.log(response)
-     setUser(response?.user); // You commented this line out, so `user` might remain null.
-   } catch (err) {
-      if (err instanceof AuthError) {
-  setError(err.message);
-} else if ('response' in err && err.response?.data?.errors[0]?.message) {
-  setError(err.response.data?.errors[0].message);
-} else {
-  setError('An unexpected error occurred');
-}
+     console.log(response);
+    //  setUser(response?.user);
+   } catch (err:any) {
+      if(err.response && err.response.data && err.response.data.errors){
+        const errors: { [key: string]: string[] } = err.response.data.errors;
+        Object.values(errors).forEach((messages: string[]) =>
+          messages.forEach((message: string) => setError(message))
+        );
+      }    
+       if (
+        err.response &&
+        err.response.data.message &&
+        !err.response.data.errors
+      ) {
+        // Handle and display validation errors from the server
+        setError(err.response.data.message);
+      }
+
+
      throw err;
    } finally {
      setIsLoading(false);

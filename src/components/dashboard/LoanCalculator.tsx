@@ -59,7 +59,7 @@ export default function LoanCalculator() {
               ]}
               placeholder="Please Select School"
               className="text-[14px]"
-              onChange={setProgram}
+              onChange={setSchool}
             />
           </div>
         </div>
@@ -78,7 +78,7 @@ export default function LoanCalculator() {
               ]}
               placeholder="Kindly Select"
               className="text-[14px]"
-              onChange={setProgram}
+              onChange={setWork}
             />
           </div>
         </div>
@@ -98,7 +98,7 @@ export default function LoanCalculator() {
               ]}
               placeholder="Please Select Currency"
               className="text-[14px]"
-              onChange={setProgram}
+              onChange={setCurrency}
             />
           </div>
         </div>
@@ -117,7 +117,7 @@ export default function LoanCalculator() {
               ]}
               placeholder="Please Select Program"
               className="text-[14px]"
-              onChange={setProgram}
+              onChange={setAnnualIncome}
             />
           </div>
         </div>
