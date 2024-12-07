@@ -23,8 +23,8 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
   }, [courses]);
 
   return (
-    <div className="lg:basis-[40%] xl:basis-[50%] space-y-4">
-      <div className="flex flex-col xl:flex-row w-full lg:space-y-4 xl:space-y-0 space-x-4">
+    <div className="lg:basis-[40%] xl:basis-[50%] space-y-0">
+      <div className="flex flex-col xl:flex-row w-full space-y-4 xl:space-y-0 space-x-4">
         {!isLoading && (
           <div className="flex space-x-3 my-auto">
             <FilterDropdown

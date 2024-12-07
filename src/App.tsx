@@ -13,6 +13,8 @@ import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Pathfinder from "./pages/dashboard/Pathfinder";
+import Community from "./pages/dashboard/Community";
 import BasicInformation from "./pages/dashboard/settings/BasicInformation";
 import AccountSettings from "./pages/dashboard/settings/AccountSettings";
 import CareerRecommendation from "./pages/dashboard/settings/CareerRecommendation";
@@ -55,6 +57,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Dashboard />,
+      },
+      {
+        path: "pathfinder",
+        element: <Pathfinder />,
+      },
+      {
+        path: "community",
+        element: <Community />,
       },
       {
         path: "settings", 

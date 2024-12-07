@@ -16,9 +16,17 @@ import {
   FiGrid,
   FiLogOut,
   FiList,
+  FiX
+
 } from "react-icons/fi";
 
-const SideBar = () => {
+const SideBar = ({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [learningOpen, setLearningOpen] = useState<boolean>(false);
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -33,7 +41,16 @@ const SideBar = () => {
   };
 
   return (
-    <div className="w-50 h-screen bg-[#F7FAFF] border-[2px] border-[#E0E0E0] shadow-md px-4 py-8 sticky left-0 top-0 flex flex-col">
+    <div
+      className={`fixed z-20 lg:sticky top-0 left-0 h-screen w-[250px] bg-[#F7FAFF] border-[2px] border-[#E0E0E0] shadow-md px-4 py-8 flex flex-col transition-transform duration-300 ${
+        open ? "translate-x-0 " : "-translate-x-full lg:translate-x-0"
+      }`}
+    >
+      {/* Close Button */}
+      <FiX
+        className="absolute right-2 top-2 text-[#212121] w-6 h-6 cursor-pointer hover:animate-spin duration-50 lg:hidden"
+        onClick={() => setOpen(false)}
+      />
       {/* Logo */}
       <div className="flex items-start mb-8 relative right-5 w-[150px]">
         <img src={Logo} alt="AlignTraits Logo" />
@@ -64,7 +81,7 @@ const SideBar = () => {
           <img
             src={PathfinderIcon}
             alt="AlignTraits Pathfinder"
-            className="w-5 h-5 mr-3"
+            className="w-5 h-5 mr-3 fill-[#007BFF]"
           />
           <span>Pathfinder</span>
         </NavLink>
@@ -79,7 +96,7 @@ const SideBar = () => {
             <span>Learning</span>
             <FiChevronDown
               className={`w-5 h-5 transition-transform duration-200 ${
-                learningOpen ? "transform rotate-180" : ""
+                learningOpen ? "rotate-180" : ""
               }`}
             />
           </button>
@@ -192,3 +209,6 @@ const SideBar = () => {
 };
 
 export default SideBar;
+
+
+
