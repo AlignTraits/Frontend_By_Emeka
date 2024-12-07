@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Outlet,} from 'react-router-dom'// add Navigate back dont forget
 // import { useAuth } from '../contexts/useAuth'
 import Sidebar from '../components/dashboard/SideBar'
@@ -7,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function DashboardLayout() {
   // const { user } = useAuth()
+  const [open, setOpen] = useState(false)
 
 
   // if (!user) {
@@ -14,10 +16,10 @@ export default function DashboardLayout() {
   // }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex relative">
-      <Sidebar />
-      <div className="flex-1 ">
-        <Header />
+    <div className="h-screen bg-gray-50 flex relative overflow-y-scroll">
+      <Sidebar open={open} setOpen={setOpen} />
+      <div className="flex-1 relative">
+        <Header setOpen={setOpen} />
         <main className="">
           <Outlet />
         </main>

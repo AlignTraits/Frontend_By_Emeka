@@ -23,8 +23,8 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
   }, [courses]);
 
   return (
-    <div className="basis-[50%] space-y-4">
-      <div className="flex w-full space-x-4">
+    <div className="lg:basis-[40%] xl:basis-[50%] space-y-0">
+      <div className="flex flex-col xl:flex-row w-full space-y-4 xl:space-y-0 space-x-4">
         {!isLoading && (
           <div className="flex space-x-3 my-auto">
             <FilterDropdown
@@ -37,7 +37,7 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
             />
           </div>
         )}
-        <h2 className="text-[#007BFF] text-[30px]  font-[400]">
+        <h2 className="text-[#007BFF] lg:text-[20px] xl:text-[30px]  font-[400]">
           Career Opportunities:
         </h2>
       </div>
@@ -60,7 +60,7 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
 
 const LoadingSkeleton = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-4">
       {[...Array(6)].map((_, index) => (
         <div 
           key={index} 

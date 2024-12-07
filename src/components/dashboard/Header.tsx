@@ -3,22 +3,29 @@ import { useAuth } from '../../contexts/useAuth';
 import { 
   FiBell, 
   FiSearch, 
-  FiUser 
+  FiUser,
+  FiMenu 
+
 } from 'react-icons/fi';
 
-const Header = () => {
+const Header = ({
+  setOpen,
+}: {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { user } = useAuth();
 
   return (
-    <div className="bg-gray-50 border-[0.4px] border-y-[#E0E0E0] pl-10 py-3 xl:pl-[4rem] xl:pr-[2rem] sticky top-0 z-10 w-full overflow-hidden">
-      <div className="flex items-center justify-between ">
+    <div className="relative bg-gray-50 border-[0.4px] border-y-[#E0E0E0] pl-10 py-3 xl:pl-[4rem] xl:pr-[2rem] sticky top-0 z-10 w-full overflow-hidden">
+      <FiMenu className="absolute left-0 top-0 translate-x-1/2 translate-y-full my-auto lg:hidden" onClick={()=>setOpen(true)} />
+      <div className="flex items-center justify-between lg:gap-5">
         {/* Welcome Message */}
-        <div className="flex items-center justify-between gap-20">
-          <div className='space-y-2'>
+        <div className="flex items-center xl:justify-between xl:gap-20">
+          <div className="space-y-2">
             <h1 className="text-xl font-medium text-[#004085]">
               Hello, {user?.firstName || "User"}
             </h1>
-            <p className="text-sm text-[#00408533] font-semibold">
+            <p className="text-[12px] lg:text-sm text-[#00408533] font-semibold">
               Welcome to your dashboard
             </p>
           </div>
@@ -32,7 +39,7 @@ const Header = () => {
           </div>
         </div>
 
-        <div className="flex  space-x-4">
+        <div className="flex  lg:space-x-4">
           <button className="px-4 py-2 bg-[#004085] text-[14px]  text-white rounded-lg hover:bg-blue-700 transition-colors w-[200px]">
             Career Recommendations
           </button>
@@ -47,7 +54,7 @@ const Header = () => {
             </span>
           </button>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center lg:space-x-2">
             <div className="text-right">
               <p className="text-sm font-medium text-gray-900">
                 {user?.firstName} {user?.lastName}
