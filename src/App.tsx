@@ -57,32 +57,32 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "settings", // Parent path is "/dashboard/settings"
+        path: "settings", 
         element: <SettingsLayout />,
         children: [
           {
             index: true,
-            element: <Navigate to="basic-information" />, // Relative path for redirection
+            element: <Navigate to="basic-information" />, 
           },
           {
-            path: "basic-information", // Relative path
+            path: "basic-information", 
             element: <BasicInformation />,
             
           },
           {
-            path: "account-settings", // Relative path
+            path: "account-settings", 
             element: <AccountSettings />,
           },
           {
-            path: "career-recommendation", // Relative path
+            path: "career-recommendation",
             element: <CareerRecommendation />,
           },
           {
-            path: "school-information", // Relative path
+            path: "school-information", 
             element: <Schoolnformation />,
           },
           {
-            path: "payment", // Relative path
+            path: "payment",
             element: <Payment />,
           },
         ],

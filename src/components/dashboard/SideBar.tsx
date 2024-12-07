@@ -54,7 +54,7 @@ const SideBar = () => {
         </NavLink>
 
         <NavLink
-          to="#"
+          to="/dashboard/pathfinder"
           className={({ isActive }) =>
             `flex items-center p-3 font-[500] rounded-md transition-colors ${
               isActive ? " text-blue-500" : "text-[#212121] hover:bg-gray-100"
@@ -86,7 +86,7 @@ const SideBar = () => {
           {learningOpen && (
             <div className="pl-4 mt-2 space-y-4">
               <NavLink
-                to="#"
+                to="/dashboard/learning"
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
@@ -99,7 +99,7 @@ const SideBar = () => {
                 <span>Store</span>
               </NavLink>
               <NavLink
-                to="#"
+                to="/dashboard/search"
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
@@ -112,7 +112,7 @@ const SideBar = () => {
                 <span>Search</span>
               </NavLink>
               <NavLink
-                to="#"
+                to="/dashboard/library"
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
@@ -125,7 +125,7 @@ const SideBar = () => {
                 <span>Library</span>
               </NavLink>
               <NavLink
-                to="#"
+                to="/dashboard/task"
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
@@ -138,7 +138,7 @@ const SideBar = () => {
                 <span>Task</span>
               </NavLink>
               <NavLink
-                to="#"
+                to="/dashboard/basket"
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
@@ -155,7 +155,7 @@ const SideBar = () => {
         </div>
 
         <NavLink
-          to="/dashboard"
+          to="/dashboard/community"
           className={({ isActive }) =>
             `flex items-center p-3 font-[500] rounded-md transition-colors ${
               isActive ? " text-blue-500" : "text-[#212121] hover:bg-gray-100"

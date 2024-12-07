@@ -22,7 +22,7 @@ export default function LoanCalculator() {
   }, [program, school, work, currency, annualIncome, range]);
 
   return (
-    <div className="sticky top-4 h-fit border-[0.8px] border-[#007BFF] p-4 space-y-8 rounded-[20px] basis-[38%] bg-white">
+    <div className="sticky top-4 h-fit border-[0.8px] border-[#007BFF] p-4 space-y-8 rounded-[20px] basis-[50%] xl:basis-[38%] bg-white">
       <h1 className="text-[14px] font-[700] text-[#F6C648]">Loan Calculator:</h1>
       <form action="" className="flex flex-col space-y-8">
         <div className="flex flex-col gap-5">
