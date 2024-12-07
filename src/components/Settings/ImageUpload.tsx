@@ -24,6 +24,7 @@ const ImageUploadWithPreview = ({
       return;
     }
 
+
     const file = files[0];
 
     if (file && file.type.startsWith("image/")) {
@@ -32,7 +33,7 @@ const ImageUploadWithPreview = ({
 
       img.onload = () => {
         if (img.width > 800 || img.height > 400) {
-          alert("Image dimensions should not exceed 800x400px.");
+          toast.error("Image must not be more than 800 X 400px");
           return;
         }
 

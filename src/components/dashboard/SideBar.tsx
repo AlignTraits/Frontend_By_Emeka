@@ -33,14 +33,14 @@ const SideBar = () => {
   };
 
   return (
-    <div className="w-50 h-screen bg-[#F7FAFF] border-2 border-[#8E8E93] shadow-md px-4 py-10 fixed left-0 top-0 flex flex-col sticky top-0">
+    <div className="w-50 h-screen bg-[#F7FAFF] border-[2px] border-[#E0E0E0] shadow-md px-4 py-8 sticky left-0 top-0 flex flex-col">
       {/* Logo */}
       <div className="flex items-start mb-8 relative right-5 w-[150px]">
         <img src={Logo} alt="AlignTraits Logo" />
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex flex-col space-y-4 flex-grow">
+      <nav className="flex flex-col space-y-4 flex-grow h-full">
         <NavLink
           to="/dashboard"
           className={({ isActive }) =>
@@ -54,7 +54,7 @@ const SideBar = () => {
         </NavLink>
 
         <NavLink
-          to="/dashboard/pathfinder"
+          to="#"
           className={({ isActive }) =>
             `flex items-center p-3 font-[500] rounded-md transition-colors ${
               isActive ? " text-blue-500" : "text-[#212121] hover:bg-gray-100"
@@ -86,7 +86,7 @@ const SideBar = () => {
           {learningOpen && (
             <div className="pl-4 mt-2 space-y-4">
               <NavLink
-                to="/dashboard/store"
+                to="#"
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
@@ -99,7 +99,7 @@ const SideBar = () => {
                 <span>Store</span>
               </NavLink>
               <NavLink
-                to="/dashboard/search"
+                to="#"
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
@@ -112,7 +112,7 @@ const SideBar = () => {
                 <span>Search</span>
               </NavLink>
               <NavLink
-                to="/dashboard/library"
+                to="#"
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
@@ -125,7 +125,7 @@ const SideBar = () => {
                 <span>Library</span>
               </NavLink>
               <NavLink
-                to="/dashboard/task"
+                to="#"
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
@@ -138,7 +138,7 @@ const SideBar = () => {
                 <span>Task</span>
               </NavLink>
               <NavLink
-                to="/dashboard/basket"
+                to="#"
                 className={({ isActive }) =>
                   `flex items-center p-3 font-[500] rounded-md transition-colors ${
                     isActive
@@ -155,7 +155,7 @@ const SideBar = () => {
         </div>
 
         <NavLink
-          to="/dashboard/community"
+          to="/dashboard"
           className={({ isActive }) =>
             `flex items-center p-3 font-[500] rounded-md transition-colors ${
               isActive ? " text-blue-500" : "text-[#212121] hover:bg-gray-100"
@@ -182,7 +182,7 @@ const SideBar = () => {
       {/* Logout Button */}
       <button
         onClick={handleLogout}
-        className="flex items-center p-3 text-[#212121] rounded-md hover:bg-red-50 hover:text-red-500 transition-colors mt-auto"
+        className="flex items-center p-3 text-[#212121] rounded-md hover:bg-red-50 hover:text-red-500 transition-colors"
       >
         <FiLogOut className="w-5 h-5 mr-3" />
         <span>Logout</span>

@@ -31,7 +31,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F7FAFF]  px-10 py-10 xl:px-[4rem]">
+    <div className="min-h-screen bg-[#F7FAFF]  px-10 py-10 xl:px-[4rem] xl:pr-[2rem]">
       <div className="container mx-auto">
         <div className="flex flex-row justify-between relative">
           <Courses courses={courses} isLoading={isLoading} error={error} />

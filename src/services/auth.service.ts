@@ -69,3 +69,8 @@ export const logout = async (): Promise<void> => {
   await api.post('/auth/logout')
   removeToken()
 }
+
+
+export const verifyEmail = async (): Promise<void> => {
+  await api.post('/auth/verify-email')
+}

@@ -10,31 +10,30 @@ const Header = () => {
   const { user } = useAuth();
 
   return (
-    <div className="bg-white border-2 border-[#E0E0E0] px-10 py-5 xl:px-[4rem] sticky top-0 z-10 w-full overflow-hidden">
-      <div className="flex items-center justify-between lg:gap-2 xl:gap-0">
+    <div className="bg-gray-50 border-[0.4px] border-y-[#E0E0E0] pl-10 py-3 xl:pl-[4rem] xl:pr-[2rem] sticky top-0 z-10 w-full overflow-hidden">
+      <div className="flex items-center justify-between ">
         {/* Welcome Message */}
-        <div className="flex items-center">
-          <div>
-            <h1 className="text-xl font-semibold text-[#004085]">
+        <div className="flex items-center justify-between gap-20">
+          <div className='space-y-2'>
+            <h1 className="text-xl font-medium text-[#004085]">
               Hello, {user?.firstName || "User"}
             </h1>
-            <p className="text-sm text-[#00408533]">
+            <p className="text-sm text-[#00408533] font-semibold">
               Welcome to your dashboard
             </p>
           </div>
+          <div className="relative w-96">
+            <input
+              type="text"
+              placeholder="Explore careers / schools..."
+              className="w-full pl-5 pr-4 py-2 font-semibold  border border-[#007BFF] focus:outline-none focus:border-blue-500 text-[14px] font-[500]"
+            />
+            <FiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+          </div>
         </div>
 
-        <div className="relative w-96">
-          <input
-            type="text"
-            placeholder="Explore careers / schools..."
-            className="w-full pl-5 pr-4 py-2 rounded-lg border border-[#007BFF] focus:outline-none focus:border-blue-500 text-[16px] font-[500]"
-          />
-          <FiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <button className="flex items-center px-4 py-2 bg-[#004085] text-white rounded-lg hover:bg-blue-700 transition-colors w-[220px]">
+        <div className="flex  space-x-4">
+          <button className="px-4 py-2 bg-[#004085] text-[14px]  text-white rounded-lg hover:bg-blue-700 transition-colors w-[200px]">
             Career Recommendations
           </button>
 
