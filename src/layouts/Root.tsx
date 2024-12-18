@@ -1,22 +1,25 @@
-import { Outlet, Navigate} from 'react-router-dom'
-// import { useEffect } from 'react'
-import { useAuth } from "../contexts/useAuth";
+import { Outlet, useLocation, Navigate} from 'react-router-dom'
+import { useAuth } from '../contexts/useAuth';
 
 export default function Root() {
- 
-  const { user } = useAuth()
+ const { token, isAuthenticated } = useAuth();
 
-  // // Redirect authenticated users to dashboard
-  if (user) {
-    return <Navigate to="/dashboard" replace />
+//  const [open, setOpen] = useState(false);
+ const location = useLocation();
+
+ console.log("Token:", token, "Is Authenticated:", isAuthenticated);
+
+  if(!isAuthenticated && !token) {
+return (
+  <div className="min-h-screen bg-gray-100">
+    <main>
+      <Outlet />
+    </main>
+  </div>
+);
+  } else {
+    return <Navigate to='/dashboard' state={{ from:location }} replace />
   }
- 
 
-  return (
-    <div className="min-h-screen bg-gray-100">
-      <main>
-        <Outlet />
-      </main>
-    </div>
-  )
+  
 } 

@@ -7,11 +7,14 @@ import { AuthProvider } from './contexts/AuthContext'
 import Root from "./layouts/Root";
 import DashboardLayout from "./layouts/DashboardLayout";
 import SettingsLayout from "./layouts/SettingsLayout";
+import AdminLayout from "./layouts/admin/AdminLayout";
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import VerifyEmail from "./pages/auth/VerifyEmail";
+import ResetPassword from "./pages/auth/ResetPassword";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Pathfinder from "./pages/dashboard/Pathfinder";
 import Community from "./pages/dashboard/Community";
@@ -20,6 +23,8 @@ import AccountSettings from "./pages/dashboard/settings/AccountSettings";
 import CareerRecommendation from "./pages/dashboard/settings/CareerRecommendation";
 import Schoolnformation from "./pages/dashboard/settings/Schoolnformation";
 import Payment from "./pages/dashboard/settings/Payment";
+import Admin from './pages/admin/Index'
+import AdminLogin from './pages/admin/Login'
 
 const router = createBrowserRouter([
   {
@@ -44,8 +49,11 @@ const router = createBrowserRouter([
         element: <ForgotPassword />,
       },
       {
-        path: '/verify-email',
-        
+        path: '/email-verify',
+        element: <VerifyEmail />
+      }, {
+        path: '/reset-password',
+        element: <ResetPassword />
       }
     ],
   },
@@ -99,6 +107,22 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/admin',
+    element: <AdminLayout />,
+    errorElement: <ErrorPage />,
+
+    children: [
+      {
+        index: true,
+        element: <Admin />
+      },
+      {
+        path: 'login',
+        element: <AdminLogin />
+      }
+    ]
+  }
 ]);
 
 function App() {

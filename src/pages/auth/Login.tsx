@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/useAuth'
-import { LoginCredentials } from '../../types/auth.types'
+import { LoginCredentials, } from '../../types/auth.types'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
 import { FaFacebook, FaApple } from 'react-icons/fa'
-// import {login} from '../../services/auth.service'
+// import {setToken} from '../../services/auth.service'
+import BeatLoader from 'react-spinners/BeatLoader'
 // import { AxiosError } from 'axios'
 
 
@@ -24,12 +25,12 @@ export default function Login() {
     e.preventDefault()
     
     try {
-     const response =  await login(credentials.email, credentials.password)
-      console.log(response)
-      // navigate('/dashboard')
+     const status =  await login(credentials.email, credentials.password)
+      console.log(status)
+      if(status === 200) {
+        navigate('/dashboard')
+      }
     } catch (err) {
-      // Error is already handled by AuthContext
-      // You can add additional UI feedback here if needed
       console.error('Login failed:', err)
     }
   }
@@ -123,9 +124,9 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoading || !isFormValid()}
-            className="w-1/4 mx-auto flex justify-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:opacity-50"
+            className="w-1/4 mx-auto flex justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-md disabled:opacity-50"
           >
-            {isLoading ? "loging in..." : "LOGIN"}
+            {isLoading ? <BeatLoader   /> : "LOGIN"}
           </button>
 
           <div className="mt-6">

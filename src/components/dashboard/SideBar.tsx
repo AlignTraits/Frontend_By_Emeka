@@ -52,7 +52,7 @@ const SideBar = ({
         onClick={() => setOpen(false)}
       />
       {/* Logo */}
-      <div className="flex items-start mb-8 relative right-5 w-[150px]">
+      <div className="flex mx-auto mb-8 relative right-5 w-[150px]">
         <img src={Logo} alt="AlignTraits Logo" />
       </div>
 
