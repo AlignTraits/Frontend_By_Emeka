@@ -7,8 +7,9 @@ export interface User {
 }
 
 export interface AuthResponse {
-  user: User;
+  status: number;
   token: string;
+  
 }
 
 export interface LoginCredentials {

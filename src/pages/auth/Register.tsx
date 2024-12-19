@@ -7,6 +7,7 @@ import { FcGoogle, } from "react-icons/fc";
 import { FaFacebook, FaApple,  } from "react-icons/fa";
 import { FiMail, FiArrowLeft } from "react-icons/fi";
 import Done from '../../assets/Done 1.png';
+import BeatLoader from "react-spinners/BeatLoader";
 
 
 export default function Register() {
@@ -31,7 +32,7 @@ export default function Register() {
         credentials.password
       );
       setSuccess(true); // Update success state
-      navigate("/dashboard"); // Redirect to dashboard
+      // navigate("/dashboard"); // Redirect to dashboard
     } catch (err) {
       console.error("Registration failed:", err);
       setSuccess(false); // Ensure success state is reset
@@ -63,14 +64,14 @@ export default function Register() {
                   We’ve sent a confirmation link to your email
                 </span>
                 <span className="text-[16px] font-[400]">
-                  user_email@gmail.com
+                  {credentials.email}
                 </span>
-                <button
+                {/* <button
                   type="button"
                   className=" mx-auto flex justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-md disabled:opacity-50"
                 >
                   Open email app
-                </button>
+                </button> */}
                 <span className="text-[16px] font-[400] mt-2">
                   Didn’t receive the email?{" "}
                   <button
@@ -225,7 +226,7 @@ export default function Register() {
                 disabled={isLoading || !isFormValid()}
                 className="w-1/4 mx-auto flex justify-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:opacity-50"
               >
-                {isLoading ? "Registering..." : "REGISTER"}
+                {isLoading ? <BeatLoader /> : "REGISTER"}
               </button>
 
               <div className="mt-6">

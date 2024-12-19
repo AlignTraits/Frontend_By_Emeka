@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
+import api from '../../api/axios'
+// import { verifyEmail } from "../../services/auth.service";
 
 const VerifyEmail: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -10,24 +11,28 @@ const VerifyEmail: React.FC = () => {
   useEffect(() => {
     const verifyEmailToken = async () => {
       const token = searchParams.get("token");
+      const email = searchParams.get('email')
       if (!token) {
         setStatus("Invalid verification link.");
         return;
       }
 
       try {
-        const response = await axios.post("/api/auth/verify-email", { token });
+        console.log(token, email)
+        const response = await api.get(`/auth/verification?email=${'ayooluwababalola24%40gmail.com'}&token=${'0b12729b1632'}`);
+        console.log(response)
         if (response.data.success) {
           setStatus("Email verified successfully! Redirecting...");
-          setTimeout(() => navigate("/login"), 3000);
+          // setTimeout(() => navigate("/login"), 3000);
         } else {
           setStatus(
             "Verification failed. The link might be invalid or expired."
           );
         }
       } catch (error: any) {
+        console.log(error)
         setStatus(
-          error.response?.data?.message ||
+          error.response?.data?.errors[0].message ||
             "An error occurred during verification. Please try again."
         );
       }
@@ -44,4 +49,4 @@ const VerifyEmail: React.FC = () => {
   );
 };
 
-export default VerifyEmail;
+export default VerifyEmail

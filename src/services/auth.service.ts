@@ -10,6 +10,7 @@ export const setToken = (token: string): void => {
 }
 
 export const getToken = (): string | undefined => {
+  // console.log(Cookies.get(TOKEN_KEY))
   return Cookies.get(TOKEN_KEY)
 }
 
@@ -38,12 +39,13 @@ export const signUp = async (credentials: SignUpCredentials): Promise<AuthRespon
   return data
 }
 
-export const forgotPassword = async (email: string): Promise<void> => {
-  await api.post('/auth/forgot-password', { email })
+export const forgotPasswordRequest = async (email: string): Promise<void> => {
+  await api.post('/auth/request-reset', { email })
 }
 
-export const resetPassword = async (token: string, password: string): Promise<void> => {
-  await api.post('/auth/reset-password', { token, password })
+
+export const resetPassword = async (email:string, token: string, password: string): Promise<void> => {
+  await api.post('/auth/reset-password', { email, token, password })
 }
 
 export const getCurrentUser = async (): Promise<AuthResponse> => {

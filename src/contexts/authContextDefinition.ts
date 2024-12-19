@@ -17,11 +17,14 @@ interface User {
 
 export interface AuthContextType {
   user: User | null
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string, password: string) => Promise<void |number>
   logout: () => Promise<void>
   register: (firstname: string, lastname: string, email: string, password: string) => Promise<void>
+  verifyEmailToken: (email: string, password: string, token: string)=> Promise<void>
   isLoading: boolean
   error: string | null
+  token: string | undefined
+  isAuthenticated: boolean
 
 }
 
@@ -30,6 +33,9 @@ export const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   logout: async () => {},
   register: async () => {},
+  verifyEmailToken: async () => {},
   isLoading: false,
   error: null,
+  token: undefined,
+  isAuthenticated: false
 }) 
