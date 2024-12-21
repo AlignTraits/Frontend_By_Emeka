@@ -23,7 +23,7 @@ const VerifyEmail: React.FC = () => {
         console.log(response)
         if (response.data.status == 200) {
           setStatus("Email verified successfully! Redirecting...");
-          // setTimeout(() => navigate("/login"), 3000);
+          setTimeout(() => navigate("/login"), 3000);
         } else {
           setStatus(
             "Verification failed. The link might be invalid or expired."

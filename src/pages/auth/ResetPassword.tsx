@@ -9,7 +9,7 @@ import { BeatLoader } from "react-spinners";
 const ResetPassword: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  // const [status, setStatus] = useState<string>("Verifying...");
+  const [status, setStatus] = useState<boolean>(false);
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -36,11 +36,18 @@ useEffect(()=> {
 
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+     
       const response = await verifyEmailToken(
         token,
         email,
         password
       );
+      console.log(response)
+      if(response.status === 200) {
+        setStatus(true)
+        setTimeout(() => navigate('/login'), 3000)
+      }
+      
       console.log(response);
     };
 
@@ -71,7 +78,11 @@ useEffect(()=> {
           {error && (
             <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
           )}
-
+          {status && (
+            <div className="bg-green-50 text-green-500 p-3 rounded">
+              Password reset successful. Redirecting...
+            </div>
+          )}
           <div>
             <label htmlFor="password" className="block text-[16px] font-[600]">
               Password
