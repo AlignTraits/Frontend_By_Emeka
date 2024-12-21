@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setError(null);
       await authService.logout();
       setUser(null);
+      
     } catch (err) {
       setError("Failed to logout. Please try again.");
       throw err;
@@ -121,7 +122,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       console.log(token, email);
       const response = await api.put(`/auth/reset-password`, {
         email: email,
-        password: password,
+        newPassword: password,
         token: token,
       });
       console.log(response);

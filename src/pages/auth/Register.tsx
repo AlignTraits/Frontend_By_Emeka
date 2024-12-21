@@ -82,11 +82,11 @@ export default function Register() {
                   </button>
                 </span>
                 <button
-                  className="flex mx-auto "
+                  className="flex mx-auto cursor-pointer"
                   onClick={() => navigate("/login")}
                 >
                   <FiArrowLeft className="text-2xl" />
-                  <span className="my-auto">back to login</span>
+                  <span className="my-auto w-full">back to login</span>
                 </button>
               </div>
               <div className="absolute left-[50%] top-0 bottom-0 ">
