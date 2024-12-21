@@ -126,6 +126,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         token: token,
       });
       console.log(response);
+      return response
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.errors) {
         const errors = err.response.data.errors;
