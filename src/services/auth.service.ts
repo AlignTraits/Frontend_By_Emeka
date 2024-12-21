@@ -68,7 +68,7 @@ export const register = async (credentials: SignUpCredentials) => {
 } 
 
 export const logout = async (): Promise<void> => {
-  await api.post('/auth/logout')
+  // await api.post('/auth/logout')
   removeToken()
 }
 
