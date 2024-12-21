@@ -19,7 +19,7 @@ const VerifyEmail: React.FC = () => {
 
       try {
         console.log(token, email)
-        const response = await api.get(`/auth/verification?email=${'ayooluwababalola24%40gmail.com'}&token=${'0b12729b1632'}`);
+        const response = await api.get(`/auth/verification?email=${email}&token=${token}`);
         console.log(response)
         if (response.data.success) {
           setStatus("Email verified successfully! Redirecting...");
