@@ -3,7 +3,7 @@ import AccountIcon from "../../assets/admin/icons/adminImage.png";
 import {  FiUser } from "react-icons/fi";
 import { useAuth } from "../../contexts/useAuth";
 
-export default function index() {
+export default function Index() {
   const {admin} = useAuth()
 
   const loggedInAdmins = [

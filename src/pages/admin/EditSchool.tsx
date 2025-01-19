@@ -1,141 +1,194 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getSchool } from "../../services/schools";
 import { School } from "../../services/schools";
-// import { Form } from "./CreateCourse";
 import CreateSchoolDropDown from "../../components/Admin/CreateSchoolDropDown";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiSearch } from "react-icons/fi";
 import { EditCourseCard } from "../../components/Admin/EditCourseCard";
 import Skeleton from "react-loading-skeleton";
 import { ClipLoader } from "react-spinners";
-import DeleteSchoolModal from '../../components/Admin/DeleteSchoolModal'
+import DeleteSchoolModal from "../../components/Admin/DeleteSchoolModal";
 import { Course } from "../../types/course.types";
 
-interface school extends School {
+interface SchoolWithCourses extends School {
   courses: Course[];
 }
 
 export default function EditSchool() {
   const id = new URLSearchParams(useLocation().search).get("id");
-  const [school, setSchool] = useState<school>();
+  const [school, setSchool] = useState<SchoolWithCourses>();
   const [isLoading, setIsLoading] = useState(true);
-  const [modal, setModal] = useState(false)
+  const [modal, setModal] = useState(false);
+  const [activeTab, setActiveTab] = useState("All Courses");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [deleteCred, setDeleteCred] = useState({
+    itemName: "",
+    itemId: "",
+    itemType: "",
+  })
 
-  console.log(id);
   useEffect(() => {
-   
-      async function get() {
-        const response = await getSchool(id as string);
-        console.log(response);
-        setSchool(response);
-        setIsLoading(false);
-     
-    } 
-    get();
+    async function fetchSchool() {
+      const response = await getSchool(id as string);
+      setSchool(response);
+      setIsLoading(false);
+    }
+    fetchSchool();
   }, [id]);
+
+  const filteredCourses = school?.courses.filter((course) => {
+    const matchesScholarship =
+      activeTab === "All Courses" || course.scholarship;
+    const matchesSearch = course.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    return matchesScholarship && matchesSearch;
+  });
+
+  const deleteCourse = (course:Course)=> {
+    console.log(course)
+    console.log(deleteCred)
+     setDeleteCred({
+       itemName: "",
+       itemId: "",
+       itemType: "",
+     });
+    setDeleteCred({itemId: course.id, itemName: course.title, itemType: 'course'})
+    console.log(deleteCred)
+    setModal(true)
+  }
+
+  const deleteSchool = ()=> {
+    setDeleteCred({
+      itemName: "",
+      itemId: '',
+      itemType: "",
+    });
+    setDeleteCred({itemName: 'school', itemId:id as string, itemType: 'school'})
+    setModal(true)
+    console.log(school)
+  }
+
   return (
     <>
       {isLoading ? (
         <div className="flex w-full justify-center items-center">
           <ClipLoader />
         </div>
-        
       ) : (
-        <div>
+        <div className="space-y-10">
           <div className="flex gap-10">
             <div className="rounded-full w-60 h-60">
-              {isLoading ? (
-                <Skeleton
-                  circle={true}
-                  height={240}
-                  width={240}
-                  className="bg-[#FAFAFA]"
-                />
-              ) : (
-                <img
-                  src={school?.logo}
-                  alt={`AlignTrait School ${school?.name} Logo`}
-                  className="w-full h-full rounded-full"
-                />
-              )}
+              <img
+                src={school?.logo}
+                alt={`AlignTrait School ${school?.name} Logo`}
+                className="w-full h-full rounded-full"
+              />
             </div>
             <div className="[&>p]:text-[#787878] [&>p]:text-[16px] space-y-2 my-auto">
               <h2 className="text-[#000000] font-bold text-[24px] capitalize">
-                {isLoading ? <Skeleton width={200} /> : school?.name}
+                {school?.name}
               </h2>
               <p className="capitalize">
-                {isLoading ? (
-                  <Skeleton width={150} />
-                ) : (
-                  school?.schoolType.split("_").join(" ").toLocaleLowerCase()
-                )}
+                {school?.schoolType.split("_").join(" ").toLowerCase()}
               </p>
-              <p>{isLoading ? <Skeleton width={100} /> : school?.location}</p>
-              <p>
-                {isLoading ? (
-                  <Skeleton width={50} />
-                ) : (
-                  `${school?.courses.length} courses`
-                )}
-              </p>
-              <p>
-                {isLoading ? (
-                  <Skeleton width={150} />
-                ) : (
-                  "17,000 accounts applied"
-                )}
-              </p>
+              <p>{school?.location}</p>
+              <p>{`${school?.courses.length} courses`}</p>
+              <p>{"17,000 accounts applied"}</p>
               <div className="w-[80%]">
-                {isLoading ? (
-                  <Skeleton width={100} />
-                ) : (
-                  <CreateSchoolDropDown
-                    label="Edit School"
-                    Icon={FiEdit}
-                    values={[
-                      {
-                        onchange: () => console.log("edit"),
-                        value: "Edit School",
-                      },
-                      {
-                        onchange: () => setModal(true),
-                        value: "Delete School",
-                      },
-                    ]}
-                  />
-                )}
+                <CreateSchoolDropDown
+                  label="Edit School"
+                  Icon={FiEdit}
+                  values={[
+                    {
+                      onchange: () => console.log("edit"),
+                      value: "Edit School",
+                    },
+                    { onchange: () => deleteSchool(), value: "Delete School" },
+                  ]}
+                />
               </div>
             </div>
           </div>
           <div>
-            <div>
-              {/* <ul>
-            <li>All Courses</li>
-            <li>Scholarship</li>
-
-          </ul> */}
-            </div>
+            <ul className="flex gap-5 text-[#787878] text-[16px] font-medium w-full border-b-[1px] border-[#75757599] pt-5">
+              <li
+                className={`my-auto h-full pb-5 cursor-pointer ${
+                  activeTab === "All Courses"
+                    ? "text-[#004085] border-b-[1px] border-[#004085]"
+                    : ""
+                }`}
+                onClick={() => setActiveTab("All Courses")}
+              >
+                All Courses
+              </li>
+              <li
+                className={`my-auto h-full pb-5 cursor-pointer ${
+                  activeTab === "Scholarships"
+                    ? "text-[#004085] border-b-[1px] border-[#004085]"
+                    : ""
+                }`}
+                onClick={() => setActiveTab("Scholarships")}
+              >
+                Scholarships
+              </li>
+              <li>
+                <CourseSearch
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                />
+              </li>
+            </ul>
             {isLoading ? (
               <Skeleton count={3} height={100} />
             ) : (
               <div className="grid grid-cols-3 gap-5">
-                {school?.courses.map((course, index) => (
+                {filteredCourses?.map((course, index) => (
                   <EditCourseCard
                     course={course}
                     key={index}
                     onEdit={(course) => console.log("Edit course:", course)}
-                    onDelete={(course) => console.log("Delete course:", course)}
+                    onDelete={(course) => deleteCourse(course)}
                     schoolLogo={school.logo}
-                    schoolName={school.name}
+                    schoolName={school?.name as string}
                   />
                 ))}
               </div>
             )}
           </div>
-          {modal && <DeleteSchoolModal schoolName={school?.name as string} setShowModal={setModal} schoolId={id as string}/>}
+          {modal && (
+            <DeleteSchoolModal
+              itemName={deleteCred.itemName as string}
+              setShowModal={setModal}
+              itemId={deleteCred.itemId as string}
+              itemType={deleteCred.itemType}
+            />
+          )}
         </div>
       )}
-      
     </>
   );
 }
+
+interface CourseSearchProps {
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const CourseSearch: React.FC<CourseSearchProps> = ({
+  searchQuery,
+  setSearchQuery,
+}) => {
+  return (
+    <div className="relative flex items-center justify-center w-full pb-5">
+      <input
+        type="text"
+        placeholder="Search for a course"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full pl-10 pr-4 py-2 font-semibold focus:outline-none focus:border-blue-500 text-[14px] font-[500]"
+      />
+      <FiSearch className="absolute left-3 top-[30%] -translate-y-1/2 text-gray-400 w-5 h-5" />
+    </div>
+  );
+};
