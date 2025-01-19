@@ -1,70 +1,56 @@
 // import React from 'react';
 import { useAuth } from '../../contexts/useAuth';
 import { 
-  FiBell, 
-  FiSearch, 
+
+  FiCalendar, 
   FiUser,
   FiMenu 
 
 } from 'react-icons/fi';
 
+interface HeaderProps {
+  setOpen:  React.Dispatch<React.SetStateAction<boolean>>
+
+}
+
 const Header = ({
   setOpen,
-}: {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const { user } = useAuth();
 
+}: HeaderProps) => {
+  const { admin } = useAuth();
+  
+// console.log(data)
   return (
-    <div className="relative bg-gray-50 border-[0.4px] border-y-[#E0E0E0] pl-10 py-3 xl:pl-[4rem] xl:pr-[2rem] sticky top-0 z-10 w-full overflow-hidden">
-      <FiMenu className="absolute left-0 top-0 translate-x-1/2 translate-y-full my-auto lg:hidden" onClick={()=>setOpen(true)} />
+    <div className="relative bg-gray-50 border-[0.4px] border-y-[#E0E0E0] pl-10 py-3  sticky top-0 z-10 w-full overflow-hidden">
+      <FiMenu
+        className="absolute left-0 top-0 translate-x-1/2 translate-y-full my-auto lg:hidden"
+        onClick={() => setOpen(true)}
+      />
       <div className="flex items-center justify-between lg:gap-5">
         {/* Welcome Message */}
-        <div className="flex items-center xl:justify-between xl:gap-20">
-          <div className="space-y-2">
-            <h1 className="text-xl font-medium text-[#004085]">
-              Hello, {user?.firstName || "User"}
-            </h1>
-            <p className="text-[12px] lg:text-sm text-[#00408533] font-semibold">
-              Welcome to your dashboard
-            </p>
-          </div>
-          <div className="relative w-96">
-            <input
-              type="text"
-              placeholder="Explore careers / schools..."
-              className="w-full pl-5 pr-4 py-2 font-semibold  border border-[#007BFF] focus:outline-none focus:border-blue-500 text-[14px] font-[500]"
-            />
-            <FiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-          </div>
+        <div className="space-y-2 basis-[60%]">
+          <h1 className="text-xl font-semibold text-[#000000] ">
+            Hello, {admin?.username || "User"}🔥
+          </h1>
+          <p className="text-[12px] lg:text-sm text-[#638AB6] font-medium">
+            Monitor student responses and track their progress in real time.
+          </p>
         </div>
 
-        <div className="flex  lg:space-x-4">
-          <button className="px-4 py-2 bg-[#004085] text-[14px]  text-white rounded-lg hover:bg-blue-700 transition-colors w-[200px]">
-            Career Recommendations
-          </button>
-
-          <button className="relative p-2 hover:bg-gray-100 rounded-full">
-            <FiBell
-              className="w-6 h-6 text-gray-600 
-            fill-[#000000]"
-            />
-            <span className="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
-              3
+        <div className="flex items-center lg:space-x-2 basis-[40%]">
+          <div className="flex  text-right gap-2 pr-10 border-r-[2px] border-[#004085] ">
+            <p className="text-sm font-medium text-gray-900 my-auto">
+              {Date().slice(3, 15)}
+            </p>
+            <span className="h-10 w-10 rounded-full bg-[#F2F2F2] flex items-center justify-center">
+              <FiCalendar />
             </span>
-          </button>
-
-          <div className="flex items-center lg:space-x-2">
-            <div className="text-right">
-              <p className="text-sm font-medium text-gray-900">
-                {user?.firstName} {user?.lastName}
-              </p>
-              <p className="text-xs text-gray-500">{user?.email}</p>
-            </div>
+          </div>
+          <div className="flex items-center gap-2 pl-10">
             <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-              {user?.image ? (
+              {admin?.image ? (
                 <img
-                  src={user.image}
+                  src={admin.image}
                   alt="Profile"
                   className="h-full w-full rounded-full object-cover"
                 />
@@ -72,6 +58,9 @@ const Header = ({
                 <FiUser className="w-6 h-6 text-gray-600" />
               )}
             </div>
+            <span className="text-[#000000] text-[16px] font-semibold">
+              {admin?.username}
+            </span>
           </div>
         </div>
       </div>

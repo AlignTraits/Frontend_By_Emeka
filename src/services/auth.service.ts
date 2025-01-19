@@ -2,10 +2,11 @@ import api from '../api/axios'
 import Cookies from 'js-cookie'
 import { AuthResponse, LoginCredentials, SignUpCredentials} from '../types/auth.types'
 
-const TOKEN_KEY = 'auth_token'
-const COOKIE_EXPIRY = 7 // days
 
-export const setToken = (token: string): void => {
+const TOKEN_KEY = 'auth_token'
+const COOKIE_EXPIRY = 0.0208 // days
+
+export const setToken = (token: string ): void => {
   Cookies.set(TOKEN_KEY, token, { expires: COOKIE_EXPIRY })
 }
 
@@ -72,7 +73,38 @@ export const logout = async (): Promise<void> => {
   removeToken()
 }
 
+export const adminLogin = async (email:string, password:string): Promise<AuthResponse> => {
+ const response =  await api.post('/auth/admin/login', {email, password})
+ console.log(response)
+ return {status:response.status, token:response.data.data.token}
+
+}
+
 
 export const verifyEmail = async (): Promise<void> => {
   await api.post('/auth/verify-email')
+}
+
+export const getAdminDetails = async (token: string) => {
+  try{
+const response = await api.get('/auth/admin/details', {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  } )
+  console.log(response)
+  if(!response.data.ok) {
+    await logout()
+    window.location.href = '/admin/login'
+   
+  }
+    return response.data
+
+  } catch(err) {
+    if(err){
+      await logout();
+      window.location.href = "/admin/login";
+    }
+  }
+  
 }

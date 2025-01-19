@@ -1,4 +1,4 @@
-export interface Course {
+export interface  Course {
   id: string;
   title: string;
   image: string;
@@ -9,4 +9,8 @@ export interface Course {
   scholarshipType: 'full' | 'none' | number;
   price: number;
   country: string;
+  profile? : string
+  scholarship?: string
+  currency?: string
+
 } 

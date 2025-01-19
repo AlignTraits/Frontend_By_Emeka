@@ -1,23 +1,12 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
-import PathfinderIcon from "../../assets/dashboard/icons/PathfinderIcon.svg";
+import SchoolIcon from "../../assets/admin/icons/school-icon.png";
+import AccountIcon from "../../assets/admin/icons/account-icon.png";
+
 import Logo from "../../assets/logo.svg";
-import {
-  FiBook,
-  FiSettings,
-  FiChevronDown,
-  FiShoppingBag,
-  FiSearch,
-  FiBookOpen,
-  FiShoppingCart,
-  FiGlobe,
-  FiGrid,
-  FiLogOut,
-  FiList,
-  FiX,
-} from "react-icons/fi";
+import { FiGrid, FiLogOut, FiX } from "react-icons/fi";
 
 const SideBar = ({
   open,
@@ -26,7 +15,6 @@ const SideBar = ({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [learningOpen, setLearningOpen] = useState<boolean>(false);
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -41,7 +29,7 @@ const SideBar = ({
 
   return (
     <div
-      className={`fixed z-20 lg:sticky top-0 left-0 h-screen w-[250px] bg-[#F7FAFF] border-[2px] border-[#E0E0E0] shadow-md px-4 py-8 flex flex-col transition-transform duration-300 ${
+      className={`fixed z-20 lg:sticky top-0 left-0 h-screen w-[250px] bg-[#E8EAEE] border-[2px] border-[#E0E0E0] rounded-r-2xl px-4 py-8 flex flex-col transition-transform duration-300 ${
         open ? "translate-x-0 " : "-translate-x-full lg:translate-x-0"
       }`}
     >
@@ -58,147 +46,68 @@ const SideBar = ({
       {/* Navigation Links */}
       <nav className="flex flex-col space-y-4 flex-grow h-full">
         <NavLink
-          to="/dashboard"
+          to="/admin"
           className={({ isActive }) =>
-            `flex items-center p-3 font-[500] rounded-md transition-colors ${
-              isActive ? " text-blue-500" : "text-[#212121] hover:bg-gray-100"
+            `flex items-center p-3 font-bold rounded-md transition-colors ${
+              isActive ? " text-blue-500" : "text-[#5D5D5B] hover:bg-gray-100"
             }`
           }
+          end
         >
           <FiGrid className="w-5 h-5 mr-3" />
-          <span>Dashboard</span>
+          <span>Overview</span>
         </NavLink>
 
         <NavLink
-          to="/dashboard/pathfinder"
+          to="/admin/schools"
           className={({ isActive }) =>
-            `flex items-center p-3 font-[500] rounded-md transition-colors ${
-              isActive ? " text-blue-500" : "text-[#212121] hover:bg-gray-100"
+            `flex items-center p-3 font-bold rounded-md transition-colors ${
+              isActive ? "text-blue-500" : "text-[#5D5D5B] hover:bg-gray-100"
+            }`
+          }
+        >
+          {({ isActive }) => (
+            <>
+              <img
+                src={SchoolIcon}
+                alt="AlignTraits School"
+                className={`w-5 h-5 mr-3 ${
+                  isActive ? "text-blue-500" : "text-[#5D5D5B]"
+                }`}
+                style={{
+                  filter: isActive
+                    ? "invert(36%) sepia(100%) saturate(1000%) hue-rotate(200deg) brightness(100%) contrast(100%)"
+                    : "none",
+                }}
+              />
+              <span className={isActive ? "text-blue-500" : "text-[#5D5D5B]"}>
+                Schools
+              </span>
+            </>
+          )}
+        </NavLink>
+
+        <NavLink
+          to="/admin/accounts"
+          className={({ isActive }) =>
+            `flex items-center p-3 font-bold rounded-md transition-colors ${
+              isActive ? " text-blue-500" : "text-[#5D5D5B] hover:bg-gray-100"
             }`
           }
         >
           <img
-            src={PathfinderIcon}
-            alt="AlignTraits Pathfinder"
+            src={AccountIcon}
+            alt="AlignTraits Account"
             className="w-5 h-5 mr-3 fill-[#007BFF]"
           />
-          <span>Pathfinder</span>
-        </NavLink>
-
-        {/* Learning Dropdown */}
-        <div className="relative">
-          <button
-            onClick={() => setLearningOpen(!learningOpen)}
-            className="flex items-center w-full p-3 text-[#212121] font-[500] rounded-md hover:bg-gray-100 transition-colors"
-          >
-            <FiBookOpen className="w-5 h-5 mr-3" />
-            <span>Learning</span>
-            <FiChevronDown
-              className={`w-5 h-5 transition-transform duration-200 ${
-                learningOpen ? "rotate-180" : ""
-              }`}
-            />
-          </button>
-          {learningOpen && (
-            <div className="pl-4 mt-2 space-y-4">
-              <NavLink
-                to="/dashboard/learning"
-                className={({ isActive }) =>
-                  `flex items-center p-3 font-[500] rounded-md transition-colors ${
-                    isActive
-                      ? " text-blue-500"
-                      : "text-[#212121] hover:bg-gray-100"
-                  }`
-                }
-              >
-                <FiShoppingBag className="w-5 h-5 mr-3" />
-                <span>Store</span>
-              </NavLink>
-              <NavLink
-                to="/dashboard/search"
-                className={({ isActive }) =>
-                  `flex items-center p-3 font-[500] rounded-md transition-colors ${
-                    isActive
-                      ? " text-blue-500"
-                      : "text-[#212121] hover:bg-gray-100"
-                  }`
-                }
-              >
-                <FiSearch className="w-5 h-5 mr-3" />
-                <span>Search</span>
-              </NavLink>
-              <NavLink
-                to="/dashboard/library"
-                className={({ isActive }) =>
-                  `flex items-center p-3 font-[500] rounded-md transition-colors ${
-                    isActive
-                      ? " text-blue-500"
-                      : "text-[#212121] hover:bg-gray-100"
-                  }`
-                }
-              >
-                <FiBook className="w-5 h-5 mr-3" />
-                <span>Library</span>
-              </NavLink>
-              <NavLink
-                to="/dashboard/task"
-                className={({ isActive }) =>
-                  `flex items-center p-3 font-[500] rounded-md transition-colors ${
-                    isActive
-                      ? " text-blue-500"
-                      : "text-[#212121] hover:bg-gray-100"
-                  }`
-                }
-              >
-                <FiList className="w-5 h-5 mr-3" />
-                <span>Task</span>
-              </NavLink>
-              <NavLink
-                to="/dashboard/basket"
-                className={({ isActive }) =>
-                  `flex items-center p-3 font-[500] rounded-md transition-colors ${
-                    isActive
-                      ? " text-blue-500"
-                      : "text-[#212121] hover:bg-gray-100"
-                  }`
-                }
-              >
-                <FiShoppingCart className="w-5 h-5 mr-3" />
-                <span>Basket</span>
-              </NavLink>
-            </div>
-          )}
-        </div>
-
-        <NavLink
-          to="/dashboard/community"
-          className={({ isActive }) =>
-            `flex items-center p-3 font-[500] rounded-md transition-colors ${
-              isActive ? " text-blue-500" : "text-[#212121] hover:bg-gray-100"
-            }`
-          }
-        >
-          <FiGlobe className="w-5 h-5 mr-3" />
-          <span>Community</span>
-        </NavLink>
-
-        <NavLink
-          to="/dashboard/settings"
-          className={({ isActive }) =>
-            `flex items-center p-3 font-[500] rounded-md transition-colors ${
-              isActive ? " text-blue-500" : "text-[#212121] hover:bg-gray-100"
-            }`
-          }
-        >
-          <FiSettings className="w-5 h-5 mr-3" />
-          <span>Settings</span>
+          <span>Accounts</span>
         </NavLink>
       </nav>
 
       {/* Logout Button */}
       <button
         onClick={handleLogout}
-        className="flex items-center p-3 text-[#212121] rounded-md hover:bg-red-50 hover:text-red-500 transition-colors"
+        className="flex items-center p-3 text-[#5D5D5B] font-bold rounded-md hover:bg-red-50 hover:text-red-500 transition-colors"
       >
         <FiLogOut className="w-5 h-5 mr-3" />
         <span>Logout</span>
