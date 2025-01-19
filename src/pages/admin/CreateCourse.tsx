@@ -4,8 +4,9 @@ import ImageUploadWithPreview from "../../components/Admin/ImageUpload";
 import CustomSelect from "../../components/dashboard/CustomSelect";
 import { FiX } from "react-icons/fi";
 import { createCourse, School } from "../../services/schools";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/useAuth";
+import { BeatLoader } from "react-spinners";
 
 export interface Form {
   title: string;
@@ -72,6 +73,7 @@ const SelectWithCancel: React.FC<SelectWithCancelProps> = ({
 export default function CreateSchool() {
   const navigate = useNavigate();
   const { token } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null | ArrayBuffer>(
     null
@@ -137,9 +139,16 @@ export default function CreateSchool() {
         formData.append(key, value as string);
       }
     });
+    setIsLoading(true);
 
-    const response = await createCourse(formData, token as string);
+    
+         const response = await createCourse(formData, token as string);
     console.log(response);
+      if (response) setIsLoading(false);
+      toast.success('Course Created Successfully')
+    
+ 
+  
   };
 
   return (
@@ -150,10 +159,10 @@ export default function CreateSchool() {
         </h2>
         <div>
           <button
-            className="px-3 py-2 bg-[#004085] text-[#FFFFFF] text-[16px] rounded-lg mr-5"
+            className="px-3 py-2 bg-[#004085] text-[#FFFFFF] text-[16px] rounded-lg mr-5 w-[150px]"
             onClick={() => handleSubmit()}
           >
-            Create Course
+          {isLoading ? <BeatLoader /> : 'Create Course'}  
           </button>
           <button
             className="px-3 py-2 bg-[#850000] text-[#FFFFFF] text-[16px] rounded-lg"

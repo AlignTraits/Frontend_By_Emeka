@@ -97,6 +97,7 @@ export const createCourse = async (form:FormData, token: string) => {
         "Authorization": `Bearer ${token}`
       },
     });
+    if(response.data.status == 403) throw new Error(response)
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
