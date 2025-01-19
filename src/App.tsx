@@ -8,6 +8,7 @@ import Root from "./layouts/Root";
 import DashboardLayout from "./layouts/DashboardLayout";
 import SettingsLayout from "./layouts/SettingsLayout";
 import AdminLayout from "./layouts/admin/AdminLayout";
+import AdminDashboardLayout from './layouts/admin/AdminDashboardLayout'
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
@@ -25,6 +26,9 @@ import Schoolnformation from "./pages/dashboard/settings/Schoolnformation";
 import Payment from "./pages/dashboard/settings/Payment";
 import Admin from './pages/admin/Index'
 import AdminLogin from './pages/admin/Login'
+import Schools from './pages/admin/Schools'
+import CreateCourse from "./pages/admin/CreateCourse";
+import EditSchool from "./pages/admin/EditSchool";
 
 const router = createBrowserRouter([
   {
@@ -114,8 +118,27 @@ const router = createBrowserRouter([
 
     children: [
       {
-        index: true,
-        element: <Admin />
+        path: '',
+        element: <AdminDashboardLayout />,
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            index: true,
+            element: <Admin />
+          }, {
+            path: 'schools',
+            element: <Schools />,
+          },
+          {
+            path: 'schools/create-course',
+            element: <CreateCourse />
+          },
+          {
+            path: 'schools/edit-school',
+            element: <EditSchool />
+          }
+
+        ]
       },
       {
         path: 'login',

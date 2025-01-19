@@ -28,7 +28,7 @@ export default function Login() {
      const status =  await login(credentials.email, credentials.password)
       console.log(status)
       if(status === 200) {
-        navigate('/dashboard')
+        // navigate('/dashboard')
       }
     } catch (err) {
       console.error('Login failed:', err)

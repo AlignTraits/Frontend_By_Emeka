@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
-import Courses from "../../components/dashboard/Courses";
-import LoanCalculator from "../../components/dashboard/LoanCalculator";
+import { useState, useEffect, lazy, Suspense } from "react";
+const Courses = lazy(() => import("../../components/dashboard/Courses"));
+const LoanCalculator = lazy(
+  () => import("../../components/dashboard/LoanCalculator")
+);
+import { LoadingSkeleton } from "../../components/dashboard/Courses"; 
 import { Course } from "../../types/course.types";
 import { dummyCourses } from "../../data/dummyCourses";
 
@@ -34,7 +37,10 @@ export default function Dashboard() {
     <div className="min-h-screen bg-[#F7FAFF]  px-10 py-10 xl:px-[4rem] xl:pr-[2rem]">
       <div className="container mx-auto">
         <div className="flex flex-row justify-between relative">
-          <Courses courses={courses} isLoading={isLoading} error={error} />
+          <Suspense fallback={<LoadingSkeleton />}>
+            <Courses courses={courses} isLoading={isLoading} error={error} />
+          </Suspense>
+
           <LoanCalculator />
         </div>
       </div>

@@ -50,9 +50,8 @@ export default function Register() {
 
   return (
     <>
-      
-        {success ? (
-          <div className="relative min-h-screen flex justify-center bg-[#F7FAFF]">
+      {success ? (
+        <div className="relative min-h-screen flex justify-center bg-[#F7FAFF]">
           <div className="max-w-xl w-full space-y-8 p-20">
             <div className=" flex flex-col items-center  space-y-4">
               <FiMail className="text-6xl  " />
@@ -66,12 +65,12 @@ export default function Register() {
                 <span className="text-[16px] font-[400]">
                   {credentials.email}
                 </span>
-                {/* <button
-                  type="button"
+                <a
+                  href={"mailto:"+ credentials.email}
                   className=" mx-auto flex justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-md disabled:opacity-50"
                 >
                   Open email app
-                </button> */}
+                </a>
                 <span className="text-[16px] font-[400] mt-2">
                   Didn’t receive the email?{" "}
                   <button
@@ -95,8 +94,8 @@ export default function Register() {
             </div>
           </div>
         </div>
-        ) : (
-          <div className="relative min-h-screen flex items-center justify-center bg-[#F7FAFF]">
+      ) : (
+        <div className="relative min-h-screen flex items-center justify-center bg-[#F7FAFF]">
           <div className="max-w-xl w-full space-y-8 p-8 bg-white rounded-lg shadow-xl">
             <div className="flex flex-col items-center justify-center">
               <h2 className="text-3xl font-bold text-center">
@@ -264,9 +263,8 @@ export default function Register() {
               </div>
             </form>
           </div>
-         </div>
-        )}
-      
+        </div>
+      )}
     </>
   );
   

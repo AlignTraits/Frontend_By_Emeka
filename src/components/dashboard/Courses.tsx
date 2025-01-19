@@ -26,6 +26,7 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
     <div className="lg:basis-[40%] xl:basis-[50%] space-y-0">
       <div className="flex flex-col xl:flex-row w-full space-y-4 xl:space-y-0 space-x-4">
         {!isLoading && (
+          
           <div className="flex space-x-3 my-auto">
             <FilterDropdown
               courses={courses}
@@ -58,7 +59,7 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
 }
 
 
-const LoadingSkeleton = () => {
+export const LoadingSkeleton = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-4">
       {[...Array(6)].map((_, index) => (
@@ -193,7 +194,7 @@ const SortDropdown: React.FC<FilterProps> = ({ courses, onFilterChange }) => {
 
 
 // Course Card Component
-const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
+export const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
   const formatPrice = (price: number) => {
     return `$${price.toLocaleString()}`;
   };

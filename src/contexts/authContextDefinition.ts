@@ -1,41 +1,61 @@
-import { createContext } from 'react'
-
+import { createContext } from "react";
 
 interface User {
-  firstName: string,
-    lastName: string,
-    email: string,
-    gender: string,
-    image: string,
-    dateOfBirth: string,
-    bio: string,
-    region: string,
-    currentSkill: string,
-    courseOfInterest: string,
-  }
+  firstName: string;
+  lastName: string;
+  email: string;
+  gender: string;
+  image: string;
+  dateOfBirth: string;
+  bio: string;
+  region: string;
+  currentSkill: string;
+  courseOfInterest: string;
+}
 
+export  interface Admin {
+    email: string
+    image: string | null
+    role: string
+    id: string
+    username: string
+}
 
 export interface AuthContextType {
-  user: User | null
-  login: (email: string, password: string) => Promise<void |number>
-  logout: () => Promise<void>
-  register: (firstname: string, lastname: string, email: string, password: string) => Promise<void>
-  verifyEmailToken: (email: string, password: string, token: string)=> Promise<void>
-  isLoading: boolean
-  error: string | null
-  token: string | undefined
-  isAuthenticated: boolean
-
+  user: User | null;
+  admin: Admin | null
+  setUser: React.Dispatch<React.SetStateAction<User | null>>
+  setAdmin: React.Dispatch<React.SetStateAction<Admin | null>>
+  login: (email: string, password: string) => Promise<void | number>;
+  logout: () => Promise<void>;
+  register: (
+    firstname: string,
+    lastname: string,
+    email: string,
+    password: string
+  ) => Promise<void>;
+  verifyEmailToken: (
+    email: string,
+    password: string,
+    token: string
+  ) => Promise<{ status: number }>;
+  isLoading: boolean;
+  error: string | null;
+  token: string | undefined;
+  isAuthenticated: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
+  admin: null,
+  setAdmin: () => {},
+  setUser: ()=> {},
   login: async () => {},
   logout: async () => {},
   register: async () => {},
-  verifyEmailToken: async () => {},
+  verifyEmailToken: async () => ({ status: 0 }), 
   isLoading: false,
   error: null,
   token: undefined,
-  isAuthenticated: false
-}) 
+  isAuthenticated: false,
+});

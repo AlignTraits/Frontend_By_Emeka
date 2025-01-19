@@ -18,6 +18,7 @@ const ImageUploadWithPreview = ({
   const [isDragOver, setIsDragOver] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   
     const files = e.target.files;
     if (!files || files.length === 0) {
       alert("No file selected.");
