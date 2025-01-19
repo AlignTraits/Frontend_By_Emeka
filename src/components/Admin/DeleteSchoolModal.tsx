@@ -20,7 +20,8 @@ export default function CreateSchoolModal({ setShowModal, schoolName, schoolId }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(isDelete == schoolName ){
+    console.log(isDelete, schoolName)
+    if(schoolName !== isDelete ){
         toast.error('Incorrect School Name')
         return
     }
@@ -37,6 +38,7 @@ export default function CreateSchoolModal({ setShowModal, schoolName, schoolId }
       await localStorage.removeItem('schools')
       setShowModal(false);
       toast.success("School Deleted Successfully");
+      localStorage.removeItem('schools')
       navigate('/admin/schools')
       console.log(response.data);
     } catch (err: any) {
@@ -101,7 +103,7 @@ export default function CreateSchoolModal({ setShowModal, schoolName, schoolId }
               <div className="border-[#000000] border-[1px] px-5 py-2 rounded-md" onClick={()=>setShowModal(false)}>
                 Cancel
               </div>
-              <button className="text-[#FFFFFF] bg-[#BC0000] px-5 py-2 rounded-md" type="submit">
+              <button className="text-[#FFFFFF] bg-[#BC0000] px-5 py-2 rounded-md" type="submit" disabled={isLoading}>
               {isLoading ? <BeatLoader /> : 'Delete'} 
               </button>
             </div>

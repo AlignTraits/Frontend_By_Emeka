@@ -68,9 +68,9 @@ const CustomSelect: React.FC<SelectProps> = ({
             dropUp ? "bottom-full mb-1" : "top-full mt-1"
           }`}
         >
-          {options.map((option) => (
+          {options.map((option, index) => (
             <li
-              key={option.value}
+              key={option.value +index}
               className="px-4 py-2 cursor-pointer hover:bg-gray-100"
               onClick={() => handleOptionClick(option)}
             >

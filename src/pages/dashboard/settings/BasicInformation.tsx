@@ -1,32 +1,43 @@
-import React, { useState } from "react";
+import React, { useState,  } from "react";
 import Header from "../../../components/Settings/Header";
 import ImageUploadWithPreview from "../../../components/Settings/ImageUpload";
 import DummyImage from "../../../assets/dashboard/images/dummy-image.png";
 import CustomSelect from "../../../components/dashboard/CustomSelect";
+// import { upDateUserProfile } from "../../../services/auth.service";
 // import { useAuth } from '../../../hooks/useAuth';
-
+import { User } from "../../../types/auth.types";
 export default function BasicInformation() {
-  // Dummy user data for demonstration
-  const [user, setUser] = useState({
-    firstName: "John",
-    lastName: "Doe",
-    email: "johndoe@gmail.com",
-    gender: "Male",
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [user, setUser] = useState<User>({
+    firstname: "",
+    lastname: "",
+    email: "",
+    gender: "",
     image: DummyImage,
-    dateOfBirth: "01/01/2000",
-    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus ut libero.",
-    region: "Nigeria",
-    currentSkill: "Software Developer",
-    courseOfInterest: "Software Engineering",
+    dob: "",
+    bio: "",
+    region: "",
+    currentSkill: "",
+    courseOfInterest: "",
   });
 
-    const [imageFile, setImageFile] = useState<File | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null | ArrayBuffer>(user.image);
+  const [previewUrl, setPreviewUrl] = useState<string | null | ArrayBuffer>(
+    DummyImage as string
+  );
+
+  //  useEffect(() => {
+  //      setUser((prevData) => ({ ...prevData, image: imageFile }));
+  //    }, [imageFile]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLTextAreaElement>
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
+    e.preventDefault();
     const { name, value } = e.target;
+    console.log(name);
     setUser((prevUser) => ({
       ...prevUser,
       [name]: value,
@@ -34,8 +45,11 @@ export default function BasicInformation() {
   };
 
   const handleClick = () => {
-    console.log(imageFile)
+    console.log(imageFile);
     console.log("User data:", user);
+    const formData = new FormData();
+    formData.append("image", imageFile as Blob);
+    // const response = upDateUserProfile(user, formData);
     // Add save logic here
   };
 
@@ -52,7 +66,7 @@ export default function BasicInformation() {
         <div className="flex gap-5 pb-10 border-b-[1px] border-[#E0E0E0]">
           <div className="flex gap-2 m-0 p-0">
             <label
-              htmlFor="firstName"
+              htmlFor="firstname"
               className="text-[#000000] font-[600] text-[16px] my-auto"
             >
               First name:
@@ -60,15 +74,15 @@ export default function BasicInformation() {
             <input
               type="text"
               id="firstName"
-              name="firstName"
+              name="firstname"
               className="border-[1px] border-[#757575] rounded-md py-2 px-3"
-              value={user.firstName}
+              value={user.firstname}
               onChange={handleChange}
             />
           </div>
           <div className="flex gap-2 ">
             <label
-              htmlFor="lastName"
+              htmlFor="lastname"
               className="text-[#000000] font-[600] text-[16px] my-auto"
             >
               Last name:
@@ -76,9 +90,9 @@ export default function BasicInformation() {
             <input
               type="text"
               id="lastName"
-              name="lastName"
+              name="lastname"
               className="border-[1px] border-[#757575] rounded-md py-2 px-3"
-              value={user.lastName}
+              value={user.lastname}
               onChange={handleChange}
             />
           </div>
@@ -117,7 +131,7 @@ export default function BasicInformation() {
             setImageFile={setImageFile}
             imageFile={imageFile}
             setPreviewUrl={setPreviewUrl}
-            previousImg={user.image}
+            previousImg={user.image as string}
           />
         </div>
 
@@ -142,10 +156,10 @@ export default function BasicInformation() {
               </select> */}
               <CustomSelect
                 options={[
-                  { value: "male", label: "male" },
-                  { value: "female", label: "female" },
+                  { value: "MALE", label: "male" },
+                  { value: "FEMALE", label: "female" },
                 ]}
-                placeholder={user.gender}
+                placeholder={user.gender as string}
                 onChange={() => handleChange}
               />
             </div>
@@ -176,24 +190,24 @@ export default function BasicInformation() {
             id="bio"
             name="bio"
             className={`${
-              user.bio.length === 400
+              user.bio?.length === 400
                 ? "border-red-900"
                 : "border-[1px] border-[#757575]"
             } " rounded-md p-5 h-[300px] "`}
-            value={user.bio}
+            value={user.bio as string}
             onChange={(e) => handleChange(e)}
             onKeyDown={(e) => {
-              if (user.bio.length === 400 && e.key !== "Backspace") {
+              if (user?.bio?.length as number === 400 && e.key !== "Backspace") {
                 e.preventDefault();
               }
             }}
           />
           <span
             className={`${
-              user.bio.length === 400 ? "text-red-600" : ""
+              user.bio?.length === 400 ? "text-red-600" : ""
             } "text-[#757575]   text-[16px] font-semibold"`}
           >
-            {400 - user.bio.length} characters left.
+            {400 - (user.bio?.length as number)} characters left.
           </span>
         </div>
         <div className="grid grid-cols-[30%_70%] items-center py-10 border-b-[1px] border-[#E0E0E0]">
@@ -212,7 +226,7 @@ export default function BasicInformation() {
                 { value: "lagos", label: "Lagos, Nigeria" },
                 { value: "abuja", label: "Abuja, Nigeria" },
               ]}
-              placeholder={user.region}
+              placeholder={user.region as string}
               onChange={() => handleChange}
             />
           </div>
@@ -234,7 +248,7 @@ export default function BasicInformation() {
                 { value: "graphic-design", label: "Graphic Design" },
                 { value: "web-design", label: "Web Design" },
               ]}
-              placeholder={user.currentSkill}
+              placeholder={user.currentSkill as string}
               onChange={() => handleChange}
             />
           </div>
@@ -256,7 +270,7 @@ export default function BasicInformation() {
                 { value: "physics", label: "Physics" },
                 { value: "physics", label: "Physics" },
               ]}
-              placeholder={user.courseOfInterest}
+              placeholder={user.courseOfInterest as string}
               onChange={() => handleChange}
             />
           </div>

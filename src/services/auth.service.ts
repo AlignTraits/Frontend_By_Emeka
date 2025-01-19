@@ -1,6 +1,8 @@
 import api from '../api/axios'
 import Cookies from 'js-cookie'
 import { AuthResponse, LoginCredentials, SignUpCredentials} from '../types/auth.types'
+import { User} from '../types/auth.types'
+import {toast} from "react-toastify";
 
 
 const TOKEN_KEY = 'auth_token'
@@ -107,4 +109,49 @@ const response = await api.get('/auth/admin/details', {
     }
   }
   
+}
+
+export const upDateUserProfile = async (data: User, img: FormData) => {
+  try{
+ const response = await api.patch('/users', data, {
+    headers: {
+      "Content-Type": "application/json"
+  }
+})
+const image = await api.patch('/users/picture', img, {
+  headers: {
+    "Content-Type": "multipart/form-data"
+  }
+})
+  return [response.data, image.data]
+  } catch (err: any) {
+      if (err.response && err.response.data && err.response.data.errors) {
+        console.log(err)
+        const errors = err.response.data.errors;
+        console.log(errors);
+  
+        errors.forEach((error: { message: string }) => {
+          if (error.message) {
+            toast.error(error.message);
+          }
+        });
+      }
+      if(err.response && err.response.data) {
+  
+        toast.error(err.response.data.error)
+      }
+  
+      if (
+        err.response &&
+        err.response.data.message &&
+        !err.response.data.errors
+      ) {
+        toast.error(err.response.data.message);
+      }
+  
+      throw err;
+    }
+ 
+
+
 }

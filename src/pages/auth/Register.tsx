@@ -22,6 +22,10 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [success, setSuccess] = useState(false);
 
+
+  const openMail = ()=> {
+    window.open(`mailto:${credentials.email}`);
+  }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -76,6 +80,7 @@ export default function Register() {
                   <button
                     type="button"
                     className="text-[16px] text-[#007AFF] font-[700]"
+                    onClick={() => openMail()}
                   >
                     click to resend
                   </button>

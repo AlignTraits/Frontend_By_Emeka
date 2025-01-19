@@ -89,6 +89,19 @@ export const getSchool = async (id: string) => {
   } 
 }
 
+interface ErrorResponse {
+  status: number;
+  message: string;
+  errors: { message: string }[];
+}
+
+class ResponseError extends Error {
+  response: { data: ErrorResponse };
+  constructor(response: { data: ErrorResponse }) {
+    super(`Request failed with status ${response.data.status}`);
+    this.response = response; // Attach the full response object for debugging
+  }
+}
 export const createCourse = async (form:FormData, token: string) => {
   try {
     const response = await api.post("/school/add-course", form, {
@@ -97,7 +110,7 @@ export const createCourse = async (form:FormData, token: string) => {
         "Authorization": `Bearer ${token}`
       },
     });
-    if(response.data.status == 403) throw new Error(response)
+    if(response.data.status == 403) throw new ResponseError(response)
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {

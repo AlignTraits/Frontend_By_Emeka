@@ -65,6 +65,7 @@ const SideBar = ({
               isActive ? "text-blue-500" : "text-[#5D5D5B] hover:bg-gray-100"
             }`
           }
+          end
         >
           {({ isActive }) => (
             <>
@@ -88,7 +89,7 @@ const SideBar = ({
         </NavLink>
 
         <NavLink
-          to="/admin/accounts"
+          to="#"
           className={({ isActive }) =>
             `flex items-center p-3 font-bold rounded-md transition-colors ${
               isActive ? " text-blue-500" : "text-[#5D5D5B] hover:bg-gray-100"

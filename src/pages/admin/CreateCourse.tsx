@@ -11,17 +11,17 @@ import { BeatLoader } from "react-spinners";
 export interface Form {
   title: string;
   profile: File | null;
-  schoolld: string;
+  schoolId: string;
   scholarship: string;
-  duration: string;
+  duration: number;
   durationPeriod: string;
-  price: string;
+  price: number;
   currency: string;
-  acceptanceFee: string;
+  acceptanceFee: number;
   acceptanceFeeCurrency: string;
   description: string;
   requirements: string[];
-  rating?: number 
+  rating?: number;
 }
 
 interface Option {
@@ -81,13 +81,13 @@ export default function CreateSchool() {
   const [form, setForm] = useState<Form>({
     title: "",
     profile: imageFile,
-    schoolld: "",
+    schoolId: "",
     scholarship: "",
-    duration: "",
+    duration: 0,
     durationPeriod: "",
-    price: "",
+    price: 0,
     currency: "",
-    acceptanceFee: "",
+    acceptanceFee: 0,
     acceptanceFeeCurrency: "",
     description: "",
     requirements: [],
@@ -132,6 +132,7 @@ export default function CreateSchool() {
     console.log(form);
     Object.entries(form).forEach(([key, value]) => {
       if (Array.isArray(value)) {
+        console.log(key)
         formData.append(key, JSON.stringify(value));
       } else if (value instanceof File) {
         formData.append(key, value);
@@ -143,11 +144,12 @@ export default function CreateSchool() {
 
     
          const response = await createCourse(formData, token as string);
+          setIsLoading(false)
     console.log(response);
-      if (response) setIsLoading(false);
+      // if (response) setIsLoading(false);
       toast.success('Course Created Successfully')
-    
- 
+      localStorage.removeItem('schools')
+    navigate(-1)
   
   };
 
@@ -205,7 +207,7 @@ export default function CreateSchool() {
                   );
                   setForm({
                     ...form,
-                    schoolld: selectedSchool ? selectedSchool.id : "",
+                    schoolId: selectedSchool ? selectedSchool.id : "",
                   });
                 }
               }}
@@ -230,13 +232,13 @@ export default function CreateSchool() {
               <input
                 type="number"
                 placeholder="Duration"
-                onChange={(e) => setForm({ ...form, duration: e.target.value })}
+                onChange={(e) => setForm({ ...form, duration:  parseInt(e.target.value)})}
                 className="bg-[#00408533] rounded-md w-[200px] px-3 py-2"
               />
               <CustomSelect
                 options={[
-                  { value: "Months", label: "Months" },
-                  { value: "Years", label: "Years" },
+                  { value: "MONTH", label: "Months" },
+                  { value: "YEAR", label: "Years" },
                 ]}
                 placeholder="Select Period"
                 onChange={(value) =>
@@ -252,7 +254,7 @@ export default function CreateSchool() {
               <input
                 type="number"
                 placeholder="price"
-                onChange={(e) => setForm({ ...form, price: e.target.value })}
+                onChange={(e) => setForm({ ...form, price: parseInt(e.target.value) })}
                 className="bg-[#00408533] rounded-md w-[200px] px-3 py-2"
               />
               <CustomSelect
@@ -273,7 +275,7 @@ export default function CreateSchool() {
                 type="text"
                 placeholder="0.00"
                 onChange={(e) =>
-                  setForm({ ...form, acceptanceFee: e.target.value })
+                  setForm({ ...form, acceptanceFee: parseInt(e.target.value) })
                 }
                 className="bg-[#00408533] rounded-md w-[200px] px-3 py-2"
               />
