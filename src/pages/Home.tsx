@@ -57,31 +57,42 @@ export default function Home() {
   }
 
   return (
-    <div className="relative flex flex-col justify-center items-center h-screen w-full bg-[#001833] gap-5">
-      <img src={AlignTraitBanner} alt="AlignTraits Banner Image" className="mb-10" />
-      <h1 className="relative text-center text-[#E0E0E0] text-[40px] font-semibold lg:w-[60%] xl:w-[50%] leading-[48px]">
+    <div className="relative flex flex-col justify-center items-center h-screen w-full bg-[#001833] p-5 md:p-10 gap-2 lg:gap-5">
+      <img
+        src={AlignTraitBanner}
+        alt="AlignTraits Banner Image"
+        className=" w-[300px] h-[50px] lg:w-[400px] lg:h-[50px]"
+      />
+      <h1 className="relative text-center text-[#E0E0E0] text-[30px] lg:text-[40px] font-normal lg:font-semibold  md:w-[80%] lg:w-[80%] xl:w-[50%] leading-[40px] lg:eading-[48px]">
         Discover Your Ideal Career Path with AlignTraits
-        <img src={Confetti} alt="" className="absolute top-[-20px] xl:top-0 right-0 bottom-0" />
+        <img
+          src={Confetti}
+          alt=""
+          className="absolute top-[-20px] xl:top-0 right-0 bottom-0"
+        />
       </h1>
-      <p className=" text-center text-[#E0E0E0] text-[20px] font-medium w-[55%] xl:w-[43%] leading-[30px]">
+      <p className=" text-center text-[#E0E0E0] text-[16px] lg:text-[20px] font-medium md:w-[80%] lg:w-[70%] xl:w-[50%] leading-[20px] md:leading-[30px]">
         Join our waitlist and unlock personalized career recommendations based
         on your unique personality traits. Simplify your career decisions and
         empower your future with insights just for you.
       </p>
 
-      <div className="border-[#E5EFFF] border-[1px] rounded-full flex items-center mt-5 px-5 py-2 bg-[#F7FAFF] mt-20">
+      <div className="border-[#E5EFFF] border-[1px] rounded-full flex items-center mt-8 px-2 lg:px-5 py-2 bg-[#F7FAFF] mt-20">
         <FiMail />
         <input
           type="email"
           placeholder="Enter Your Email"
-          className="ml-2 outline-none text-[14px] text-[#666666] font-normal p-2"
-          onChange={(e)=> setEmail(e.target.value)}       
-           />
-        <button className="text-[#FFFFFF] text-[14px] font-normal bg-gradient-to-r from-[#0062FF] to-[#65D1FF] px-5 py-2 rounded-full" onClick={()=> handleSubmit()}>
+          className="ml-2 outline-none text-[14px] text-[#666666] font-normal lg:p-2"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button
+          className="text-[#FFFFFF] text-[14px] font-normal bg-gradient-to-r from-[#0062FF] to-[#65D1FF] px-5 py-2 rounded-full"
+          onClick={() => handleSubmit()}
+        >
           Secure My Spot
         </button>
       </div>
-      <p className="text-[18px] text-[#E0E0E0] font-normal text-center w-[45%] mt-10">
+      <p className="text-[14px] lg:text-[18px] text-[#E0E0E0] font-normal text-center  md:w-[60%] lg:w-[60%] my-5 lg:mt-10">
         AlignTraits' AI-driven career guidance is here to revolutionize your
         future. Join our waitlist today!
       </p>
@@ -95,9 +106,21 @@ export default function Home() {
         © {date.getUTCFullYear()} AlignTraits
       </p>
 
-      <img src={Glove} alt="" className="absolute top-[30%] left-10" />
-      <img src={Study} alt="" className="absolute bottom-[20%] right-10" />
-      <img src={DirectionArrow} alt="" className="absolute top-[48%] left-[20%] xl:top-[48%] xl:left-[28%]" />
+      <img
+        src={Glove}
+        alt=""
+        className="absolute top-[30%] xl:left-20 left-10 hidden lg:block"
+      />
+      <img
+        src={Study}
+        alt=""
+        className="lg:absolute bottom-[20%] right-10 w-[200px] h-[200px] xl:w-[250px] xl:h-[250px] xl:right-20 xl:bottom-[30%]"
+      />
+      <img
+        src={DirectionArrow}
+        alt=""
+        className="absolute top-[31%] left-[7%] md:top-[30%] md:left-[15%] lg:top-[40%] xl:top-[42%] xl:left-[23%] h-[55px] md:h-[100px] lg:h-[150px] "
+      />
 
       <ToastContainer />
     </div>
