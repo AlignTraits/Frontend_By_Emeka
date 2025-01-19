@@ -116,7 +116,7 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
         },
       });
    
-      await localStorage.removeItem('schools') 
+     localStorage.removeItem('schools') 
        setSchools(await getSchools(token as string))
       setShowModal(false)
     

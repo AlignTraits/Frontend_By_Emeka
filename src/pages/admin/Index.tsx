@@ -1,8 +1,10 @@
 
 import AccountIcon from "../../assets/admin/icons/adminImage.png";
+import {  FiUser } from "react-icons/fi";
+import { useAuth } from "../../contexts/useAuth";
 
-export default function index() {
- 
+export default function Index() {
+  const {admin} = useAuth()
 
   const loggedInAdmins = [
     {
@@ -36,13 +38,17 @@ export default function index() {
       <div className="basis-[65%] xl:basis-[70%] h-full"></div>
       <div className="basis-[35%] xl:basis-[30%] space-y-4">
         <div className="flex flex-col justify-center bg-[#E8EAEE] rounded-[30px] w-full space-y-2 p-5">
-          <img
-            src={AccountIcon}
-            alt=""
-            className="mx-auto w-[100px] h-[100px]"
-          />
+          {admin?.image ? (
+            <img
+              src={admin?.image ? admin.image : AccountIcon}
+              alt=""
+              className="mx-auto w-[100px] h-[100px]"
+            />
+          ) : (
+            <FiUser className="mx-auto w-[100px] h-[100px]" />
+          )}
           <h2 className="text-[#000000] text-[20px] font-[400] text-center">
-            Olamide Damilola
+            {admin?.username}
           </h2>
           <div>
             <h3 className="text-[#007AFF] text-[18px] text-center">2</h3>
@@ -67,11 +73,15 @@ export default function index() {
               <div key={index} className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <div className="relative">
-                    <img
-                      src={admin.image}
-                      alt=""
-                      className="w-[50px] h-[50px] rounded-[50px]"
-                    />
+                    {admin.image ? (
+                      <img
+                        src={admin.image}
+                        alt=""
+                        className="w-[50px] h-[50px] rounded-[50px]"
+                      />
+                    ) : (
+                      <FiUser className="w-[50px] h-[50px] rounded-[50px]" />
+                    )}
                     <span
                       className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
                         admin.online ? "bg-[#13F721]" : "bg-[#D9D9D9]"

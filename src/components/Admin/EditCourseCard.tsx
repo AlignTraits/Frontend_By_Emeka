@@ -72,7 +72,7 @@ export const EditCourseCard: React.FC<EditCourseCardProps> = ({
 
       <div className="space-y-4">
         <div className="py-5">
-          <h3 className="text-[16px] font-[500] text-[#333333]">
+          <h3 className="text-[17.06px] font-semibold text-[#333333]">
             {course.title}
           </h3>
         </div>
@@ -80,12 +80,12 @@ export const EditCourseCard: React.FC<EditCourseCardProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <img src={schoolLogo} alt="" className="w-10 h-10 rounded-full" />
-            <p className="text-[16px] text-[#101828] font-[600] capitalize">
+            <p className="text-[13.83px] text-[#101828] font-medium capitalize">
               {schoolName}
             </p>
           </div>
 
-          <span className="text-[16px] font-[600] text-[#004085]">
+          <span className="text-[13.83px] text-[#101828] font-medium">
             {course.currency == "NAIRA" ? "₦" : "$"} {course.price}
           </span>
         </div>
