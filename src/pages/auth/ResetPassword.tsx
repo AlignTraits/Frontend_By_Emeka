@@ -74,7 +74,7 @@ useEffect(()=> {
           onSubmit={(e) => handleSubmit(e)}
           className="space-y-6 flex flex-col"
         >
-          <h2>Kindly enter your email to reset password.</h2>
+          <h2>Kindly enter your new password.</h2>
           {error && (
             <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
           )}
@@ -85,7 +85,7 @@ useEffect(()=> {
           )}
           <div>
             <label htmlFor="password" className="block text-[16px] font-[600]">
-              Password
+              New password
             </label>
             <div className="relative">
               <input
@@ -115,7 +115,7 @@ useEffect(()=> {
               htmlFor="confirm-password"
               className="block text-[16px] font-[600]"
             >
-              Confirm Password
+              Confirm new password
             </label>
             <div className="relative">
               <input
