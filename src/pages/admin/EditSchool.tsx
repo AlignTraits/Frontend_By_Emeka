@@ -149,7 +149,7 @@ export default function EditSchool() {
                     key={index}
                     onEdit={(course) => console.log("Edit course:", course)}
                     onDelete={(course) => deleteCourse(course)}
-                    schoolLogo={school.logo}
+                    schoolLogo={school?.logo as string}
                     schoolName={school?.name as string}
                   />
                 ))}
