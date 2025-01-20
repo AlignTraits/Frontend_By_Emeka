@@ -1,9 +1,9 @@
 export interface User {
   id?: string;
-  email: string;
-  firstname: string;
-  lastname: string;
-  image?: string | null;
+  email?: string;
+  firstname?: string;
+  lastname?: string;
+  image?: string | null | File;
   password?: string;
   username?: string | null;
   emailVerified?: string;

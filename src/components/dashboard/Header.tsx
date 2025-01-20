@@ -14,22 +14,22 @@ const Header = ({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { user } = useAuth();
-
+  console.log(user)
   return (
-    <div className="relative bg-gray-50 border-[0.4px] border-y-[#E0E0E0] pl-10 py-3 xl:pl-[4rem] xl:pr-[2rem] sticky top-0 z-10 w-full overflow-hidden">
+    <div className="relative bg-gray-50 border-[0.4px] border-y-[#E0E0E0] pl-10 py-3 lg:pl-[2rem] xl:pl-[4rem] xl:pr-[2rem] sticky top-0 z-10 w-full overflow-hidden">
       <FiMenu className="absolute left-0 top-0 translate-x-1/2 translate-y-full my-auto lg:hidden" onClick={()=>setOpen(true)} />
-      <div className="flex items-center justify-between lg:gap-5">
+      <div className="flex items-center justify-between lg:gap-2">
         {/* Welcome Message */}
         <div className="flex items-center xl:justify-between xl:gap-20">
           <div className="space-y-2">
             <h1 className="text-xl font-medium text-[#004085]">
-              Hello, {user?.firstName || "User"}
+              Hello, {user?.firstname || "User"}
             </h1>
             <p className="text-[12px] lg:text-sm text-[#00408533] font-semibold">
               Welcome to your dashboard
             </p>
           </div>
-          <div className="relative w-96">
+          <div className="relative lg:w-80 xl:w-96">
             <input
               type="text"
               placeholder="Explore careers / schools..."
@@ -57,14 +57,14 @@ const Header = ({
           <div className="flex items-center lg:space-x-2">
             <div className="text-right">
               <p className="text-sm font-medium text-gray-900">
-                {user?.firstName} {user?.lastName}
+                {user?.firstname} {user?.lastname}
               </p>
               <p className="text-xs text-gray-500">{user?.email}</p>
             </div>
             <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
               {user?.image ? (
                 <img
-                  src={user.image}
+                  src={user.image as string}
                   alt="Profile"
                   className="h-full w-full rounded-full object-cover"
                 />

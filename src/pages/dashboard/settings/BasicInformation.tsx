@@ -1,60 +1,109 @@
-import React, { useState,  } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../../components/Settings/Header";
 import ImageUploadWithPreview from "../../../components/Settings/ImageUpload";
 import DummyImage from "../../../assets/dashboard/images/dummy-image.png";
 import CustomSelect from "../../../components/dashboard/CustomSelect";
-// import { upDateUserProfile } from "../../../services/auth.service";
-// import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from "../../../contexts/useAuth";
 import { User } from "../../../types/auth.types";
-export default function BasicInformation() {
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [user, setUser] = useState<User>({
-    firstname: "",
-    lastname: "",
-    email: "",
-    gender: "",
-    image: DummyImage,
-    dob: "",
-    bio: "",
-    region: "",
-    currentSkill: "",
-    courseOfInterest: "",
-  });
+import { ClipLoader } from "react-spinners";
+import { upDateUserProfile } from "../../../services/auth.service";
+import { toast } from "react-toastify";
 
-  const [previewUrl, setPreviewUrl] = useState<string | null | ArrayBuffer>(
-    DummyImage as string
+
+
+export default function BasicInformation() {
+  const { user, token } = useAuth();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [form, setForm] = useState<User | null>(null);
+  const [changedFields, setChangedFields] = useState<Partial<User>>({});
+  const [previewUrl, setPreviewUrl] = useState<string | ArrayBuffer|null>(
+    DummyImage
   );
 
-  //  useEffect(() => {
-  //      setUser((prevData) => ({ ...prevData, image: imageFile }));
-  //    }, [imageFile]);
+  useEffect(() => {
+    if (user) {
+      setForm({
+        firstname: user.firstname || "",
+        lastname: user.lastname || "",
+        email: user.email || "",
+        gender: user.gender || "",
+        image: DummyImage,
+        dob: user.dob || "",
+        bio: user.bio || "",
+        region: user.region || "",
+        currentSkill: user.currentSkill || "",
+        courseOfInterest: user.courseOfInterest || "",
+      });
+      setPreviewUrl(user.image as string || DummyImage);
+    }
+  }, [user]);
 
   const handleChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLSelectElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
-    e.preventDefault();
     const { name, value } = e.target;
-    console.log(name);
-    setUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
+    if (form) {
+      setForm((prevUser) => ({
+        ...prevUser!,
+        [name]: value,
+      }));
+
+      setChangedFields((prev) => ({
+        ...prev,
+        [name]: value || '' // Ensures it’s always a string
+      }));
+    }
+  };
+  const handleSelectChange = (name: keyof User, value: string) => {
+    if (form) {
+      setForm((prevUser) => ({
+        ...prevUser!,
+        [name]: value,
+      }));
+      setChangedFields((prev) => ({ ...prev, [name]: value ?? '',  }));
+    }
   };
 
-  const handleClick = () => {
-    console.log(imageFile);
-    console.log("User data:", user);
-    const formData = new FormData();
-    formData.append("image", imageFile as Blob);
-    // const response = upDateUserProfile(user, formData);
-    // Add save logic here
+  const handleImageChange = (file: File | null) => {
+    setImageFile(file);
+    if (file) {
+      setChangedFields((prev) => ({ ...prev, image: file }));
+    }
   };
+
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const updateData = { ...changedFields };
+    if (imageFile) {
+      updateData.image = imageFile;
+    }
+
+    try {
+      const response = await upDateUserProfile(
+        updateData,
+        token as string,
+        imageFile
+      );
+      setForm((prev) => ({ ...prev!, ...response[0].data }));
+      if(response[0].ok) toast.success("Profile updated successfully");
+      console.log(response);
+    } catch (error) {
+      console.error("Error updating user profile", error);
+    }
+  };
+
+  if (!form)
+    return (
+      <div className="flex w-full justify-center items-center py-10">
+        <ClipLoader />
+      </div>
+    );
 
   return (
-    <div className="space-y-8 ">
+    <div className="space-y-8">
       <Header
         heading="Personal details"
         text="Update your photo and personal details here."
@@ -76,7 +125,7 @@ export default function BasicInformation() {
               id="firstName"
               name="firstname"
               className="border-[1px] border-[#757575] rounded-md py-2 px-3"
-              value={user.firstname}
+              value={form.firstname}
               onChange={handleChange}
             />
           </div>
@@ -92,7 +141,7 @@ export default function BasicInformation() {
               id="lastName"
               name="lastname"
               className="border-[1px] border-[#757575] rounded-md py-2 px-3"
-              value={user.lastname}
+              value={form.lastname}
               onChange={handleChange}
             />
           </div>
@@ -111,7 +160,7 @@ export default function BasicInformation() {
             id="email"
             name="email"
             className="border-[1px] border-[#757575] rounded-md py-2 px-3"
-            value={user.email}
+            value={form.email}
             onChange={handleChange}
           />
         </div>
@@ -128,13 +177,14 @@ export default function BasicInformation() {
             </div>
           )}
           <ImageUploadWithPreview
-            setImageFile={setImageFile}
+            setImageFile={handleImageChange}
             imageFile={imageFile}
             setPreviewUrl={setPreviewUrl}
-            previousImg={user.image as string}
+            previousImg={form.image as string}
           />
         </div>
 
+        {/* Gender Select */}
         <div className="flex gap-20 py-10 border-b-[1px] border-[#E0E0E0]">
           <div className="flex gap-5">
             <label
@@ -143,27 +193,18 @@ export default function BasicInformation() {
             >
               Gender:
             </label>
-            <div className=" w-[200px]">
-              {/* <select
-                name="gender"
-                id=""
-                className="w-full outline-none focus-none"
-                value={user.gender}
-                onChange={(e) => handleChange(e)}
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select> */}
+            <div className="w-[200px]">
               <CustomSelect
                 options={[
-                  { value: "MALE", label: "male" },
-                  { value: "FEMALE", label: "female" },
+                  { value: "MALE", label: "Male" },
+                  { value: "FEMALE", label: "Female" },
                 ]}
-                placeholder={user.gender as string}
-                onChange={() => handleChange}
+                placeholder={form.gender?.toLowerCase() || "Select Gender"}
+                onChange={(value) => handleSelectChange("gender", value)}
               />
             </div>
           </div>
+          {/* Date of Birth */}
           <div className="flex gap-5">
             <label
               htmlFor="date-of-birth"
@@ -173,12 +214,16 @@ export default function BasicInformation() {
             </label>
             <input
               type="date"
-              name="date-of-birth"
+              name="dob"
               id="date"
               className="border-[1px] border-[#757575] px-3 py-2 rounded-lg w-[200px]"
+              value={form.dob as string}
+              onChange={handleChange}
             />
           </div>
         </div>
+
+        {/* Bio */}
         <div className="flex flex-col gap-4 py-10 border-b-[1px] border-[#E0E0E0]">
           <label
             htmlFor="bio"
@@ -190,26 +235,28 @@ export default function BasicInformation() {
             id="bio"
             name="bio"
             className={`${
-              user.bio?.length === 400
+              form.bio?.length === 400
                 ? "border-red-900"
                 : "border-[1px] border-[#757575]"
-            } " rounded-md p-5 h-[300px] "`}
-            value={user.bio as string}
-            onChange={(e) => handleChange(e)}
+            } rounded-md p-5 h-[300px]`}
+            value={form.bio as string}
+            onChange={handleChange}
             onKeyDown={(e) => {
-              if (user?.bio?.length as number === 400 && e.key !== "Backspace") {
+              if (form?.bio?.length === 400 && e.key !== "Backspace") {
                 e.preventDefault();
               }
             }}
           />
           <span
             className={`${
-              user.bio?.length === 400 ? "text-red-600" : ""
-            } "text-[#757575]   text-[16px] font-semibold"`}
+              form.bio?.length === 400 ? "text-red-600" : ""
+            } text-[#757575] text-[16px] font-semibold`}
           >
-            {400 - (user.bio?.length as number)} characters left.
+            {400 - (form.bio?.length ?? 0)} characters left.
           </span>
         </div>
+
+        {/* Region Select */}
         <div className="grid grid-cols-[30%_70%] items-center py-10 border-b-[1px] border-[#E0E0E0]">
           <label
             htmlFor="region"
@@ -218,60 +265,55 @@ export default function BasicInformation() {
             Region:
           </label>
           <div className="w-[300px]">
-            {/* <select name="" id="" className="w-full">
-              <option value="">Lagos, Nigeria</option>
-            </select> */}
             <CustomSelect
               options={[
                 { value: "lagos", label: "Lagos, Nigeria" },
                 { value: "abuja", label: "Abuja, Nigeria" },
               ]}
-              placeholder={user.region as string}
-              onChange={() => handleChange}
+              placeholder={form.region || "Select Region"}
+              onChange={(value) => handleSelectChange("region", value)}
             />
           </div>
         </div>
+
+        {/* Current Skills Select */}
         <div className="grid grid-cols-[30%_70%] items-center py-10 border-b-[1px] border-[#E0E0E0]">
           <label
             htmlFor="skills"
             className="text-[#000000] font-[600] text-[16px] my-auto"
           >
-            Whats your current skills?:
+            What's your current skill?:
           </label>
           <div className="w-[300px]">
-            {/* <select name="skills" id="" className="w-full">
-              <option value="">Graphic Design</option>
-            </select> */}
-
             <CustomSelect
               options={[
                 { value: "graphic-design", label: "Graphic Design" },
                 { value: "web-design", label: "Web Design" },
               ]}
-              placeholder={user.currentSkill as string}
-              onChange={() => handleChange}
+              placeholder={form.currentSkill || "Select Skill"}
+              onChange={(value) => handleSelectChange("currentSkill", value)}
             />
           </div>
         </div>
+
+        {/* Course of Interest Select */}
         <div className="grid grid-cols-[30%_70%] items-center py-10 border-b-[1px] border-[#E0E0E0]">
           <label
             htmlFor="course"
             className="text-[#000000] font-[600] text-[16px] my-auto"
           >
-            What course sparks your interest:
+            What course sparks your interest?:
           </label>
           <div className="w-[300px]">
-            {/* <select name="" id="" className="w-full">
-              <option value="">Computer Science</option>
-            </select> */}
             <CustomSelect
               options={[
                 { value: "computer-science", label: "Computer Science" },
                 { value: "physics", label: "Physics" },
-                { value: "physics", label: "Physics" },
               ]}
-              placeholder={user.courseOfInterest as string}
-              onChange={() => handleChange}
+              placeholder={form.courseOfInterest || "Select Interest"}
+              onChange={(value) =>
+                handleSelectChange("courseOfInterest", value)
+              }
             />
           </div>
         </div>

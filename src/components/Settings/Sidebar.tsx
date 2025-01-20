@@ -12,6 +12,7 @@ const SideBar = () => {
               isActive ? " text-blue-600" : "text-[#212121] hover:bg-gray-100 "
             }`
           }
+          end
         >
           Basic Information
         </NavLink>

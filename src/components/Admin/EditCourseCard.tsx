@@ -70,7 +70,7 @@ export const EditCourseCard: React.FC<EditCourseCardProps> = ({
         />
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 basis-[50%]">
         <div className="py-5">
           <h3 className="text-[17.06px] font-semibold text-[#333333]">
             {course.title}

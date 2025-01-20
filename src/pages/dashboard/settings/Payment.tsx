@@ -74,7 +74,7 @@ const bankCards: BankCards[] = [
 ];
 
   return (
-    <div className="">
+    <div className="w-full">
       <Header
         heading="Payment / Bills"
         text="Manage bills and payment details"

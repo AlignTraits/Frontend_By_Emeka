@@ -191,7 +191,7 @@ const SideBar = ({
               isActive ? " text-blue-500" : "text-[#212121] hover:bg-gray-100"
             }`
           }
-          end
+         
         >
           <FiSettings className="w-5 h-5 mr-3" />
           <span>Settings</span>
