@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getSchool } from "../../services/schools";
 import { School } from "../../services/schools";
 import CreateSchoolDropDown from "../../components/Admin/CreateSchoolDropDown";
@@ -15,6 +15,7 @@ interface SchoolWithCourses extends School {
 }
 
 export default function EditSchool() {
+  const navigate = useNavigate()
   const id = new URLSearchParams(useLocation().search).get("id");
   const [school, setSchool] = useState<SchoolWithCourses>();
   const [isLoading, setIsLoading] = useState(true);
@@ -76,7 +77,7 @@ export default function EditSchool() {
           <ClipLoader />
         </div>
       ) : (
-        <div className="space-y-10">
+        <div className="grid gap-10">
           <div className="flex gap-10">
             <div className="rounded-full w-60 h-60">
               <img
@@ -142,12 +143,12 @@ export default function EditSchool() {
             {isLoading ? (
               <Skeleton count={3} height={100} />
             ) : (
-              <div className="grid grid-cols-3 gap-5">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 py-10">
                 {filteredCourses?.map((course, index) => (
                   <EditCourseCard
                     course={course}
                     key={index}
-                    onEdit={(course) => console.log("Edit course:", course)}
+                    onEdit={(course) => navigate(`/admin/schools/create-course?id=${course.id}`)}
                     onDelete={(course) => deleteCourse(course)}
                     schoolLogo={school?.logo as string}
                     schoolName={school?.name as string}

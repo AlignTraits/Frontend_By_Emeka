@@ -1,17 +1,17 @@
 import { createContext } from "react";
-
-interface User {
-  firstName: string;
-  lastName: string;
-  email: string;
-  gender: string;
-  image: string;
-  dateOfBirth: string;
-  bio: string;
-  region: string;
-  currentSkill: string;
-  courseOfInterest: string;
-}
+import { User } from "../types/auth.types";
+// interface User {
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   gender: string;
+//   image: string;
+//   dateOfBirth: string;
+//   bio: string;
+//   region: string;
+//   currentSkill: string;
+//   courseOfInterest: string;
+// }
 
 export  interface Admin {
     email: string

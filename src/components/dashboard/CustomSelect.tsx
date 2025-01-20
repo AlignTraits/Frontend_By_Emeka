@@ -54,7 +54,7 @@ const CustomSelect: React.FC<SelectProps> = ({
     
       <button
         type="button"
-        className="w-full px-4 py-2 text-left bg-white p-2 rounded-md border-[0.8px] border-[#000000] focus:outline-none focus:ring-2 focus:ring-blue-200"
+        className="w-full px-4 py-2 text-left bg-white p-2 rounded-md border-[0.8px] border-[#000000] focus:outline-none focus:ring-2 focus:ring-blue-200 capitalize"
         onClick={() => setIsOpen((prev) => !prev)}
       >
         {selected ? selected.label : placeholder}

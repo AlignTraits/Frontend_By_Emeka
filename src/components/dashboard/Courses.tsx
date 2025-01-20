@@ -24,7 +24,7 @@ export default function Courses({ courses, isLoading, error }: CoursesProps) {
 
   return (
     <div className="lg:basis-[40%] xl:basis-[50%] space-y-0">
-      <div className="flex flex-col xl:flex-row w-full space-y-4 xl:space-y-0 space-x-4">
+      <div className="flex flex-col xl:flex-row w-full space-y-4 xl:space-y-0 space-x-4 mb-10">
         {!isLoading && (
           
           <div className="flex space-x-3 my-auto">
@@ -199,11 +199,11 @@ export const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
     return `$${price.toLocaleString()}`;
   };
 
-  const getScholarshipBadge = (type: 'full' | 'none' | number) => {
-    const getScholarshipText = (type: 'full' | 'none' | number) => {
+  const getScholarshipBadge = (type: string) => {
+    const getScholarshipText = (type: string) => {
       if (type === 'full') return 'Full Scholarship';
       if (type === 'none') return 'No Scholarship';
-      return `${type}% Scholarship`;
+      return `${type} Scholarship`;
     };
 
     return (
@@ -263,7 +263,7 @@ export const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
       {/* Course Image */}
       <div className="h-50">
         <img
-          src={course.image}
+          src={course.profile}
           alt={course.title}
           className="w-full h-full object-cover rounded-lg"
         />
@@ -282,13 +282,13 @@ export const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
           <div className="flex items-center space-x-2">
             <div className="relative w-8 h-8">
               <img
-                src={course.schoolLogo}
+                src={course.university?.logo}
                 alt={`${course.school} logo`}
                 className="w-full h-full object-contain"
               />
             </div>
             <p className="text-[16px] text-[#101828] font-[600]">
-              {course.school}
+              {course.university?.name}
             </p>
           </div>
 
@@ -305,13 +305,13 @@ export const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
               {course.rating}
             </span>
             {/* Stars */}
-            <div className="flex w-full">{renderStars(course.rating)}</div>
+            <div className="flex w-full">{renderStars(course?.rating)}</div>
             {/* Rating Count */}
             <span className="text-sm text-[#969696]">
-              ({course.ratingCount.toLocaleString()})
+              ({course?.rating.toLocaleString()})
             </span>
           </div>
-          {getScholarshipBadge(course.scholarshipType)}
+          {getScholarshipBadge(course.scholarship as string)}
         </div>
 
         {/* Apply Button */}

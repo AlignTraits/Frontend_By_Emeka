@@ -1,6 +1,6 @@
+import React from 'react'
 
-
-export default function Header({heading, text, buttonText, handleClick, className}: {heading: string, text: string, buttonText: string, handleClick: () => void, className?: string}) {
+export default function Header({heading, text, buttonText, handleClick, className}: {heading: string, text: string, buttonText: string,   handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void, className?: string}) {
   return (
     <div className={`  flex w-full justify-between border-b-[1px] border-[#E0E0E0] pb-5 `}>
       <div className="space-y-2 w-full">
@@ -9,7 +9,11 @@ export default function Header({heading, text, buttonText, handleClick, classNam
       </div>
       <button
         className={`flex items-center px-4 py-2 bg-[#004085] text-white text-[14px] rounded-lg hover:bg-blue-700 transition-colors w-[200px]  justify-center h-[80%] my-auto ${className}`}
-        onClick={() => handleClick()}
+        onClick={(e)=> {
+          e.preventDefault();
+          handleClick(e)
+        } }
+        type='submit'
       >
         {buttonText}
       </button>
