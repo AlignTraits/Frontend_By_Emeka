@@ -73,7 +73,7 @@ export default function CreateSchool() {
   const location = useLocation();
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-   const [fetchingDetails, setFetchingDetails] = useState(true);
+   const [fetchingDetails, setFetchingDetails] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null | ArrayBuffer>(
     null
@@ -159,10 +159,11 @@ export default function CreateSchool() {
   const handleSubmit = async () => {
     const formData = new FormData();
     Object.entries(form).forEach(([key, value]) => {
+      // console.log(value)
       if (Array.isArray(value)) {
         formData.append(key, JSON.stringify(value));
-      } else if (value instanceof File) {
-        if(id) formData.append(key, value);
+      } else if (imageFile && key === "profile") {
+        formData.append(key, imageFile!);
       } else {
         formData.append(key, value as string);
       }
@@ -187,7 +188,7 @@ console.log(formData.forEach((value, key) => console.log(key, value))
 
 if (fetchingDetails) {
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-[60dvh]">
       <ClipLoader />
     </div>
   );

@@ -308,7 +308,7 @@ export const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
             <div className="flex w-full">{renderStars(course?.rating)}</div>
             {/* Rating Count */}
             <span className="text-sm text-[#969696]">
-              ({course?.rating.toLocaleString()})
+              ({course?.rating})
             </span>
           </div>
           {getScholarshipBadge(course.scholarship as string)}

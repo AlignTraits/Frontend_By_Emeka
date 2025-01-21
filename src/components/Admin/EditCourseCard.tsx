@@ -90,7 +90,7 @@ export const EditCourseCard: React.FC<EditCourseCardProps> = ({
           </span>
         </div>
 
-        <div className="mt-2 flex justify-between items-center">
+        <div className="mt-2 flex justify-between items-center w-full">
           <div className="flex items-center">
             <span className="text-[14px] font-[500] text-[#004085]">
               {course.rating}
@@ -98,7 +98,7 @@ export const EditCourseCard: React.FC<EditCourseCardProps> = ({
             <div className="flex">{renderStars(course.rating || 0)}</div>
           </div>
           <div>
-            <p className="text-[16px] font-[600] text-[#004085]">
+            <p className="text-[14px] font-[600] text-[#004085] item-end text-end w-full">
               {course.scholarship} Scholarship
             </p>
           </div>
