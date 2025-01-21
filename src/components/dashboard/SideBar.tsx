@@ -42,13 +42,13 @@ const SideBar = ({
 
   return (
     <div
-      className={`fixed z-20 lg:sticky top-0 left-0 h-screen w-[250px] bg-[#F7FAFF] border-[2px] border-[#E0E0E0] shadow-md px-4 py-8 flex flex-col transition-transform duration-300 ${
-        open ? "translate-x-0 " : "-translate-x-full lg:translate-x-0"
+      className={`fixed z-20 xl:sticky top-0 left-0 h-screen w-[250px] bg-[#F7FAFF] border-[2px] border-[#E0E0E0] shadow-md px-4 py-8 flex flex-col transition-transform duration-300 ${
+        open ? "translate-x-0 " : "-translate-x-full xl:translate-x-0"
       }`}
     >
       {/* Close Button */}
       <FiX
-        className="absolute right-2 top-2 text-[#212121] w-6 h-6 cursor-pointer hover:animate-spin duration-50 lg:hidden"
+        className="absolute right-2 top-2 text-[#212121] w-6 h-6 cursor-pointer hover:animate-spin duration-50 xl:hidden"
         onClick={() => setOpen(false)}
       />
       {/* Logo */}

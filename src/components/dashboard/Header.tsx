@@ -17,10 +17,10 @@ const Header = ({
   console.log(user)
   return (
     <div className="relative bg-gray-50 border-[0.4px] border-y-[#E0E0E0] pl-10 py-3 lg:pl-[2rem] xl:pl-[4rem] xl:pr-[2rem] sticky top-0 z-10 w-full overflow-hidden">
-      <FiMenu className="absolute left-0 top-0 translate-x-1/2 translate-y-full my-auto lg:hidden" onClick={()=>setOpen(true)} />
-      <div className="flex items-center justify-between lg:gap-2">
+      <FiMenu className="absolute left-0 top-0 translate-x-1/2 translate-y-full my-auto xl:hidden" onClick={()=>setOpen(true)} />
+      <div className="flex items-center justify-between lg:gap-3">
         {/* Welcome Message */}
-        <div className="flex items-center xl:justify-between xl:gap-20">
+        <div className="flex items-center xl:justify-between lg:gap-3 xl:gap-5">
           <div className="space-y-2">
             <h1 className="text-xl font-medium text-[#004085]">
               Hello, {user?.firstname || "User"}
@@ -29,7 +29,7 @@ const Header = ({
               Welcome to your dashboard
             </p>
           </div>
-          <div className="relative lg:w-80 xl:w-96">
+          <div className="relative lg:w-[15rem] xl:w-[16rem]">
             <input
               type="text"
               placeholder="Explore careers / schools..."
