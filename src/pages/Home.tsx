@@ -1,5 +1,5 @@
 
-import {useState } from "react"
+import React,  {useState } from "react"
 
 import AlignTraitBanner from '../assets/aligntraits-banner.svg'
 import OtherUsers from '../assets/other-users.svg'
@@ -11,15 +11,19 @@ import Study from '../assets/study.svg'
 import api from '../api/axios'
 import {toast, ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import SuccessCheck from '../assets/success-check.svg'
+import { BeatLoader } from "react-spinners"
 
 export default function Home() {
   const date = new Date()
   const [email, setEmail] = useState('')
-
+  const [modalOpen, setModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const handleSubmit =async ()=> {
     const form = {
       email: email
     }
+    setIsLoading(true)
     try {
       console.log(JSON.stringify(form));
       const response = await api.post('/waitlist/add-waitlist',JSON.stringify(form) , {
@@ -28,9 +32,13 @@ export default function Home() {
         }
       })
       console.log(response);
-      toast.success(response.data.message)
+      setIsLoading(false)
+      // toast.success(response.data.message)
+      setModalOpen(true)
     } catch (err: any) {
+      setIsLoading(false);
     if (err.response && err.response.data && err.response.data.errors) {
+      
       console.log(err);
       const errors = err.response.data.errors;
       console.log(errors);
@@ -86,10 +94,11 @@ export default function Home() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <button
-          className="text-[#FFFFFF] text-[14px] font-normal bg-gradient-to-r from-[#0062FF] to-[#65D1FF] px-5 py-2 rounded-full"
+          className="text-[#FFFFFF] text-[14px] font-normal bg-gradient-to-r from-[#0062FF] to-[#65D1FF] px-5 py-2 rounded-full w-[150px]"
           onClick={() => handleSubmit()}
+          disabled={isLoading}
         >
-          Secure My Spot
+          {isLoading ? <BeatLoader className="w-full"/> : "Secure My Spot"}
         </button>
       </div>
       <p className="text-[14px] lg:text-[18px] text-[#E0E0E0] font-normal text-center  md:w-[60%] lg:w-[60%] my-5 lg:mt-10">
@@ -123,6 +132,51 @@ export default function Home() {
       />
 
       <ToastContainer />
+      {modalOpen && <Modal setModalOpen={setModalOpen} />}
     </div>
   );
 } 
+
+interface ModalProps {
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Modal = ({ setModalOpen }: ModalProps) => {
+  const [isVisible, setIsVisible] = React.useState(true);
+
+  const handleClose = () => {
+    setIsVisible(false); 
+    setTimeout(() => setModalOpen(false), 300); 
+  };
+
+  return (
+    <div
+      className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-5 md:px-0 transition-opacity duration-300 ease-out ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <div
+        className={`bg-[#001833] rounded-lg flex flex-col p-5 px-10 lg:px-20 md:w-1/2 w-full xl:w-1/3 gap-5 transform transition-transform duration-300 ease-out ${
+          isVisible ? "scale-100" : "scale-95"
+        }`}
+      >
+        <div className="bg-[#F6C648] w-20 h-20 rounded-full flex items-center mx-auto">
+          <img src={SuccessCheck} alt="" className="w-[60%] h-[60%] mx-auto" />
+        </div>
+        <h2 className="text-[30.64px] font-medium leading-[36.77px] text-[#FFFFFF] text-center">
+          We’ve added you to our waiting list!
+        </h2>
+        <p className="text-[13.67px] text-[#FFFFFF] font-normal leading-[16.4px] text-center">
+          We’ll let you know when AlignTraits is ready
+        </p>
+        <button
+          className="bg-[#F6C648] text-[#FFFFFF] text-[20px] font-medium w-[70%] rounded-md mx-auto"
+          onClick={handleClose}
+        >
+          Got it
+        </button>
+      </div>
+    </div>
+  );
+};
+
