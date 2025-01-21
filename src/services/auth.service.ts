@@ -72,7 +72,9 @@ export const register = async (credentials: SignUpCredentials) => {
 
 export const logout = async (): Promise<void> => {
   // await api.post('/auth/logout')
+  localStorage.clear()
   removeToken()
+
 }
 
 export const adminLogin = async (email:string, password:string): Promise<AuthResponse> => {

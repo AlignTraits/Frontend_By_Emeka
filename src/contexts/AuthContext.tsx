@@ -65,6 +65,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setIsLoading(true);
       setError(null);
       await authService.logout();
+      
       setUser(null);
     } catch (err) {
       setError("Failed to logout. Please try again.");

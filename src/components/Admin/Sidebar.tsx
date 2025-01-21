@@ -21,7 +21,7 @@ const SideBar = ({
   const handleLogout = async () => {
     try {
       await logout();
-      navigate("/login");
+      navigate("/admin/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }
