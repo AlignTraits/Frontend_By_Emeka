@@ -7,7 +7,7 @@ export default function Root() {
 //  const [open, setOpen] = useState(false);
  const location = useLocation();
 
- console.log("Token:", token, "Is Authenticated:", isAuthenticated);
+//  console.log("Token:", token, "Is Authenticated:", isAuthenticated);
 
   if(!isAuthenticated && !token) {
 return (

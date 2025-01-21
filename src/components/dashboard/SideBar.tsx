@@ -29,12 +29,12 @@ const SideBar = ({
 }) => {
   const [learningOpen, setLearningOpen] = useState<boolean>(false);
   const { logout } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await logout();
-      navigate("/login");
+    window.location.href = '/login'
     } catch (error) {
       console.error("Logout failed:", error);
     }

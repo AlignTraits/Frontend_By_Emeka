@@ -21,6 +21,7 @@ export default function DashboardLayout() {
 //  const data =  useRef(localStorage.getItem('user'));
 console.log(user)
   useEffect(() => {
+    console.log(user)
     if (user == null && token) {
       async function getData() {
         try {
