@@ -16,12 +16,13 @@ const SideBar = ({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { logout } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await logout();
-      navigate("/login");
+      // navigate("/admin/login");
+      window.location.href = '/admin/login'
     } catch (error) {
       console.error("Logout failed:", error);
     }

@@ -35,7 +35,7 @@ const {token} = useAuth()
         console.log(admin.data)
         localStorage.setItem('admin', JSON.stringify(admin.data))
         navigate("/admin");
-        window.location.reload();
+  
       }
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.errors) {

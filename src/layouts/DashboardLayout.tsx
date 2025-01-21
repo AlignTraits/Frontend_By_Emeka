@@ -21,6 +21,7 @@ export default function DashboardLayout() {
 //  const data =  useRef(localStorage.getItem('user'));
 console.log(user)
   useEffect(() => {
+    console.log(user)
     if (user == null && token) {
       async function getData() {
         try {
@@ -50,7 +51,7 @@ console.log(user)
             <ClipLoader />
           </div>
         ) : (
-          <div className="h-screen bg-gray-50 flex relative overflow-y-scroll">
+          <div className="h-screen bg-gray-50 flex relative overflow-y-scroll [&>*]:border-red-900">
             <Sidebar open={open} setOpen={setOpen} />
             <div className="flex-1 relative">
               <Header setOpen={setOpen} />

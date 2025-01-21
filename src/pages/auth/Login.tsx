@@ -21,19 +21,19 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log(isLoading, login)
-    e.preventDefault()
-    
+    e.preventDefault();
     try {
-     const status =  await login(credentials.email, credentials.password)
-      console.log(status)
-      if(status === 200) {
-        // navigate('/dashboard')
+      const status = await login(credentials.email, credentials.password);
+      console.log("Login status:", status);
+      if (status === 200) {
+        navigate("/dashboard");
+      } else {
+        console.error("Unexpected status:", status);
       }
     } catch (err) {
-      console.error('Login failed:', err)
+      console.error("Login failed:", err);
     }
-  }
+  };
 
   const isFormValid = () => {
     return credentials.email.trim() !== '' && credentials.password.trim() !== ''
