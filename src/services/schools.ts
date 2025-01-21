@@ -104,17 +104,20 @@ class ResponseError extends Error {
 }
 export const createCourse = async (form:FormData, token: string, id?: string) => {
   try {
-    const response = !id ? await api.post("/school/add-course", form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "Authorization": `Bearer ${token}`
-      },
-    }) : await api.patch(`/school/course/${id}`, form, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization':  `Bearer ${token}`
-      }
-    });
+    const response = !id
+      ? await api.post("/school/add-course", form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      : await api.patch(`/school/course/${id}`, form, {
+          headers: {
+            "Content-Type":
+              "multipart/form-data; boundary=<calculated when request is sent>",
+            Authorization: `Bearer ${token}`,
+          },
+        });
     if(response.data.status == 403) throw new ResponseError(response)
     return response.data;
   } catch (err: any) {
