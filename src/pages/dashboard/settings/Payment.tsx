@@ -29,9 +29,11 @@ interface BankCards {
 }
 
 export default function Payment() {
-const [plan, setPlan] = useState('basic')
+  const [plan, setPlan] = useState('basic')
+  const [isLoading, setIsLoading] = useState(false)
   const handleClick = ()=> {
     console.log('click')
+    setIsLoading(false)
   }
 
 const subscriptions: Subscriptions[] = [
@@ -80,6 +82,7 @@ const bankCards: BankCards[] = [
         text="Manage bills and payment details"
         buttonText="Save Changes"
         handleClick={handleClick}
+        isLoading={isLoading}
       />
 
       <div className="space-y-6 border-b-[1px] border-[#E0E0E0] py-5">

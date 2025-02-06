@@ -5,6 +5,7 @@ import CustomSelect from '../../../components/dashboard/CustomSelect';
 
 export default function Schoolnformation() {
   const [id, setId] = useState('222jj2j22j')
+  const [isLoading, setIsLoading] = useState(false)
 
   //  const handleChange = (
   //    e:
@@ -30,6 +31,7 @@ const handleFilesSelected = (files: File[]) => {
 
   const handleClick = ()=> {
     console.log('click')
+    setIsLoading(false)
   }
   return (
     <div>
@@ -38,6 +40,7 @@ const handleFilesSelected = (files: File[]) => {
         text="Update your school informations here."
         buttonText="Save Changes"
         handleClick={handleClick}
+        isLoading={isLoading}
       />
       <div className="grid grid-cols-[40%_60%] items-center py-5 border-b-[1px] border-[#E0E0E0]">
         <label

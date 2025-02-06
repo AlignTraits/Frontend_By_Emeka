@@ -24,7 +24,6 @@ export default function Login() {
     e.preventDefault();
     try {
       const status = await login(credentials.email, credentials.password);
-      console.log("Login status:", status);
       if (status === 200) {
         navigate("/dashboard");
       } else {

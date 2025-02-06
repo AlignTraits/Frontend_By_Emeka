@@ -158,7 +158,6 @@ export const getCourses = async (token: string)=> {
       }
     });
 
-    console.log(response);
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {

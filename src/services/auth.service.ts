@@ -113,6 +113,25 @@ const response = await api.get('/auth/admin/details', {
   
 }
 
+export const changePassword = async (token: string, newPassword: string) => {
+  try {
+     const response = await api.put("users/password", {newPassword}, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+     })
+
+     return response.data
+     
+  } catch (err) {
+    console.log("errror: ", err)
+     if (err) {
+       await logout();
+      //  window.location.href = "/login";
+     }
+  }
+}
+
 export const getUserDetails = async ( token: string) => {
    try {
      const response = await api.get("/users", {
