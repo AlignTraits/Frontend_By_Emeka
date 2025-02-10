@@ -4,9 +4,11 @@ import {
 
   FiCalendar, 
   FiUser,
-  FiMenu 
+  FiMenu,
+  FiArrowLeft
 
 } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   setOpen:  React.Dispatch<React.SetStateAction<boolean>>
@@ -18,7 +20,9 @@ const Header = ({
 
 }: HeaderProps) => {
   const { admin } = useAuth();
-  
+  const navigate = useNavigate()
+  console.log("admin: ", admin)
+
 // console.log(data)
   return (
     <div className="relative bg-gray-50 border-[0.4px] border-y-[#E0E0E0] pl-10 py-3  sticky top-0 z-10 w-full overflow-hidden">
@@ -26,7 +30,8 @@ const Header = ({
         className="absolute left-0 top-0 translate-x-1/2 translate-y-full my-auto lg:hidden"
         onClick={() => setOpen(true)}
       />
-      <div className="flex items-center justify-between lg:gap-5">
+      <div className="flex items-center justify-between lg:gap-5 relative">
+        <FiArrowLeft onClick={() => navigate(-1)} className="absolute -left-8 -top-50 cursor-pointer" />
         {/* Welcome Message */}
         <div className="space-y-2 basis-[60%]">
           <h1 className="text-xl font-semibold text-[#000000] ">

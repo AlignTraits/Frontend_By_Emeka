@@ -171,7 +171,7 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
               placeholder="School Name"
               name="schoolName"
               onChange={(e) => setData({ ...data, name: e.target.value })}
-              className="border-b-[1.25px] border-[#000000] py-2 focus:outline-none w-full text-[16px] font-[400] text-[#8F8F8F]"
+              className="border-b-[1.25px] border-[#000000] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
             />
             <div className="space-y-2">
               <h3 className="font-[400] text-[16px]">School Type</h3>

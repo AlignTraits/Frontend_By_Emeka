@@ -115,7 +115,7 @@ const response = await api.get('/auth/admin/details', {
 
 export const changePassword = async (token: string, newPassword: string) => {
   try {
-     const response = await api.put("users/password", {newPassword}, {
+     const response = await api.patch("users/password", {newPassword}, {
       headers: {
         "Authorization": `Bearer ${token}`,
       },

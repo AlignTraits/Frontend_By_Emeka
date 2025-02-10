@@ -93,6 +93,8 @@ export default function BasicInformation() {
       setIsLoading(false);
       if(response[0].ok) toast.success("Profile updated successfully");
       console.log(response);
+
+      console.log("updateData: ", updateData, " token: ", token, " imageFile: ", imageFile);
     } catch (error) {
       setIsLoading(false);
       console.error("Error updating user profile", error);

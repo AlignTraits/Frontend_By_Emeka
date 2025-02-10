@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../../../components/Settings/Header";
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { FiToggleLeft, FiToggleRight } from "react-icons/fi";
@@ -8,7 +9,8 @@ import { changePassword } from "../../../services/auth.service";
 
 
 export default function AccountSettings() {
-  const {token} = useAuth()
+  const navigate = useNavigate()
+  const {token, logout} = useAuth()
   const [accountSettings, setAccountSetting] = useState({
     currentPassword: "",
     newPassword: "",
@@ -67,9 +69,10 @@ export default function AccountSettings() {
   const handleChangePassword = async () => {
     try {
       setIsLoading(true);
-      const response = await changePassword(token as string, accountSettings.newPassword)
-      
-      console.log("response: ", response)
+      await changePassword(token as string, accountSettings.newPassword)
+
+      await logout();
+      window.location.href = '/login'
     } catch (err) {
       // setError(err instanceof Error ? err.message : 'An error occurred');
       toast.error("An error occured!")
