@@ -1,7 +1,7 @@
 import {
   RouterProvider,
   createBrowserRouter,
-  Navigate,
+  // Navigate,
 } from "react-router-dom";
 import { AuthProvider } from './contexts/AuthContext'
 import Root from "./layouts/Root";
@@ -84,7 +84,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Navigate to="basic-information" />, 
+            element: <BasicInformation />,
           },
           {
             path: "basic-information", 

@@ -1,6 +1,7 @@
 import React from 'react'
+import BeatLoader from 'react-spinners/BeatLoader'
 
-export default function Header({heading, text, buttonText, handleClick, className}: {heading: string, text: string, buttonText: string,   handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void, className?: string}) {
+export default function Header({heading, text, buttonText, handleClick, className, isLoading}: {isLoading: boolean, heading: string, text: string, buttonText: string,   handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void, className?: string}) {
   return (
     <div className={`  flex w-full justify-between border-b-[1px] border-[#E0E0E0] pb-5 `}>
       <div className="space-y-2 w-full">
@@ -14,8 +15,9 @@ export default function Header({heading, text, buttonText, handleClick, classNam
           handleClick(e)
         } }
         type='submit'
+        disabled={isLoading}
       >
-        {buttonText}
+        {isLoading ? <BeatLoader   /> : buttonText}
       </button>
     </div>
   );

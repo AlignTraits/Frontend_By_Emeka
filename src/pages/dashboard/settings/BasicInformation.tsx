@@ -16,9 +16,12 @@ export default function BasicInformation() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [form, setForm] = useState<User | null>(null);
   const [changedFields, setChangedFields] = useState<Partial<User>>({});
+  const [isLoading, setIsLoading] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string | ArrayBuffer|null>(
     DummyImage
   );
+
+  console.log("user user: ", user);
 
   useEffect(() => {
     if (user) {
@@ -75,6 +78,7 @@ export default function BasicInformation() {
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setIsLoading(true)
 
     const updateData = { ...changedFields };
     if (imageFile) {
@@ -88,9 +92,13 @@ export default function BasicInformation() {
         imageFile
       );
       setForm((prev) => ({ ...prev!, ...response[0].data }));
+      setIsLoading(false);
       if(response[0].ok) toast.success("Profile updated successfully");
       console.log(response);
+
+      console.log("updateData: ", updateData, " token: ", token, " imageFile: ", imageFile);
     } catch (error) {
+      setIsLoading(false);
       console.error("Error updating user profile", error);
     }
   };
@@ -109,6 +117,7 @@ export default function BasicInformation() {
         text="Update your photo and personal details here."
         buttonText="Save Changes"
         handleClick={handleClick}
+        isLoading={isLoading}
       />
       <div className="m-0">
         {/* First Name and Last Name */}

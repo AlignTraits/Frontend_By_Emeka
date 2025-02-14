@@ -4,9 +4,11 @@ import {
   FiBell, 
   FiSearch, 
   FiUser,
-  FiMenu 
+  FiMenu,
+  FiArrowLeft
 
 } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 const Header = ({
   setOpen,
@@ -15,10 +17,17 @@ const Header = ({
 }) => {
   const { user } = useAuth();
   console.log(user)
+
+  const navigate = useNavigate()
+
+  const handleRecommendationClick = () => {
+    navigate('/dashboard/pathfinder')
+  }
   return (
     <div className="relative bg-gray-50 border-[0.4px] border-y-[#E0E0E0] pl-10 py-3 lg:pl-[2rem] xl:pl-[4rem] xl:pr-[2rem] sticky top-0 z-10 w-full overflow-hidden">
       <FiMenu className="absolute left-0 top-0 translate-x-1/2 translate-y-full my-auto xl:hidden" onClick={()=>setOpen(true)} />
-      <div className="flex items-center justify-between lg:gap-3">
+      <div className="flex items-center justify-between lg:gap-3 relative">
+        <FiArrowLeft onClick={() => navigate(-1)} className="absolute -left-10 -top-50 cursor-pointer" />
         {/* Welcome Message */}
         <div className="flex items-center xl:justify-between lg:gap-3 xl:gap-5">
           <div className="space-y-2">
@@ -40,7 +49,7 @@ const Header = ({
         </div>
 
         <div className="flex  lg:space-x-4">
-          <button className="px-4 py-2 bg-[#004085] text-[14px]  text-white rounded-lg hover:bg-blue-700 transition-colors w-[200px]">
+          <button onClick={handleRecommendationClick} className="px-4 py-2 bg-[#004085] text-[14px]  text-white rounded-lg hover:bg-blue-700 transition-colors w-[200px]">
             Career Recommendations
           </button>
 

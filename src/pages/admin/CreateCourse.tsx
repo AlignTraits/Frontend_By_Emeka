@@ -396,6 +396,16 @@ if (fetchingDetails) {
           </div>
         </form>
       </div>
+
+      <div className="justify-center flex w-full mt-4">
+        <button
+          className="px-3 py-2 bg-[#004085] text-[#FFFFFF] text-[16px] rounded-lg mr-5 w-[150px]"
+          onClick={() => handleSubmit()}
+          disabled={isLoading}
+        >
+          {isLoading ? <BeatLoader /> : id ? "Edit Course" : "Create Course"}
+        </button>
+      </div>
     </div>
   );
 }
