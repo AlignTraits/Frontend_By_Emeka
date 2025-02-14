@@ -21,6 +21,8 @@ export default function BasicInformation() {
     DummyImage
   );
 
+  console.log("user user: ", user);
+
   useEffect(() => {
     if (user) {
       setForm({
