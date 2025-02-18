@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Header from "../../../components/Settings/Header";
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { FiToggleLeft, FiToggleRight } from "react-icons/fi";
@@ -9,7 +9,7 @@ import { changePassword } from "../../../services/auth.service";
 
 
 export default function AccountSettings() {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const {token, logout} = useAuth()
   const [accountSettings, setAccountSetting] = useState({
     currentPassword: "",

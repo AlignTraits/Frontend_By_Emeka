@@ -2,7 +2,10 @@
 import Header from '../../../components/Settings/Header'
 import Calendar from '../../../assets/dashboard/icons/calendar.svg'
 import { FiChevronRight } from 'react-icons/fi'
+import { useState } from 'react';
 export default function CareerRecommendation() {
+
+  const [isLoading, setIsLoading] = useState(false)
   
   const recommendaton = [
     {
@@ -19,6 +22,8 @@ export default function CareerRecommendation() {
 
   const handleClick = ()=> {
     console.log('clicked')
+
+    setIsLoading(false)
   }
 
   return (
@@ -29,6 +34,7 @@ export default function CareerRecommendation() {
         buttonText="Retake Recommendation"
         className="w-[300px]"
         handleClick={handleClick}
+        isLoading={isLoading}
       />
       {recommendaton.map((rec, index) => (
         <div
