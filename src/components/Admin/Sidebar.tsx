@@ -1,9 +1,9 @@
 // import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import SchoolIcon from "../../assets/admin/icons/school-icon.png";
-import AccountIcon from "../../assets/admin/icons/account-icon.png";
+// import AccountIcon from "../../assets/admin/icons/account-icon.png";
 
 import Logo from "../../assets/logo.svg";
 import { FiGrid, FiLogOut, FiX } from "react-icons/fi";
