@@ -92,6 +92,7 @@ export default function Home() {
           placeholder="Enter Your Email"
           className="ml-2 outline-none text-[14px] text-[#666666] font-normal lg:p-2"
           onChange={(e) => setEmail(e.target.value)}
+          value={email}
         />
         <button
           className="text-[#FFFFFF] text-[14px] font-normal bg-gradient-to-r from-[#0062FF] to-[#65D1FF] px-5 py-2 rounded-full w-[150px]"
@@ -132,20 +133,27 @@ export default function Home() {
       />
 
       <ToastContainer />
-      {modalOpen && <Modal setModalOpen={setModalOpen} />}
+      {modalOpen && <Modal setModalOpen={setModalOpen} setEmail={setEmail} />}
     </div>
   );
 } 
 
 interface ModalProps {
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  setEmail: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Modal = ({ setModalOpen }: ModalProps) => {
+const Modal = ({ setModalOpen, setEmail }: ModalProps) => {
   const [isVisible, setIsVisible] = React.useState(true);
 
   const handleClose = () => {
     setIsVisible(false); 
+    setTimeout(() => setModalOpen(false), 300); 
+  };
+
+  const handleSubmitClose = () => {
+    setIsVisible(false);
+    setEmail("") 
     setTimeout(() => setModalOpen(false), 300); 
   };
 
@@ -170,10 +178,17 @@ const Modal = ({ setModalOpen }: ModalProps) => {
           We’ll let you know when AlignTraits is ready
         </p>
         <button
-          className="bg-[#F6C648] text-[#FFFFFF] text-[20px] font-medium w-[70%] rounded-md mx-auto"
+          className="bg-[#F6C648] text-[#FFFFFF] text-[18px] font-medium w-[80%] rounded-md mx-auto h-[50px]"
           onClick={handleClose}
         >
           Got it
+        </button>
+
+        <button
+          className="bg-[#2E415B] text-[#FFFFFF] text-[18px] font-medium w-[80%] rounded-md mx-auto h-[50px]"
+          onClick={handleSubmitClose}
+        >
+          Submit another Address
         </button>
       </div>
     </div>
