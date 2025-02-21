@@ -16,8 +16,8 @@ export interface School {
 
 export const getSchools = async (token: string) => {
   try {
-    const schools = localStorage.getItem('schools')
-    if(schools) return JSON.parse(schools)
+    // const schools = localStorage.getItem('schools')
+    // if(schools) return JSON.parse(schools)
 
     const response = await api.get("/school/get/all", {
       headers: {
@@ -59,7 +59,6 @@ export const getSchool = async (id: string) => {
       `/school/get/${id}`
     );
 
-    console.log(response)
     return response.data
 
   } catch (err: any) {
@@ -119,6 +118,7 @@ export const createCourse = async (form:FormData, token: string, id?: string) =>
           },
         });
     if(response.data.status == 403) throw new ResponseError(response)
+    if(response.data.status == 500) throw new ResponseError(response)  
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {

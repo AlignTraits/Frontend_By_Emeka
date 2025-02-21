@@ -106,6 +106,7 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
     formData.append("name", data.name || "");
     formData.append("schoolType", data.schoolType);
     formData.append("location", data.location || "");
+    formData.append("websiteUrl", "www.schoolxyz.com")
     try {
         setIsLoading(true);
         console.log(data)
@@ -115,14 +116,17 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
           "Content-Type": "multipart/form-data",
         },
       });
-   
-     localStorage.removeItem('schools') 
-       setSchools(await getSchools(token as string))
+
+      console.log("response: ", response)
+      setSchools(await getSchools(token as string))
       setShowModal(false)
-    
-      toast.success('School Created Successfully')
-      // window.location.reload()
-      console.log(response.data);
+
+      if (response.data.ok) {
+        toast.success('School Created Successfully')
+      } else {
+        toast.error(response.data.message)
+      }
+
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.errors) {
         console.log(err)

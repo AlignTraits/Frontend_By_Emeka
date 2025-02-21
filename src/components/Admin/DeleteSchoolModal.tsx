@@ -23,6 +23,8 @@ export default function DeleteModal({
   const [confirmationName, setConfirmationName] = useState("");
   const navigate = useNavigate();
 
+  console.log("itemName: ", itemName)
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

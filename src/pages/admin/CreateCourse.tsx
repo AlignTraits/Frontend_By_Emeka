@@ -126,6 +126,11 @@ export default function CreateSchool() {
     }
   }, [id, imageFile]);
 
+
+  useEffect(() => {
+    setForm({...form, profile: imageFile})
+  }, [imageFile])
+
   const requirements = [
     "WAEC",
     "NECO",
@@ -158,8 +163,8 @@ export default function CreateSchool() {
 
   const handleSubmit = async () => {
     const formData = new FormData();
+
     Object.entries(form).forEach(([key, value]) => {
-      // console.log(value)
       if (Array.isArray(value)) {
         formData.append(key, JSON.stringify(value));
       } else if (imageFile && key === "profile") {
@@ -169,9 +174,21 @@ export default function CreateSchool() {
       }
     });
 
+    formData.append("courseInformation", "zzz")
+    formData.append("courseWebsiteUrl", "zzz")
+    formData.append("programLevel", "100")
+    formData.append("loanInformation", "")
+    // formData.append("university", "xxx")
     setIsLoading(true);
-console.log(formData.forEach((value, key) => console.log(key, value))  
-)
+
+    // for (const [key, value] of formData.entries()) {
+    //   console.log(key, value);
+    // }
+
+    // setTimeout(() => {
+    //   setIsLoading(false)
+    // }, 2000)
+
     try {
       const response =   await createCourse(formData, token as string, id ? id : undefined)
       console.log(response)
@@ -319,7 +336,7 @@ if (fetchingDetails) {
             <label htmlFor="Acceptance">Acceptance Fee</label>
             <div className="flex w-full gap-5">
               <input
-                type="text"
+                type="number"
                 placeholder="0.00"
                 onChange={(e) =>
                   setForm({ ...form, acceptanceFee: parseInt(e.target.value) })

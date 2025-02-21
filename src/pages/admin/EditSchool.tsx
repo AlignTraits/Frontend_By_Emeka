@@ -33,6 +33,8 @@ export default function EditSchool() {
       const response = await getSchool(id as string);
       setSchool(response);
       setIsLoading(false);
+
+      console.log("response: ", response)
     }
     fetchSchool();
   }, [id]);
@@ -65,9 +67,9 @@ export default function EditSchool() {
       itemId: '',
       itemType: "",
     });
-    setDeleteCred({itemName: 'school', itemId:id as string, itemType: 'school'})
+    setDeleteCred({itemName: school?.name as string, itemId:id as string, itemType: 'school'})
     setModal(true)
-    console.log(school)
+
   }
 
   return (
