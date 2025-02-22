@@ -174,20 +174,13 @@ export default function CreateSchool() {
       }
     });
 
-    formData.append("courseInformation", "zzz")
-    formData.append("courseWebsiteUrl", "zzz")
+    formData.append("courseInformation", "course Information here")
     formData.append("programLevel", "100")
-    formData.append("loanInformation", "")
-    // formData.append("university", "xxx")
+    formData.append("careerOpportunities", JSON.stringify(["Test"]))
+    formData.append("estimatedLivingCost", "5000")
+    formData.append("loanInformation", "five years apart")
+    formData.append("courseWebsiteUrl", "example.com")
     setIsLoading(true);
-
-    // for (const [key, value] of formData.entries()) {
-    //   console.log(key, value);
-    // }
-
-    // setTimeout(() => {
-    //   setIsLoading(false)
-    // }, 2000)
 
     try {
       const response =   await createCourse(formData, token as string, id ? id : undefined)
