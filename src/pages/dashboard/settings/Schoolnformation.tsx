@@ -30,7 +30,6 @@ const handleFilesSelected = (files: File[]) => {
 };
 
   const handleClick = ()=> {
-    console.log('click')
     setIsLoading(false)
   }
   return (

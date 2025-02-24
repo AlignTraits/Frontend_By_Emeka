@@ -19,7 +19,6 @@ export default function Schools() {
       getSchools(token)
         .then((res) => {
           setSchools(res);
-          console.log(res);
           localStorage.setItem("schools", JSON.stringify(res));
           setIsLoading(false);
         })

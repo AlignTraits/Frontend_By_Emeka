@@ -24,7 +24,7 @@ export default function CreateSchoolDropDown({
   const [isOpen, SetIsOpen] = useState(false);
 
   return (
-    <div className="relative w-full z-[999]">
+    <div className="relative w-full z-[100]">
       <div
         onClick={() => SetIsOpen(!isOpen)}
         className="flex items-center justify-center gap-2 cursor-pointer bg-[#004085] text-[#ffffff] py-2 rounded-lg"

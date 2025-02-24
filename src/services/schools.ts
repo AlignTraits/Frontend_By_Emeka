@@ -2,7 +2,7 @@ import api from "../api/axios";
 import { toast } from "react-toastify";
 
 export interface School {
-  id: number;
+  id: string;
   name: string;
   location: string;
   logo: string;
@@ -27,9 +27,8 @@ export const getSchools = async (token: string) => {
     return response.data as School[];
   } catch (err: any) {
         if (err.response && err.response.data && err.response.data.errors) {
-          console.log(err)
+       
           const errors = err.response.data.errors;
-          console.log(errors);
   
           errors.forEach((error: { message: string }) => {
             if (error.message) {
@@ -63,9 +62,8 @@ export const getSchool = async (id: string) => {
 
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      console.log(err);
+      
       const errors = err.response.data.errors;
-      console.log(errors);
 
       errors.forEach((error: { message: string }) => {
         if (error.message) {
@@ -122,9 +120,8 @@ export const createCourse = async (form:FormData, token: string, id?: string) =>
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      console.log(err)
+      
       const errors = err.response.data.errors;
-      console.log(errors);
 
       errors.forEach((error: { message: string }) => {
         if (error.message) {
@@ -161,9 +158,8 @@ export const getCourses = async (token: string)=> {
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      console.log(err);
+
       const errors = err.response.data.errors;
-      console.log(errors);
 
       errors.forEach((error: { message: string }) => {
         if (error.message) {
@@ -193,14 +189,13 @@ export const getCourseDetails = async (id:string) => {
       `/school/course/${id}`
     );
 
-    console.log(response)
     return response.data
 
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      console.log(err);
+     
       const errors = err.response.data.errors;
-      console.log(errors);
+
 
       errors.forEach((error: { message: string }) => {
         if (error.message) {
@@ -233,7 +228,6 @@ if(diffTime > 24) {
   return Math.floor(diffTime/24)>1 ? `${Math.floor(diffTime/24)} days ago` : `${Math.floor(diffTime/24)} day`
 }
 
-console.log(diffTime)
 return `${diffTime} hours ago`
 // return daysDifference;
 }

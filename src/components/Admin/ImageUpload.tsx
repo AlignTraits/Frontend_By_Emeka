@@ -27,7 +27,6 @@ const ImageUploadWithPreview = ({
     }
 
     const file = files[0];
-    console.log(file.size)
     if (file.size > 100000) {
       toast.error("image should not be more than 100kb");
       return;
@@ -36,13 +35,12 @@ const ImageUploadWithPreview = ({
     if (file && file.type.startsWith("image/")) {
       const img = new Image();
       const objectUrl = URL.createObjectURL(file);
-      console.log(img.sizes)
+  
       if(img.height >400 || img.width > 400) {
         toast.error('Image size should be 400 X 400')
         return
       }
       img.onload = () => {
-        console.log(file)
         setImageFile(file);
         
 

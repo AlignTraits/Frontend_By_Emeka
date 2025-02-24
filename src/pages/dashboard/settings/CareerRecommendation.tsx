@@ -21,8 +21,6 @@ export default function CareerRecommendation() {
   ];
 
   const handleClick = ()=> {
-    console.log('clicked')
-
     setIsLoading(false)
   }
 

@@ -103,7 +103,7 @@ export default function CreateSchool() {
       const fetchCourseDetails = async () => {
         try {
           const courseDetails = await getCourseDetails(id);
-          console.log(courseDetails)
+         
           delete courseDetails.id
          delete courseDetails.createdAt
          delete courseDetails.updatedAt

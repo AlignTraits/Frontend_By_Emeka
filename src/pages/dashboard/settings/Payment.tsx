@@ -32,7 +32,6 @@ export default function Payment() {
   const [plan, setPlan] = useState('basic')
   const [isLoading, setIsLoading] = useState(false)
   const handleClick = ()=> {
-    console.log('click')
     setIsLoading(false)
   }
 

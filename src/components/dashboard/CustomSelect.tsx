@@ -11,6 +11,10 @@ interface SelectProps {
   placeholder?: string;
   onChange: (value: string) => void;
   className?: string;
+  selectedProps?: {
+    value: string,
+    label: string
+  }
 }
 
 const CustomSelect: React.FC<SelectProps> = ({
@@ -18,6 +22,7 @@ const CustomSelect: React.FC<SelectProps> = ({
   placeholder = "Select an option",
   onChange,
   className = "",
+  selectedProps
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<Option | null>(null);
@@ -48,6 +53,14 @@ const CustomSelect: React.FC<SelectProps> = ({
 
     return () => window.removeEventListener("resize", checkDropdownPosition);
   }, [isOpen]);
+
+
+  // This is applied when a default value is provided
+  useEffect(() => {
+    if (selectedProps) {
+      setSelected(selectedProps)
+    }
+  }, [])
 
   return (
     <div ref={selectRef} className={`relative ${className}`}>

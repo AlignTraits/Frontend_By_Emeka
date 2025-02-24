@@ -6,20 +6,31 @@ import api from "../../api/axios";
 import { useAuth } from "../../contexts/useAuth";
 import { BeatLoader } from "react-spinners";
 import {toast} from 'react-toastify'
-import { getSchools, School } from "../../services/schools";
+// import { getSchools, School } from "../../services/schools";
 
 interface Data {
   logo: File | null;
   name: null | string;
   location: null | string;
   schoolType: string;
-}
+}  
 
 interface ModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setSchools: React.Dispatch<React.SetStateAction<School[]>>;
+  // setSchool: React.Dispatch<React.SetStateAction<School[]>>;
+  schooTypeDefault: string;
+  defaultImgUrl: string;
+  defaultName: string;
+  selectedProps: {
+    value: string;
+    label: string
+  };
+  schoolId: string;
+  fetchSchool: () => void
 }
-export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps) {
+export default function EditSchoolModal({
+  setShowModal, schooTypeDefault, 
+  defaultImgUrl, defaultName, selectedProps, schoolId, fetchSchool}: ModalProps) {
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [schoolType, setSchoolType] = useState([
@@ -47,9 +58,11 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
   const [previewUrl, setPreviewUrl] = useState<string | null | ArrayBuffer>(
     null
   );
+  const [nameText, setNameText] = useState("")
+
   const [data, setData] = useState<Data>({
     logo: imageFile,
-    name: null,
+    name: "",
     schoolType: schoolType.filter((type) => !type.checked).map((type)=> type.value)[0],
     location: null,
   });
@@ -57,6 +70,29 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
    useEffect(() => {
      setData((prevData) => ({ ...prevData, logo: imageFile }));
    }, [imageFile]);
+
+
+   useEffect(() => {
+    if (schoolType.length > 0) {
+      let temData = schoolType.map((elem) => {
+        if (elem.value === schooTypeDefault) {
+          return {...elem, checked: true}
+        } else {
+          return elem
+        }
+      })
+      setSchoolType(temData)
+    }
+
+    setPreviewUrl(defaultImgUrl)
+    setNameText(defaultName);
+
+    setData((prevData) => ({ 
+      ...prevData, 
+      location: selectedProps.label
+    }));
+
+   }, [])
 
 
   const states = [
@@ -99,27 +135,40 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
     "Zamfara",
   ];
 
+  const handleNameChange = (e: React.FormEvent<HTMLInputElement>): void => {
+    setNameText(e.currentTarget.value);
+    setData({ ...data, name: e.currentTarget.value })
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData()
-    formData.append("logo", data.logo!); 
-    formData.append("name", data.name || "");
+    if (imageFile) formData.append("logo", data.logo!); 
+    formData.append("name", nameText || "");
     formData.append("schoolType", data.schoolType);
     formData.append("location", data.location || "");
-    formData.append("websiteUrl", "www.schoolxyz.com")
+    // formData.append("websiteUrl", "www.schoolxyz.com")
+
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    console.log("ID: ", schoolId)
+
+
     try {
         setIsLoading(true);
-      const response = await api.post("/school/add-school", formData, {
+      const response = await api.patch(`/school/update/${schoolId}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
-      setSchools(await getSchools(token as string))
       setShowModal(false)
 
       if (response.data.ok) {
         toast.success('School Created Successfully')
+        fetchSchool()
       } else {
         toast.error(response.data.message)
       }
@@ -157,10 +206,10 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[200]">
-      <div className="bg-white rounded-lg p-5 md:w-1/2 w-full xl:w-1/3">
+      <div className="bg-white rounded-lg p-5 md:w-1/2 w-full xl:w-1/3 z-50">
         <div className="relative">
           <h2 className="text-center text-[20px] font-semibold">
-            Create New School
+            Edit School
           </h2>
           <FiX className="absolute right-0 top-1/2 -translate-y-1/2 text-[#000000] w-5 h-5" onClick={()=> setShowModal(false)} />
         </div>
@@ -169,8 +218,9 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
             <input
               type="text"
               placeholder="School Name"
+              value={nameText}
               name="schoolName"
-              onChange={(e) => setData({ ...data, name: e.target.value })}
+              onChange={handleNameChange}
               className="border-b-[1.25px] border-[#000000] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
             />
             <div className="space-y-2">
@@ -220,6 +270,7 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
                 label: state + "/Nigeria",
               }))}
               onChange={(value) => setData({ ...data, location: value })}
+              selectedProps={selectedProps}
             />
             <ImageUpload
               setImageFile={setImageFile}
@@ -231,7 +282,7 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
                 {isLoading ? (
                     <BeatLoader color="#ffffff" size={8} />
                 ) : (
-                    "Create School"
+                    "Edit School"
                 )}
             </button>
           </form>

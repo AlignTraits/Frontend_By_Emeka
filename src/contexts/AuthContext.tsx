@@ -31,7 +31,7 @@ const login = async (email: string, password: string): Promise<number> => {
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
       const errors = err.response.data.errors;
-      console.log(errors);
+
 
       errors.forEach((error: { message: string }) => {
         if (error.message) {
@@ -89,7 +89,7 @@ const login = async (email: string, password: string): Promise<number> => {
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.errors) {
         const errors = err.response.data.errors;
-        console.log(errors);
+  
 
         errors.forEach((error: { message: string }) => {
           if (error.message) {
@@ -119,19 +119,16 @@ const login = async (email: string, password: string): Promise<number> => {
     password: string
   ) => {
     try {
-      console.log(token, email);
       const response = await api.put(`/auth/reset-password`, {
         email: email,
         newPassword: password,
         token: token,
       });
-      console.log(response);
       return response;
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.errors) {
         const errors = err.response.data.errors;
-        console.log(errors);
-
+        
         errors.forEach((error: { message: string }) => {
           if (error.message) {
             setError(error.message);

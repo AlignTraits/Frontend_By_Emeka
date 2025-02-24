@@ -23,7 +23,6 @@ export default function DeleteModal({
   const [confirmationName, setConfirmationName] = useState("");
   const navigate = useNavigate();
 
-  console.log("itemName: ", itemName)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -66,7 +65,7 @@ export default function DeleteModal({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[200]">
       <div className="bg-white rounded-lg p-5 md:w-1/2 w-full xl:w-1/3">
         <div className="relative">
           <h2 className=" text-[20px] font-semibold">Delete {itemType}</h2>

@@ -16,12 +16,8 @@ export default function DashboardLayout() {
   const location = useLocation(); 
   const [isLoading, setIsloading] = useState(true)
 
-  console.log("Token:", token, "Is Authenticated:", isAuthenticated);
 
-//  const data =  useRef(localStorage.getItem('user'));
-console.log(user)
   useEffect(() => {
-    console.log(user)
     if (user == null && token) {
       async function getData() {
         try {

@@ -28,11 +28,10 @@ const {token} = useAuth()
         credentials.password
       )) as AuthResponse;
 
-      console.log(response);
       if (response.status !== null && response.status === 200) {
         setToken(response.token);
      const admin =  await getAdminDetails(response.token)
-        console.log(admin.data)
+
         localStorage.setItem('admin', JSON.stringify(admin.data))
         navigate("/admin");
   
@@ -40,7 +39,6 @@ const {token} = useAuth()
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.errors) {
         const errors = err.response.data.errors;
-        console.log(errors);
 
         errors.forEach((error: { message: string }) => {
           if (error.message) {
