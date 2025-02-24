@@ -21,9 +21,7 @@ const Header = ({
 }: HeaderProps) => {
   const { admin } = useAuth();
   const navigate = useNavigate()
-  console.log("admin: ", admin)
 
-// console.log(data)
   return (
     <div className="relative bg-gray-50 border-[0.4px] border-y-[#E0E0E0] pl-10 py-3  sticky top-0 z-10 w-full overflow-hidden">
       <FiMenu

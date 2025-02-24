@@ -25,23 +25,22 @@ export default function Home() {
     }
     setIsLoading(true)
     try {
-      console.log(JSON.stringify(form));
       const response = await api.post('/waitlist/add-waitlist',JSON.stringify(form) , {
         headers: {
           "Content-Type" : 'application/json'
         }
       })
-      console.log(response);
+      
       setIsLoading(false)
       // toast.success(response.data.message)
       setModalOpen(true)
+      return response
     } catch (err: any) {
       setIsLoading(false);
     if (err.response && err.response.data && err.response.data.errors) {
       
-      console.log(err);
       const errors = err.response.data.errors;
-      console.log(errors);
+     
 
       errors.forEach((error: { message: string }) => {
         if (error.message) {

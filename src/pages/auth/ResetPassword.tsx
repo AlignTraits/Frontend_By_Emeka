@@ -42,13 +42,11 @@ useEffect(()=> {
         email,
         password
       );
-      console.log(response)
       if(response.status === 200) {
         setStatus(true)
         setTimeout(() => navigate('/login'), 3000)
       }
-      
-      console.log(response);
+    
     };
 
    

@@ -46,7 +46,6 @@ export default function AccountSettings() {
   };
 
   const handleClick = () => {
-    console.log("token: ", token);
 
     if (accountSettings.currentPassword.length === 0 || accountSettings.confirmPassword.length === 0 
       || accountSettings.newPassword.length === 0) {

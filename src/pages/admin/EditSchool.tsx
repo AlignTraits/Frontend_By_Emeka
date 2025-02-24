@@ -9,6 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import { ClipLoader } from "react-spinners";
 import DeleteSchoolModal from "../../components/Admin/DeleteSchoolModal";
 import { Course } from "../../types/course.types";
+import EditSchoolModal from "../../components/Admin/EditSchoolModal";
 
 interface SchoolWithCourses extends School {
   courses: Course[];
@@ -20,6 +21,7 @@ export default function EditSchool() {
   const [school, setSchool] = useState<SchoolWithCourses>();
   const [isLoading, setIsLoading] = useState(true);
   const [modal, setModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const [activeTab, setActiveTab] = useState("All Courses");
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteCred, setDeleteCred] = useState({
@@ -28,12 +30,16 @@ export default function EditSchool() {
     itemType: "",
   })
 
+  async function fetchSchool() {
+    setIsLoading(true)
+    const response = await getSchool(id as string);
+    setSchool(response);
+    setIsLoading(false);
+
+    console.log("response: ", response)
+  }
+
   useEffect(() => {
-    async function fetchSchool() {
-      const response = await getSchool(id as string);
-      setSchool(response);
-      setIsLoading(false);
-    }
     fetchSchool();
   }, [id]);
 
@@ -47,15 +53,12 @@ export default function EditSchool() {
   });
 
   const deleteCourse = (course:Course)=> {
-    console.log(course)
-    console.log(deleteCred)
      setDeleteCred({
        itemName: "",
        itemId: "",
        itemType: "",
      });
     setDeleteCred({itemId: course.id, itemName: course.title, itemType: 'course'})
-    console.log(deleteCred)
     setModal(true)
   }
 
@@ -65,9 +68,9 @@ export default function EditSchool() {
       itemId: '',
       itemType: "",
     });
-    setDeleteCred({itemName: 'school', itemId:id as string, itemType: 'school'})
+    setDeleteCred({itemName: school?.name as string, itemId:id as string, itemType: 'school'})
     setModal(true)
-    console.log(school)
+
   }
 
   return (
@@ -77,7 +80,7 @@ export default function EditSchool() {
           <ClipLoader />
         </div>
       ) : (
-        <div className="grid gap-10">
+        <div className="grid gap-10 -z-10">
           <div className="flex gap-10">
             <div className="rounded-full w-60 h-60">
               <img
@@ -102,7 +105,7 @@ export default function EditSchool() {
                   Icon={FiEdit}
                   values={[
                     {
-                      onchange: () => console.log("edit"),
+                      onchange: () => setEditModal(true),
                       value: "Edit School",
                     },
                     { onchange: () => deleteSchool(), value: "Delete School" },
@@ -165,6 +168,25 @@ export default function EditSchool() {
               itemType={deleteCred.itemType}
             />
           )}
+
+          {
+            editModal && (
+              <EditSchoolModal 
+                defaultName={school?.name as string}
+                schoolId={school?.id as string}
+                setShowModal={setEditModal}
+                schooTypeDefault={school?.schoolType as string}
+                defaultImgUrl={school?.logo as string}
+                selectedProps={
+                  {
+                    value: school?.location + "/Nigeria" as string,
+                    label: school?.location + "/Nigeria"
+                  }
+                }
+                fetchSchool={fetchSchool}
+              />
+            )
+          }
         </div>
       )}
     </>

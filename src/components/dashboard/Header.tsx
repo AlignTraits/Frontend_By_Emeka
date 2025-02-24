@@ -16,7 +16,6 @@ const Header = ({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { user } = useAuth();
-  console.log(user)
 
   const navigate = useNavigate()
 

@@ -13,7 +13,7 @@ export const setToken = (token: string ): void => {
 }
 
 export const getToken = (): string | undefined => {
-  // console.log(Cookies.get(TOKEN_KEY))
+  
   return Cookies.get(TOKEN_KEY)
 }
 
@@ -22,13 +22,11 @@ export const removeToken = (): void => {
 }
 
 export const login = async (credentials: LoginCredentials) => {
-  console.log(credentials)
+ 
   try{
     const response = await api.post('/auth/login', credentials) 
-    console.log(response)
     return response
   } catch(err) {
-    console.log(err)
    throw(err)
   }
   
@@ -79,7 +77,6 @@ export const logout = async (): Promise<void> => {
 
 export const adminLogin = async (email:string, password:string): Promise<AuthResponse> => {
  const response =  await api.post('/auth/admin/login', {email, password})
- console.log(response)
  return {status:response.status, token:response.data.data.token}
 
 }
@@ -96,7 +93,6 @@ const response = await api.get('/auth/admin/details', {
       "Authorization": `Bearer ${token}`
     }
   } )
-  console.log(response)
   if(!response.data.ok) {
     await logout()
     window.location.href = '/admin/login'
@@ -124,7 +120,6 @@ export const changePassword = async (token: string, newPassword: string) => {
      return response.data
      
   } catch (err) {
-    console.log("errror: ", err)
      if (err) {
        await logout();
       //  window.location.href = "/login";
@@ -139,7 +134,6 @@ export const getUserDetails = async ( token: string) => {
          "Authorization": `Bearer ${token}`,
        },
      });
-     console.log(response);
      if (!response.data.ok) {
        await logout();
        window.location.href = "/admin/login";
@@ -155,7 +149,6 @@ export const getUserDetails = async ( token: string) => {
 
 export const upDateUserProfile = async (data: User, token: string, img?: File | null, ) => {
   try {
-    console.log(data)
     const response = await api.patch("/users", JSON.stringify({data}), {
       headers: {
         "Content-Type": "application/json",
