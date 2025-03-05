@@ -37,11 +37,11 @@ console.log(admin)
 
   if (isAuthenticated && token) {
     return (
-      <div className="h-screen bg-gray-50 flex relative overflow-y-scroll">
+      <div className="h-screen flex relative overflow-y-scroll">
         <Sidebar open={open} setOpen={setOpen} />
         <div className="flex-1 relative">
           <Header setOpen={setOpen}  />
-          <main className="p-5 xl:p-10">
+          <main className="p-5 xl:p-6">
             <Outlet />
           </main>
         </div>

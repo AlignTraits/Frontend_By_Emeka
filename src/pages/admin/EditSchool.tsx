@@ -35,8 +35,6 @@ export default function EditSchool() {
     const response = await getSchool(id as string);
     setSchool(response);
     setIsLoading(false);
-
-    console.log("response: ", response)
   }
 
   useEffect(() => {

@@ -1,12 +1,18 @@
 // import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation  } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 // import { useNavigate } from "react-router-dom";
-import SchoolIcon from "../../assets/admin/icons/school-icon.png";
+// import SchoolIcon from "../../assets/admin/icons/school-icon.png";
+import { LuSchool } from "react-icons/lu";
 // import AccountIcon from "../../assets/admin/icons/account-icon.png";
 
 import Logo from "../../assets/logo.svg";
 import { FiGrid, FiLogOut, FiX } from "react-icons/fi";
+import { TiGroupOutline } from "react-icons/ti";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
+
+
 
 const SideBar = ({
   open,
@@ -15,8 +21,9 @@ const SideBar = ({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { logout } = useAuth();
+  const { logout, admin } = useAuth();
   // const navigate = useNavigate();
+  const location = useLocation()
 
   const handleLogout = async () => {
     try {
@@ -28,9 +35,13 @@ const SideBar = ({
     }
   };
 
+  let schoolPath:boolean = location.pathname.startsWith("/admin/schools")
+  let accountPath:boolean = location.pathname.startsWith("/admin/accounts")
+
+
   return (
     <div
-      className={`fixed z-20 lg:sticky top-0 left-0 h-screen w-[250px] bg-[#E8EAEE] border-[2px] border-[#E0E0E0] rounded-r-2xl px-4 py-8 flex flex-col transition-transform duration-300 ${
+      className={`fixed z-20 lg:sticky top-0 left-0 h-screen w-[280px] bg-[#FAFAFA] border-[2px] border-[#E0E0E0] px-4 pt-8 flex flex-col transition-transform duration-300 ${
         open ? "translate-x-0 " : "-translate-x-full lg:translate-x-0"
       }`}
     >
@@ -45,12 +56,12 @@ const SideBar = ({
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex flex-col space-y-4 flex-grow h-full">
+      <nav className="flex flex-col space-y-6 h-full">
         <NavLink
           to="/admin"
           className={({ isActive }) =>
             `flex items-center p-3 font-bold rounded-md transition-colors ${
-              isActive ? " text-blue-500" : "text-[#5D5D5B] hover:bg-gray-100"
+              isActive ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
             }`
           }
           end
@@ -63,57 +74,57 @@ const SideBar = ({
           to="/admin/schools"
           className={({ isActive }) =>
             `flex items-center p-3 font-bold rounded-md transition-colors ${
-              isActive ? "text-blue-500" : "text-[#5D5D5B] hover:bg-gray-100"
+              isActive || schoolPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
             }`
           }
           end
         >
-          {({ isActive }) => (
-            <>
-              <img
-                src={SchoolIcon}
-                alt="AlignTraits School"
-                className={`w-5 h-5 mr-3 ${
-                  isActive ? "text-blue-500" : "text-[#5D5D5B]"
-                }`}
-                style={{
-                  filter: isActive
-                    ? "invert(36%) sepia(100%) saturate(1000%) hue-rotate(200deg) brightness(100%) contrast(100%)"
-                    : "none",
-                }}
-              />
-              <span className={isActive ? "text-blue-500" : "text-[#5D5D5B]"}>
-                Schools
-              </span>
-            </>
-          )}
+          <LuSchool className="w-5 h-5 mr-3"  />
+          <span className={schoolPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
+            Schools
+          </span>
         </NavLink>
 
-        {/* <NavLink
-          to="#"
+        <NavLink
+          to="/admin/accounts"
           className={({ isActive }) =>
             `flex items-center p-3 font-bold rounded-md transition-colors ${
-              isActive ? " text-blue-500" : "text-[#5D5D5B] hover:bg-gray-100"
+              isActive || accountPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
             }`
           }
+          end
         >
-          <img
-            src={AccountIcon}
-            alt="AlignTraits Account"
-            className="w-5 h-5 mr-3 fill-[#007BFF]"
-          />
-          <span>Accounts</span>
-        </NavLink> */}
+          <TiGroupOutline className="w-5 h-5 mr-3" />
+          <span className={accountPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
+            Accounts
+          </span>
+        </NavLink>
+
+        {/* Logout Button */}
+        <button
+          onClick={handleLogout}
+          className="flex items-center p-3 text-[#5D5D5B] font-bold rounded-md hover:bg-red-50 hover:text-red-500 transition-colors"
+        >
+          <FiLogOut className="w-5 h-5 mr-3" />
+          <span>Logout</span>
+        </button>
       </nav>
 
-      {/* Logout Button */}
-      <button
-        onClick={handleLogout}
-        className="flex items-center p-3 text-[#5D5D5B] font-bold rounded-md hover:bg-red-50 hover:text-red-500 transition-colors"
-      >
-        <FiLogOut className="w-5 h-5 mr-3" />
-        <span>Logout</span>
-      </button>
+
+      <div className="h-[80px] w-full border-t border-t-2 border-gray-300 
+        flex flex-row justify-between items-center hover:bg-gray-100 cursor-pointer 
+        transition-colors duration-300">
+        <div className="flex flex-row items-center gap-x-[10px]">
+          <CgProfile className="w-7 h-7 " />
+          <div>
+            <p className="text-[14px]">{admin?.username}</p>
+            <p className="text-[12px] text-[#999999]">{admin?.email}</p>
+          </div>
+        </div>
+
+        <MdKeyboardArrowDown className="w-7 h-7" />
+      </div>
+
     </div>
   );
 };

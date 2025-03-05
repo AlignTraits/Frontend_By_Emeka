@@ -1,107 +1,146 @@
-
-import AccountIcon from "../../assets/admin/icons/adminImage.png";
-import {  FiUser } from "react-icons/fi";
-import { useAuth } from "../../contexts/useAuth";
+import DashboardCard from "../../components/Admin/DashboardCard";
+import { RiSchoolLine } from "react-icons/ri";
+import { MdOutlineReceiptLong } from "react-icons/md";
+import { IoMdStats } from "react-icons/io";
+import CustomSelect from "../../components/dashboard/CustomSelect";
+import { MdFilterList } from "react-icons/md";
 
 export default function Index() {
-  const {admin} = useAuth()
 
-  const loggedInAdmins = [
-    {
-      name: "Olamide Damilola",
-      time: "19:27",
-      image: AccountIcon,
-      online: true,
-    },
-    {
-      name: "Olamide Damilola",
-      time: "19:27",
-      image: AccountIcon,
-      online: false,
-    },
-    {
-      name: "Emmanuel Solomon",
-      time: "18: 27",
-      image: AccountIcon,
-      online: true,
-    },
-    {
-      name: "Samuel Emmanuel",
-      time: "20: 27",
-      image: AccountIcon,
-      online: false,
-    },
+  const states = [
+    "Abia",
+    "Adamawa",
+    "Akwa Ibom",
+    "Anambra",
+    "Bauchi",
+    "Bayelsa",
+    "Benue",
+    "Borno",
+    "Cross River",
+    "Delta",
+    "Ebonyi",
+    "Edo",
+    "Ekiti",
   ];
 
+  const schools = [
+    "ABC",
+    "Kangal",
+    "Lenon",
+    "Machine",
+    "Letro",
+  ];
+
+  const countries = [
+    "Brazil",
+    "England",
+    "France",
+    "Italy",
+    "Germany",
+  ];
+  
+ 
+  
   return (
-    <div className="flex h-screen">
-      <div className="basis-[65%] xl:basis-[70%] h-full"></div>
-      <div className="basis-[35%] xl:basis-[30%] space-y-4">
-        <div className="flex flex-col justify-center bg-[#E8EAEE] rounded-[30px] w-full space-y-2 p-5">
-          {admin?.image ? (
-            <img
-              src={admin?.image ? admin.image : AccountIcon}
-              alt=""
-              className="mx-auto w-[100px] h-[100px]"
-            />
-          ) : (
-            <FiUser className="mx-auto w-[100px] h-[100px]" />
-          )}
-          <h2 className="text-[#000000] text-[20px] font-[400] text-center">
-            {admin?.username}
-          </h2>
-          <div>
-            <h3 className="text-[#007AFF] text-[18px] text-center">2</h3>
-            <p className="text-[#000000] text-[16px] font-semibold text-center">
-              Hours spent
-            </p>
-          </div>
-          <div>
-            {" "}
-            <h3 className="text-[#007AFF] text-[18px] text-center">15</h3>
-            <p className="text-[#000000] text-[16px] font-semibold text-center">
-              Actions made
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-col justify-center mx-auto w-full px-5">
-          <h2 className="text-[#000000] text-[20px] font-medium">
-            Admin Sessions
-          </h2>
-          <div className="space-y-4">
-            {loggedInAdmins.map((admin, index) => (
-              <div key={index} className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="relative">
-                    {admin.image ? (
-                      <img
-                        src={admin.image}
-                        alt=""
-                        className="w-[50px] h-[50px] rounded-[50px]"
-                      />
-                    ) : (
-                      <FiUser className="w-[50px] h-[50px] rounded-[50px]" />
-                    )}
-                    <span
-                      className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
-                        admin.online ? "bg-[#13F721]" : "bg-[#D9D9D9]"
-                      }`}
-                    ></span>
-                  </div>
-                  <div className="flex flex-col">
-                    <h3 className="text-[#000000] text-[16px] font-semibold">
-                      {admin.name}
-                    </h3>
-                    <p className="text-[#000000] text-[14px] font-medium">
-                      Logged in {admin.time}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+    <div className="flex h-screen flex-col gap-y-[20px]">
+      
+      <div className="h-[170px] size-max flex gap-2 border-b border-[#EAECF0] py-[20px]">
+        <DashboardCard 
+          percentType={true} 
+          bgColor="#E8FBF5" 
+          percentValue={8} 
+          title="Total Schools" 
+          Icon={RiSchoolLine} 
+        />
+
+        <DashboardCard 
+          percentType={true} 
+          bgColor="#FFFADF" 
+          percentValue={10} 
+          title="Total Courses" 
+          Icon={MdOutlineReceiptLong} 
+        />
+        <DashboardCard 
+          percentType={false} 
+          bgColor="#FFEBEB" 
+          percentValue={15} 
+          title="Total Students" 
+          Icon={IoMdStats} 
+        />
+        <DashboardCard 
+          percentType={false} 
+          bgColor="#EFECFF" 
+          percentValue={15} 
+          title="Total Loans" 
+          Icon={MdOutlineReceiptLong} 
+        />
       </div>
+
+      <div className="flex gap-x-[150px] items-center">
+        <div className="flex gap-x-[30px] my-[20px]">
+          <div className="size-max">
+            <CustomSelect
+              placeholder="All Regions"
+              options={states.map((state) => ({
+                value: state,
+                label: state,
+              }))}
+              onChange={(value) => console.log("testing: ", value)}
+            />
+          </div>
+
+          <div className="size-max">
+            <CustomSelect
+              placeholder="All Schools"
+              options={schools.map((school) => ({
+                value: school,
+                label: school,
+              }))}
+              onChange={(value) => console.log("testing: ", value)}
+            />
+          </div>
+
+          <div className="size-max">
+            <CustomSelect
+              placeholder="All Countries"
+              options={countries.map((country) => ({
+                value: country,
+                label: country,
+              }))}
+              onChange={(value) => console.log("testing: ", value)}
+            />
+          </div>
+        </div>
+
+        <button 
+          type="button" 
+          className="w-[150px] text-white py-2 h-[45px] bg-[#004085] p-2 rounded-md border-[0.8px] 
+            border-[#000000] focus:outline-none flex justify-center items-center gap-x-[10px]"
+          >
+          <MdFilterList className="w-6 h-6"  />
+          <p>Apply Filters</p>
+        </button>
+      </div>
+
+      <div className="flex gap-x-[20px]">
+        <div className="flex flex-col gap-y-[10px]">
+          <p className="text-[#000000] text-[16px] font-bold">Top Loan Application Schools</p>
+          <div className="w-[400px] rounded-lg border-[0.8px] 
+            border-gray-300 h-[300px] flex justify-center items-center">
+            <p className="text-[#737373] text-[14px] font-semibold">There was no data found for this data range</p>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-y-[10px]">
+          <p className="text-[#000000] text-[16px] font-bold">Loan Application by Region</p>
+          <div className="w-[400px] rounded-lg border-[0.8px] 
+            border-gray-300 h-[300px] flex justify-center items-center">
+            <p className="text-[#737373] text-[14px] font-semibold">There was no data found for this data range</p>
+          </div>
+        </div>
+
+      </div>
+
     </div>
   );
 }

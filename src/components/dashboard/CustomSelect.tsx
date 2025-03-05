@@ -54,6 +54,17 @@ const CustomSelect: React.FC<SelectProps> = ({
     return () => window.removeEventListener("resize", checkDropdownPosition);
   }, [isOpen]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
 
   // This is applied when a default value is provided
   useEffect(() => {
@@ -67,11 +78,11 @@ const CustomSelect: React.FC<SelectProps> = ({
     
       <button
         type="button"
-        className="w-full px-4 py-2 text-left bg-white p-2 rounded-md border-[0.8px] border-[#000000] focus:outline-none focus:ring-2 focus:ring-blue-200 capitalize"
+        className="w-full px-4 py-2  bg-white p-2 rounded-md border-[0.8px] border-gray-300 focus:outline-none capitalize flex justify-between items-center gap-x-[10px]"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        {selected ? selected.label : placeholder}
-        <FiChevronDown className="float-right mt-[1%]" />
+        <p>{selected ? selected.label : placeholder}</p>
+        <FiChevronDown className="" />
       </button>
 
       
