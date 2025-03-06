@@ -1,22 +1,61 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
-import { FiChevronDown, FiArrowDown, FiPlus } from "react-icons/fi";
-import CreateSchoolDropDown from "./CreateSchoolDropDown";
+import { FiArrowDown } from "react-icons/fi";
+// import CreateSchoolDropDown from "./CreateSchoolDropDown";
 import { School, getDays } from "../../services/schools";
 import { ClipLoader } from "react-spinners";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { MdOutlineEdit } from "react-icons/md";
+import DeleteModal from "./DeleteSchoolModal";
+import EditSchoolModal from "./EditSchoolModal";
+// import { getSchool } from "../../services/schools";
+// import { Course } from "../../types/course.types";
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  // setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   schools: School[];
   isLoading: boolean;
+  getSchools: Function;
 }
 
+
 export default function SchoolsTable({
-  setShowModal,
+  // setShowModal,
   schools,
-  isLoading,
+  isLoading, getSchools,
 }: Props) {
   const navigate = useNavigate()
+    const [modal, setModal] = useState(false);
+    const [editModal, setEditModal] = useState(false)
+    const [itemForDelete, setItemForDelete] = useState({
+      name: "",
+      id: ""
+    })
+
+    const [itemForEdit, setItemForEdit] = useState({
+      id: "",
+      name: "",
+      schoolType: "",
+      logo: "",
+      location: ""
+
+    })
+
+  const handleTrashClick = (event: React.MouseEvent, schoolParam: any) => {
+    event.stopPropagation(); // Prevents event from bubbling to parent
+    setItemForDelete(schoolParam)
+    setModal(true)
+  };
+
+ 
+  const handleEditClick = (event: React.MouseEvent, schoolParam: any) => {
+    event.stopPropagation();
+    console.log("Child clicked");
+    setItemForEdit(schoolParam)
+    setEditModal(true)
+  };
+  
   return (
     <>
       {isLoading && (
@@ -26,38 +65,40 @@ export default function SchoolsTable({
       )}
 
       {!isLoading && (
-        <div className="w-full">
-          <table className="w-full table-auto border-collapse space-y-4">
-            <thead className="border-b-[0.8px] border-[#007AFF]">
+        <div className="w-full min-h-[500px] border border-[#EAECF0] rounded-lg">
+          <table className="w-full table-auto space-y-4">
+            <thead className="border-b-[0.8px] border-[#EAECF0] p-[20px]">
               <tr className="[&>th]:text-[#000000] [&>th]:text-[14px] [&>th]:font-medium [&>th]:pb-2">
-                <th className="w-[35%] text-left">Name</th>
-                <th className="w-[20%]">
-                  <div className="flex items-center justify-center">
-                    Last modified <FiArrowDown className="ml-2" />
+                <th className="w-[20%] p-[20px]">
+                  <div className="flex items-center">
+                    Name <FiArrowDown className="ml-2" />
                   </div>
                 </th>
-                <th className="w-[10%] text-center">Courses</th>
-                <th className="w-[20%]">
-                  <div className="flex items-center justify-center">
-                    <span>
-                      <span className="text-[#C8C8C8]">Sort: </span>
-                      Last modified
-                    </span>
-                    <FiChevronDown className="ml-2" />
+                <th className="w-[13.3%] p-[20px]">
+                  <div className="flex items-center">
+                    Courses <FiArrowDown className="ml-2" />
                   </div>
                 </th>
-                <th className="w-[15%] text-center">
-                  <CreateSchoolDropDown
-                    label="Create School"
-                    Icon={FiPlus}
-                    values={[
-                      { onchange: () => setShowModal(true), value: "School" },
-                      {
-                        onchange: () => navigate("create-course"),
-                        value: "Course",
-                      },
-                    ]}
-                  />
+                <th className="w-[13.3%] p-[20px]">
+                  <div className="flex items-center">
+                    Location <FiArrowDown className="ml-2" />
+                  </div>
+                </th>
+                <th className="w-[13.3%] p-[20px]">
+                  <div className="flex items-center">
+                    Last Modified <FiArrowDown className="ml-2" />
+                  </div>
+                </th>
+                <th className="w-[16%] p-[20px]">
+                  <div className="flex items-center">
+                    Type <FiArrowDown className="ml-2" />
+                  </div>
+                </th>
+
+                <th className="w-[13.3%] p-[20px]">
+                  <div className="flex items-center">
+                    Action <FiArrowDown className="ml-2" />
+                  </div>
                 </th>
               </tr>
             </thead>
@@ -66,28 +107,37 @@ export default function SchoolsTable({
               <tbody>
                 {schools.map((school, index) => (
                   <tr
-                    className="[&>td]:py-5 cursor-pointer hover:bg-[#007BFF33]"
+                    className="[&>td]:py-5 hover:bg-[#007BFF33] border-b border-gray-300 last:border-b-0"
                     key={index + school.id}
                     onClick={() => navigate(`edit-school?id=${school.id}`)}
                   >
-                    <td className="text-[#000000] text-[16px] font-[400] pb-2 flex gap-10">
-                      <img
+                    <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-10">
+
+                      {
+                        school.logo ? <img
                         src={school.logo}
                         alt="School Logo"
-                        className="w-[100px] h-[100px] rounded-full"
-                      />
-                      <span className="text-[#000000] text-[400] text-[16px] my-auto capitalize">
+                        className="w-[50px] h-[50px] rounded-full"
+                      /> : <div className="w-[40px] h-[40px] rounded-[50%] bg-[grey]"></div>
+                      }
+                      <span className="text-[#000000] text-[400] text-[16px] capitalize">
                         {school.name}
                       </span>
                     </td>
-                    <td className="text-[#757575] text-[14px] font-[500] pb-2 text-center">
-                      {getDays(school.updatedAt)}
-                    </td>
-                    <td className="text-[#757575] text-[14px] font-[500] text-center pb-2">
+                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       {school._count?.courses} courses
                     </td>
-                    <td className="text-[#757575] text-[14px] font-[500] pb-2"></td>
-                    <td className="text-[#757575] text-[14px] font-[500] pb-2"></td>
+                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.location}</td>
+                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
+                      {getDays(school.updatedAt)}
+                    </td>
+                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">Test</td>
+                    <td className="p-[20px] flex gap-x-[20px] items-center">
+                      <FaRegTrashCan onClick={(e) => handleTrashClick(e, school)} className="text-[#D92D20] h-5 w-5 cursor-pointer" />
+                      
+                      <MdOutlineEdit onClick={(e) => handleEditClick(e, school)} className="text-[#757575] h-6 w-6 font-[500] cursor-pointer" />
+                      
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -100,6 +150,34 @@ export default function SchoolsTable({
           )}
         </div>
       )}
+
+      {modal && (
+        <DeleteModal
+          itemName={itemForDelete.name as string}
+          setShowModal={setModal}
+          itemId={itemForDelete.id as string}
+          itemType={"school"}
+        />
+      )}
+
+      {
+        editModal && (
+          <EditSchoolModal 
+            defaultName={itemForEdit?.name as string}
+            schoolId={itemForEdit?.id as string}
+            setShowModal={setEditModal}
+            schooTypeDefault={itemForEdit?.schoolType as string}
+            defaultImgUrl={itemForEdit?.logo as string}
+            selectedProps={
+              {
+                value: itemForEdit?.location + "/Nigeria" as string,
+                label: itemForEdit?.location + "/Nigeria"
+              }
+            }
+            fetchSchool={getSchools}
+          />
+        )
+      }
     </>
   );
 }

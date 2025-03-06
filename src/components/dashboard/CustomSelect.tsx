@@ -81,7 +81,8 @@ const CustomSelect: React.FC<SelectProps> = ({
         className="w-full px-4 py-2  bg-white p-2 rounded-md border-[0.8px] border-gray-300 focus:outline-none capitalize flex justify-between items-center gap-x-[10px]"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <p>{selected ? selected.label : placeholder}</p>
+        {selected ? <p className="text-[#1E1E1E] text-[14px]">{selected.label}</p> : 
+        <p className="text-[#999999] text-[14px]">{placeholder}</p>}
         <FiChevronDown className="" />
       </button>
 
