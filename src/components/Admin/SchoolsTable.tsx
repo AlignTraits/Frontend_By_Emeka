@@ -51,10 +51,23 @@ export default function SchoolsTable({
  
   const handleEditClick = (event: React.MouseEvent, schoolParam: any) => {
     event.stopPropagation();
-    console.log("Child clicked");
     setItemForEdit(schoolParam)
     setEditModal(true)
   };
+
+  const renderType = (schoolType:string) => {
+    if (schoolType === "PUBLIC_UNIVERSITY") {
+      return (
+        <p className="text-[#175CD3] text-[12px] font-medium 
+        border border-[#B2DDFF] rounded-lg bg-[#EFF8FF] size-max px-[8px] py-[2px]">Public</p>
+      )
+    } else {
+      return (
+        <p className="text-[#B54708] text-[12px] font-medium 
+        border border-[#FEDF89] rounded-lg bg-[#FFFAEb] size-max px-[5px]">Private</p>
+      )
+    }
+  }
   
   return (
     <>
@@ -131,7 +144,7 @@ export default function SchoolsTable({
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       {getDays(school.updatedAt)}
                     </td>
-                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">Test</td>
+                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{renderType(school.schoolType)}</td>
                     <td className="p-[20px] flex gap-x-[20px] items-center">
                       <FaRegTrashCan onClick={(e) => handleTrashClick(e, school)} className="text-[#D92D20] h-5 w-5 cursor-pointer" />
                       
@@ -170,8 +183,8 @@ export default function SchoolsTable({
             defaultImgUrl={itemForEdit?.logo as string}
             selectedProps={
               {
-                value: itemForEdit?.location + "/Nigeria" as string,
-                label: itemForEdit?.location + "/Nigeria"
+                value: itemForEdit?.location as string,
+                label: itemForEdit?.location as string
               }
             }
             fetchSchool={getSchools}
