@@ -114,8 +114,8 @@ export default function Index() {
 
         <button 
           type="button" 
-          className="w-[150px] text-white py-2 h-[45px] bg-[#004085] p-2 rounded-md border-[0.8px] 
-            border-[#000000] focus:outline-none flex justify-center items-center gap-x-[10px]"
+          className="w-[150px] text-white py-2 h-[40px] bg-[#004085] p-2 rounded-md 
+             outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
           >
           <MdFilterList className="w-6 h-6"  />
           <p>Apply Filters</p>
