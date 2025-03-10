@@ -42,7 +42,7 @@ export default function Index() {
  
   
   return (
-    <div className="flex h-screen flex-col gap-y-[20px]">
+    <div className="flex h-screen flex-col gap-y-[20px] p-5">
       
       <div className="h-[170px] size-max flex gap-2 border-b border-[#EAECF0] py-[20px]">
         <DashboardCard 

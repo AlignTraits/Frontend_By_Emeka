@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { FiArrowDown } from "react-icons/fi";
 // import CreateSchoolDropDown from "./CreateSchoolDropDown";
@@ -41,6 +41,7 @@ export default function SchoolsTable({
       location: ""
 
     })
+
 
   const handleTrashClick = (event: React.MouseEvent, schoolParam: any) => {
     event.stopPropagation(); // Prevents event from bubbling to parent
@@ -170,6 +171,7 @@ export default function SchoolsTable({
           setShowModal={setModal}
           itemId={itemForDelete.id as string}
           itemType={"school"}
+          getSchools={getSchools}
         />
       )}
 
