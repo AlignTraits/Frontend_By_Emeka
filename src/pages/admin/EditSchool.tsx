@@ -177,8 +177,8 @@ export default function EditSchool() {
                 defaultImgUrl={school?.logo as string}
                 selectedProps={
                   {
-                    value: school?.location + "/Nigeria" as string,
-                    label: school?.location + "/Nigeria"
+                    value: school?.location as string,
+                    label: school?.location as string
                   }
                 }
                 fetchSchool={fetchSchool}

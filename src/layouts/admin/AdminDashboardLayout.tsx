@@ -41,9 +41,9 @@ console.log(admin)
         <Sidebar open={open} setOpen={setOpen} />
         <div className="flex-1 relative">
           <Header setOpen={setOpen}  />
-          <main className="p-5 xl:p-6">
+          {/* <main className="p-5 xl:p-6"> */}
             <Outlet />
-          </main>
+          {/* </main> */}
         </div>
         <ToastContainer />
       </div>

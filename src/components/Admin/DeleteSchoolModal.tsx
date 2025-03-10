@@ -11,7 +11,8 @@ interface ModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   itemName: string;
   itemId: string;
-  itemType: string; 
+  itemType: string;
+  getSchools?: Function 
 }
 
 export default function DeleteModal({
@@ -19,6 +20,7 @@ export default function DeleteModal({
   itemName,
   itemId,
   itemType,
+  getSchools
 }: ModalProps) {
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +50,9 @@ export default function DeleteModal({
       );
       localStorage.removeItem('schools')
       navigate(`/admin/schools`);
+      if (getSchools) {
+        getSchools()
+      }
       console.log(response.data);
     } catch (err: any) {
       if (err.response && err.response.data) {
