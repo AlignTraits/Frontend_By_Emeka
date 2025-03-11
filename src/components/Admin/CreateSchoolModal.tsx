@@ -19,6 +19,13 @@ interface ModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setSchools: React.Dispatch<React.SetStateAction<School[]>>;
 }
+
+const countryStateData: Record<string, string[]> = {
+  USA: ["California", "Texas", "New York", "Florida"],
+  Canada: ["Ontario", "Quebec", "British Columbia"],
+  Nigeria: ["Lagos", "Abuja", "Rivers", "Kaduna", "Imo", "Abia"],
+};
+
 export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps) {
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +34,17 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
   const [previewUrl, setPreviewUrl] = useState<string | null | ArrayBuffer>(
     null
   );
+
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [selectedState, setSelectedState] = useState<string>("");
+  const [selectedDefaultState, setSelectedDefaultState] = useState({
+    value: "",
+    label: ""
+  })
+
+    // Get the states for the selected country
+  const states = selectedCountry ? countryStateData[selectedCountry] || [] : [];
+
   const [data, setData] = useState<Data>({
     logo: imageFile,
     name: null,
@@ -34,53 +52,23 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
     location: null,
   });
 
-   useEffect(() => {
-     setData((prevData) => ({ ...prevData, logo: imageFile }));
-   }, [imageFile]);
+  useEffect(() => {
+    setData((prevData) => ({ ...prevData, logo: imageFile }));
+  }, [imageFile]);
 
+  useEffect(() => {
+    if (selectedCountry.length > 0) {
+      setSelectedDefaultState({
+        value: countryStateData[selectedCountry][0],
+        label: countryStateData[selectedCountry][0]
+      })
+      setSelectedState(countryStateData[selectedCountry][0])
+    }
+  }, [selectedCountry]) 
 
-  const states = [
-    "Abia",
-    "Adamawa",
-    "Akwa Ibom",
-    "Anambra",
-    "Bauchi",
-    "Bayelsa",
-    "Benue",
-    "Borno",
-    "Cross River",
-    "Delta",
-    "Ebonyi",
-    "Edo",
-    "Ekiti",
-    "Enugu",
-    "FCT - Abuja",
-    "Gombe",
-    "Imo",
-    "Jigawa",
-    "Kaduna",
-    "Kano",
-    "Katsina",
-    "Kebbi",
-    "Kogi",
-    "Kwara",
-    "Lagos",
-    "Nasarawa",
-    "Niger",
-    "Ogun",
-    "Ondo",
-    "Osun",
-    "Oyo",
-    "Plateau",
-    "Rivers",
-    "Sokoto",
-    "Taraba",
-    "Yobe",
-    "Zamfara",
-  ];
 
   const SCHOOLTYPE = [
-    "FEDERAL_UNIVERSITY", "PRIVATE_UNIVERSITY", "PUBLIC_UNIVERSITY"
+    "PRIVATE_UNIVERSITY", "PUBLIC_UNIVERSITY"
   ]
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -89,9 +77,10 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
     formData.append("logo", data.logo!); 
     formData.append("name", data.name || "");
     formData.append("schoolType", data.schoolType || "");
-    formData.append("location", data.location || "");
+    formData.append("location", `${selectedCountry}/${selectedState}`);
     formData.append("websiteUrl", "www.schoolxyz.com")
-
+    formData.append('country', selectedCountry)
+    formData.append("state", selectedState)
 
     try {
         setIsLoading(true);
@@ -176,16 +165,32 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
               />
             </div>
 
-            <div>
-              <p className="text-[12px] text-[#1E1E1E] font-medium">School Location*</p>
-              <CustomSelect
-                placeholder="Kindly Select School Location"
-                options={states.map((state) => ({
-                  value: state + "/Nigeria",
-                  label: state + "/Nigeria",
-                }))}
-                onChange={(value) => setData({ ...data, location: value })}
-              />
+            <div className="flex gap-x-[20px]">
+              <div className="w-full">
+                <p className="text-[12px] text-[#1E1E1E] font-medium">School Country*</p>
+                <CustomSelect
+                  placeholder="Select Country"
+                  options={Object.keys(countryStateData).map((country) => ({
+                    value: country,
+                    label: country,
+                  }))}
+                  onChange={(value) => setSelectedCountry(value)}
+                />
+              </div>
+
+              <div className="w-full">
+                <p className="text-[12px] text-[#1E1E1E] font-medium">School State*</p>
+                <CustomSelect
+                  placeholder="Select State"
+                  options={states.map((state) => ({
+                    value: state,
+                    label: state,
+                  }))}
+                  onChange={(value) => setSelectedState(value)}
+                  disabledState={selectedCountry ? false : true}
+                  selectedProps={selectedDefaultState}
+                />
+              </div>
             </div>
 
             <div>

@@ -99,6 +99,7 @@ class ResponseError extends Error {
     this.response = response; // Attach the full response object for debugging
   }
 }
+
 export const createCourse = async (form:FormData, token: string, id?: string) => {
   try {
     const response = !id

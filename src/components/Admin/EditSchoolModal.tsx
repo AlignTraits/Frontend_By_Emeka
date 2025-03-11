@@ -28,6 +28,14 @@ interface ModalProps {
   schoolId: string;
   fetchSchool: Function
 }
+
+const countryStateData: Record<string, string[]> = {
+  USA: ["California", "Texas", "New York", "Florida"],
+  Canada: ["Ontario", "Quebec", "British Columbia"],
+  Nigeria: ["Lagos", "Abuja", "Rivers", "Kaduna", "Imo", "Abia"],
+};
+
+
 export default function EditSchoolModal({
   setShowModal, schooTypeDefault, 
   defaultImgUrl, defaultName, selectedProps, schoolId, fetchSchool}: ModalProps) {
@@ -66,65 +74,46 @@ export default function EditSchoolModal({
     location: null,
   });
 
-   useEffect(() => {
-     setData((prevData) => ({ ...prevData, logo: imageFile }));
-   }, [imageFile]);
+  const [selectedCountry, setSelectedCountry] = useState<string>(selectedProps.label.split("/")[0]);
+  const [selectedState, setSelectedState] = useState<string>(selectedProps.label.split("/")[1]);
+  const [selectedDefaultState, setSelectedDefaultState] = useState({
+    value: selectedProps.label.split("/")[1],
+    label: selectedProps.label.split("/")[1]
+  })
+
+  useEffect(() => {
+    setData((prevData) => ({ ...prevData, logo: imageFile }));
+  }, [imageFile]);
 
 
-   useEffect(() => {
-    setPreviewUrl(defaultImgUrl)
-    setNameText(defaultName);
+  useEffect(() => {
+  setPreviewUrl(defaultImgUrl)
+  setNameText(defaultName);
 
-    setData((prevData) => ({ 
-      ...prevData, 
-      location: selectedProps.label
-    }));
+  setData((prevData) => ({ 
+    ...prevData, 
+    location: selectedProps.label
+  }));
 
-   }, [])
+  }, [])
 
 
-  const states = [
-    "Abia",
-    "Adamawa",
-    "Akwa Ibom",
-    "Anambra",
-    "Bauchi",
-    "Bayelsa",
-    "Benue",
-    "Borno",
-    "Cross River",
-    "Delta",
-    "Ebonyi",
-    "Edo",
-    "Ekiti",
-    "Enugu",
-    "FCT - Abuja",
-    "Gombe",
-    "Imo",
-    "Jigawa",
-    "Kaduna",
-    "Kano",
-    "Katsina",
-    "Kebbi",
-    "Kogi",
-    "Kwara",
-    "Lagos",
-    "Nasarawa",
-    "Niger",
-    "Ogun",
-    "Ondo",
-    "Osun",
-    "Oyo",
-    "Plateau",
-    "Rivers",
-    "Sokoto",
-    "Taraba",
-    "Yobe",
-    "Zamfara",
-  ];
+  useEffect(() => {
+    if (selectedCountry.length > 0) {
+      setSelectedDefaultState({
+        value: countryStateData[selectedCountry][0],
+        label: countryStateData[selectedCountry][0]
+      })
+      setSelectedState(countryStateData[selectedCountry][0])
+    }
+  }, [selectedCountry]) 
+
+
+
+  const states = selectedCountry ? countryStateData[selectedCountry] || [] : [];
 
   const SCHOOLTYPE = [
-    "FEDERAL_UNIVERSITY", "PRIVATE_UNIVERSITY", "PUBLIC_UNIVERSITY"
+   "PRIVATE_UNIVERSITY", "PUBLIC_UNIVERSITY"
   ]
 
   const handleNameChange = (e: React.FormEvent<HTMLInputElement>): void => {
@@ -138,7 +127,9 @@ export default function EditSchoolModal({
     if (imageFile) formData.append("logo", data.logo!); 
     formData.append("name", nameText || "");
     formData.append("schoolType", data.schoolType || "");
-    formData.append("location", data.location || "");
+    formData.append("location", `${selectedCountry}/${selectedState}` || "");
+    formData.append("state", selectedState)
+    formData.append("country", selectedCountry)
     // formData.append("websiteUrl", "www.schoolxyz.com")
 
     try {
@@ -152,7 +143,7 @@ export default function EditSchoolModal({
       setShowModal(false)
 
       if (response.data.ok) {
-        toast.success('School Created Successfully')
+        toast.success('School Updated Successfully')
         fetchSchool()
       } else {
         toast.error(response.data.message)
@@ -226,17 +217,36 @@ export default function EditSchoolModal({
               />
             </div>
 
-            <div>
-              <p className="text-[12px] text-[#1E1E1E] font-medium">School Location*</p>
-              <CustomSelect
-                placeholder="Kindly Select School Location"
-                options={states.map((state) => ({
-                  value: state + "/Nigeria",
-                  label: state + "/Nigeria",
-                }))}
-                onChange={(value) => setData({ ...data, location: value })}
-                selectedProps={selectedProps}
-              />
+            <div className="flex gap-x-[20px]">
+              <div className="w-full">
+                <p className="text-[12px] text-[#1E1E1E] font-medium">School Country*</p>
+                <CustomSelect
+                  placeholder="Select Country"
+                  options={Object.keys(countryStateData).map((country) => ({
+                    value: country,
+                    label: country,
+                  }))}
+                  onChange={(value) => setSelectedCountry(value)}
+                  selectedProps={{
+                    value: selectedProps.label.split("/")[0],
+                    label: selectedProps.label.split("/")[0]
+                  }}
+                />
+              </div>
+
+              <div className="w-full">
+                <p className="text-[12px] text-[#1E1E1E] font-medium">School State*</p>
+                <CustomSelect
+                  placeholder="Select State"
+                  options={states.map((state) => ({
+                    value: state,
+                    label: state,
+                  }))}
+                  onChange={(value) => setSelectedState(value)}
+                  disabledState={selectedCountry ? false : true}
+                  selectedProps={selectedDefaultState}
+                />
+              </div>
             </div>
             <div>
               <p className="text-[12px] text-[#1E1E1E] font-medium">School Logo*</p>

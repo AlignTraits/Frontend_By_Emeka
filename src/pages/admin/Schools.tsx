@@ -96,7 +96,7 @@ export default function Schools() {
         />
         {showModal && <CreateSchoolModal setShowModal={setShowModal} setSchools={setSchools} />}
       </div>
-      {showBulkModal && <BulkUploadModal setShowModal={setShowBulkModal} />}
+      {showBulkModal && <BulkUploadModal setShowModal={setShowBulkModal} getSchools={getSchoolNow} />}
     </div>
   );
 }
