@@ -146,7 +146,7 @@ export default function SchoolsTable({
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       {/* {school._count?.courses} courses */}
-                      <button onClick={handleManageClick} className="text-[white] bg-[#007BFF] h-[35px] px-[10px] rounded-lg">Manage Course</button>
+                      <button onClick={handleManageClick} className="text-[white] bg-[#007BFF] h-[35px] px-[10px] rounded-lg w-max">Manage Course</button>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.location}</td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
