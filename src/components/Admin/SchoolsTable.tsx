@@ -49,6 +49,12 @@ export default function SchoolsTable({
     setModal(true)
   };
 
+  const handleManageClick = (event: React.MouseEvent,) => {
+    event.stopPropagation(); // Prevents event from bubbling to parent
+    // setItemForDelete(schoolParam)
+    // setModal(true)
+  };
+
  
   const handleEditClick = (event: React.MouseEvent, schoolParam: any) => {
     event.stopPropagation();
@@ -139,7 +145,8 @@ export default function SchoolsTable({
                       </span>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {school._count?.courses} courses
+                      {/* {school._count?.courses} courses */}
+                      <button onClick={handleManageClick} className="text-[white] bg-[#007BFF] h-[35px] px-[10px] rounded-lg">Manage Course</button>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.location}</td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">

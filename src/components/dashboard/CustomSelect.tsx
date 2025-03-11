@@ -14,7 +14,8 @@ interface SelectProps {
   selectedProps?: {
     value: string,
     label: string
-  }
+  };
+  disabledState?: boolean
 }
 
 const CustomSelect: React.FC<SelectProps> = ({
@@ -22,7 +23,8 @@ const CustomSelect: React.FC<SelectProps> = ({
   placeholder = "Select an option",
   onChange,
   className = "",
-  selectedProps
+  selectedProps,
+  disabledState=false
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<Option | null>(null);
@@ -71,17 +73,20 @@ const CustomSelect: React.FC<SelectProps> = ({
     if (selectedProps) {
       setSelected(selectedProps)
     }
-  }, [])
+  }, [selectedProps])
+  
+  console.log("selected: ", selected)
 
   return (
     <div ref={selectRef} className={`relative ${className}`}>
     
       <button
         type="button"
+        disabled={disabledState}
         className="w-full px-4 py-2  bg-white p-2 rounded-md border-[0.8px] border-gray-300 focus:outline-none capitalize flex justify-between items-center gap-x-[10px]"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        {selected ? <p className="text-[#1E1E1E] text-[14px]">{selected.label}</p> : 
+        {selected?.value  ? <p className="text-[#1E1E1E] text-[14px]">{selected.label}</p> : 
         <p className="text-[#999999] text-[14px]">{placeholder}</p>}
         <FiChevronDown className="" />
       </button>
