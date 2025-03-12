@@ -78,7 +78,7 @@ export default function EditSchool() {
           <ClipLoader />
         </div>
       ) : (
-        <div className="grid gap-10 -z-10">
+        <div className="grid gap-10 z-10 p-5 xl:p-6">
           <div className="flex gap-10">
             <div className="rounded-full w-60 h-60">
               <img

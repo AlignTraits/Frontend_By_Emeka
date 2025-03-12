@@ -22,7 +22,6 @@ export default function Schoolnformation() {
 
 const handleFilesSelected = (files: File[]) => {
   // Process the selected files
-  console.log("Files selected in parent:", files);
   // Example: upload to server or display additional info
   files.forEach((file) => {
     console.log(`File Name: ${file.name}, File Size: ${file.size} bytes`);
