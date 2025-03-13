@@ -74,8 +74,6 @@ const CustomSelect: React.FC<SelectProps> = ({
       setSelected(selectedProps)
     }
   }, [selectedProps])
-  
-  console.log("selected: ", selected)
 
   return (
     <div ref={selectRef} className={`relative ${className}`}>

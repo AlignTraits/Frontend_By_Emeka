@@ -11,7 +11,6 @@ import { getSchools, School } from "../../services/schools";
 interface Data {
   logo: File | null;
   name: null | string;
-  location: null | string;
   schoolType: null | string;
 }
 
@@ -49,7 +48,6 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
     logo: imageFile,
     name: null,
     schoolType: null,
-    location: null,
   });
 
   useEffect(() => {
@@ -77,10 +75,9 @@ export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps
     formData.append("logo", data.logo!); 
     formData.append("name", data.name || "");
     formData.append("schoolType", data.schoolType || "");
-    formData.append("location", `${selectedCountry}/${selectedState}`);
     formData.append("websiteUrl", "www.schoolxyz.com")
     formData.append('country', selectedCountry)
-    formData.append("state", selectedState)
+    formData.append("region", selectedState)
 
     try {
         setIsLoading(true);

@@ -22,7 +22,16 @@ const Header = ({
   // const navigate = useNavigate()
 
   const RenderTitle = () => {
-    if (location.pathname.startsWith("/admin/schools")) {
+    if (location.pathname.endsWith("/add-course")) {
+      return (
+        <div className="space-y-2 basis-[60%]">
+          <h1 className="text-xl font-semibold text-[#000000] ">
+            Create New Courses
+          </h1>
+        </div>
+        )
+    }
+    else if (location.pathname.startsWith("/admin/schools")) {
       return (
         <div className="space-y-2 basis-[60%]">
           <h1 className="text-xl font-semibold text-[#000000] ">
@@ -44,7 +53,8 @@ const Header = ({
           </p>
         </div>
         )
-    } else {
+    } 
+    else {
       return (
         <div className="space-y-2 basis-[60%]">
           <h1 className="text-xl font-semibold text-[#000000] ">
@@ -59,7 +69,7 @@ const Header = ({
   }
 
   return (
-    <div className="relative bg-[#FAFAFA] border-[0.4px] border-y-[#E0E0E0] pl-10 py-3  sticky top-0 z-10 w-full overflow-hidden">
+    <div className="relative bg-[#FAFAFA] border-[0.4px] border-y-[#E0E0E0] pl-5 py-3  sticky top-0 z-10 w-full overflow-hidden">
       <FiMenu
         className="absolute left-0 top-0 translate-x-1/2 translate-y-full my-auto lg:hidden"
         onClick={() => setOpen(true)}

@@ -25,23 +25,27 @@ export default function SchoolsTable({
   schools,
   isLoading, getSchools,
 }: Props) {
-  const navigate = useNavigate()
-    const [modal, setModal] = useState(false);
-    const [editModal, setEditModal] = useState(false)
-    const [itemForDelete, setItemForDelete] = useState({
-      name: "",
-      id: ""
-    })
 
-    const [itemForEdit, setItemForEdit] = useState({
-      id: "",
-      name: "",
-      schoolType: "",
-      logo: "",
-      location: ""
+const navigate = useNavigate()
+  const [modal, setModal] = useState(false);
+  const [editModal, setEditModal] = useState(false)
+  const [itemForDelete, setItemForDelete] = useState({
+    name: "",
+    id: ""
+  })
 
-    })
+  const [itemForEdit, setItemForEdit] = useState({
+    id: "",
+    name: "",
+    schoolType: "",
+    logo: "",
+    location: "",
+    region: "",
+    country: ""
 
+  })
+
+  console.log("schools: ", schools)
 
   const handleTrashClick = (event: React.MouseEvent, schoolParam: any) => {
     event.stopPropagation(); // Prevents event from bubbling to parent
@@ -49,10 +53,9 @@ export default function SchoolsTable({
     setModal(true)
   };
 
-  const handleManageClick = (event: React.MouseEvent,) => {
+  const handleManageClick = (event: React.MouseEvent, schoolId:string) => {
     event.stopPropagation(); // Prevents event from bubbling to parent
-    // setItemForDelete(schoolParam)
-    // setModal(true)
+    navigate(`/admin/schools/${schoolId}/courses`);
   };
 
  
@@ -91,33 +94,33 @@ export default function SchoolsTable({
               <tr className="[&>th]:text-[#000000] [&>th]:text-[14px] [&>th]:font-medium [&>th]:pb-2">
                 <th className="w-[20%] p-[20px]">
                   <div className="flex items-center">
-                    Name <FiArrowDown className="ml-2" />
+                    Name <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
                 <th className="w-[13.3%] p-[20px]">
                   <div className="flex items-center">
-                    Courses <FiArrowDown className="ml-2" />
+                    Courses <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
                 <th className="w-[13.3%] p-[20px]">
                   <div className="flex items-center">
-                    Location <FiArrowDown className="ml-2" />
+                    Location <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
                 <th className="w-[13.3%] p-[20px]">
                   <div className="flex items-center">
-                    Last Modified <FiArrowDown className="ml-2" />
+                    Last Modified <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
                 <th className="w-[16%] p-[20px]">
                   <div className="flex items-center">
-                    Type <FiArrowDown className="ml-2" />
+                    Type <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
 
                 <th className="w-[13.3%] p-[20px]">
                   <div className="flex items-center">
-                    Action <FiArrowDown className="ml-2" />
+                    Action <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
               </tr>
@@ -146,9 +149,14 @@ export default function SchoolsTable({
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       {/* {school._count?.courses} courses */}
-                      <button onClick={handleManageClick} className="text-[white] bg-[#007BFF] h-[35px] px-[10px] rounded-lg w-max">Manage Course</button>
+                      <button 
+                        onClick={(e) => handleManageClick(e, school.id)} 
+                        className="transition-colors text-[white] bg-[#007BFF] h-[35px] px-[10px] rounded-lg w-max hover:bg-[#056e9c]"
+                      >
+                        Manage Course
+                      </button>
                     </td>
-                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.location}</td>
+                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.country}/{school.region}</td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       {getDays(school.updatedAt)}
                     </td>
@@ -192,8 +200,8 @@ export default function SchoolsTable({
             defaultImgUrl={itemForEdit?.logo as string}
             selectedProps={
               {
-                value: itemForEdit?.location as string,
-                label: itemForEdit?.location as string
+                value: `${itemForEdit.country}/${itemForEdit.region}` as string,
+                label: `${itemForEdit.country}/${itemForEdit.region}` as string
               }
             }
             fetchSchool={getSchools}
