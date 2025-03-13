@@ -9,8 +9,7 @@ import { getAdminDetails } from "../../services/auth.service";
 
 
 export default function DashboardLayout() {
-  const { token, isAuthenticated, setAdmin, admin } = useAuth();
-console.log(admin)
+  const { token, isAuthenticated, setAdmin } = useAuth();
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const data =  useRef(localStorage.getItem('admin'));

@@ -9,6 +9,8 @@ export interface School {
   schoolType: string;
   updatedAt: string;
   createdAt: string;
+  country: string;
+  region: string;
   _count?: {
     courses: number;
   }

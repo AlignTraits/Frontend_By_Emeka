@@ -32,7 +32,7 @@ interface ModalProps {
 const countryStateData: Record<string, string[]> = {
   USA: ["California", "Texas", "New York", "Florida"],
   Canada: ["Ontario", "Quebec", "British Columbia"],
-  Nigeria: ["Lagos", "Abuja", "Rivers", "Kaduna", "Imo", "Abia"],
+  Nigeria: ["Lagos", "Abuja", "Rivers", "Kaduna", "Imo", "Abia", "Osun"].sort(),
 };
 
 
@@ -81,6 +81,13 @@ export default function EditSchoolModal({
     label: selectedProps.label.split("/")[1]
   })
 
+
+  const [selectedDefaultCountry, setSelectedDefaultCountry] = useState({
+    value: selectedProps.label.split("/")[0],
+    label: selectedProps.label.split("/")[0]
+  })
+
+
   useEffect(() => {
     setData((prevData) => ({ ...prevData, logo: imageFile }));
   }, [imageFile]);
@@ -100,14 +107,9 @@ export default function EditSchoolModal({
 
   useEffect(() => {
     if (selectedCountry.length > 0) {
-      setSelectedDefaultState({
-        value: countryStateData[selectedCountry][0],
-        label: countryStateData[selectedCountry][0]
-      })
       setSelectedState(countryStateData[selectedCountry][0])
     }
   }, [selectedCountry]) 
-
 
 
   const states = selectedCountry ? countryStateData[selectedCountry] || [] : [];
@@ -127,8 +129,8 @@ export default function EditSchoolModal({
     if (imageFile) formData.append("logo", data.logo!); 
     formData.append("name", nameText || "");
     formData.append("schoolType", data.schoolType || "");
-    formData.append("location", `${selectedCountry}/${selectedState}` || "");
-    formData.append("state", selectedState)
+    // formData.append("location", `${selectedCountry}/${selectedState}` || "");
+    formData.append("region", selectedState)
     formData.append("country", selectedCountry)
     // formData.append("websiteUrl", "www.schoolxyz.com")
 
@@ -226,11 +228,18 @@ export default function EditSchoolModal({
                     value: country,
                     label: country,
                   }))}
-                  onChange={(value) => setSelectedCountry(value)}
-                  selectedProps={{
-                    value: selectedProps.label.split("/")[0],
-                    label: selectedProps.label.split("/")[0]
+                  onChange={(value) => {
+                    setSelectedDefaultState({
+                      value: countryStateData[value][0],
+                      label: countryStateData[value][0]
+                    })
+                    setSelectedDefaultCountry({
+                      value: value,
+                      label: value
+                    })
+                    setSelectedCountry(value)
                   }}
+                  selectedProps={selectedDefaultCountry}
                 />
               </div>
 

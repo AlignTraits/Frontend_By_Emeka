@@ -125,8 +125,8 @@ const ImageUploadWithPreview = ({
           <div>
             <img src={ImageUpload} alt="Upload Icon" />
           </div>
-          <p className="text-[#212121] text-[16px] font-[600] text-center">
-            Drag and drop your profile picture to upload
+          <p className="text-[#007BFF] text-[16px] font-[600] text-center">
+            Click to upload
           </p>
           <div className="flex flex-col justify-center space-y-4">
             <label className="block text-sm font-medium text-gray-700 mx-auto">

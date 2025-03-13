@@ -25,23 +25,27 @@ export default function SchoolsTable({
   schools,
   isLoading, getSchools,
 }: Props) {
-  const navigate = useNavigate()
-    const [modal, setModal] = useState(false);
-    const [editModal, setEditModal] = useState(false)
-    const [itemForDelete, setItemForDelete] = useState({
-      name: "",
-      id: ""
-    })
 
-    const [itemForEdit, setItemForEdit] = useState({
-      id: "",
-      name: "",
-      schoolType: "",
-      logo: "",
-      location: ""
+const navigate = useNavigate()
+  const [modal, setModal] = useState(false);
+  const [editModal, setEditModal] = useState(false)
+  const [itemForDelete, setItemForDelete] = useState({
+    name: "",
+    id: ""
+  })
 
-    })
+  const [itemForEdit, setItemForEdit] = useState({
+    id: "",
+    name: "",
+    schoolType: "",
+    logo: "",
+    location: "",
+    region: "",
+    country: ""
 
+  })
+
+  console.log("schools: ", schools)
 
   const handleTrashClick = (event: React.MouseEvent, schoolParam: any) => {
     event.stopPropagation(); // Prevents event from bubbling to parent
@@ -152,7 +156,7 @@ export default function SchoolsTable({
                         Manage Course
                       </button>
                     </td>
-                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.location}</td>
+                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.country}/{school.region}</td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       {getDays(school.updatedAt)}
                     </td>
@@ -196,8 +200,8 @@ export default function SchoolsTable({
             defaultImgUrl={itemForEdit?.logo as string}
             selectedProps={
               {
-                value: itemForEdit?.location as string,
-                label: itemForEdit?.location as string
+                value: `${itemForEdit.country}/${itemForEdit.region}` as string,
+                label: `${itemForEdit.country}/${itemForEdit.region}` as string
               }
             }
             fetchSchool={getSchools}

@@ -37,6 +37,11 @@ export default function SchoolCourses() {
   useEffect(() => {
     fetchSchool();
   }, [schoolId]);
+
+  const handleAddCourse = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevents event from bubbling to parent
+    navigate(`/admin/schools/${schoolId}/add-course`);
+  }
   
 
   return (
@@ -74,6 +79,7 @@ export default function SchoolCourses() {
           </button>
 
           <button 
+            onClick={handleAddCourse}
             type="button"
             className="w-[150px] text-white text-[14px] font-medium py-2 h-[40px] bg-[#004085] p-2 rounded-md 
                 outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
