@@ -45,8 +45,6 @@ const navigate = useNavigate()
 
   })
 
-  console.log("schools: ", schools)
-
   const handleTrashClick = (event: React.MouseEvent, schoolParam: any) => {
     event.stopPropagation(); // Prevents event from bubbling to parent
     setItemForDelete(schoolParam)

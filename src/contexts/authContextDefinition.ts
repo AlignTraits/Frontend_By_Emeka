@@ -25,6 +25,8 @@ export interface AuthContextType {
   user: User | null;
   admin: Admin | null
   setUser: React.Dispatch<React.SetStateAction<User | null>>
+  setCurrentCourseID: React.Dispatch<React.SetStateAction<string | null>>
+  setCreatingCourseClicked: React.Dispatch<React.SetStateAction<boolean>>
   setAdmin: React.Dispatch<React.SetStateAction<Admin | null>>
   login: (email: string, password: string) => Promise<void | number>;
   logout: () => Promise<void>;
@@ -43,6 +45,8 @@ export interface AuthContextType {
   error: string | null;
   token: string | undefined;
   isAuthenticated: boolean;
+  currentCourseID: string | null;
+  creatingCourseClicked: boolean
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -58,4 +62,8 @@ export const AuthContext = createContext<AuthContextType>({
   error: null,
   token: undefined,
   isAuthenticated: false,
+  currentCourseID: null,
+  creatingCourseClicked: false,
+  setCurrentCourseID: () => {},
+  setCreatingCourseClicked: () => {}
 });

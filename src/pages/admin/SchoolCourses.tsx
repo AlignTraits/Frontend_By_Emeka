@@ -10,6 +10,7 @@ import { getSchool } from "../../services/schools";
 import { School } from "../../services/schools";
 import { Course } from "../../types/course.types";
 import CoursesTable from "../../components/Admin/CourseTable";
+import { useAuth } from "../../contexts/useAuth";
 
 
 
@@ -20,19 +21,21 @@ interface SchoolWithCourses extends School {
 
 export default function SchoolCourses() {
   const navigate = useNavigate()
+  const {setCurrentCourseID} = useAuth()
 
   const { schoolId } = useParams<{ schoolId: string }>();
   const [school, setSchool] = useState<SchoolWithCourses>();
   const [isLoading, setIsLoading] = useState(true);  
+  const [courses, setCourses] = useState([])
 
   async function fetchSchool() {
     setIsLoading(true)
     const response = await getSchool(schoolId as string);
     setSchool(response);
+    setCourses(response.courses)
     setIsLoading(false);
-  }
 
-  console.log("school: ", school)
+  }
 
   useEffect(() => {
     fetchSchool();
@@ -41,6 +44,7 @@ export default function SchoolCourses() {
   const handleAddCourse = (event: React.MouseEvent) => {
     event.stopPropagation(); // Prevents event from bubbling to parent
     navigate(`/admin/schools/${schoolId}/add-course`);
+    setCurrentCourseID(null)
   }
   
 
@@ -91,7 +95,7 @@ export default function SchoolCourses() {
         </div>
       </div>
 
-      <CoursesTable courses={[]} isLoading={isLoading} />
+      <CoursesTable courses={courses} isLoading={isLoading} />
     </div>
   </div>
   );
