@@ -47,7 +47,7 @@ const ImageUploadWithPreview = ({
         const reader = new FileReader();
         reader.onload = () => {
           setPreviewUrl(reader.result);
-          console.log(imageFile)
+          console.log("imageFile: ", imageFile)
         URL.revokeObjectURL(objectUrl);
         };
         reader.readAsDataURL(file);

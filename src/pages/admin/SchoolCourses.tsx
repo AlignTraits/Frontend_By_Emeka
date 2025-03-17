@@ -11,7 +11,7 @@ import { School } from "../../services/schools";
 import { Course } from "../../types/course.types";
 import CoursesTable from "../../components/Admin/CourseTable";
 import { useAuth } from "../../contexts/useAuth";
-
+import BulkCourseModal from "../../components/Admin/BulkCourseModal";
 
 
 interface SchoolWithCourses extends School {
@@ -22,6 +22,8 @@ interface SchoolWithCourses extends School {
 export default function SchoolCourses() {
   const navigate = useNavigate()
   const {setCurrentCourseID} = useAuth()
+
+  const [showBulkModal, setShowBulkModal] = useState(false)
 
   const { schoolId } = useParams<{ schoolId: string }>();
   const [school, setSchool] = useState<SchoolWithCourses>();
@@ -74,6 +76,7 @@ export default function SchoolCourses() {
           </div>
 
           <button 
+            onClick={() => setShowBulkModal(true)}
             type="button"
             className="w-[150px] text-[#1E1E1E] text-[14px] font-medium py-2 h-[40px] bg-[#F6C648] p-2 rounded-md 
                 outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
@@ -95,8 +98,10 @@ export default function SchoolCourses() {
         </div>
       </div>
 
-      <CoursesTable courses={courses} isLoading={isLoading} />
+      <CoursesTable courses={courses} isLoading={isLoading} getSchool={fetchSchool} />
     </div>
+
+    {showBulkModal && <BulkCourseModal setShowModal={setShowBulkModal} getSchools={fetchSchool} />}
   </div>
   );
 }

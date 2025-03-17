@@ -36,6 +36,7 @@ export default function AddCourse () {
   const [defaultYear, setDefaultYear] = useState("")
   const [defaultLevel, setDefaultLevel] = useState("")
   const [defaultScholarship, setDefaultScholarship] = useState("")
+  const [responseObj, setResponseObj] = useState({} as any)
 
   const programLevelList = ["100", "200", "300", "400"]
 
@@ -52,8 +53,15 @@ export default function AddCourse () {
   const handleSubmit = async () => {
     const formData = new FormData();
 
+    if (Object.keys(responseObj).length > 0) {
+      if (imageFile) {
+        formData.append("profile", imageFile)
+      } else {
+        formData.append("profile", responseObj?.profile)
+      }
+    }
+
     formData.append("title", title)
-    formData.append("profile", imageFile!)
     formData.append("schoolId", schoolId!)
     formData.append("scholarship", isScholarship)
     formData.append("duration", courseDuration)
@@ -71,15 +79,29 @@ export default function AddCourse () {
     formData.append("loanInformation", "five years apart or more")
     formData.append("courseWebsiteUrl", website)
 
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    console.log("responseObj: ", responseObj)
+
     try {
       setIsLoading(true)
-      const response =   await createCourse(formData, token as string)
-      console.log(response)
-      toast.success("Course Created Successfully");
+      const response =   await createCourse(formData, token as string, currentCourseID ? currentCourseID : undefined)
+      console.log("response: ", response)
+      if (currentCourseID) {
+        toast.success("Course Updated Successfully");
+      } else {
+        toast.success("Course Created Successfully");
+      }
+      
       navigate(-1);
     } catch (error) {
-      // console.error("Failed to create course", error);
-      toast.error("Failed to create course");
+      if (currentCourseID) {
+        toast.error("Failed to update course");
+      } else {
+        toast.success("Failed to create course");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -93,18 +115,23 @@ export default function AddCourse () {
   const getCourse = async () => {
     if (currentCourseID) {
       const tempCourse = await getCourseDetails(currentCourseID)
-      console.log("tempCourse: ", tempCourse)
+      setResponseObj(tempCourse)
 
       setPreviewUrl(tempCourse.profile)
       setTitle(tempCourse.title)
       setWebsite(tempCourse.courseWebsiteUrl)
       setDefaultLevel(tempCourse.programLevel)
+      setProgramLevel(tempCourse.programLevel)
       setDefaulCourseDuration(tempCourse.duration)
+      setCourseDuration(tempCourse.duration)
+      setDurationPeriod(tempCourse.durationPeriod)
       setDefaultYear(tempCourse.durationPeriod)
+      setIsScholarship(tempCourse.scholarship)
       setDefaultScholarship(tempCourse.scholarship)
       setAcceptanceFee(tempCourse.acceptanceFee)
       setCoursePrice(tempCourse.price)
       setLoanDescription(tempCourse.loanInformation)
+      setCourseDescription(tempCourse.description)
     }
   }
 
@@ -301,7 +328,7 @@ export default function AddCourse () {
             <button type="button" onClick={handleCancel} className="rounded-lg w-full h-[40px] bg-[#D9E2ED] text-[14px] text-[#004085] semi-bold">Cancel</button>
 
             <button type="button" onClick={handleSubmit} className="rounded-lg w-full h-[40px] bg-[#004085] text-[14px] text-[white] semi-bold">
-              {isLoading ? <BeatLoader /> : "Add Course"}
+              {isLoading ? <BeatLoader /> : currentCourseID ? "Update Course" : "Add Course"}
             </button>
 
           </div>
