@@ -14,6 +14,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = useState<string | undefined>(
     authService.getToken()
   );
+  const [currentCourseID, setCurrentCourseID] = useState<string | null>(null);
+  const [creatingCourseClicked, setCreatingCourseClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -164,6 +166,10 @@ const login = async (email: string, password: string): Promise<number> => {
     verifyEmailToken,
     token: authService.getToken(),
     isAuthenticated: !!authService.getToken(),
+    currentCourseID,
+    setCurrentCourseID,
+    setCreatingCourseClicked,
+    creatingCourseClicked
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -13,4 +13,7 @@ export interface  Course {
   scholarship?: string
   currency?: string
   university? : School
+  programLevel: string
+  duration: number;
+  updatedAt: string
 } 

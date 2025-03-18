@@ -270,7 +270,7 @@ export default function EditSchoolModal({
                 {isLoading ? (
                     <BeatLoader color="#ffffff" size={8} />
                 ) : (
-                    "Edit School"
+                    "Update School"
                 )}
             </button>
           </form>

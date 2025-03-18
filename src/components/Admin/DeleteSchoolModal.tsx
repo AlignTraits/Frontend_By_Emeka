@@ -48,11 +48,16 @@ export default function DeleteModal({
           itemType.charAt(0).toUpperCase() + itemType.slice(1)
         } Deleted Successfully`
       );
-      localStorage.removeItem('schools')
-      navigate(`/admin/schools`);
+
+
       if (getSchools) {
         getSchools()
       }
+
+      if (itemType === "school") {
+        navigate(`/admin/schools`);
+      }
+
       console.log(response.data);
     } catch (err: any) {
       if (err.response && err.response.data) {
@@ -79,7 +84,7 @@ export default function DeleteModal({
           <h2 className=" text-[18px] font-semibold">Delete {itemType}</h2>
           <p className="text-[16px] text-[#737373]">
             You are about to delete "{itemName}"! This action cannot be undone. 
-            All data associated with this school will be permanently removed.
+            All data associated with this {itemType} will be permanently removed.
           </p>
         </div>
 
