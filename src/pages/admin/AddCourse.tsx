@@ -32,10 +32,10 @@ export default function AddCourse () {
   const [acceptanceFee, setAcceptanceFee] = useState("")
   const [coursePrice, setCoursePrice] = useState("")
 
-  const [defaultCourseDuration, setDefaulCourseDuration] = useState("")
-  const [defaultYear, setDefaultYear] = useState("")
-  const [defaultLevel, setDefaultLevel] = useState("")
-  const [defaultScholarship, setDefaultScholarship] = useState("")
+  // const [defaultCourseDuration, setDefaulCourseDuration] = useState("")
+  // const [defaultYear, setDefaultYear] = useState("")
+  // const [defaultLevel, setDefaultLevel] = useState("")
+  // const [defaultScholarship, setDefaultScholarship] = useState("")
   const [responseObj, setResponseObj] = useState({} as any)
 
   const programLevelList = ["100", "200", "300", "400"]
@@ -120,14 +120,14 @@ export default function AddCourse () {
       setPreviewUrl(tempCourse.profile)
       setTitle(tempCourse.title)
       setWebsite(tempCourse.courseWebsiteUrl)
-      setDefaultLevel(tempCourse.programLevel)
+      // setDefaultLevel(tempCourse.programLevel)
       setProgramLevel(tempCourse.programLevel)
-      setDefaulCourseDuration(tempCourse.duration)
+      // setDefaulCourseDuration(tempCourse.duration)
       setCourseDuration(tempCourse.duration)
       setDurationPeriod(tempCourse.durationPeriod)
-      setDefaultYear(tempCourse.durationPeriod)
+      // setDefaultYear(tempCourse.durationPeriod)
       setIsScholarship(tempCourse.scholarship)
-      setDefaultScholarship(tempCourse.scholarship)
+      // setDefaultScholarship(tempCourse.scholarship)
       setAcceptanceFee(tempCourse.acceptanceFee)
       setCoursePrice(tempCourse.price)
       setLoanDescription(tempCourse.loanInformation)
@@ -206,9 +206,14 @@ export default function AddCourse () {
                   label: level,
                 }))}
                 onChange={(value) => setProgramLevel(value)}
+                // selectedProps={{
+                //   value: defaultLevel,
+                //   label: defaultLevel
+                // }}
+
                 selectedProps={{
-                  value: defaultLevel,
-                  label: defaultLevel
+                  value: programLevel,
+                  label: programLevel
                 }}
 
               />
@@ -223,9 +228,14 @@ export default function AddCourse () {
                   label: duration,
                 }))}
                 onChange={(value) => setCourseDuration(value)}
+                // selectedProps={{
+                //   value: defaultCourseDuration,
+                //   label: defaultCourseDuration
+                // }}
+
                 selectedProps={{
-                  value: defaultCourseDuration,
-                  label: defaultCourseDuration
+                  value: courseDuration,
+                  label: courseDuration
                 }}
               />
             </div>
@@ -239,9 +249,13 @@ export default function AddCourse () {
                   label: paramPeriod,
                 }))}
                 onChange={(value) => setDurationPeriod(value)}
+                // selectedProps={{
+                //   value: defaultYear,
+                //   label: defaultYear
+                // }}
                 selectedProps={{
-                  value: defaultYear,
-                  label: defaultYear
+                  value: durationPeriod,
+                  label: durationPeriod
                 }}
               />
             </div>
@@ -259,8 +273,8 @@ export default function AddCourse () {
                 }))}
                 onChange={(value) => setIsScholarship(value)}
                 selectedProps={{
-                  value: defaultScholarship,
-                  label: defaultScholarship
+                  value: isScholarship,
+                  label: isScholarship
                 }}
               />
             </div>

@@ -1,12 +1,14 @@
 import React from "react";
-import AdminAuth from "../../assets/admin/adminAuth.png";
+// import AdminAuth from "../../assets/admin/adminAuth.png";
 import Logo from "../../assets/logo.svg";
+import LogoTwo from "../../assets/image2.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { LoginCredentials, AuthResponse } from "../../types/auth.types";
 import { adminLogin, setToken, getAdminDetails } from "../../services/auth.service";
 import BeatLoader from "react-spinners/BeatLoader";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
+import { IoIosStar } from "react-icons/io";
 
 
 export default function Login() {
@@ -155,8 +157,26 @@ const {token} = useAuth()
           </form>
         </div>
       </div>
-      <div className="hidden md:flex w-full basis-[50%]">
-        <img src={AdminAuth} alt="" className="h-screen w-full" />
+      <div className="hidden md:flex w-full basis-[50%] bg-[#E6ECF3] flex-col">
+        {/* <img src={AdminAuth} alt="" className="h-screen w-full" /> */}
+        <p className="text-[#00162F] text-[30px] font-medium p-[30px]">
+          Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem ipsum, 
+          lorem,, Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem 
+        </p>
+        <div className="flex justify-between items-center px-[30px] relative">
+          <div>
+            <p>— Michael Lane</p>
+            <p>Founder, Aligntraits</p>
+          </div>
+
+          <div className="flex h-15 w-15 gap-1">
+            {[1, 2, 3, 4, 5].map((elem) => <IoIosStar key={elem} />)}
+          </div>
+        </div>
+
+        <div className="mt-20 absolute right-[0px] bottom-[20px] rounded-l-lg border-l-[4px] border-t-[4px] border-b-[4px] border-[#101828]">
+          <img src={LogoTwo} alt="" className="w-[700px] h-[350px] rounded-l-lg " />
+        </div>
       </div>
     </div>
   );
