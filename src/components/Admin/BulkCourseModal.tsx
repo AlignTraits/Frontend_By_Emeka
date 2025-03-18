@@ -41,7 +41,7 @@ export default function BulkCourseModal({setShowModal, getSchools}: ModalProps) 
   
     const rows: (string | number)[][] = [
       [
-        "Computer Tech 22",
+        "Tech 22",
         "https://drive.google.com/uc?export=view&id=1QoRkwCwSh__TlbnlyVO6mIj9ZgzTlObw",
         `${schoolId}`,
         "Full Scholarship",

@@ -1,12 +1,14 @@
 import React from "react";
-import AdminAuth from "../../assets/admin/adminAuth.png";
+// import AdminAuth from "../../assets/admin/adminAuth.png";
 import Logo from "../../assets/logo.svg";
+import LogoTwo from "../../assets/image2.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { LoginCredentials, AuthResponse } from "../../types/auth.types";
 import { adminLogin, setToken, getAdminDetails } from "../../services/auth.service";
 import BeatLoader from "react-spinners/BeatLoader";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
+import { IoIosStar } from "react-icons/io";
 
 
 export default function Login() {
@@ -72,15 +74,12 @@ const {token} = useAuth()
   if(token == undefined) {
      return (
     <div className="flex h-screen p-0 m-0 w-full ">
-      <div className="hidden md:flex w-full basis-[50%]">
-        <img src={AdminAuth} alt="" className="h-screen w-full" />
-      </div>
       <div className="w-full h-screen p-5 lg:p-10  md:basis-[50%] space-y-14">
         <div className="flex justify-between  w-full p-0">
           <img src={Logo} alt="" className="p-0 w-40" />
           <h2 className="font-[500] my-auto text-[14px] lg:text-[18px]">
             Not an admin?{" "}
-            <span className="text-[#004085]  font-[500]">Request</span>
+            <span className="text-[#004085]  font-[500]">Create an account</span>
           </h2>
         </div>
         <div className="flex flex-col justify-center items-center space-y-10 lg:space-y-12">
@@ -156,6 +155,27 @@ const {token} = useAuth()
             </button>
             <p className="text-[#004085]">forgot password?</p>
           </form>
+        </div>
+      </div>
+      <div className="hidden md:flex w-full basis-[50%] bg-[#E6ECF3] flex-col">
+        {/* <img src={AdminAuth} alt="" className="h-screen w-full" /> */}
+        <p className="text-[#00162F] text-[30px] font-medium p-[30px]">
+          Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem ipsum, 
+          lorem,, Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem 
+        </p>
+        <div className="flex justify-between items-center px-[30px] relative">
+          <div>
+            <p>— Michael Lane</p>
+            <p>Founder, Aligntraits</p>
+          </div>
+
+          <div className="flex h-15 w-15 gap-1">
+            {[1, 2, 3, 4, 5].map((elem) => <IoIosStar key={elem} />)}
+          </div>
+        </div>
+
+        <div className="mt-20 absolute right-[0px] bottom-[20px] rounded-l-lg border-l-[4px] border-t-[4px] border-b-[4px] border-[#101828]">
+          <img src={LogoTwo} alt="" className="w-[700px] h-[350px] rounded-l-lg " />
         </div>
       </div>
     </div>
