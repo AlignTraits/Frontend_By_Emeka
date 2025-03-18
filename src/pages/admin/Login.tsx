@@ -72,15 +72,12 @@ const {token} = useAuth()
   if(token == undefined) {
      return (
     <div className="flex h-screen p-0 m-0 w-full ">
-      <div className="hidden md:flex w-full basis-[50%]">
-        <img src={AdminAuth} alt="" className="h-screen w-full" />
-      </div>
       <div className="w-full h-screen p-5 lg:p-10  md:basis-[50%] space-y-14">
         <div className="flex justify-between  w-full p-0">
           <img src={Logo} alt="" className="p-0 w-40" />
           <h2 className="font-[500] my-auto text-[14px] lg:text-[18px]">
             Not an admin?{" "}
-            <span className="text-[#004085]  font-[500]">Request</span>
+            <span className="text-[#004085]  font-[500]">Create an account</span>
           </h2>
         </div>
         <div className="flex flex-col justify-center items-center space-y-10 lg:space-y-12">
@@ -157,6 +154,9 @@ const {token} = useAuth()
             <p className="text-[#004085]">forgot password?</p>
           </form>
         </div>
+      </div>
+      <div className="hidden md:flex w-full basis-[50%]">
+        <img src={AdminAuth} alt="" className="h-screen w-full" />
       </div>
     </div>
   );
