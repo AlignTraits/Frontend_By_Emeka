@@ -59,6 +59,8 @@ export default function AddCourse () {
       } else {
         formData.append("profile", responseObj?.profile)
       }
+    } else {
+      formData.append("profile", imageFile!) 
     }
 
     formData.append("title", title)

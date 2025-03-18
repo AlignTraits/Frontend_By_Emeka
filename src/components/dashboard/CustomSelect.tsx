@@ -37,8 +37,6 @@ const CustomSelect: React.FC<SelectProps> = ({
     onChange(option.value);
   };
 
-  console.log("selected: ", selected)
-
   useEffect(() => {
     const checkDropdownPosition = () => {
       if (selectRef.current) {
