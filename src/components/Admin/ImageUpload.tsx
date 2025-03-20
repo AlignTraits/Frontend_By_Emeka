@@ -8,6 +8,8 @@ interface ImageUploadWithPreviewProps {
   setImageFile: (file: File | null) => void;
   setPreviewUrl: React.Dispatch<string | null | ArrayBuffer>;
   previewUrl: string | null | ArrayBuffer;
+  errorState?: boolean
+  handleFileError?: () => void
 }
 
 const ImageUploadWithPreview = ({
@@ -15,11 +17,13 @@ const ImageUploadWithPreview = ({
   setImageFile,
   setPreviewUrl,
   previewUrl,
+  errorState=false,
+  handleFileError=()=> {}
 }: ImageUploadWithPreviewProps) => {
   const [isDragOver, setIsDragOver] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-   
+    handleFileError()
     const files = e.target.files;
     if (!files || files.length === 0) {
       alert("No file selected.");
@@ -115,7 +119,7 @@ const ImageUploadWithPreview = ({
         </div>
       ) : (
         <div
-          className={`flex flex-col justify-center items-center space-y-4 border-[3px] border-[#007BFF] p-5 px-10 border-dotted rounded-md w-full ${
+          className={`flex flex-col justify-center items-center space-y-4 border-[3px] ${errorState ? "border-[red]" : "border-[#007BFF]"} p-5 px-10 border-dotted rounded-md w-full ${
             isDragOver ? "bg-[#e0f7fa]" : ""
           }`}
           onDragOver={handleDragOver}

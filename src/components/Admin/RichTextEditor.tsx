@@ -5,10 +5,11 @@ import "react-quill/dist/quill.snow.css";
 interface RichTextEditorProps {
   value: string;
   onChange: (content: string) => void;
-  placeholder: string
+  placeholder: string;
+  onFocus: () => void
 }
 
-const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange, placeholder }) => {
+const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange, placeholder, onFocus }) => {
   const toolbarOptions = [
     [{ font: [] }],
     [{ size: [] }],
@@ -32,6 +33,8 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange, placeh
       // style={{ height: "200px", backgroundColor: 'white' }}
       className="h-[300px] bg-[white] rounded-lg"
       placeholder={placeholder}
+      onFocus={onFocus}
+      
     />
   );
 };
