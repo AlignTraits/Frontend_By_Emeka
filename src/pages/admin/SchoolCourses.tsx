@@ -53,9 +53,9 @@ export default function SchoolCourses() {
     setCurrentCourseID(null)
   }
 
-  const handleTestClick = () => {
-    navigate(`/admin/schools/${schoolId}/add-course/123456`);
-  }
+  // const handleTestClick = () => {
+  //   navigate(`/admin/schools/${schoolId}/add-course/123456`);
+  // }
   
 
   return (
@@ -64,7 +64,7 @@ export default function SchoolCourses() {
     <div className="flex flex-col w-full gap-10 p-5 xl:p-6">
       <div className="flex justify-between items-center border-b border-[#EAECF0] py-[20px]">
         <div>
-        <p onClick={handleTestClick}>Test</p>
+        {/* <p onClick={handleTestClick}>Test</p> */}
           <div onClick={() => navigate(-1)} className="flex gap-x-[5px] items-center">
             <IoIosArrowBack className="h-4 w-4" />
             <p className="text-[#004085] text-[14px] font-medium cursor-pointer">Go back</p>

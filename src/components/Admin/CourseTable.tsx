@@ -16,7 +16,6 @@ interface Props {
   getSchool: Function
 }
 
-
 export default function CoursesTable({
   courses,
   isLoading,
@@ -45,6 +44,10 @@ const [itemForDelete, setItemForDelete] = useState({
     setModal(true)
   };
 
+  const handleTestClick = (couresID: string) => {
+    navigate(`/admin/schools/${schoolId}/add-course/${couresID}`);
+  }
+  
   return (
     <>
       {isLoading && (
@@ -98,6 +101,7 @@ const [itemForDelete, setItemForDelete] = useState({
                   <tr
                     className="[&>td]:py-5 hover:bg-[#007BFF33] border-b border-gray-300 last:border-b-0"
                     key={index + course.id}
+                    onClick={() => handleTestClick(course.id)}
                   >
                     <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-10">
                       {course.title}

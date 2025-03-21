@@ -10,6 +10,7 @@ import DeleteModal from "./DeleteSchoolModal";
 import EditSchoolModal from "./EditSchoolModal";
 // import { getSchool } from "../../services/schools";
 // import { Course } from "../../types/course.types";
+import SchoolDetails from "./SchoolDetails";
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +30,7 @@ export default function SchoolsTable({
 const navigate = useNavigate()
   const [modal, setModal] = useState(false);
   const [editModal, setEditModal] = useState(false)
+  const [viewModal, setViewModal] = useState(false)
   const [itemForDelete, setItemForDelete] = useState({
     name: "",
     id: ""
@@ -42,8 +44,19 @@ const navigate = useNavigate()
     location: "",
     region: "",
     country: ""
-
   })
+
+
+  const [itemForView, setItemForView] = useState({
+    id: "",
+    name: "",
+    schoolType: "",
+    logo: "",
+    region: "",
+    country: ""
+  })
+
+
 
   const handleTrashClick = (event: React.MouseEvent, schoolParam: any) => {
     event.stopPropagation(); // Prevents event from bubbling to parent
@@ -61,6 +74,12 @@ const navigate = useNavigate()
     event.stopPropagation();
     setItemForEdit(schoolParam)
     setEditModal(true)
+  };
+
+  const handleViewClick = (event: React.MouseEvent, schoolParam: any) => {
+    event.stopPropagation();
+    setItemForView(schoolParam)
+    setViewModal(true)
   };
 
   const renderType = (schoolType:string) => {
@@ -130,7 +149,7 @@ const navigate = useNavigate()
                   <tr
                     className="[&>td]:py-5 hover:bg-[#007BFF33] border-b border-gray-300 last:border-b-0"
                     key={index + school.id}
-                    onClick={() => navigate(`edit-school?id=${school.id}`)}
+                    onClick={(e) => handleViewClick(e, school)}
                   >
                     <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-10 items-center">
 
@@ -203,6 +222,21 @@ const navigate = useNavigate()
               }
             }
             fetchSchool={getSchools}
+          />
+        )
+      }
+
+      {
+        viewModal && (
+          <SchoolDetails 
+            defaultName={itemForView?.name as string}
+            schoolId={itemForView?.id as string}
+            setShowModal={setViewModal}
+            schooTypeDefault={itemForView?.schoolType as string}
+            defaultImgUrl={itemForView?.logo as string}
+            country={itemForView.country}
+            region={itemForView.region}
+            getSchools={getSchools}
           />
         )
       }
