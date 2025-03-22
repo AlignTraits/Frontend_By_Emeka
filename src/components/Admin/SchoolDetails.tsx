@@ -3,6 +3,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { IoTrash } from "react-icons/io5";
 import { IoIosLink } from "react-icons/io";
 import DeleteModal from "./DeleteSchoolModal";
+import { useNavigate } from "react-router-dom";
 import EditSchoolModal from "./EditSchoolModal";
 import { useState } from "react";
 
@@ -17,8 +18,6 @@ interface ModalProps {
   getSchools: Function
 }
 
-
-
 export default function SchoolDetails({
   setShowModal, schooTypeDefault, 
   defaultImgUrl, defaultName, country, region, schoolId, getSchools}: ModalProps) {
@@ -26,10 +25,18 @@ export default function SchoolDetails({
   const [deletModal, setDeleteModal] = useState(false)
   const [editModal, setEditModal] = useState(false)
 
+  const navigate = useNavigate()
+
   const handleClose = async () => {
     await getSchools()
     setShowModal(false)
   }
+
+  const handleManageClick = () => {
+    setShowModal(false)
+    navigate(`/admin/schools/${schoolId}/courses`);
+  };
+  
 
   return (
     <div className="absolute inset-0 bg-white p-10">
@@ -79,8 +86,6 @@ export default function SchoolDetails({
                   <p className="text-[#737373] font-normal text[12px]">Region</p>
                   <p className="text-[#1E1E1E] text-[16px] font-medium">{region}</p>
                 </div>
-
-
                 </div>
             </div>
           </div>
@@ -94,7 +99,7 @@ export default function SchoolDetails({
               <IoTrash className="text-[white]" /> <p className="font-medium text-[14px] text-[white]">Delete</p>
             </button>
 
-            <button  onClick={()=> setShowModal(false)} className="w-[126px] h-[44px] flex gap-x-[5px] justify-center items-center bg-[#004085] py-2 rounded-lg border-[1px] border-[#DDDDDD]">
+            <button  onClick={handleManageClick} className="w-[126px] h-[44px] flex gap-x-[5px] justify-center items-center bg-[#004085] py-2 rounded-lg border-[1px] border-[#DDDDDD]">
                <p className="font-medium text-[14px] text-[white]">Manage Course</p>
             </button>
           </div>
