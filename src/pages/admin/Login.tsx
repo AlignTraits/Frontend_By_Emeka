@@ -74,41 +74,41 @@ const {token} = useAuth()
   if(token == undefined) {
      return (
     <div className="flex h-screen p-0 m-0 w-full ">
-      <div className="w-full h-screen p-5 lg:p-10  md:basis-[50%] space-y-14">
+      <div className="w-full h-screen p-5 lg:p-10  md:basis-[50%] space-y-14 relative">
         <div className="flex justify-between  w-full p-0">
           <img src={Logo} alt="" className="p-0 w-40" />
-          <h2 className="font-[500] my-auto text-[14px] lg:text-[18px]">
+          <h2 className="text-[#999999] text-[14px]">
             Not an admin?{" "}
-            <span className="text-[#004085]  font-[500]">Create an account</span>
+            <span className="text-[#004085] font-[400]">Create an account</span>
           </h2>
         </div>
-        <div className="flex flex-col justify-center items-center space-y-10 lg:space-y-12">
+        <div className="flex flex-col justify-center items-center space-y-7">
           <div className="mx-auto space-y-4">
-            <h1 className="text-[28px] lg:text-[38px] xl:text-[48px] font-[700] text-center leading-[40px] lg:leading-[50px] xl:leading-[60px] mx-auto">
+            <h1 className="text-[30px] md:w-[80%] xl:w-[70%] mx-auto leading-[40px]">
               Access is restricted to authorized personnel only
             </h1>
-            <p className="text-center text-[16px] md:w-[80%] xl:w-[70%] mx-auto">
+            <p className="text-[16px] md:w-[80%] xl:w-[70%] mx-auto text-[#737373]">
               By logging in, you agree to uphold strict confidentiality
               regarding all data you access, changes are recorded and traceable.
             </p>
           </div>
 
           <form
-            className="md:w-[80%] xl:w-[65%] space-y-4 lg:space-y-8"
+            className="md:w-[80%] xl:w-[70%] space-y-4 lg:space-y-4"
             onSubmit={(e) => handleSubmit(e)}
           >
             {error && (
               <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
             )}
             <div className="space-y-2">
-              <label htmlFor="email" className="text-[18px]">
-                Email
+              <label htmlFor="email" className="text-[14px] text-[#00162F]">
+                Email*
               </label>
               <input
                 id="email"
                 type="email"
                 required
-                className="w-full rounded-md border border-[#000000] px-3 py-2 text-[14px]"
+                className="w-full h-[44px] rounded-md focus:outline-none border border-[#D0D5DD] px-3 py-2 text-[14px]"
                 placeholder="Email"
                 value={credentials.email}
                 onChange={(e) =>
@@ -117,15 +117,15 @@ const {token} = useAuth()
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="password" className="text-[18px]">
-                Password
+              <label htmlFor="password" className="text-[14px] text-[#00162F]">
+                Password*
               </label>
               <div className="relative">
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   required
-                  className="w-full rounded-md border border-[#000000] px-3 py-2 text-[14px]"
+                  className="w-full h-[44px] rounded-md focus:outline-none border border-[#D0D5DD] px-3 py-2 text-[14px]"
                   placeholder="Enter your Password"
                   value={credentials.password}
                   onChange={(e) =>
@@ -153,29 +153,36 @@ const {token} = useAuth()
             >
               {isLoading ? <BeatLoader /> : "LOGIN"}
             </button>
-            <p className="text-[#004085]">forgot password?</p>
+            <p className="text-[#999999] text-[14px] text-center">Forgot password?</p>
           </form>
+
+          <div className="flex justify-between absolute bottom-[20px] xl:w-[90%]">
+            <p className="text-[#999999] text-[14px]">© Aligntraits 2025</p>
+
+            <p className="text-[#999999] text-[14px]">© Aligntraits 2025</p>
+          </div>
         </div>
       </div>
-      <div className="hidden md:flex w-full basis-[50%] bg-[#E6ECF3] flex-col">
+      <div className="hidden md:flex w-full basis-[50%] bg-[#E6ECF3] flex-col pl-[20px]">
         {/* <img src={AdminAuth} alt="" className="h-screen w-full" /> */}
-        <p className="text-[#00162F] text-[30px] font-medium p-[30px]">
-          Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem ipsum, 
-          lorem,, Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem ipsum, lorem,, Lorem Ipsum, orem 
+        <p className="text-[#00162F] font-medium text-[16px] font-medium p-[30px]">
+          AlignTraits has revolutionized the way learning and development are structured. 
+          Our platform empowers individuals and organizations with tailored educational pathways, 
+          fostering growth and career success.
         </p>
         <div className="flex justify-between items-center px-[30px] relative">
           <div>
-            <p>— Michael Lane</p>
-            <p>Founder, Aligntraits</p>
+            <p className="text-[#00162F] text-[16px] font-medium">— Oluwaseun Sokeye</p>
+            <p className="text-[#999999] text-[16px] font-medium">Co-Founder, Aligntraits</p>
           </div>
 
           <div className="flex h-15 w-15 gap-1">
-            {[1, 2, 3, 4, 5].map((elem) => <IoIosStar key={elem} />)}
+            {[1, 2, 3, 4, 5].map((elem) => <IoIosStar className="text-[#F6C648]" key={elem} />)}
           </div>
         </div>
 
-        <div className="mt-20 absolute right-[0px] bottom-[20px] rounded-l-lg border-l-[4px] border-t-[4px] border-b-[4px] border-[#101828]">
-          <img src={LogoTwo} alt="" className="w-[700px] h-[350px] rounded-l-lg " />
+        <div className="mt-20 absolute right-[0px] bottom-[0px] rounded-tl-lg border-l-[4px] border-t-[4px] border-[#101828]">
+          <img src={LogoTwo} alt="" className="w-[620px] h-[300px] rounded-tl-lg " />
         </div>
       </div>
     </div>

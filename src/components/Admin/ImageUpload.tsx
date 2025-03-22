@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import ImageUpload from "../../assets/dashboard/icons/image-upload.svg";
 import { toast } from "react-toastify";
 import { FiX } from "react-icons/fi";
+import { FiUploadCloud } from "react-icons/fi";
 
 interface ImageUploadWithPreviewProps {
   imageFile: File | null;
   setImageFile: (file: File | null) => void;
   setPreviewUrl: React.Dispatch<string | null | ArrayBuffer>;
   previewUrl: string | null | ArrayBuffer;
+  errorState?: boolean
+  handleFileError?: () => void
 }
 
 const ImageUploadWithPreview = ({
@@ -15,11 +17,13 @@ const ImageUploadWithPreview = ({
   setImageFile,
   setPreviewUrl,
   previewUrl,
+  errorState=false,
+  handleFileError=()=> {}
 }: ImageUploadWithPreviewProps) => {
   const [isDragOver, setIsDragOver] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-   
+    handleFileError()
     const files = e.target.files;
     if (!files || files.length === 0) {
       alert("No file selected.");
@@ -115,21 +119,21 @@ const ImageUploadWithPreview = ({
         </div>
       ) : (
         <div
-          className={`flex flex-col justify-center items-center space-y-4 border-[3px] border-[#007BFF] p-5 px-10 border-dotted rounded-md w-full ${
+          className={`flex flex-col justify-center items-center space-y-4 border-[3px] ${errorState ? "border-[#F04438]" : "border-[#B9B9B9]"} p-5 px-10 border-dotted rounded-md w-full ${
             isDragOver ? "bg-[#e0f7fa]" : ""
           }`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          <div>
-            <img src={ImageUpload} alt="Upload Icon" />
+          <div className="h-[40px] w-[40px] rounded-md border-[#E9E9E9] border-[1px] flex justify-center items-center">
+            <FiUploadCloud className="text-[#004085]" />
           </div>
-          <p className="text-[#007BFF] text-[16px] font-[600] text-center">
-            Click to upload
+          <p className="text-[#001D3C] text-[16px] font-[600] text-center">
+            Upload
           </p>
           <div className="flex flex-col justify-center space-y-4">
-            <label className="block text-sm font-medium text-gray-700 mx-auto">
+            <label className="block text-sm text-center font-medium text-gray-700 mx-auto">
               PNG or JPG format (max. 800 X 400px)
             </label>
 

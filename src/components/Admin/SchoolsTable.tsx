@@ -10,6 +10,7 @@ import DeleteModal from "./DeleteSchoolModal";
 import EditSchoolModal from "./EditSchoolModal";
 // import { getSchool } from "../../services/schools";
 // import { Course } from "../../types/course.types";
+import SchoolDetails from "./SchoolDetails";
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +30,7 @@ export default function SchoolsTable({
 const navigate = useNavigate()
   const [modal, setModal] = useState(false);
   const [editModal, setEditModal] = useState(false)
+  const [viewModal, setViewModal] = useState(false)
   const [itemForDelete, setItemForDelete] = useState({
     name: "",
     id: ""
@@ -42,8 +44,19 @@ const navigate = useNavigate()
     location: "",
     region: "",
     country: ""
-
   })
+
+
+  const [itemForView, setItemForView] = useState({
+    id: "",
+    name: "",
+    schoolType: "",
+    logo: "",
+    region: "",
+    country: ""
+  })
+
+
 
   const handleTrashClick = (event: React.MouseEvent, schoolParam: any) => {
     event.stopPropagation(); // Prevents event from bubbling to parent
@@ -61,6 +74,12 @@ const navigate = useNavigate()
     event.stopPropagation();
     setItemForEdit(schoolParam)
     setEditModal(true)
+  };
+
+  const handleViewClick = (event: React.MouseEvent, schoolParam: any) => {
+    event.stopPropagation();
+    setItemForView(schoolParam)
+    setViewModal(true)
   };
 
   const renderType = (schoolType:string) => {
@@ -130,15 +149,15 @@ const navigate = useNavigate()
                   <tr
                     className="[&>td]:py-5 hover:bg-[#007BFF33] border-b border-gray-300 last:border-b-0"
                     key={index + school.id}
-                    onClick={() => navigate(`edit-school?id=${school.id}`)}
+                    onClick={(e) => handleViewClick(e, school)}
                   >
-                    <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-10">
+                    <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-10 items-center">
 
                       {
                         school.logo ? <img
                         src={school.logo}
                         alt="School Logo"
-                        className="w-[50px] h-[50px] rounded-full"
+                        className="w-[40px] h-[40px] rounded-full"
                       /> : <div className="w-[40px] h-[40px] rounded-[50%] bg-[grey]"></div>
                       }
                       <span className="text-[#000000] text-[400] text-[16px] capitalize">
@@ -159,7 +178,7 @@ const navigate = useNavigate()
                       {getDays(school.updatedAt)}
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{renderType(school.schoolType)}</td>
-                    <td className="p-[20px] flex gap-x-[20px] items-center">
+                    <td className="p-[20px] flex gap-x-[20px]">
                       <FaRegTrashCan onClick={(e) => handleTrashClick(e, school)} className="text-[#D92D20] h-5 w-5 cursor-pointer" />
                       
                       <MdOutlineEdit onClick={(e) => handleEditClick(e, school)} className="text-[#757575] h-6 w-6 font-[500] cursor-pointer" />
@@ -203,6 +222,21 @@ const navigate = useNavigate()
               }
             }
             fetchSchool={getSchools}
+          />
+        )
+      }
+
+      {
+        viewModal && (
+          <SchoolDetails 
+            defaultName={itemForView?.name as string}
+            schoolId={itemForView?.id as string}
+            setShowModal={setViewModal}
+            schooTypeDefault={itemForView?.schoolType as string}
+            defaultImgUrl={itemForView?.logo as string}
+            country={itemForView.country}
+            region={itemForView.region}
+            getSchools={getSchools}
           />
         )
       }
