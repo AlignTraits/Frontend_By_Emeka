@@ -1,12 +1,56 @@
 
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { IoIosArrowBack } from "react-icons/io";
 import { FaRegEdit } from "react-icons/fa";
 import { IoTrash } from "react-icons/io5";
+import { getCourseDetails } from "../../services/schools";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/useAuth";
+import DeleteModal from "../../components/Admin/DeleteSchoolModal";
 
 export default function CourseDetails () {
-  // const { schoolId } = useParams<{ schoolId: string}>();
+  const {setCurrentCourseID} = useAuth()
+  const {schoolId, courseId } = useParams<{schoolId: string, courseId: string}>();
   const navigate = useNavigate()
+  const [modal, setModal] = useState(false);
+
+  const [courseObj, setCourseObj] = useState({
+    programLevel: "NULL",
+    duration: "NULL",
+    durationPeriod: "NULL",
+    courseWebsiteUrl : "NULL",
+    image: "NULL",
+    acceptanceFee: "NULL",
+    acceptanceFeeCurrency: "NULL",
+    scholarship: "NULL",
+    objectives: "NULL",
+    title: "NULL",
+    loanInformation: "NULL",
+    requirements: [],
+    id: "NULL"
+  })
+
+  const getCourse = async () => {
+    try {
+      const tempCourse = await getCourseDetails(courseId!)
+      setCourseObj(tempCourse)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const handleEdit = () => {
+    setCurrentCourseID(courseId!)
+    navigate(`/admin/schools/${schoolId}/add-course`);
+  }
+
+  useEffect(() => {
+    getCourse()
+  }, [])
+
+  const handleNavigate = () => {
+    navigate(`/admin/schools/${schoolId}/courses`);
+  }
 
   return (
     <div className="relative">
@@ -19,11 +63,11 @@ export default function CourseDetails () {
 
         <div className="w-[762px] flex justify-between items-center">
           <p className="text-[#101828] text-[24px] font-semibold">
-            Bachelor of Science in Computer Science
+            {courseObj.title}
           </p>
 
           <div className="flex gap-x-[20px]">
-            <button className="border-[1px] border-[#DDDDDD] w-[76px] items-center h-[44px] rounded-md flex gap-x-[5px] justify-center">
+            <button onClick={handleEdit} className="border-[1px] border-[#DDDDDD] w-[76px] items-center h-[44px] rounded-md flex gap-x-[5px] justify-center">
               <FaRegEdit className="text-[#1E1E1E] h-6 w-6" /> 
               <p className="text-[14px] font-medium text-[#1E1E1E]">Edit</p>
             </button>
@@ -41,43 +85,38 @@ export default function CourseDetails () {
             <div className="flex gap-x-[100px]">
               <div>
                 <p className="text-[#737373] font-normal text[12px]">Program Level</p>
-                <p className="text-[#1E1E1E] text-[16px] font-normal">Bachelor Degree</p>
+                <p className="text-[#1E1E1E] text-[16px] font-normal">{courseObj.programLevel}</p>
               </div>
 
               <div>
                 <p className="text-[#737373] font-normal text[12px]">Program Duration</p>
-                <p className="text-[#1E1E1E] text-[16px] font-normal">4 Years</p>
+                <p className="text-[#1E1E1E] text-[16px] font-normal">{courseObj.duration} {courseObj.durationPeriod}</p>
               </div>
             </div>
 
             <div>
               <p className="text-[#737373] font-normal text[12px]">Course Website</p>
-              <p className="text-[#005CBF] text-[16px] font-normal">www.covanantunviersity.com</p>
+              <p className="text-[#005CBF] text-[16px] font-normal">{courseObj.courseWebsiteUrl}</p>
             </div>
 
             <div>
               <p className="text-[#737373] font-normal text[12px]">Course Objectives</p>
               <p className="text-[#1E1E1E] text-[16px] font-normal">
-                This program aims to provide students with a strong foundation in computer science 
-                principles, programming skills, and problem-solving abilities. Students will learn 
-                software development, algorithms, data structures, and computer systems.
+                {courseObj.objectives}
               </p>
             </div>
 
             <div>
               <p className="text-[#737373] font-normal text[12px]">Loan Requirements</p>
               <p className="text-[#1E1E1E] text-[16px] font-normal">
-                Students can apply for federal student loans, private loans, or scholarships. 
-                The financial aid office provides assistance with the application process.
+                {courseObj.loanInformation}
               </p>
             </div>
 
             <div>
               <p className="text-[#737373] font-normal text[12px]">Admission Requirements</p>
               <p className="text-[#1E1E1E] text-[16px] font-normal">
-                High school diploma or equivalent with a minimum GPA of 3.0. 
-                Strong background in mathematics and basic computer skills. 
-                SAT score of at least 1200 or ACT score of at least 25.
+                {courseObj.requirements.join(" ")}
               </p>
             </div>
 
@@ -85,8 +124,12 @@ export default function CourseDetails () {
           </div>
 
           <div className="basis-[34%] flex flex-col gap-y-[10px]">
-            <div className="h-[150px] width-[100%] bg-[pink] rounded-md">
-
+            <div className="h-[150px] width-[100%] bg-[grey] rounded-md">
+              <img
+                src={courseObj.image}
+                alt=""
+                className="h-[150px] width-[100%] rouded-md"
+              />
             </div>
 
             <div 
@@ -97,23 +140,33 @@ export default function CourseDetails () {
 
               <div>
                 <p className="text-[#737373] font-normal text[12px]">Program Level</p>
-                <p className="text-[#1E1E1E] text-[16px] font-normal">N10K</p>
+                <p className="text-[#1E1E1E] text-[16px] font-normal">{courseObj.programLevel}</p>
               </div>
 
               <div>
                 <p className="text-[#737373] font-normal text[12px]">Acceptance Fee</p>
-                <p className="text-[#1E1E1E] text-[16px] font-normal">N5,000,000</p>
+                <p className="text-[#1E1E1E] text-[16px] font-normal">{courseObj.acceptanceFeeCurrency} {courseObj.acceptanceFee}</p>
               </div>
 
               <div>
                 <p className="text-[#737373] font-normal text[12px]"> Scholarship</p>
-                <p className="text-[#1E1E1E] text-[16px] font-normal">Full scholarship</p>
+                <p className="text-[#1E1E1E] text-[16px] font-normal">{courseObj.scholarship}</p>
               </div>
             </div>
           </div>
         </div>
 
       </div>
+
+      {modal && (
+        <DeleteModal
+          itemName={courseObj.title as string}
+          setShowModal={setModal}
+          itemId={courseId as string}
+          itemType={"course"}
+          getSchools={handleNavigate}
+        />
+      )}
     </div>
     
   )

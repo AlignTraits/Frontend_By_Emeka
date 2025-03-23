@@ -32,7 +32,8 @@ const [itemForDelete, setItemForDelete] = useState({
   id: ""
 })
   
-  const handleEdit = (id: string) => {
+  const handleEdit = (event: React.MouseEvent, id: string) => {
+    event.stopPropagation();
     setCurrentCourseID(id)
     navigate(`/admin/schools/${schoolId}/add-course`);
   }
@@ -45,7 +46,7 @@ const [itemForDelete, setItemForDelete] = useState({
   };
 
   const handleTestClick = (couresID: string) => {
-    navigate(`/admin/schools/${schoolId}/add-course/${couresID}`);
+    navigate(`/admin/schools/${schoolId}/course-details/${couresID}`);
   }
   
   return (
@@ -121,7 +122,7 @@ const [itemForDelete, setItemForDelete] = useState({
                     <td className="p-[20px] flex gap-x-[20px] items-center">
                       <FaRegTrashCan onClick={(e) => handleTrashClick(e, course)} className="text-[#D92D20] h-5 w-5 cursor-pointer" />
                       
-                      <MdOutlineEdit onClick={() => handleEdit(course.id)} className="text-[#757575] h-6 w-6 font-[500] cursor-pointer" />
+                      <MdOutlineEdit onClick={(e) => handleEdit(e, course.id)} className="text-[#757575] h-6 w-6 font-[500] cursor-pointer" />
                       
                     </td>
                   </tr>
