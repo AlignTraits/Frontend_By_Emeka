@@ -33,6 +33,7 @@ import AccountsPage from "./pages/admin/AccountsPage";
 import SchoolCourses from "./pages/admin/SchoolCourses";
 import AddCourse from "./pages/admin/AddCourse";
 import CourseDetails from "./pages/admin/CourseDetails";
+import DataManagement from "./pages/admin/DataManagement";
 
 const router = createBrowserRouter([
   {
@@ -133,7 +134,13 @@ const router = createBrowserRouter([
           {
             path: 'accounts',
             element: <AccountsPage />
-          }, {
+          },
+          {
+            path: 'data-management',
+            element: <DataManagement />
+          },
+
+          {
             path: 'schools',
             element: <Schools />,
           },
@@ -146,7 +153,7 @@ const router = createBrowserRouter([
             element: <AddCourse />
           },
           {
-            path: 'schools/:schoolId/add-course/:courseId',
+            path: 'schools/:schoolId/course-details/:courseId',
             element: <CourseDetails />
           },
           {
