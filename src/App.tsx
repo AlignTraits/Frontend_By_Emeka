@@ -34,6 +34,7 @@ import SchoolCourses from "./pages/admin/SchoolCourses";
 import AddCourse from "./pages/admin/AddCourse";
 import CourseDetails from "./pages/admin/CourseDetails";
 import DataManagement from "./pages/admin/DataManagement";
+import Loans from "./pages/admin/Loans";
 
 const router = createBrowserRouter([
   {
@@ -134,6 +135,11 @@ const router = createBrowserRouter([
           {
             path: 'accounts',
             element: <AccountsPage />
+          },
+
+          {
+            path: 'loans',
+            element: <Loans />
           },
           {
             path: 'data-management',
