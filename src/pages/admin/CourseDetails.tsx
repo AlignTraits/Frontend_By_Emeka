@@ -124,11 +124,11 @@ export default function CourseDetails () {
           </div>
 
           <div className="basis-[34%] flex flex-col gap-y-[10px]">
-            <div className="h-[150px] width-[100%] bg-[grey] rounded-md">
+            <div className="h-[150px] width-[150px] rounded-md">
               <img
                 src={courseObj.image}
                 alt=""
-                className="h-[150px] width-[100%] rouded-md"
+                className="h-[150px] width-[150px] rouded-md"
               />
             </div>
 
