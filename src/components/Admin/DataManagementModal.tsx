@@ -50,15 +50,14 @@ export default function DataManagementModal({setModal, categoryType }: ModalProp
 
   const handleDownload = async () => {
 
+    if (error.length > 0 || startDate === endDate) {
+      toast.error("Please enter proper date range!")
+      return
+    }
+
     let newStartDate = new Date(startDate!);
 
     let newEndDate = new Date(endDate!);
-
-    // if (categoryType === "Course") {
-    //   toast.error("Course Data not available")
-    //   setModal(false)
-    //   return
-    // }
 
     setIsLoading(true)
 
@@ -94,12 +93,13 @@ export default function DataManagementModal({setModal, categoryType }: ModalProp
       }
       setIsLoading(false)
       setModal(false)
-    } catch (e) {
+    } catch (e: any) {
       setIsLoading(false)
       setModal(false)
-      toast.error("Error downloading file!")
+      toast.error(e.response.data.message)
+      // toast.error("Error downloading file!")
 
-      console.error("Error downloading file:", e);
+      // console.error("Error downloading file:", e);
     }
   }
 

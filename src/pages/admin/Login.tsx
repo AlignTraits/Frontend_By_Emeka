@@ -77,10 +77,10 @@ const {token} = useAuth()
       <div className="w-full h-screen p-5 lg:p-10  md:basis-[50%] space-y-14 relative">
         <div className="flex justify-between  w-full p-0">
           <img src={Logo} alt="" className="p-0 w-40" />
-          <h2 className="text-[#999999] text-[14px]">
+          {/* <h2 className="text-[#999999] text-[14px]">
             Not an admin?{" "}
             <span className="text-[#004085] font-[400]">Create an account</span>
-          </h2>
+          </h2> */}
         </div>
         <div className="flex flex-col justify-center items-center space-y-7">
           <div className="mx-auto space-y-4">
