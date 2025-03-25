@@ -60,11 +60,11 @@ const SideBar = ({
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex flex-col space-y-6 h-full">
+      <nav className="flex flex-col space-y-5 h-full">
         <NavLink
           to="/admin"
           className={({ isActive }) =>
-            `flex items-center p-3 font-bold rounded-md transition-colors ${
+            `flex items-center p-2 font-bold rounded-md transition-colors ${
               isActive ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
             }`
           }
@@ -77,7 +77,7 @@ const SideBar = ({
         <NavLink
           to="/admin/schools"
           className={({ isActive }) =>
-            `flex items-center p-3 font-bold rounded-md transition-colors ${
+            `flex items-center p-2 font-bold rounded-md transition-colors ${
               isActive || schoolPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
             }`
           }
@@ -92,7 +92,7 @@ const SideBar = ({
         <NavLink
           to="/admin/data-management"
           className={({ isActive }) =>
-            `flex items-center p-3 font-bold rounded-md transition-colors ${
+            `flex items-center p-2 font-bold rounded-md transition-colors ${
               isActive || dataManagementPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
             }`
           }
@@ -108,7 +108,7 @@ const SideBar = ({
         <NavLink
           to="/admin/loans"
           className={({ isActive }) =>
-            `flex items-center p-3 font-bold rounded-md transition-colors ${
+            `flex items-center p-2 font-bold rounded-md transition-colors ${
               isActive || dataLoansPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
             }`
           }
@@ -123,7 +123,7 @@ const SideBar = ({
         <NavLink
           to="/admin/accounts"
           className={({ isActive }) =>
-            `flex items-center p-3 font-bold rounded-md transition-colors ${
+            `flex items-center p-2 font-bold rounded-md transition-colors ${
               isActive || accountPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
             }`
           }
@@ -138,7 +138,7 @@ const SideBar = ({
         {/* Logout Button */}
         <button
           onClick={handleLogout}
-          className="flex items-center p-3 text-[#5D5D5B] font-bold rounded-md hover:bg-red-50 hover:text-red-500 transition-colors"
+          className="flex items-center p-2 text-[#5D5D5B] font-bold rounded-md hover:bg-red-50 hover:text-red-500 transition-colors"
         >
           <FiLogOut className="w-5 h-5 mr-3" />
           <span>Logout</span>
