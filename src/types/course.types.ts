@@ -17,3 +17,13 @@ export interface  Course {
   duration: number;
   updatedAt: string
 } 
+
+export interface  Loan {
+  id: string;
+  name: string;
+  time: string;
+  school: string;
+  course: string;
+  amount: number;
+  status: string;
+} 

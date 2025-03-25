@@ -8,6 +8,7 @@ import { LuSchool } from "react-icons/lu";
 
 import Logo from "../../assets/logo.svg";
 import { FiGrid, FiLogOut, FiX } from "react-icons/fi";
+import { TbMoneybag } from "react-icons/tb";
 import { TiGroupOutline } from "react-icons/ti";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
@@ -39,6 +40,7 @@ const SideBar = ({
   let schoolPath:boolean = location.pathname.startsWith("/admin/schools")
   let accountPath:boolean = location.pathname.startsWith("/admin/accounts")
   let dataManagementPath:boolean = location.pathname.startsWith("/admin/data-management")
+  let dataLoansPath:boolean = location.pathname.startsWith("/admin/loans")
 
 
   return (
@@ -99,6 +101,22 @@ const SideBar = ({
           <FaDatabase className="w-5 h-5 mr-3" />
           <span className={dataManagementPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
             Data Management
+          </span>
+        </NavLink>
+
+
+        <NavLink
+          to="/admin/loans"
+          className={({ isActive }) =>
+            `flex items-center p-3 font-bold rounded-md transition-colors ${
+              isActive || dataLoansPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
+            }`
+          }
+          end
+        >
+          <TbMoneybag className="w-5 h-5 mr-3" />
+          <span className={dataLoansPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
+            Loans
           </span>
         </NavLink>
 
