@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { FiArrowDown } from "react-icons/fi";
 // import CreateSchoolDropDown from "./CreateSchoolDropDown";
 import { School, getDays } from "../../services/schools";
@@ -27,7 +27,7 @@ export default function SchoolsTable({
   isLoading, getSchools,
 }: Props) {
 
-const navigate = useNavigate()
+// const navigate = useNavigate()
   const [modal, setModal] = useState(false);
   const [editModal, setEditModal] = useState(false)
   const [viewModal, setViewModal] = useState(false)
@@ -64,10 +64,10 @@ const navigate = useNavigate()
     setModal(true)
   };
 
-  const handleManageClick = (event: React.MouseEvent, schoolId:string) => {
-    event.stopPropagation(); // Prevents event from bubbling to parent
-    navigate(`/admin/schools/${schoolId}/courses`);
-  };
+  // const handleManageClick = (event: React.MouseEvent, schoolId:string) => {
+  //   event.stopPropagation(); // Prevents event from bubbling to parent
+  //   navigate(`/admin/schools/${schoolId}/courses`);
+  // };
 
  
   const handleEditClick = (event: React.MouseEvent, schoolParam: any) => {
@@ -119,11 +119,11 @@ const navigate = useNavigate()
                     Courses <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
-                <th className="w-[13.3%] p-[20px]">
+                {/* <th className="w-[13.3%] p-[20px]">
                   <div className="flex items-center">
                     Location <FiArrowDown className="ml-2 mb-1" />
                   </div>
-                </th>
+                </th> */}
                 <th className="w-[13.3%] p-[20px]">
                   <div className="flex items-center">
                     Last Modified <FiArrowDown className="ml-2 mb-1" />
@@ -164,15 +164,14 @@ const navigate = useNavigate()
                         {school.name}
                       </span>
                     </td>
-                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {/* {school._count?.courses} courses */}
+                    {/* <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       <button 
                         onClick={(e) => handleManageClick(e, school.id)} 
                         className="transition-colors text-[white] bg-[#007BFF] h-[35px] px-[10px] rounded-lg w-max hover:bg-[#056e9c]"
                       >
                         Manage Course
                       </button>
-                    </td>
+                    </td> */}
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.country}/{school.region}</td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       {getDays(school.updatedAt)}

@@ -91,7 +91,7 @@ export default function SchoolCourses() {
                 outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
             >
             <RiUploadCloud2Line className="w-5 h-5 text-[#1E1E1E]"  />
-            <p>Upload CSV</p>
+            <p>Bulk Uploads</p>
           </button>
 
           <button 
