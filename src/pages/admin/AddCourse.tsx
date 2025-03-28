@@ -10,22 +10,7 @@ import { BeatLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import AdmissionRequirements from "../../components/Admin/AdmissionRequirements";
 import AdmissionRules from "../../components/Admin/AdmissionRules";
-
-export interface ErrorObjType {
-  title: boolean;
-  courseDescription: boolean;
-  loanDescription: boolean;
-  scholarshipDescription: boolean;
-  website: boolean;
-  acceptanceFee: boolean;
-  coursePrice: boolean;
-  previewUrl: boolean;
-  courseDuration: boolean;
-  programLevel: boolean;
-  durationPeriod: boolean;
-  programLocation: boolean;
-  examType: boolean;
-}
+import { ErrorObjType } from "../../types/course.types";
 
 // Define props type for passing down to child components
 // interface ErrorProps {
@@ -33,6 +18,18 @@ export interface ErrorObjType {
 //   setErrorObj: React.Dispatch<React.SetStateAction<ErrorObjType>>;
 // }
 
+
+const CURRENCYOBJECT: Record<string, string> = {
+  NGN: "NAIRA",
+  USD: "DOLLAR",
+  EUR: "EURO",
+};
+
+const CURRENCYVALUE: Record<string, string> = {
+  NAIRA: "NGN",
+  DOLLAR: "USD",
+  EURO: "EUR"
+};
 
 export default function AddCourse () {
   const { schoolId } = useParams<{ schoolId: string}>();
@@ -72,17 +69,27 @@ export default function AddCourse () {
   const [acceptanceFee, setAcceptanceFee] = useState("")
   const [coursePrice, setCoursePrice] = useState("")
 
+  const [currency, setCurrency] = useState<string>("NGN");
+  const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
+
+  const currencies = ["NGN", "USD", "EUR"]; // 
+
+  const handleCurrencyChange = (selectedCurrency: string) => {
+    setCurrency(selectedCurrency);
+    setShowCurrencyDropdown(false);
+  };
+
   const [responseObj, setResponseObj] = useState({} as any)
 
   const [activeTab, setActiveTab] = useState("tab1");
 
-  const programLevelList = ["100", "200", "300", "400"]
+  const programLevelList = ["Associate Degree", "Master's Degree"]
 
   const programDurationList = ["1", "2", "3", "4"]
 
-  const periodList = ["YEAR", "MONTH"]
+  const periodList = ["YEAR", "MONTH", "WEEK"]
 
-  const scholarshipList = ["Available", "Not Available"]
+  const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
 
   const handleFileError = () => {
     setErrorObj((prev) => ({...prev, previewUrl: false}))
@@ -176,6 +183,7 @@ export default function AddCourse () {
       formData.append("profile", imageFile!) 
     }
 
+
     formData.append("title", title)
     formData.append("schoolId", schoolId!)
     formData.append("scholarship", isScholarship)
@@ -184,7 +192,7 @@ export default function AddCourse () {
     formData.append("price", coursePrice)
     formData.append("currency", "NAIRA")
     formData.append("acceptanceFee", acceptanceFee)
-    formData.append("acceptanceFeeCurrency", "NAIRA")
+    formData.append("acceptanceFeeCurrency", CURRENCYOBJECT[currency])
     formData.append("description", courseDescription)  
     formData.append("requirements", JSON.stringify(["High school","diploma","equivalent"]))
     formData.append("courseInformation", "course Information here")
@@ -240,6 +248,7 @@ export default function AddCourse () {
       setCoursePrice(tempCourse.price)
       setLoanDescription(tempCourse.loanInformation)
       setCourseDescription(tempCourse.description)
+      setCurrency(CURRENCYVALUE[tempCourse.acceptanceFeeCurrency])
     }
   }
 
@@ -406,15 +415,48 @@ export default function AddCourse () {
 
               <div className="w-full flex flex-col gap-y-[5px]">
                 <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.acceptanceFee ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Acceptance Fee*</p>
-                <input
-                  type="number"
-                  placeholder="0.00"
-                  name="AcceptanceFee"
-                  onFocus={() => setErrorObj((prev) => ({...prev, acceptanceFee: false}))}
-                  value={acceptanceFee}
-                  onChange={(e) => setAcceptanceFee(e.target.value)}
-                  className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
-                />
+                <div className="relative">
+                  <input
+                    type="number"
+                    placeholder="0.00"
+                    name="AcceptanceFee"
+                    onFocus={() => setErrorObj((prev) => ({...prev, acceptanceFee: false}))}
+                    value={acceptanceFee}
+                    onChange={(e) => setAcceptanceFee(e.target.value)}
+                    className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none 
+                      border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+                  />
+                  <div className="absolute h-[40px] top-[0] right-0 flex items-center">
+                    <button
+                      type="button"
+                      onClick={() => setShowCurrencyDropdown(!showCurrencyDropdown)}
+                      className="h-full rounded-r-md border-l border-gray-300 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    >
+                      {currency}
+                      <span className="ml-1">▼</span>
+                    </button>
+                  </div>
+                  {showCurrencyDropdown && (
+                    <div className="absolute right-0 z-10 mt-1 w-20 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div className="py-1">
+                        {currencies.map((curr) => (
+                          <button
+                            key={curr}
+                            onClick={() => handleCurrencyChange(curr)}
+                            className={`block w-full px-4 py-2 text-sm ${
+                              currency === curr
+                                ? "bg-blue-100 text-blue-900"
+                                : "text-gray-700 hover:bg-gray-100"
+                            }`}
+                          >
+                            {curr}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                </div>
               </div>
 
               <div className="w-full flex flex-col gap-y-[5px]">
@@ -426,7 +468,8 @@ export default function AddCourse () {
                   onFocus={() => setErrorObj((prev) => ({...prev, coursePrice: false}))}
                   value={coursePrice}
                   onChange={(e) => setCoursePrice(e.target.value)}
-                  className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+                  className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none 
+                  border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
                 />
               </div>
 

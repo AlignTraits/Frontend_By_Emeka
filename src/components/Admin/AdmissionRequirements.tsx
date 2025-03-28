@@ -5,8 +5,7 @@ import { toast } from "react-toastify";
 import { FiEdit2 } from "react-icons/fi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import CustomSelectWithProps from "../dashboard/CustomSelectWithProps";
-
-import { ErrorObjType } from "../../pages/admin/AddCourse";
+import { ErrorObjType } from "../../types/course.types";
 
 const EXAMTYPE = [
   "JAMB",
@@ -58,11 +57,11 @@ const AdmissionRequirements = ({
   }
   : RequirementProps) => {
     
-
   const [subjectList, setSubjectList] = useState<SubjectGrade[]>([]);
   const [programLocation, setProgramLocation] = useState("");
   const [examType, setExamType] = useState("");
   const [reqId, setReqId] = useState<number | null>(null)
+  const [requirementList, setRequirementList] = useState<RequirementList[]>([])
 
   interface RequirementList {
     id: number
@@ -70,8 +69,7 @@ const AdmissionRequirements = ({
     location: string;
     examType: string
   }
-  
-  const [requirementList, setRequirementList] = useState<RequirementList[]>([])
+
 
   const addRequirements = () => {
     checkAllFields();
@@ -118,7 +116,6 @@ const AdmissionRequirements = ({
       setSubjectList(tempRequiremnt.subjects)
       setReqId(tempRequiremnt.id)
     }
-    // setRequirementList(requirementList.filter((item) => item.id !== id));
   };
 
 
@@ -141,7 +138,6 @@ const AdmissionRequirements = ({
       if (allFieldsFilled) {
         return true
       } else {
-        // toast.error("Please fill all subjects fields!")
         return false
       }
     } else {
@@ -172,9 +168,6 @@ const AdmissionRequirements = ({
       )
     );
   };
-
-  console.log("examType: ", examType)
-
 
   return (
     <div className="w-full  bg-[#FAFAFA] border-[1px] border-[#E0E0E0] rounded-lg flex flex-col gap-6 p-5">
@@ -288,7 +281,7 @@ const AdmissionRequirements = ({
                         key={innerItem.id}
                         className="w-max px-[10px] h-[30px] flex justify-center items-center text-center font-[#000000] font-[10px] font-normal border-[#E9E9E9] border-[1px] rounded-2xl"
                       >
-                          {innerItem.subject} {innerItem.grade}
+                          {innerItem.subject}: {innerItem.grade}
                       </p>))
                   }
                 </div>
