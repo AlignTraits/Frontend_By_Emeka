@@ -27,3 +27,19 @@ export interface  Loan {
   amount: number;
   status: string;
 } 
+
+export interface ErrorObjType {
+  title: boolean;
+  courseDescription: boolean;
+  loanDescription: boolean;
+  scholarshipDescription: boolean;
+  website: boolean;
+  acceptanceFee: boolean;
+  coursePrice: boolean;
+  previewUrl: boolean;
+  courseDuration: boolean;
+  programLevel: boolean;
+  durationPeriod: boolean;
+  programLocation: boolean;
+  examType: boolean;
+}
