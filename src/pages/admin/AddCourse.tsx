@@ -8,12 +8,37 @@ import { createCourse, getCourseDetails } from "../../services/schools";
 import { useAuth } from "../../contexts/useAuth";
 import { BeatLoader } from "react-spinners";
 import { toast } from "react-toastify";
+import AdmissionRequirements from "../../components/Admin/AdmissionRequirements";
+import AdmissionRules from "../../components/Admin/AdmissionRules";
+
+export interface ErrorObjType {
+  title: boolean;
+  courseDescription: boolean;
+  loanDescription: boolean;
+  scholarshipDescription: boolean;
+  website: boolean;
+  acceptanceFee: boolean;
+  coursePrice: boolean;
+  previewUrl: boolean;
+  courseDuration: boolean;
+  programLevel: boolean;
+  durationPeriod: boolean;
+  programLocation: boolean;
+  examType: boolean;
+}
+
+// Define props type for passing down to child components
+// interface ErrorProps {
+//   errorObj: ErrorObjType;
+//   setErrorObj: React.Dispatch<React.SetStateAction<ErrorObjType>>;
+// }
+
 
 export default function AddCourse () {
   const { schoolId } = useParams<{ schoolId: string}>();
   const { token, currentCourseID } = useAuth();
   const navigate = useNavigate()
-  const [errorObj, setErrorObj] = useState({
+  const [errorObj, setErrorObj] = useState<ErrorObjType>({
     title: false,
     courseDescription: false,
     loanDescription: false,
@@ -24,8 +49,10 @@ export default function AddCourse () {
     previewUrl: false,
     courseDuration: false,
     programLevel: false,
-    durationPeriod: false
-  })
+    durationPeriod: false,
+    programLocation: false,
+    examType: false
+  });
   const [courseDescription, setCourseDescription] = useState("");
   const [loanDescription, setLoanDescription] = useState("");
 
@@ -46,6 +73,8 @@ export default function AddCourse () {
   const [coursePrice, setCoursePrice] = useState("")
 
   const [responseObj, setResponseObj] = useState({} as any)
+
+  const [activeTab, setActiveTab] = useState("tab1");
 
   const programLevelList = ["100", "200", "300", "400"]
 
@@ -70,7 +99,6 @@ export default function AddCourse () {
   const handleDurationPeriodError = () => {
     setErrorObj((prev) => ({...prev, durationPeriod: false}))
   }
-
 
   const checkAllFields = () => {
     if (title.length === 0) {
@@ -166,17 +194,20 @@ export default function AddCourse () {
     formData.append("loanInformation", "five years apart or more")
     formData.append("courseWebsiteUrl", website)
 
+    console.log(token, createCourse)
+    setActiveTab("tab2")
+
     try {
       setIsLoading(true)
-      const response =   await createCourse(formData, token as string, currentCourseID ? currentCourseID : undefined)
-      console.log("response: ", response)
-      if (currentCourseID) {
-        toast.success("Course Updated Successfully");
-      } else {
-        toast.success("Course Created Successfully");
-      }
+      // const response =   await createCourse(formData, token as string, currentCourseID ? currentCourseID : undefined)
+      // console.log("response: ", response)
+      // if (currentCourseID) {
+      //   toast.success("Course Updated Successfully");
+      // } else {
+      //   toast.success("Course Created Successfully");
+      // }
       
-      navigate(-1);
+      // navigate(-1);
     } catch (error) {
       if (currentCourseID) {
         toast.error("Failed to update course");
@@ -222,218 +253,253 @@ export default function AddCourse () {
           <p className="text-[#004085] text-[14px] font-medium cursor-pointer">Go back</p>
         </div> 
 
-        <form className="w-full h-[2050px] bg-[#FAFAFA] border-[2px] border-[#E0E0E0] rounded-lg flex flex-col gap-5 p-5">
-          <div className="flex">
-            <p className="text-[18px] font-semibold text-[#1E1E1E] w-[190px] ">
-              Basic Information
-            </p>
-            <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
-          </div>
+        <div className="flex border-b border-gray-300 ">
+          {["Basic Info", "Requirement", "Admission Rules"].map((tab, index) => {
+            const tabKey = `tab${index + 1}`;
+            return (
+              <button
+                key={tabKey}
+                className={`py-2 px-4 text-[16px] font-semibold border-b-2 font-medium transition 
+                  ${
+                    activeTab === tabKey
+                      ? "border-[#003064] text-[#003064] text-[16px] font-semibold"
+                      : "border-transparent hover:text-blue-500 text-[#999999]"
+                  }`}
+                onClick={() => setActiveTab(tabKey)}
+              >
+                {tab}
+              </button>
+            );
+          })}
+        </div>
 
-          <div className="flex gap-x-[20px]">
-            <div className="w-full flex flex-col gap-y-[5px]">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.title ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Title*</p>
-              <input
-                onFocus={() => setErrorObj((prev) => ({...prev, title: false}))}
-                type="text"
-                placeholder="What is your title?"
-                name="courseTitle"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+        {
+          activeTab === "tab1" &&
+          <form className="w-full h-[2050px] bg-[#FAFAFA] border-[1px] border-[#E0E0E0] rounded-lg flex flex-col gap-5 p-5">
+            <div className="flex">
+              <p className="text-[18px] font-semibold text-[#1E1E1E] w-[190px] ">
+                Basic Information
+              </p>
+              <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
+            </div>
+
+            <div className="flex gap-x-[20px]">
+              <div className="w-full flex flex-col gap-y-[5px]">
+                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.title ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Title*</p>
+                <input
+                  onFocus={() => setErrorObj((prev) => ({...prev, title: false}))}
+                  type="text"
+                  placeholder="What is your title?"
+                  name="courseTitle"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+                />
+              </div>
+
+              <div className="w-full flex flex-col gap-y-[5px]">
+                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.website ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Website Url*</p>
+                <input
+                  type="text"
+                  placeholder="https://"
+                  name="courseWebsite"
+                  onFocus={() => setErrorObj((prev) => ({...prev, website: false}))}
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+                />
+              </div>
+            </div>
+
+            <div className="w-[300px] flex flex-col gap-y-[5px]">
+              <p className="text-[16px] text-[#1E1E1E] font-medium">Course Image*</p>
+              <ImageUploadWithPreview
+                setImageFile={setImageFile}
+                imageFile={imageFile}
+                previewUrl={previewUrl}
+                setPreviewUrl={setPreviewUrl}
+                errorState={errorObj.previewUrl}
+                handleFileError={handleFileError}
+                
               />
             </div>
 
-            <div className="w-full flex flex-col gap-y-[5px]">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.website ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Website Url*</p>
-              <input
-                type="text"
-                placeholder="https://"
-                name="courseWebsite"
-                onFocus={() => setErrorObj((prev) => ({...prev, website: false}))}
-                value={website}
-                onChange={(e) => setWebsite(e.target.value)}
-                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
-              />
-            </div>
-          </div>
-
-          <div className="w-[300px] flex flex-col gap-y-[5px]">
-            <p className="text-[16px] text-[#1E1E1E] font-medium">Course Image*</p>
-            <ImageUploadWithPreview
-              setImageFile={setImageFile}
-              imageFile={imageFile}
-              previewUrl={previewUrl}
-              setPreviewUrl={setPreviewUrl}
-              errorState={errorObj.previewUrl}
-              handleFileError={handleFileError}
-              
-            />
-          </div>
-
-          <div className="flex">
-            <p className="text-[18px] font-semibold text-[#1E1E1E] w-[210px] ">
-              Course Information
-            </p>
-            <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
-          </div>
-
-          <div className="flex gap-x-[20px]">
-            <div className="w-full flex flex-col gap-y-[5px]">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.programLevel ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Program Level*</p>
-              <CustomSelect
-                placeholder="Select Level"
-                options={programLevelList.map((level) => ({
-                  value: level,
-                  label: level,
-                }))}
-                onChange={(value) => setProgramLevel(value)}
-                selectedProps={{
-                  value: programLevel,
-                  label: programLevel
-                }}
-                handleError={handleProgramLevelError}
-
-              />
+            <div className="flex">
+              <p className="text-[18px] font-semibold text-[#1E1E1E] w-[210px] ">
+                Course Information
+              </p>
+              <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
             </div>
 
-            <div className="w-full flex flex-col gap-y-[5px]">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.courseDuration ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Program Duration*</p>
-              <CustomSelect
-                placeholder="0"
-                options={programDurationList.map((duration) => ({
-                  value: duration,
-                  label: duration,
-                }))}
-                onChange={(value) => setCourseDuration(value)}
-                selectedProps={{
-                  value: courseDuration,
-                  label: courseDuration
-                }}
-                handleError={handleCourseError}
-              />
+            <div className="flex gap-x-[20px]">
+              <div className="w-full flex flex-col gap-y-[5px]">
+                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.programLevel ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Program Level*</p>
+                <CustomSelect
+                  placeholder="Select Level"
+                  options={programLevelList.map((level) => ({
+                    value: level,
+                    label: level,
+                  }))}
+                  onChange={(value) => setProgramLevel(value)}
+                  selectedProps={{
+                    value: programLevel,
+                    label: programLevel
+                  }}
+                  handleError={handleProgramLevelError}
+
+                />
+              </div>
+
+              <div className="w-full flex flex-col gap-y-[5px]">
+                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.courseDuration ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Program Duration*</p>
+                <CustomSelect
+                  placeholder="0"
+                  options={programDurationList.map((duration) => ({
+                    value: duration,
+                    label: duration,
+                  }))}
+                  onChange={(value) => setCourseDuration(value)}
+                  selectedProps={{
+                    value: courseDuration,
+                    label: courseDuration
+                  }}
+                  handleError={handleCourseError}
+                />
+              </div>
+
+              <div className="w-full flex flex-col gap-y-[5px]">
+                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.durationPeriod ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Year*</p>
+                <CustomSelect
+                  placeholder="Year"
+                  options={periodList.map((paramPeriod) => ({
+                    value: paramPeriod,
+                    label: paramPeriod,
+                  }))}
+                  onChange={(value) => setDurationPeriod(value)}
+                  selectedProps={{
+                    value: durationPeriod,
+                    label: durationPeriod
+                  }}
+                  handleError={handleDurationPeriodError}
+                />
+              </div>
+
             </div>
 
-            <div className="w-full flex flex-col gap-y-[5px]">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.durationPeriod ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Year*</p>
-              <CustomSelect
-                placeholder="Year"
-                options={periodList.map((paramPeriod) => ({
-                  value: paramPeriod,
-                  label: paramPeriod,
-                }))}
-                onChange={(value) => setDurationPeriod(value)}
-                selectedProps={{
-                  value: durationPeriod,
-                  label: durationPeriod
-                }}
-                handleError={handleDurationPeriodError}
-              />
+            <div className="flex gap-x-[20px]">
+              <div className="w-full flex flex-col gap-y-[5px]">
+                <p className="text-[16px] text-[#1E1E1E] font-medium">Scholarship*</p>
+                <CustomSelect
+                  placeholder="Select Level"
+                  options={scholarshipList.map((level) => ({
+                    value: level,
+                    label: level,
+                  }))}
+                  onChange={(value) => setIsScholarship(value)}
+                  selectedProps={{
+                    value: isScholarship,
+                    label: isScholarship
+                  }}
+                  handleError={handleDurationPeriodError}
+                />
+              </div>
+
+              <div className="w-full flex flex-col gap-y-[5px]">
+                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.acceptanceFee ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Acceptance Fee*</p>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  name="AcceptanceFee"
+                  onFocus={() => setErrorObj((prev) => ({...prev, acceptanceFee: false}))}
+                  value={acceptanceFee}
+                  onChange={(e) => setAcceptanceFee(e.target.value)}
+                  className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+                />
+              </div>
+
+              <div className="w-full flex flex-col gap-y-[5px]">
+                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.coursePrice ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Price*</p>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  name="CoursePrice"
+                  onFocus={() => setErrorObj((prev) => ({...prev, coursePrice: false}))}
+                  value={coursePrice}
+                  onChange={(e) => setCoursePrice(e.target.value)}
+                  className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+                />
+              </div>
+
             </div>
 
-          </div>
-
-          <div className="flex gap-x-[20px]">
-            <div className="w-full flex flex-col gap-y-[5px]">
-              <p className="text-[16px] text-[#1E1E1E] font-medium">Scholarship*</p>
-              <CustomSelect
-                placeholder="Select Level"
-                options={scholarshipList.map((level) => ({
-                  value: level,
-                  label: level,
-                }))}
-                onChange={(value) => setIsScholarship(value)}
-                selectedProps={{
-                  value: isScholarship,
-                  label: isScholarship
-                }}
-                handleError={handleDurationPeriodError}
-              />
-            </div>
-
-            <div className="w-full flex flex-col gap-y-[5px]">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.acceptanceFee ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Acceptance Fee*</p>
-              <input
-                type="number"
-                placeholder="0.00"
-                name="AcceptanceFee"
-                onFocus={() => setErrorObj((prev) => ({...prev, acceptanceFee: false}))}
-                value={acceptanceFee}
-                onChange={(e) => setAcceptanceFee(e.target.value)}
-                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
-              />
-            </div>
-
-            <div className="w-full flex flex-col gap-y-[5px]">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.coursePrice ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Price*</p>
-              <input
-                type="number"
-                placeholder="0.00"
-                name="CoursePrice"
-                onFocus={() => setErrorObj((prev) => ({...prev, coursePrice: false}))}
-                value={coursePrice}
-                onChange={(e) => setCoursePrice(e.target.value)}
-                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+            <div className="w-full flex flex-col gap-y-[5px] h-max">
+              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.courseDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Description*</p>
+              <RichTextEditor 
+                placeholder="Write few things about the course..." 
+                value={courseDescription} 
+                onFocus={() => setErrorObj((prev) => ({...prev, courseDescription: false}))}
+                onChange={setCourseDescription} 
               />
             </div>
 
-          </div>
+            <div className="flex mt-[50px]">
+              <p className="text-[18px] font-semibold text-[#1E1E1E] w-[210px] ">
+                Loan Requirements
+              </p>
+              <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
+            </div>
 
-          <div className="w-full flex flex-col gap-y-[5px] h-max">
-            <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.courseDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Description*</p>
-            <RichTextEditor 
-              placeholder="Write few things about the course..." 
-              value={courseDescription} 
-              onFocus={() => setErrorObj((prev) => ({...prev, courseDescription: false}))}
-              onChange={setCourseDescription} 
-            />
-          </div>
+            <div className="w-full flex flex-col gap-y-[5px] h-max">
+              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.loanDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Loan Description*</p>
+              <RichTextEditor 
+                placeholder="Write few things about the course..." 
+                value={loanDescription} 
+                onChange={setLoanDescription}
+                onFocus={() => setErrorObj((prev) => ({...prev, loanDescription: false}))}
+              />
+            </div>
 
-          <div className="flex mt-[50px]">
-            <p className="text-[18px] font-semibold text-[#1E1E1E] w-[210px] ">
-              Loan Requirements
-            </p>
-            <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
-          </div>
+            <div className="flex mt-[50px]">
+              <p className="text-[18px] font-semibold text-[#1E1E1E] w-[300px] ">
+                Scholarship Requirements
+              </p>
+              <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
+            </div>
 
-          <div className="w-full flex flex-col gap-y-[5px] h-max">
-            <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.loanDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Loan Description*</p>
-            <RichTextEditor 
-              placeholder="Write few things about the course..." 
-              value={loanDescription} 
-              onChange={setLoanDescription}
-              onFocus={() => setErrorObj((prev) => ({...prev, loanDescription: false}))}
-            />
-          </div>
+            <div className="w-full flex flex-col gap-y-[5px] h-max">
+              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.scholarshipDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Scholarship Description*</p>
+              <RichTextEditor 
+                value={scholarshipDescription} 
+                onChange={setScholarshipDescription} 
+                onFocus={() => setErrorObj((prev) => ({...prev, scholarshipDescription: false}))}
+                placeholder="Write few things about the course..."
+              />
+            </div>
+            
+            <div className="flex gap-x-[20px] mt-[50px]">
+              <button type="button" onClick={handleCancel} className="rounded-lg w-full h-[40px] bg-[#D9E2ED] text-[14px] text-[#004085] semi-bold cursor-pointer">Cancel</button>
 
-          <div className="flex mt-[50px]">
-            <p className="text-[18px] font-semibold text-[#1E1E1E] w-[300px] ">
-              Scholarship Requirements
-            </p>
-            <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
-          </div>
+              <button type="button" onClick={handleSubmit} className="rounded-lg w-full h-[40px] bg-[#004085] text-[14px] text-[white] semi-bold cursor-pointer">
+                {isLoading ? <BeatLoader /> : currentCourseID ? "Update Course" : "Add Course"}
+              </button>
 
-          <div className="w-full flex flex-col gap-y-[5px] h-max">
-            <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.scholarshipDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Scholarship Description*</p>
-            <RichTextEditor 
-              value={scholarshipDescription} 
-              onChange={setScholarshipDescription} 
-              onFocus={() => setErrorObj((prev) => ({...prev, scholarshipDescription: false}))}
-              placeholder="Write few things about the course..."
-            />
-          </div>
-          
-          <div className="flex gap-x-[20px] mt-[50px]">
-            <button type="button" onClick={handleCancel} className="rounded-lg w-full h-[40px] bg-[#D9E2ED] text-[14px] text-[#004085] semi-bold cursor-pointer">Cancel</button>
+            </div>
 
-            <button type="button" onClick={handleSubmit} className="rounded-lg w-full h-[40px] bg-[#004085] text-[14px] text-[white] semi-bold cursor-pointer">
-              {isLoading ? <BeatLoader /> : currentCourseID ? "Update Course" : "Add Course"}
-            </button>
+          </form>
+        }
 
-          </div>
+        {
+          activeTab === "tab2" &&
+          <AdmissionRequirements 
+            errorObj={errorObj}
+            setErrorObj={setErrorObj}
+          />
+        }
 
-        </form>
-
+        {
+          activeTab === "tab3" &&
+          <AdmissionRules />
+        }
       </div>
     </div>
     

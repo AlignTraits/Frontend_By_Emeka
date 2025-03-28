@@ -182,7 +182,7 @@ const {token} = useAuth()
         </div>
 
         <div className="mt-20 absolute right-[0px] bottom-[0px] rounded-tl-lg border-l-[4px] border-t-[4px] border-[#101828]">
-          <img src={LogoTwo} alt="" className="w-[620px] h-[300px] rounded-tl-lg " />
+          <img src={LogoTwo} alt="" className="w-[620px] h-[450px] rounded-tl-lg " />
         </div>
       </div>
     </div>

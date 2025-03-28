@@ -11,7 +11,7 @@ interface SelectProps {
   placeholder?: string;
   onChange: (value: string) => void;
   className?: string;
-  selectedProps?: {
+  selectedProps: {
     value: string,
     label: string
   };
@@ -19,7 +19,7 @@ interface SelectProps {
   handleError?: () => void
 }
 
-const CustomSelect: React.FC<SelectProps> = ({
+const CustomSelectWithProps: React.FC<SelectProps> = ({
   options,
   placeholder = "Select an option",
   onChange,
@@ -72,7 +72,7 @@ const CustomSelect: React.FC<SelectProps> = ({
 
   // This is applied when a default value is provided
   useEffect(() => {
-    if (selectedProps?.label) {
+    if (selectedProps) {
       setSelected(selectedProps)
     }
 
@@ -129,4 +129,4 @@ const CustomSelect: React.FC<SelectProps> = ({
   );
 };
 
-export default CustomSelect;
+export default CustomSelectWithProps;

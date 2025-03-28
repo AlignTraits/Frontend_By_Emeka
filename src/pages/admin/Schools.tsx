@@ -6,7 +6,7 @@ import { getSchools } from "../../services/schools";
 import { useAuth } from "../../contexts/useAuth";
 import { School } from "../../services/schools";
 import SchoolsTable from "../../components/Admin/SchoolsTable";
-import { MdKeyboardArrowDown } from "react-icons/md";
+// import { MdKeyboardArrowDown } from "react-icons/md";
 import { RiUploadCloud2Line } from "react-icons/ri";
 import BulkUploadModal from "../../components/Admin/BulkUploadModal";
 
@@ -82,7 +82,7 @@ export default function Schools() {
                   outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
               >
               <p>Create School</p>
-              <MdKeyboardArrowDown className="w-5 h-5 text-[white]"  />
+              {/* <MdKeyboardArrowDown className="w-5 h-5 text-[white]"  /> */}
             </button>
 
             
