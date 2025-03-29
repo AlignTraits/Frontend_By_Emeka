@@ -12,13 +12,6 @@ import AdmissionRequirements from "../../components/Admin/AdmissionRequirements"
 import AdmissionRules from "../../components/Admin/AdmissionRules";
 import { ErrorObjType } from "../../types/course.types";
 
-// Define props type for passing down to child components
-// interface ErrorProps {
-//   errorObj: ErrorObjType;
-//   setErrorObj: React.Dispatch<React.SetStateAction<ErrorObjType>>;
-// }
-
-
 const CURRENCYOBJECT: Record<string, string> = {
   NGN: "NAIRA",
   USD: "DOLLAR",
@@ -159,7 +152,7 @@ export default function AddCourse () {
   }
 
   const handleCancel = () => {
-    
+   return false 
   }
 
   const handleSubmit = async () => {
