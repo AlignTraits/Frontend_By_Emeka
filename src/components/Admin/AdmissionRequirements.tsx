@@ -131,7 +131,6 @@ const AdmissionRequirements = ({
 
   const isFormValid = () => {
     if (examType.length > 0 && programLocation.length > 0 && subjectList.length > 0) {
-      // Validate if all fields are filled
       const allFieldsFilled = subjectList.every(
         (item) => item.subject.trim() !== "" && item.grade.trim() !== ""
       );
