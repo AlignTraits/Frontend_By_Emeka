@@ -60,8 +60,8 @@ const AdmissionRequirements = ({
   const [subjectList, setSubjectList] = useState<SubjectGrade[]>([]);
   const [programLocation, setProgramLocation] = useState("");
   const [examType, setExamType] = useState("");
-  const [reqId, setReqId] = useState<number | null>(null)
-  const [requirementList, setRequirementList] = useState<RequirementList[]>([])
+  const [reqId, setReqId] = useState<number | null>(null);
+  const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
 
   interface RequirementList {
     id: number
@@ -69,7 +69,6 @@ const AdmissionRequirements = ({
     location: string;
     examType: string
   }
-
 
   const addRequirements = () => {
     checkAllFields();
