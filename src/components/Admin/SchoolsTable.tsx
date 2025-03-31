@@ -109,9 +109,6 @@ export default function SchoolsTable({
       let tempList = [...selectedSchoolList, id]
       setSelectedSchoolList(tempList)
     }
-    console.log(id)
-    // setItemForEdit(schoolParam)
-    // setEditModal(true)
   }
   
   return (

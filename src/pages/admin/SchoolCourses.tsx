@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 // import SchoolsTable from "../../components/Admin/SchoolsTable";
-
+import { BeatLoader } from "react-spinners";
 import { FiPlus } from "react-icons/fi";
 import { IoIosArrowBack } from "react-icons/io";
 import { RiUploadCloud2Line } from "react-icons/ri";
@@ -12,6 +12,8 @@ import { Course } from "../../types/course.types";
 import CoursesTable from "../../components/Admin/CourseTable";
 import { useAuth } from "../../contexts/useAuth";
 import BulkCourseModal from "../../components/Admin/BulkCourseModal";
+import { deleteCourses } from "../../services/schools";
+import { toast } from "react-toastify";
 
 
 interface SchoolWithCourses extends School {
@@ -21,7 +23,7 @@ interface SchoolWithCourses extends School {
 
 export default function SchoolCourses() {
   const navigate = useNavigate()
-  const {setCurrentCourseID} = useAuth()
+  const {setCurrentCourseID, token} = useAuth()
 
   const [showBulkModal, setShowBulkModal] = useState(false)
 
@@ -29,6 +31,10 @@ export default function SchoolCourses() {
   const [school, setSchool] = useState<SchoolWithCourses>();
   const [isLoading, setIsLoading] = useState(true);  
   const [courses, setCourses] = useState([])
+
+  const [selectedCourseList, setSelectedCourseList] = useState<string[]>([])
+
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   async function fetchSchool() {
     setIsLoading(true)
@@ -53,25 +59,53 @@ export default function SchoolCourses() {
     setCurrentCourseID(null)
   }
 
-  // const handleTestClick = () => {
-  //   navigate(`/admin/schools/${schoolId}/add-course/123456`);
-  // }
+
+  const handleDeleteCourses = async () => {
+    setIsDeleteLoading(true)
+    try {
+      await deleteCourses(selectedCourseList, token!)
+      setIsDeleteLoading(false)
+      setSelectedCourseList([])
+      toast.success("Courses deleted successfully!");
+      await fetchSchool()
+    } catch(e) {
+      setIsDeleteLoading(false)
+      setSelectedCourseList([])
+      toast.error("An error occurred");
+      await fetchSchool()
+    }
+  }
   
 
   return (
  
   <div className="relative">
     <div className="flex flex-col w-full gap-10 p-5 xl:p-6">
-      <div className="flex justify-between items-center border-b border-[#EAECF0] py-[20px]">
-        <div>
-        {/* <p onClick={handleTestClick}>Test</p> */}
-          <div onClick={() => navigate(-1)} className="flex gap-x-[5px] items-center">
-            <IoIosArrowBack className="h-4 w-4" />
-            <p className="text-[#004085] text-[14px] font-medium cursor-pointer">Go back</p>
-          </div>
-          <p className="text-[#1E1E1E] text-[20px] font-semibold">{school?.name || "Searching..." }</p>
+      <div className="flex justify-between items-center gap-x-[10px] border-b border-[#EAECF0] py-[20px]">
+        <div className="flex gap-x-[10px] items-center">
+          <div>
+          {/* <p onClick={handleTestClick}>Test</p> */}
+            <div onClick={() => navigate(-1)} className="flex gap-x-[5px] items-center">
+              <IoIosArrowBack className="h-4 w-4" />
+              <p className="text-[#004085] text-[14px] font-medium cursor-pointer">Go back</p>
+            </div>
+            <p className="text-[#1E1E1E] text-[20px] font-semibold">{school?.name || "Searching..." }</p>
 
-          <p className="text-[#999999] text-[14px] font-medium">Manage all courses for covenant university</p>
+            <p className="text-[#999999] text-[14px] font-medium">Manage all courses for covenant university</p>
+          </div>
+          <>
+            {
+              selectedCourseList.length > 0 &&
+              <button
+                className="text-[#FFFFFF] bg-[#D92D20] px-5 py-2 rounded-md w-[170px] text-center cursor-pointer"
+                // type="submit"
+                disabled={isLoading}
+                onClick={handleDeleteCourses}
+              >
+                {isDeleteLoading ? <BeatLoader /> : "Delete Courses"}
+              </button>
+            }
+          </>
         </div>
 
         <div className="flex gap-x-[20px]">
@@ -107,7 +141,13 @@ export default function SchoolCourses() {
         </div>
       </div>
 
-      <CoursesTable courses={courses} isLoading={isLoading} getSchool={fetchSchool} />
+      <CoursesTable 
+        courses={courses} 
+        isLoading={isLoading} 
+        getSchool={fetchSchool} 
+        setSelectedCourseList={setSelectedCourseList}
+        selectedCourseList={selectedCourseList}
+      />
     </div>
 
     {showBulkModal && <BulkCourseModal setShowModal={setShowBulkModal} getSchools={fetchSchool} />}

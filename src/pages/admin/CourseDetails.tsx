@@ -116,7 +116,7 @@ export default function CourseDetails () {
             <div>
               <p className="text-[#737373] font-normal text[12px]">Admission Requirements</p>
               <p className="text-[#1E1E1E] text-[16px] font-normal">
-                {courseObj.requirements.join(" ")}
+                {/* {courseObj.requirements.join(" ")} */}
               </p>
             </div>
 

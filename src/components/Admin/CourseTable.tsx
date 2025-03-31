@@ -13,13 +13,17 @@ import { useNavigate, useParams } from "react-router-dom";
 interface Props {
   courses: Course[];
   isLoading: boolean;
-  getSchool: Function
+  getSchool: Function;
+  selectedCourseList: string[];
+  setSelectedCourseList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export default function CoursesTable({
   courses,
   isLoading,
-  getSchool
+  getSchool,
+  selectedCourseList,
+  setSelectedCourseList
 }: Props) {
 
   const navigate = useNavigate()
@@ -47,6 +51,17 @@ const [itemForDelete, setItemForDelete] = useState({
 
   const handleTestClick = (couresID: string) => {
     navigate(`/admin/schools/${schoolId}/course-details/${couresID}`);
+  }
+
+  const handleSelect = (event: React.MouseEvent, id: string) => {
+    event.stopPropagation();
+
+    if (selectedCourseList.includes(id)) {
+      setSelectedCourseList(() => selectedCourseList.filter((elem) => id !== elem))
+    } else {
+      let tempList = [...selectedCourseList, id]
+      setSelectedCourseList(tempList)
+    }
   }
   
   return (
@@ -105,6 +120,12 @@ const [itemForDelete, setItemForDelete] = useState({
                     onClick={() => handleTestClick(course.id)}
                   >
                     <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-10">
+                    <div onClick={(e) => handleSelect(e, course.id)} className="cursor-pointer border-[#D0D5DD] border-[1px] h-[25px] w-[25px] rounded-md flex justify-center items-center">
+                      {
+                        selectedCourseList.includes(course.id) && 
+                        <div className="h-[15px] w-[15px] bg-[#004085] rounded-[50%]"></div>
+                      }
+                      </div>
                       {course.title}
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
