@@ -1,14 +1,17 @@
 import  { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import { BeatLoader } from "react-spinners";
 import { FiSearch } from "react-icons/fi";
 import CreateSchoolModal from "../../components/Admin/CreateSchoolModal";
 import { getSchools } from "../../services/schools";
 import { useAuth } from "../../contexts/useAuth";
 import { School } from "../../services/schools";
 import SchoolsTable from "../../components/Admin/SchoolsTable";
+import { toast } from "react-toastify";
 // import { MdKeyboardArrowDown } from "react-icons/md";
 import { RiUploadCloud2Line } from "react-icons/ri";
 import BulkUploadModal from "../../components/Admin/BulkUploadModal";
+import { deleteSchools } from "../../services/schools";
 
 export default function Schools() {
   const [showModal, setShowModal] = useState(false);
@@ -16,6 +19,10 @@ export default function Schools() {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+
+  const [selectedSchoolList, setSelectedSchoolList] = useState<string[]>([])
+
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const [showBulkModal, setShowBulkModal] = useState(false)
 
@@ -47,12 +54,41 @@ export default function Schools() {
     });
   }
 
+  const handleDeleteSchools = async () => {
+    setIsDeleteLoading(true)
+    try {
+      await deleteSchools(selectedSchoolList, token!)
+      setIsDeleteLoading(false)
+      setSelectedSchoolList([])
+      toast.success("Shools deleted successfully!");
+      await getSchoolNow()
+    } catch(e) {
+      setIsDeleteLoading(false)
+      setSelectedSchoolList([])
+      toast.error("An error occurred");
+      await getSchoolNow()
+    }
+  }
+
   return (
     <div className="relative">
       <div className="flex flex-col w-full gap-10 p-5 xl:p-6">
 
         <div className="flex justify-between items-center border-b border-[#EAECF0] py-[20px]">
-          <p className="text-[#101828] text-[18px] font-semibold">Schools you've created</p>
+          <div className="flex gap-x-[20px] items-center">
+            <p className="text-[#101828] text-[18px] font-semibold">Schools you've created</p>
+            {
+              selectedSchoolList.length > 0 &&
+              <button
+                className="text-[#FFFFFF] bg-[#D92D20] px-5 py-2 rounded-md w-[160px] text-center cursor-pointer"
+                // type="submit"
+                disabled={isLoading}
+                onClick={handleDeleteSchools}
+              >
+                {isDeleteLoading ? <BeatLoader /> : "Delete Schools"}
+              </button>
+            }
+          </div>
 
           <div className="flex gap-x-[20px]">
             <div className="relative w-[250px]">
@@ -91,7 +127,9 @@ export default function Schools() {
         <SchoolsTable 
           getSchools={getSchoolNow} 
           schools={schools} setShowModal={setShowModal} 
-          isLoading={isLoading} 
+          isLoading={isLoading}
+          setSelectedSchoolList={setSelectedSchoolList}
+          selectedSchoolList={selectedSchoolList}
           // setIsLoading={setIsLoading}
         />
         {showModal && <CreateSchoolModal setShowModal={setShowModal} setSchools={setSchools} />}

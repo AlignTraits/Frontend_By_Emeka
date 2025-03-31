@@ -18,6 +18,8 @@ interface Props {
   schools: School[];
   isLoading: boolean;
   getSchools: Function;
+  selectedSchoolList: string[];
+  setSelectedSchoolList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 
@@ -25,6 +27,8 @@ export default function SchoolsTable({
   // setShowModal,
   schools,
   isLoading, getSchools,
+  selectedSchoolList,
+  setSelectedSchoolList
 }: Props) {
 
 // const navigate = useNavigate()
@@ -95,6 +99,17 @@ export default function SchoolsTable({
       )
     }
   }
+
+  const handleSelect = (event: React.MouseEvent, id: string) => {
+    event.stopPropagation();
+
+    if (selectedSchoolList.includes(id)) {
+      setSelectedSchoolList(() => selectedSchoolList.filter((elem) => id !== elem))
+    } else {
+      let tempList = [...selectedSchoolList, id]
+      setSelectedSchoolList(tempList)
+    }
+  }
   
   return (
     <>
@@ -152,7 +167,12 @@ export default function SchoolsTable({
                     onClick={(e) => handleViewClick(e, school)}
                   >
                     <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-10 items-center">
-
+                      <div onClick={(e) => handleSelect(e, school.id)} className="cursor-pointer border-[#D0D5DD] border-[1px] h-[25px] w-[25px] rounded-md flex justify-center items-center">
+                        {
+                          selectedSchoolList.includes(school.id) && 
+                          <div className="h-[15px] w-[15px] bg-[#004085] rounded-[50%]"></div>
+                        }
+                      </div>
                       {
                         school.logo ? <img
                         src={school.logo}
@@ -164,14 +184,6 @@ export default function SchoolsTable({
                         {school.name}
                       </span>
                     </td>
-                    {/* <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      <button 
-                        onClick={(e) => handleManageClick(e, school.id)} 
-                        className="transition-colors text-[white] bg-[#007BFF] h-[35px] px-[10px] rounded-lg w-max hover:bg-[#056e9c]"
-                      >
-                        Manage Course
-                      </button>
-                    </td> */}
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.country}/{school.region}</td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       {getDays(school.updatedAt)}
