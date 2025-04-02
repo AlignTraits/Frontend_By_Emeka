@@ -88,10 +88,7 @@ const CustomSelect: React.FC<SelectProps> = ({
   const handleClick = () => {
     handleError()
     setIsOpen((prev) => !prev)
-  }
-
-  console.log("inner selected: ", selectedProps)
-  
+  }  
 
   return (
     <div ref={selectRef} className={`relative ${className}`}>

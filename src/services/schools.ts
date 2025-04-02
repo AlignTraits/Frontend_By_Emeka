@@ -9,6 +9,7 @@ export interface School {
   schoolType: string;
   updatedAt: string;
   createdAt: string;
+  websiteUrl: string;
   country: string;
   region: string;
   _count?: {

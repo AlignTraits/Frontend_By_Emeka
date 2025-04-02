@@ -131,7 +131,7 @@ export default function SchoolsTable({
                 </th>
                 <th className="w-[13.3%] p-[20px]">
                   <div className="flex items-center">
-                    Courses <FiArrowDown className="ml-2 mb-1" />
+                    Location <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
                 {/* <th className="w-[13.3%] p-[20px]">
