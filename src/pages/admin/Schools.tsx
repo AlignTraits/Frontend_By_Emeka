@@ -1,6 +1,7 @@
 import  { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
+import { FaAngleDown } from "react-icons/fa6";
 import { FiSearch } from "react-icons/fi";
 import CreateSchoolModal from "../../components/Admin/CreateSchoolModal";
 import { getSchools } from "../../services/schools";
@@ -8,8 +9,9 @@ import { useAuth } from "../../contexts/useAuth";
 import { School } from "../../services/schools";
 import SchoolsTable from "../../components/Admin/SchoolsTable";
 import { toast } from "react-toastify";
+import BulkUpdateSchoolModal from "../../components/Admin/BulkUpdateSchools";
 // import { MdKeyboardArrowDown } from "react-icons/md";
-import { RiUploadCloud2Line } from "react-icons/ri";
+// import { RiUploadCloud2Line } from "react-icons/ri";
 import BulkUploadModal from "../../components/Admin/BulkUploadModal";
 import { deleteSchools } from "../../services/schools";
 
@@ -25,6 +27,11 @@ export default function Schools() {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const [showBulkModal, setShowBulkModal] = useState(false)
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
+
+  const temSelectedScool = schools.filter((elem) => selectedSchoolList.includes(elem.id))
+
+  console.log("token: ", token)
 
   useEffect(() => {
     if (token) {
@@ -47,10 +54,12 @@ export default function Schools() {
       setSchools(res);
       localStorage.setItem("schools", JSON.stringify(res));
       setIsLoading(false);
+      setSelectedSchoolList([])
     })
     .catch((err) => {
       setIsLoading(false);
       console.log(err);
+      setSelectedSchoolList([])
     });
   }
 
@@ -77,17 +86,6 @@ export default function Schools() {
         <div className="flex justify-between items-center border-b border-[#EAECF0] py-[20px]">
           <div className="flex gap-x-[20px] items-center">
             <p className="text-[#101828] text-[18px] font-semibold">Schools you've created</p>
-            {
-              selectedSchoolList.length > 0 &&
-              <button
-                className="text-[#FFFFFF] bg-[#D92D20] px-5 py-2 rounded-md w-[160px] text-center cursor-pointer"
-                // type="submit"
-                disabled={isLoading}
-                onClick={handleDeleteSchools}
-              >
-                {isDeleteLoading ? <BeatLoader /> : "Delete Schools"}
-              </button>
-            }
           </div>
 
           <div className="flex gap-x-[20px]">
@@ -107,8 +105,8 @@ export default function Schools() {
               className="w-[150px] text-[#1E1E1E] text-[14px] font-medium py-2 h-[40px] bg-[#F6C648] p-2 rounded-md 
                   outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
               >
-              <RiUploadCloud2Line className="w-5 h-5 text-[#1E1E1E]"  />
               <p>Bulk Uploads</p>
+              <FaAngleDown className="text-[#1E1E1E]"  />
             </button>
 
             <button 
@@ -124,6 +122,31 @@ export default function Schools() {
             
           </div>
         </div>
+
+        <>
+          {
+            selectedSchoolList.length > 0 ?
+            <div className="flex gap-x-[20px]">     
+              <button
+                className="text-[#FFFFFF] bg-[#D92D20] px-5 py-2 rounded-md w-[160px] text-center cursor-pointer"
+                // type="submit"
+                disabled={isLoading}
+                onClick={handleDeleteSchools}
+              >
+                {isDeleteLoading ? <BeatLoader /> : "Delete Schools"}
+              </button>
+
+              <button
+                className="text-[#FFFFFF] bg-[#004085] px-5 py-2 rounded-md w-[160px] text-center cursor-pointer"
+                // type="submit"
+                disabled={isLoading}
+                onClick={() => setShowUpdateModal(true)}
+              >
+                {"Update Schools"}
+              </button>
+            </div> : <></>
+          }
+        </>
         <SchoolsTable 
           getSchools={getSchoolNow} 
           schools={schools} setShowModal={setShowModal} 
@@ -135,6 +158,8 @@ export default function Schools() {
         {showModal && <CreateSchoolModal setShowModal={setShowModal} setSchools={setSchools} />}
       </div>
       {showBulkModal && <BulkUploadModal setShowModal={setShowBulkModal} getSchools={getSchoolNow} />}
+
+      {showUpdateModal && <BulkUpdateSchoolModal setShowModal={setShowUpdateModal} getSchools={getSchoolNow} schoolList={temSelectedScool}  />}
     </div>
   );
 }

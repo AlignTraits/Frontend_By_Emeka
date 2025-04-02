@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 // import SchoolsTable from "../../components/Admin/SchoolsTable";
+import { FaAngleDown } from "react-icons/fa6";
 import { BeatLoader } from "react-spinners";
 import { FiPlus } from "react-icons/fi";
 import { IoIosArrowBack } from "react-icons/io";
-import { RiUploadCloud2Line } from "react-icons/ri";
+// import { RiUploadCloud2Line } from "react-icons/ri";
 import { useParams, useNavigate } from "react-router-dom";
 import { getSchool } from "../../services/schools";
 import { School } from "../../services/schools";
@@ -13,6 +14,7 @@ import CoursesTable from "../../components/Admin/CourseTable";
 import { useAuth } from "../../contexts/useAuth";
 import BulkCourseModal from "../../components/Admin/BulkCourseModal";
 import { deleteCourses } from "../../services/schools";
+import BulkUpdateCourseModal from "../../components/Admin/BulkUpdateCourses";
 import { toast } from "react-toastify";
 
 
@@ -30,11 +32,15 @@ export default function SchoolCourses() {
   const { schoolId } = useParams<{ schoolId: string }>();
   const [school, setSchool] = useState<SchoolWithCourses>();
   const [isLoading, setIsLoading] = useState(true);  
-  const [courses, setCourses] = useState([])
+  const [courses, setCourses] = useState<Course[]>([])
 
   const [selectedCourseList, setSelectedCourseList] = useState<string[]>([])
 
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
+
+  const temSelectedCourses = courses.filter((elem) => selectedCourseList.includes(elem.id))
 
   async function fetchSchool() {
     setIsLoading(true)
@@ -93,19 +99,6 @@ export default function SchoolCourses() {
 
             <p className="text-[#999999] text-[14px] font-medium">Manage all courses for covenant university</p>
           </div>
-          <>
-            {
-              selectedCourseList.length > 0 &&
-              <button
-                className="text-[#FFFFFF] bg-[#D92D20] px-5 py-2 rounded-md w-[170px] text-center cursor-pointer"
-                // type="submit"
-                disabled={isLoading}
-                onClick={handleDeleteCourses}
-              >
-                {isDeleteLoading ? <BeatLoader /> : "Delete Courses"}
-              </button>
-            }
-          </>
         </div>
 
         <div className="flex gap-x-[20px]">
@@ -124,8 +117,8 @@ export default function SchoolCourses() {
             className="w-[150px] text-[#1E1E1E] text-[14px] font-medium py-2 h-[40px] bg-[#F6C648] p-2 rounded-md 
                 outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
             >
-            <RiUploadCloud2Line className="w-5 h-5 text-[#1E1E1E]"  />
             <p>Bulk Uploads</p>
+            <FaAngleDown className="text-[#1E1E1E]"  />
           </button>
 
           <button 
@@ -141,6 +134,31 @@ export default function SchoolCourses() {
         </div>
       </div>
 
+      <>
+        {
+          selectedCourseList.length > 0 ?
+          <div className="flex gap-x-[20px]"> 
+            <button
+              className="text-[#FFFFFF] bg-[#D92D20] px-5 py-2 rounded-md w-[170px] text-center cursor-pointer"
+              // type="submit"
+              disabled={isLoading}
+              onClick={handleDeleteCourses}
+            >
+              {isDeleteLoading ? <BeatLoader /> : "Delete Courses"}
+            </button>
+
+            <button
+              className="text-[#FFFFFF] bg-[#004085] px-5 py-2 rounded-md w-[160px] text-center cursor-pointer"
+              // type="submit"
+              disabled={isLoading}
+              onClick={() => setShowUpdateModal(true)}
+            >
+              {"Update Course"}
+            </button>
+          </div> : <></>
+        }
+      </>
+
       <CoursesTable 
         courses={courses} 
         isLoading={isLoading} 
@@ -151,6 +169,8 @@ export default function SchoolCourses() {
     </div>
 
     {showBulkModal && <BulkCourseModal setShowModal={setShowBulkModal} getSchools={fetchSchool} />}
+
+    {showUpdateModal && <BulkUpdateCourseModal setShowModal={setShowBulkModal} getSchools={fetchSchool} courseList={temSelectedCourses} />}
   </div>
   );
 }
