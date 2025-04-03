@@ -11,7 +11,6 @@ interface ModalProps {
 }
 const HeaderModal = ({setShowModal, setEndDate, endDate}: ModalProps) => { 
   const [startDate, setStartDate] = useState<Date | null>(null);
-  // const [endDate, setEndDate] = useState<Date | null>(null);
   const [error, setError] = useState<string>("");
 
   const handleStartDateChange = (date: Date | null) => {

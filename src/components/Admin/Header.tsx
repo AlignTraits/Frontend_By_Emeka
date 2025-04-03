@@ -20,7 +20,6 @@ const Header = ({
   const { admin } = useAuth();
 
   const location = useLocation()
-  // const navigate = useNavigate()
 
   const [showModal, setShowModal] = useState(false)
 
@@ -86,8 +85,6 @@ const Header = ({
         onClick={() => setOpen(true)}
       />
       <div className="flex items-center justify-between lg:gap-5 relative">
-        {/* <FiArrowLeft onClick={() => navigate(-1)} className="absolute -left-8 -top-50 cursor-pointer" /> */}
-        {/* Welcome Message */}
         <RenderTitle />
         <div className='flex gap-5 mr-[50px]'>
           <div onClick={() => setShowModal(true)} className="flex cursor-pointer h-[45px] w-[150px] gap-2 border-[#DDDDDD] rounded-lg border-2 flex items-center justify-center">

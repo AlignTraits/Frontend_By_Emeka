@@ -89,8 +89,6 @@ const CustomSelectWithProps: React.FC<SelectProps> = ({
     handleError()
     setIsOpen((prev) => !prev)
   }
-
-  console.log("inner selected: ", selectedProps)
   
 
   return (
