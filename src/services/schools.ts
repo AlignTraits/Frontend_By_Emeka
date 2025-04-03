@@ -293,6 +293,21 @@ export const getCourseDetails = async (id:string) => {
   } 
 }
 
+export const getSchoolsByLocation = async (location: string) => {
+  try {
+    const response:any = await api.get(`school/search/location/${location}`)
+    if (response.status === 200) {
+      return response.data
+    } else {
+      return []
+    }
+    
+  } catch(e) {
+    toast.error("An unexpected error occurred");
+    return []
+  }
+}
+
 export const getDays = (date:string):string => {
 const givenDate = new Date(date);
 const currentDate = new Date();

@@ -12,7 +12,7 @@ interface DashboardCardProps {
 const DashboardCard = ({percentType, bgColor, percentValue, title, Icon}: DashboardCardProps) => {
 
   return (
-    <div className={`h-[133px] w-[207px] rounded-lg border-2 border-gray-300 p-[10px] flex flex-col justify-between`}
+    <div className={`h-[133px] w-[250px] rounded-lg border-2 border-gray-300 p-[10px] flex flex-col justify-between`}
       style={{ backgroundColor: bgColor }}
     >
       <div className="flex gap-x-[10px] items-center">
