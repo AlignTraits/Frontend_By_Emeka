@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import AdminAuth from "../../assets/admin/adminAuth.png";
 import Logo from "../../assets/logo.svg";
 import LogoTwo from "../../assets/image2.png";
@@ -18,8 +18,11 @@ export default function Login() {
     password: "",
   });
   const [showPassword, setShowPassword] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
+  // const [error, setError] = React.useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const [adminError, setAdminError] = useState("")
+  const [passwordError, setPasswordError] = useState("")
 const {token} = useAuth()
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,24 +43,35 @@ const {token} = useAuth()
       }
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.errors) {
-        const errors = err.response.data.errors;
+        // const errors = err.response.data.errors;
 
-        errors.forEach((error: { message: string }) => {
-          if (error.message) {
-            setError(error.message);
-          }
-        });
+        // console.log("test error: ", err)
+
+        if (err.status === 404) {
+          setAdminError("Admin does not exist")
+        } else {
+          setPasswordError("This password is not correct")
+        }
+
+        // errors.forEach((error: { message: string }) => {
+        //   if (error.message) {
+        //     setError(error.message);
+        //   }
+        // });
       }
 
-      if (
-        err.response &&
-        err.response.data.message &&
-        !err.response.data.errors
-      ) {
-        setError(err.response.data.message);
-      }
+      // if (
+      //   err.response &&
+      //   err.response.data.message &&
+      //   !err.response.data.errors
+      // ) {
+      //   setError(err.response.data.message);
+      // }
 
-      setTimeout(() => setError(null), 2000);
+      setTimeout(() => {
+        setAdminError("")
+        setPasswordError("")
+      }, 3000);
       throw err;
     } finally {
       setIsLoading(false);
@@ -97,9 +111,6 @@ const {token} = useAuth()
             className="md:w-[80%] xl:w-[70%] space-y-4 lg:space-y-4"
             onSubmit={(e) => handleSubmit(e)}
           >
-            {error && (
-              <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
-            )}
             <div className="space-y-2">
               <label htmlFor="email" className="text-[14px] text-[#00162F]">
                 Email*
@@ -108,13 +119,16 @@ const {token} = useAuth()
                 id="email"
                 type="email"
                 required
-                className="w-full h-[44px] rounded-md focus:outline-none border border-[#D0D5DD] px-3 py-2 text-[14px]"
+                className={`w-full h-[44px] rounded-md focus:outline-none border ${adminError ? "border-[#FDA29B]" : "border-[#D0D5DD]"} px-3 py-2 text-[14px]`}
                 placeholder="Email"
                 value={credentials.email}
                 onChange={(e) =>
                   setCredentials({ ...credentials, email: e.target.value })
                 }
               />
+              {adminError && (
+                <p className="text-[12px] text-red-500 rounded">{adminError}</p>
+              )}
             </div>
             <div className="space-y-2">
               <label htmlFor="password" className="text-[14px] text-[#00162F]">
@@ -125,7 +139,7 @@ const {token} = useAuth()
                   id="password"
                   type={showPassword ? "text" : "password"}
                   required
-                  className="w-full h-[44px] rounded-md focus:outline-none border border-[#D0D5DD] px-3 py-2 text-[14px]"
+                  className={`w-full h-[44px] rounded-md focus:outline-none border ${passwordError ? "border-[#FDA29B]" : "border-[#D0D5DD]"} px-3 py-2 text-[14px]`}
                   placeholder="Enter your Password"
                   value={credentials.password}
                   onChange={(e) =>
@@ -144,7 +158,11 @@ const {token} = useAuth()
                   )}
                 </button>
               </div>
+              {passwordError && (
+                <p className="text-[12px] text-red-500 rounded">{passwordError}</p>
+              )}
             </div>
+
 
             <button
               type="submit"

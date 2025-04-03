@@ -31,8 +31,6 @@ export default function Schools() {
 
   const temSelectedScool = schools.filter((elem) => selectedSchoolList.includes(elem.id))
 
-  console.log("token: ", token)
-
   useEffect(() => {
     if (token) {
       getSchools(token)

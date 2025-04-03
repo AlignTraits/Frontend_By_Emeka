@@ -6,7 +6,8 @@ import {
 } from 'react-icons/fi';
 import { FaBell } from "react-icons/fa";
 import { useLocation  } from "react-router-dom";
-
+import HeaderModal from './HeaderModal';
+import { useState } from 'react';
 interface HeaderProps {
   setOpen:  React.Dispatch<React.SetStateAction<boolean>>
 
@@ -19,7 +20,16 @@ const Header = ({
   const { admin } = useAuth();
 
   const location = useLocation()
-  // const navigate = useNavigate()
+
+  const [showModal, setShowModal] = useState(false)
+
+  const [endDate, setEndDate] = useState<Date | null>(new Date());
+
+  const formattedDate = endDate ? new Intl.DateTimeFormat('en-US', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: '2-digit' 
+  }).format(endDate) : '';
 
   const RenderTitle = () => {
     if (location.pathname.endsWith("/add-course")) {
@@ -75,14 +85,12 @@ const Header = ({
         onClick={() => setOpen(true)}
       />
       <div className="flex items-center justify-between lg:gap-5 relative">
-        {/* <FiArrowLeft onClick={() => navigate(-1)} className="absolute -left-8 -top-50 cursor-pointer" /> */}
-        {/* Welcome Message */}
         <RenderTitle />
         <div className='flex gap-5 mr-[50px]'>
-          <div className="flex h-[45px] w-[150px] gap-2 border-[#DDDDDD] rounded-lg border-2 flex items-center justify-center">
+          <div onClick={() => setShowModal(true)} className="flex cursor-pointer h-[45px] w-[150px] gap-2 border-[#DDDDDD] rounded-lg border-2 flex items-center justify-center">
             <FiCalendar className="w-6 h-6"  />
             <p className="text-sm font-medium text-gray-900 my-auto">
-              {Date().slice(3, 15)}
+              {formattedDate}
             </p>
           </div>
 
@@ -92,6 +100,8 @@ const Header = ({
         </div>
   
       </div>
+
+      {showModal && <HeaderModal endDate={endDate} setEndDate={setEndDate} setShowModal={setShowModal} />}
     </div>
   );
 };
