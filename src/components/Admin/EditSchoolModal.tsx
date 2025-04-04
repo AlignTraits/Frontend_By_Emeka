@@ -5,6 +5,7 @@ import api from "../../api/axios";
 import { useAuth } from "../../contexts/useAuth";
 import { BeatLoader } from "react-spinners";
 import {toast} from 'react-toastify'
+import countriesData from "../../data/countries_states.json"
 // import { getSchools, School } from "../../services/schools";
 
 interface Data {
@@ -29,10 +30,11 @@ interface ModalProps {
 }
 
 const countryStateData: Record<string, string[]> = {
-  USA: ["California", "Texas", "New York", "Florida"],
-  Canada: ["Ontario", "Quebec", "British Columbia"],
-  Nigeria: ["Lagos", "Abuja", "Rivers", "Kaduna", "Imo", "Abia", "Osun"].sort(),
 };
+
+countriesData.map((elem:any) => {
+  countryStateData[elem.name] = elem.states
+})
 
 
 export default function EditSchoolModal({

@@ -32,11 +32,11 @@ export default function BulkUploadModal({setShowModal, getSchools}: ModalProps) 
 
   const generateCSV = () => {
     const csvData = [
-      ["name", "schoolType", "location", "websiteUrl", "logo"],
-      ["Unilag", "PRIVATE_UNIVERSITY",	"Nigeria/Abia",	"example.com",	"https://drive.google.com/uc?export=view&id=1QoRkwCwSh__TlbnlyVO6mIj9ZgzTlObw"],
-      ["Uniben", "PUBLIC_UNIVERSITY",	"Nigeria/Lagos",	"example.com", 	"https://drive.google.com/uc?export=view&id=1QoRkwCwSh__TlbnlyVO6mIj9ZgzTlObw"],
-      // ["Futo", "PUBLIC_UNIVERSITY",	"Nigeria/Imo", "example.com",	"https://drive.google.com/uc?export=view&id=1QoRkwCwSh__TlbnlyVO6mIj9ZgzTlObw"],
-      // ["Lasu",	"PUBLIC_UNIVERSITY","Nigeria/Lagos","example.com", 	"https://drive.google.com/uc?export=view&id=1QoRkwCwSh__TlbnlyVO6mIj9ZgzTlObw"]
+      ["name", "schoolType", "country", "websiteUrl", "logo", "region"],
+      ["Unilag", "PRIVATE_UNIVERSITY",	"Nigeria",	"example.com",	"https://res.cloudinary.com/dlq1y7tql/image/upload/v1743433536/school_logos/file_h85voq.jpg", "Abia"],
+      ["Futo", "PUBLIC_UNIVERSITY",	"Nigeria",	"example.com", 	"https://res.cloudinary.com/dlq1y7tql/image/upload/v1743433536/school_logos/file_h85voq.jpg", "Lagos"],
+      ["Muoau", "PRIVATE_UNIVERSITY",	"Nigeria",	"example.com",	"https://res.cloudinary.com/dlq1y7tql/image/upload/v1743433536/school_logos/file_h85voq.jpg", "Imo"],
+      ["Lasu", "PUBLIC_UNIVERSITY",	"Nigeria",	"example.com", 	"https://res.cloudinary.com/dlq1y7tql/image/upload/v1743433536/school_logos/file_h85voq.jpg", "Ogun"],
     ];
   
     // Convert to CSV format
@@ -94,10 +94,10 @@ export default function BulkUploadModal({setShowModal, getSchools}: ModalProps) 
 
   return (
     <div 
-      // className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[200]"
-      className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[200]"
+      // className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
     >
-      <div className="bg-white rounded-lg md:w-1/2 w-full xl:w-[80%] relative size-max">
+      <div className="bg-white rounded-lg md:w-1/2 w-[50%] relative size-max">
         <img src={fileIcon} alt="Upload file" className="absolute left-[-20px] top-[5px]" />
         <FiX className="cursor-pointer absolute right-6 top-[30px] -translate-y-1/2 text-[#595959] w-5 h-5" onClick={handleClose} />
 
