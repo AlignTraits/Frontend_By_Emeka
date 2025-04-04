@@ -1,21 +1,12 @@
 import React, { useState} from "react";
-// import { useNavigate } from "react-router-dom";
 import { FiArrowDown } from "react-icons/fi";
-// import CreateSchoolDropDown from "./CreateSchoolDropDown";
 import { School, getDays } from "../../services/schools";
 import { ClipLoader } from "react-spinners";
-// import { FaRegTrashCan } from "react-icons/fa6";
-// import { MdOutlineEdit } from "react-icons/md";
-// import DeleteModal from "./DeleteSchoolModal";
-// import EditSchoolModal from "./EditSchoolModal";
-// import { getSchool } from "../../services/schools";
-// import { Course } from "../../types/course.types";
 import SchoolDetails from "./SchoolDetails";
 import { GoArrowUpRight } from "react-icons/go";
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  // setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   schools: School[];
   isLoading: boolean;
   getSchools: Function;
@@ -25,32 +16,13 @@ interface Props {
 
 
 export default function SchoolsTable({
-  // setShowModal,
   schools,
   isLoading, getSchools,
   selectedSchoolList,
   setSelectedSchoolList
 }: Props) {
 
-// const navigate = useNavigate()
-  // const [modal, setModal] = useState(false);
-  // const [editModal, setEditModal] = useState(false)
   const [viewModal, setViewModal] = useState(false)
-  // const [itemForDelete, setItemForDelete] = useState({
-  //   name: "",
-  //   id: ""
-  // })
-
-  // const [itemForEdit, setItemForEdit] = useState({
-  //   id: "",
-  //   name: "",
-  //   schoolType: "",
-  //   logo: "",
-  //   location: "",
-  //   region: "",
-  //   country: ""
-  // })
-
 
   const [itemForView, setItemForView] = useState({
     id: "",
@@ -60,26 +32,6 @@ export default function SchoolsTable({
     region: "",
     country: ""
   })
-
-
-
-  // const handleTrashClick = (event: React.MouseEvent, schoolParam: any) => {
-  //   event.stopPropagation(); // Prevents event from bubbling to parent
-  //   setItemForDelete(schoolParam)
-  //   setModal(true)
-  // };
-
-  // const handleManageClick = (event: React.MouseEvent, schoolId:string) => {
-  //   event.stopPropagation(); // Prevents event from bubbling to parent
-  //   navigate(`/admin/schools/${schoolId}/courses`);
-  // };
-
- 
-  // const handleEditClick = (event: React.MouseEvent, schoolParam: any) => {
-  //   event.stopPropagation();
-  //   setItemForEdit(schoolParam)
-  //   setEditModal(true)
-  // };
 
   const handleViewClick = (event: React.MouseEvent, schoolParam: any) => {
     event.stopPropagation();
@@ -135,11 +87,6 @@ export default function SchoolsTable({
                     Location <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
-                {/* <th className="w-[13.3%] p-[20px]">
-                  <div className="flex items-center">
-                    Location <FiArrowDown className="ml-2 mb-1" />
-                  </div>
-                </th> */}
                 <th className="w-[13.3%] p-[20px]">
                   <div className="flex items-end">
                     Last Modified <FiArrowDown className="ml-2 mb-1" />
@@ -192,10 +139,6 @@ export default function SchoolsTable({
                     <td className="p-[20px] flex gap-x-[10px]" onClick={(e) => handleViewClick(e, school)}>
                       <p className="text-[#1E1E1E] text-[14px] font-medium cursor-pointer">View</p>
                       <GoArrowUpRight className="text-[#1E1E1E] h-5 w-5" />
-                      {/* <FaRegTrashCan onClick={(e) => handleTrashClick(e, school)} className="text-[#D92D20] h-5 w-5 cursor-pointer" />
-                      
-                      <MdOutlineEdit onClick={(e) => handleEditClick(e, school)} className="text-[#757575] h-6 w-6 font-[500] cursor-pointer" /> */}
-                      
                     </td>
                   </tr>
                 ))}
@@ -209,35 +152,6 @@ export default function SchoolsTable({
           )}
         </div>
       )}
-
-      {/* {modal && (
-        <DeleteModal
-          itemName={itemForDelete.name as string}
-          setShowModal={setModal}
-          itemId={itemForDelete.id as string}
-          itemType={"school"}
-          getSchools={getSchools}
-        />
-      )} */}
-
-      {/* {
-        editModal && (
-          <EditSchoolModal 
-            defaultName={itemForEdit?.name as string}
-            schoolId={itemForEdit?.id as string}
-            setShowModal={setEditModal}
-            schooTypeDefault={itemForEdit?.schoolType as string}
-            defaultImgUrl={itemForEdit?.logo as string}
-            selectedProps={
-              {
-                value: `${itemForEdit.country}/${itemForEdit.region}` as string,
-                label: `${itemForEdit.country}/${itemForEdit.region}` as string
-              }
-            }
-            fetchSchool={getSchools}
-          />
-        )
-      } */}
 
       {
         viewModal && (
