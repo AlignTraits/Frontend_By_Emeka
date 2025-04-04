@@ -289,7 +289,7 @@ export default function EditSchoolModal({
                 label: schtype,
               }))}
               onChange={(value) => setData({ ...data, schoolType: value })}
-              selectedProps={{value: schooTypeDefault, label: schooTypeDefault}}
+              selectedProps={{value: data.schoolType, label: data.schoolType}}
               handleError={handleTypeError}
             />
           </div>
