@@ -9,7 +9,6 @@ interface Values {
 }
 
 interface Props {
-  // setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   label: string
   Icon: IconType
   values: Values[]
