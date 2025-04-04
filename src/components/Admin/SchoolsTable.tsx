@@ -77,7 +77,7 @@ export default function SchoolsTable({
           <table className="w-full table-auto space-y-4">
             <thead className="border-b-[0.8px] border-[#EAECF0] p-[20px]">
               <tr className="[&>th]:text-[#000000] [&>th]:text-[14px] [&>th]:font-medium [&>th]:pb-2">
-                <th className="w-[25%] p-[20px]">
+                <th className="w-[20%] p-[20px]">
                   <div className="flex items-end">
                     Name <FiArrowDown className="ml-2 mb-1" />
                   </div>
@@ -87,12 +87,12 @@ export default function SchoolsTable({
                     Location <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
-                <th className="w-[13.3%] p-[20px]">
+                <th className="w-[16%] p-[20px]">
                   <div className="flex items-end">
                     Last Modified <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
-                <th className="w-[16%] p-[20px]">
+                <th className="w-[13.3%] p-[20px]">
                   <div className="flex items-end">
                     Type <FiArrowDown className="ml-2 mb-1" />
                   </div>
@@ -127,7 +127,7 @@ export default function SchoolsTable({
                         className="w-[40px] h-[40px] rounded-full"
                       /> : <div className="w-[40px] h-[40px] rounded-[50%] bg-[grey]"></div>
                       }
-                      <span className="text-[#000000] text-[400] text-[16px] capitalize">
+                      <span className="text-[#000000] text-[400] text-[14px] capitalize size-max">
                         {school.name}
                       </span>
                     </td>
