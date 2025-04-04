@@ -6,6 +6,7 @@ import { useAuth } from "../../contexts/useAuth";
 import { BeatLoader } from "react-spinners";
 import {toast} from 'react-toastify'
 import { getSchools, School } from "../../services/schools";
+import countriesData from "../../data/countries_states.json"
 
 interface Data {
   logo: File | null;
@@ -18,11 +19,15 @@ interface ModalProps {
   setSchools: React.Dispatch<React.SetStateAction<School[]>>;
 }
 
+
+
 const countryStateData: Record<string, string[]> = {
-  USA: ["California", "Texas", "New York", "Florida"],
-  Canada: ["Ontario", "Quebec", "British Columbia"],
-  Nigeria: ["Lagos", "Abuja", "Rivers", "Kaduna", "Imo", "Abia"],
 };
+
+countriesData.map((elem:any) => {
+  countryStateData[elem.name] = elem.states
+})
+
 
 export default function CreateSchoolModal({setShowModal, setSchools}: ModalProps) {
   const { token } = useAuth();

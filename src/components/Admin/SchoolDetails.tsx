@@ -36,6 +36,14 @@ export default function SchoolDetails({
     setShowModal(false)
     navigate(`/admin/schools/${schoolId}/courses`);
   };
+
+
+  const splitString = (text: any) => {
+    if (typeof text === 'string') {
+      return text.replace(/_/g, ' ');
+    } 
+    return text
+  }
   
 
   return (
@@ -79,7 +87,7 @@ export default function SchoolDetails({
 
                 <div>
                   <p className="text-[#737373] font-normal text[12px]">School Type</p>
-                  <p className="text-[#1E1E1E] text-[16px] font-medium">{schooTypeDefault}</p>
+                  <p className="text-[#1E1E1E] text-[16px] font-medium">{splitString(schooTypeDefault)}</p>
                 </div>
 
                 <div>
