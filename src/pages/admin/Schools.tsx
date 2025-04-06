@@ -1,4 +1,4 @@
-import  { useState, useEffect} from "react";
+import  { useState, useEffect, useMemo} from "react";
 import { useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 import { FaAngleDown } from "react-icons/fa6";
@@ -30,6 +30,40 @@ export default function Schools() {
   const [showUpdateModal, setShowUpdateModal] = useState(false)
 
   const temSelectedScool = schools.filter((elem) => selectedSchoolList.includes(elem.id))
+
+  // --- search + pagination state ---
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+
+  const filteredSchools = useMemo(() => {
+    const term = searchTerm.toLowerCase().trim();
+    if (!term) return schools;
+  
+    return schools.filter((s) => {
+      // default to empty string if missing
+      const name = (s.name ?? "").toLowerCase();
+      const location = (s.country ?? "").toLowerCase();
+      return name.includes(term) || location.includes(term);
+    });
+  }, [schools, searchTerm]);
+
+
+
+  //  Reset to page 1 whenever the filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+
+  // Compute pagination
+  const totalPages = Math.ceil(filteredSchools.length / itemsPerPage);
+  const paginatedSchools = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredSchools.slice(start, start + itemsPerPage);
+  }, [filteredSchools, currentPage]);
+
 
   useEffect(() => {
     if (token) {
@@ -91,6 +125,8 @@ export default function Schools() {
               <input
                 type="text"
                 placeholder="Search schools..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[14px] font-[400] text-[#8F8F8F]"
               />
               <FiSearch className="absolute left-2 top-1/2 -translate-y-1/2 text-[#999999] w-5 h-5" />
@@ -145,14 +181,40 @@ export default function Schools() {
             </div> : <></>
           }
         </>
-        <SchoolsTable 
-          getSchools={getSchoolNow} 
-          schools={schools} setShowModal={setShowModal} 
-          isLoading={isLoading}
-          setSelectedSchoolList={setSelectedSchoolList}
-          selectedSchoolList={selectedSchoolList}
-          // setIsLoading={setIsLoading}
-        />
+
+        <div className="overflow-x-auto border border-[#E0E0E0] rounded-md py-2">
+          <SchoolsTable 
+            getSchools={getSchoolNow} 
+            schools={paginatedSchools} setShowModal={setShowModal} 
+            isLoading={isLoading}
+            setSelectedSchoolList={setSelectedSchoolList}
+            selectedSchoolList={selectedSchoolList}
+            // setIsLoading={setIsLoading}
+          />
+
+          {/* 4️⃣ Pagination controls */}
+          <div className="flex justify-between items-center px-5 mt-5">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
+            >
+              Previous
+            </button>
+
+            <span className="text-sm">
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
         {showModal && <CreateSchoolModal setShowModal={setShowModal} setSchools={setSchools} />}
       </div>
       {showBulkModal && <BulkUploadModal setShowModal={setShowBulkModal} getSchools={getSchoolNow} />}

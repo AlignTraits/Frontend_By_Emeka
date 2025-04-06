@@ -1,7 +1,7 @@
 import { MdKeyboardBackspace } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import { IoTrash } from "react-icons/io5";
-import { IoIosLink } from "react-icons/io";
+// import { IoIosLink } from "react-icons/io";
 import DeleteModal from "./DeleteSchoolModal";
 import { useNavigate } from "react-router-dom";
 import EditSchoolModal from "./EditSchoolModal";
@@ -76,7 +76,7 @@ export default function SchoolDetails({
                     className="h-[122px] w-[130px] rouded-md"
                   />
                 </div>
-                <p className="text-[16px] text-[#0062CC] font-normal flex gap-x-[2px] items-center cursor-pointer"> <IoIosLink /> Visit website</p>
+                {/* <p className="text-[16px] text-[#0062CC] font-normal flex gap-x-[2px] items-center cursor-pointer"> <IoIosLink /> Visit website</p> */}
               </div>
 
               <div className="flex flex-col gap-y-[5px]">

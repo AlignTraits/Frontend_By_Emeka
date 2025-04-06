@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import { FiArrowDown } from "react-icons/fi";
-import { School, getDays } from "../../services/schools";
+import { School } from "../../services/schools";
 import { ClipLoader } from "react-spinners";
 import SchoolDetails from "./SchoolDetails";
 import { GoArrowUpRight } from "react-icons/go";
@@ -63,6 +63,18 @@ export default function SchoolsTable({
       setSelectedSchoolList(tempList)
     }
   }
+
+  const formatDate = (date: string) => {
+    // const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };  
+    const dateTemp = new Date(date);
+
+    const formattedDate = new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }).format(dateTemp);
+    return formattedDate;
+  }
   
   return (
     <>
@@ -73,11 +85,11 @@ export default function SchoolsTable({
       )}
 
       {!isLoading && (
-        <div className="w-full min-h-[500px] border border-[#EAECF0] rounded-lg">
+        <div className="w-full min-h-[500px] border-b border-gray-300">
           <table className="w-full table-auto space-y-4">
             <thead className="border-b-[0.8px] border-[#EAECF0] p-[20px]">
               <tr className="[&>th]:text-[#000000] [&>th]:text-[14px] [&>th]:font-medium [&>th]:pb-2">
-                <th className="w-[20%] p-[20px]">
+                <th className="w-[16%] p-[20px]">
                   <div className="flex items-end">
                     Name <FiArrowDown className="ml-2 mb-1" />
                   </div>
@@ -133,7 +145,7 @@ export default function SchoolsTable({
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.country}, {school.region}</td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {getDays(school.updatedAt)}
+                      {formatDate(school.updatedAt)}
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{renderType(school.schoolType)}</td>
                     <td className="p-[20px] flex gap-x-[10px]" onClick={(e) => handleViewClick(e, school)}>
