@@ -70,11 +70,13 @@ export default function Schools() {
       getSchools(token)
       .then((res) => {
         setSchools(res);
+        // setSchools([])
         localStorage.setItem("schools", JSON.stringify(res));
         setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
       });
     }
   }, [token, navigate]);

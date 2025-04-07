@@ -10,7 +10,7 @@ import { BeatLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import AdmissionRequirements from "../../components/Admin/AdmissionRequirements";
 import AdmissionRules from "../../components/Admin/AdmissionRules";
-import { ErrorObjType } from "../../types/course.types";
+import { ErrorObjType, RequirementList } from "../../types/course.types";
 
 const CURRENCYOBJECT: Record<string, string> = {
   NGN: "NAIRA",
@@ -28,6 +28,7 @@ export default function AddCourse () {
   const { schoolId } = useParams<{ schoolId: string}>();
   const { token, currentCourseID } = useAuth();
   const navigate = useNavigate()
+   const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
   const [errorObj, setErrorObj] = useState<ErrorObjType>({
     title: false,
     courseDescription: false,
@@ -256,7 +257,7 @@ export default function AddCourse () {
         </div> 
 
         <div className="flex border-b border-gray-300 ">
-          {["Basic Info", "Requirement", "Admission Rules"].map((tab, index) => {
+          {["Basic Info", "Admission Logic"].map((tab, index) => {
             const tabKey = `tab${index + 1}`;
             return (
               <button
@@ -526,16 +527,32 @@ export default function AddCourse () {
 
         {
           activeTab === "tab2" &&
-          <AdmissionRequirements 
-            errorObj={errorObj}
-            setErrorObj={setErrorObj}
-          />
+          <div>
+            <AdmissionRequirements 
+              errorObj={errorObj}
+              setErrorObj={setErrorObj}
+              requirementList={requirementList}
+              setRequirementList={setRequirementList}
+            />
+
+            <AdmissionRules 
+              requirementList={requirementList}
+            />
+
+            <div className="mt-5">
+              <button className="rounded-lg w-full h-[40px] bg-[#004085] text-[14px] text-[white] semi-bold cursor-pointer">
+                {isLoading ? <BeatLoader /> : currentCourseID ? "Update Admission Logic" : "Create Admission Logic"}
+              </button>
+            </div>
+          </div>
+
+
         }
 
-        {
+        {/* {
           activeTab === "tab3" &&
           <AdmissionRules />
-        }
+        } */}
       </div>
     </div>
     

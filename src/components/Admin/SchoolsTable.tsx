@@ -3,6 +3,7 @@ import { FiArrowDown } from "react-icons/fi";
 import { School } from "../../services/schools";
 import { ClipLoader } from "react-spinners";
 import SchoolDetails from "./SchoolDetails";
+import fileIcon from "../../assets/IconWrap.svg"
 import { GoArrowUpRight } from "react-icons/go";
 
 interface Props {
@@ -79,7 +80,7 @@ export default function SchoolsTable({
   return (
     <>
       {isLoading && (
-        <div className="mx-auto">
+        <div className="mx-auto w-full flex justify-center items-center h-[500px]">
           <ClipLoader />
         </div>
       )}
@@ -158,8 +159,12 @@ export default function SchoolsTable({
             )}
           </table>
           {!isLoading && schools.length === 0 && (
-            <div className="text-center mx-auto py-10 text-[#757575] text-[20px] font-bold w-full">
-              No schools found
+            <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[400px]">
+              <img src={fileIcon} alt="Not found" />
+              <p className="text-[#101828] text-[16px] font-semibold">No School Found</p>
+              <p className="text-center text-[#475467] text-[14px] font-normal">
+                You have not created a school yet. Click the “Create<br/> course” Button to create one now!
+              </p>
             </div>
           )}
         </div>
