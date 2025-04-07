@@ -43,3 +43,15 @@ export interface ErrorObjType {
   programLocation: boolean;
   examType: boolean;
 }
+
+export interface RequirementList {
+  id: number
+  subjects: SubjectGrade[];
+  location: string;
+  examType: string
+}
+export interface SubjectGrade {
+  id: number;
+  subject: string;
+  grade: string;
+}

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { FiEdit2 } from "react-icons/fi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import CustomSelectWithProps from "../dashboard/CustomSelectWithProps";
-import { ErrorObjType } from "../../types/course.types";
+import { ErrorObjType, SubjectGrade, RequirementList } from "../../types/course.types";
 
 const EXAMTYPE = [
   "JAMB",
@@ -43,17 +43,15 @@ const SUBJECTS = [
 interface RequirementProps {
   setErrorObj: React.Dispatch<React.SetStateAction<ErrorObjType>>;
   errorObj: ErrorObjType,
+  requirementList: RequirementList[];
+  setRequirementList: React.Dispatch<React.SetStateAction<RequirementList[]>>
 } 
-
-interface SubjectGrade {
-  id: number;
-  subject: string;
-  grade: string;
-}
 
 const AdmissionRequirements = ({
     setErrorObj, 
     errorObj,
+    requirementList,
+    setRequirementList
   }
   : RequirementProps) => {
     
@@ -61,14 +59,7 @@ const AdmissionRequirements = ({
   const [programLocation, setProgramLocation] = useState("");
   const [examType, setExamType] = useState("");
   const [reqId, setReqId] = useState<number | null>(null);
-  const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
-
-  interface RequirementList {
-    id: number
-    subjects: SubjectGrade[];
-    location: string;
-    examType: string
-  }
+  // const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
 
   const addRequirements = () => {
     checkAllFields();
@@ -294,8 +285,6 @@ const AdmissionRequirements = ({
           )
         }
       </div>
-
-      
     </div>
   )
 }
