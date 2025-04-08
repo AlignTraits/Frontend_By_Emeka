@@ -10,7 +10,9 @@ import { FiChevronDown } from "react-icons/fi";
 
 import countriesData from "../../data/countries_states.json"
 
-import { getSchoolsByLocation } from "../../services/schools";
+import { getSchoolsByLocation, getSchools, getCourses } from "../../services/schools";
+import { useAuth } from "../../contexts/useAuth";
+
 
 // Define TypeScript types
 type Country = {
@@ -20,16 +22,21 @@ type Country = {
 
 export default function Index() {
   // State to store selected country and states
+  const {token} = useAuth()
   const [countries, setCountries] = useState<Country[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [states, setStates] = useState<string[]>([]);
   const [selectedState, setSelectedState] = useState<string>("")
   const [schoolList, setSchoolList] = useState<string[]>([])
   const [selectedSchool, setSelectedSchool] = useState<string>("")
+  const [schoolLength, setSchoolLength] = useState<number>(0)
+  const [courseLength, setCourseLength] = useState<number>(0)
 
   // Load countries from JSON on mount
   useEffect(() => {
     setCountries(countriesData);
+    getAllSchools()
+    getAllCourses()
   }, []);
 
   // Handle country change
@@ -63,6 +70,30 @@ export default function Index() {
       handleGetSchools()
     }
   }, [selectedState])
+
+
+  const getAllSchools = async () => {
+    try {
+      let reponse = await getSchools(token || "")
+      setSchoolLength(reponse.length)
+
+    } catch (error) { 
+      setSchoolLength(0)
+      console.error("Error fetching schools:", error);
+    }
+  }
+
+  const getAllCourses = async () => {
+    try {
+      let response = await getCourses(token || "")
+      setCourseLength(response.length)
+    } catch (error) { 
+      console.error("Error fetching courses:", error);
+    } 
+  }
+
+
+  
   
   return (
     <div className="flex h-screen flex-col gap-y-[20px] p-5">
@@ -74,6 +105,7 @@ export default function Index() {
           percentValue={0} 
           title="Total Schools" 
           Icon={RiSchoolLine} 
+          value={schoolLength}
         />
 
         <DashboardCard 
@@ -81,6 +113,7 @@ export default function Index() {
           bgColor="#FFFADF" 
           percentValue={0} 
           title="Total Courses" 
+          value={courseLength}
           Icon={MdOutlineReceiptLong} 
         />
         <DashboardCard 
@@ -89,6 +122,7 @@ export default function Index() {
           percentValue={0} 
           title="Total Students" 
           Icon={IoMdStats} 
+          value={0}
         />
         <DashboardCard 
           percentType={false} 
@@ -96,6 +130,7 @@ export default function Index() {
           percentValue={0} 
           title="Total Loans" 
           Icon={MdOutlineReceiptLong} 
+          value={0}
         />
       </div>
 

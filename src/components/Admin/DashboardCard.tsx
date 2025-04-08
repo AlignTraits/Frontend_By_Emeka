@@ -7,9 +7,10 @@ interface DashboardCardProps {
   percentValue: number;
   title: string;
   Icon: IconType;
+  value: number
 }
 
-const DashboardCard = ({percentType, bgColor, percentValue, title, Icon}: DashboardCardProps) => {
+const DashboardCard = ({percentType, bgColor, percentValue, title, Icon, value}: DashboardCardProps) => {
 
   return (
     <div className={`h-[133px] w-[250px] rounded-lg border-2 border-gray-300 p-[10px] flex flex-col justify-between`}
@@ -22,7 +23,7 @@ const DashboardCard = ({percentType, bgColor, percentValue, title, Icon}: Dashbo
         <p className="text-[#737373] text-[14px]">{title}</p>
       </div>
 
-      <p className="text-[#1E1E1E] text-[30px] font-medium">0</p>
+      <p className="text-[#1E1E1E] text-[30px] font-medium">{value}</p>
 
       <div className="flex flex-row gap-x-[10px] items-center">
         <div className={`flex flex-row gap-x-[5px] 

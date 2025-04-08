@@ -6,6 +6,10 @@ import { FiEdit2 } from "react-icons/fi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import CustomSelectWithProps from "../dashboard/CustomSelectWithProps";
 import { ErrorObjType, SubjectGrade, RequirementList } from "../../types/course.types";
+import countriesData from "../../data/countries_states.json"
+
+
+const COUNTRIES = countriesData.map((country) => country.name);
 
 const EXAMTYPE = [
   "JAMB",
@@ -27,8 +31,9 @@ const GRADES = [
   "D7",
   "E8",
   "F9"
-
 ]
+
+const JAMB_SCORE_lLIST = Array.from({ length: 101 }, (_, i) => i.toString());
 
 const SUBJECTS = [
   "Maths",
@@ -37,7 +42,8 @@ const SUBJECTS = [
   "Machine Learning",
   "Test",
   "IOT",
-  "Cyber Security"
+  "Cyber Security",
+  "Jamb",
 ]
 
 interface RequirementProps {
@@ -166,14 +172,18 @@ const AdmissionRequirements = ({
 
       <div className="w-full flex flex-col gap-y-[5px]">
         <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.programLocation ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Program Location*</p>
-        <input
-          onFocus={() => setErrorObj((prev) => ({...prev, programLocation: false}))}
-          type="text"
-          placeholder="What is your title?"
-          name="courseTitle"
-          value={programLocation}
-          onChange={(e) => setProgramLocation(e.target.value)}
-          className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+        <CustomSelectWithProps 
+          placeholder="Select Subject"
+          options={COUNTRIES.map((typeValue) => ({
+            value: typeValue,
+            label: typeValue,
+          }))}
+          onChange={(val) => setProgramLocation(val)}
+          selectedProps={{
+            value: programLocation,
+            label: programLocation
+          }}
+          handleError={() => setErrorObj((prev) => ({...prev, programLocation: false}))}
         />
       </div>
 
@@ -224,18 +234,33 @@ const AdmissionRequirements = ({
 
               <div className="w-[50%]">
                 <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Grade*</p>
-                <CustomSelect 
-                  placeholder="Select Grade"
-                  options={GRADES.map((typeValue) => ({
-                    value: typeValue,
-                    label: typeValue,
-                  }))}
-                  onChange={(val) => updateSubject(item.id, "grade", val)}
-                  selectedProps={{
-                    value: item.grade,
-                    label: item.grade
-                  }}
-                />
+                {
+                  item.subject === "Jamb" ?
+                  <CustomSelect
+                    placeholder="Select Grade"
+                    options={JAMB_SCORE_lLIST.map((typeValue) => ({
+                      value: typeValue,
+                      label: typeValue,
+                    }))}
+                    onChange={(val) => updateSubject(item.id, "grade", val)}
+                    selectedProps={{
+                      value: item.grade,
+                      label: item.grade
+                    }}
+                  /> :
+                  <CustomSelect 
+                    placeholder="Select Grade"
+                    options={GRADES.map((typeValue) => ({
+                      value: typeValue,
+                      label: typeValue,
+                    }))}
+                    onChange={(val) => updateSubject(item.id, "grade", val)}
+                    selectedProps={{
+                      value: item.grade,
+                      label: item.grade
+                    }}
+                  />
+                }
               </div>
 
               <div onClick={() => removeSubject(item.id)} className="cursor-pointer border-[#E9E9E9] border-[1px] rounded-md w-[40px] h-[40px] flex justify-center items-center">

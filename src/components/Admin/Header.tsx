@@ -6,8 +6,9 @@ import {
 } from 'react-icons/fi';
 import { FaBell } from "react-icons/fa";
 import { useLocation  } from "react-router-dom";
-import HeaderModal from './HeaderModal';
+// import HeaderModal from './HeaderModal';
 import { useState } from 'react';
+import DatePicker from './NewDatePicker';
 interface HeaderProps {
   setOpen:  React.Dispatch<React.SetStateAction<boolean>>
 
@@ -23,14 +24,13 @@ const Header = ({
 
   const [showModal, setShowModal] = useState(false)
 
-  const [endDate, setEndDate] = useState<Date | null>(new Date());
-
-  const formattedDate = endDate ? new Intl.DateTimeFormat('en-US', { 
-    year: 'numeric', 
-    month: 'short', 
-    day: '2-digit' 
-  }).format(endDate) : '';
-
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  const today = new Date();
+  const formattedToday = `${monthNames[today.getMonth()].slice(0, 3)} ${today.getDate()}, ${today.getFullYear()}`;
+  const [endDate, setEndDate] = useState<string>(formattedToday);
   const RenderTitle = () => {
     if (location.pathname.endsWith("/add-course")) {
       return (
@@ -90,7 +90,7 @@ const Header = ({
           <div onClick={() => setShowModal(true)} className="flex cursor-pointer h-[45px] w-[150px] gap-2 border-[#DDDDDD] rounded-lg border-2 flex items-center justify-center">
             <FiCalendar className="w-6 h-6"  />
             <p className="text-sm font-medium text-gray-900 my-auto">
-              {formattedDate}
+              {endDate}
             </p>
           </div>
 
@@ -100,8 +100,9 @@ const Header = ({
         </div>
   
       </div>
-
-      {showModal && <HeaderModal endDate={endDate} setEndDate={setEndDate} setShowModal={setShowModal} />}
+      {
+        showModal && <DatePicker setEndDate={setEndDate} endDate={endDate} setShowModal={setShowModal} />
+      }
     </div>
   );
 };
