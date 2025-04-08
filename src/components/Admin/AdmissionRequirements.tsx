@@ -65,7 +65,6 @@ const AdmissionRequirements = ({
   const [programLocation, setProgramLocation] = useState("");
   const [examType, setExamType] = useState("");
   const [reqId, setReqId] = useState<number | null>(null);
-  // const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
 
   const addRequirements = () => {
     checkAllFields();

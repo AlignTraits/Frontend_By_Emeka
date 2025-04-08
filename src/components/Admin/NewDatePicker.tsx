@@ -263,7 +263,6 @@ export default function DatePicker({ setShowModal, setEndDate, endDate }: ModalP
                 </div>
               </div>
 
-                {/* Add borderline between the two calendars */}
                 <div className="border-l border-gray-300"></div>
 
               <div className="w-1/2 px-2">

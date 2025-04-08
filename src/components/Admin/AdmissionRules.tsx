@@ -119,7 +119,7 @@ export default function RuleBuilder({requirementList}: RuleBuilderProps) {
 
       <div className="mt-4">
         <h2 className="text-lg font-semibold">Generated Rules:</h2> 
-        <button className="text-blue-500 underline mt-2" onClick={() => console.log("rules: ", rules)}>
+        <button className="text-blue-500 underline mt-2" onClick={() => console.log("rulez: ", rules)}>
           Log Rules
         </button>
       </div>  
