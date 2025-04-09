@@ -268,6 +268,7 @@ export default function AddCourse () {
       setCourseDescription(tempCourse.objectives)
       setCurrency(tempCourse.acceptanceFeeCurrency)
       setScholarshipDescription(tempCourse.scholarshipInformation)
+      setCoursePriceCurrency(tempCourse.currency)
     }
   }
 
