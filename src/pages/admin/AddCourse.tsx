@@ -26,6 +26,16 @@ import { ErrorObjType, RequirementList } from "../../types/course.types";
 //   EURO: "EUR"
 // };
 
+const programLevelList = ["Associate Degree", "Master's Degree", "Diploma", "PGD", "PHD"]
+
+const programDurationList = ["1", "2", "3", "4"]
+
+const periodList = ["YEARS", "MONTHS", "WEEKS"]
+
+const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
+
+const currencies = ["NGN", "USD", "EUR"]; // 
+
 export default function AddCourse () {
   const { schoolId } = useParams<{ schoolId: string}>();
   const { token, currentCourseID } = useAuth();
@@ -71,7 +81,6 @@ export default function AddCourse () {
   const [coursePriceCurrency, setCoursePriceCurrency] = useState<string>("NGN");
   const [showCoursePriceCurrencyDropdown, setShowCoursePriceCurrencyDropdown] = useState(false);
 
-  const currencies = ["NGN", "USD", "EUR"]; // 
 
   const handleCurrencyChange = (selectedCurrency: string) => {
     setCurrency(selectedCurrency);
@@ -81,14 +90,6 @@ export default function AddCourse () {
   const [responseObj, setResponseObj] = useState({} as any)
 
   const [activeTab, setActiveTab] = useState("tab1");
-
-  const programLevelList = ["Associate Degree", "Master's Degree"]
-
-  const programDurationList = ["1", "2", "3", "4"]
-
-  const periodList = ["YEARS", "MONTHS", "WEEKS"]
-
-  const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
 
   const handleFileError = () => {
     setErrorObj((prev) => ({...prev, previewUrl: false}))
