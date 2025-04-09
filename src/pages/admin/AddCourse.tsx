@@ -12,17 +12,19 @@ import AdmissionRequirements from "../../components/Admin/AdmissionRequirements"
 import AdmissionRules from "../../components/Admin/AdmissionRules";
 import { ErrorObjType, RequirementList } from "../../types/course.types";
 
-const CURRENCYOBJECT: Record<string, string> = {
-  NGN: "NAIRA",
-  USD: "DOLLAR",
-  EUR: "EURO",
-};
+// import TextEditor from "../../components/Admin/TextEditorTwo";
 
-const CURRENCYVALUE: Record<string, string> = {
-  NAIRA: "NGN",
-  DOLLAR: "USD",
-  EURO: "EUR"
-};
+// const CURRENCYOBJECT: Record<string, string> = {
+//   NGN: "NAIRA",
+//   USD: "DOLLAR",
+//   EUR: "EURO",
+// };
+
+// const CURRENCYVALUE: Record<string, string> = {
+//   NAIRA: "NGN",
+//   DOLLAR: "USD",
+//   EURO: "EUR"
+// };
 
 export default function AddCourse () {
   const { schoolId } = useParams<{ schoolId: string}>();
@@ -66,6 +68,9 @@ export default function AddCourse () {
   const [currency, setCurrency] = useState<string>("NGN");
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
 
+  const [coursePriceCurrency, setCoursePriceCurrency] = useState<string>("NGN");
+  const [showCoursePriceCurrencyDropdown, setShowCoursePriceCurrencyDropdown] = useState(false);
+
   const currencies = ["NGN", "USD", "EUR"]; // 
 
   const handleCurrencyChange = (selectedCurrency: string) => {
@@ -81,7 +86,7 @@ export default function AddCourse () {
 
   const programDurationList = ["1", "2", "3", "4"]
 
-  const periodList = ["YEAR", "MONTH", "WEEK"]
+  const periodList = ["YEARS", "MONTHS", "WEEKS"]
 
   const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
 
@@ -142,8 +147,23 @@ export default function AddCourse () {
   }
 
   const isFormValid = () => {
+    // console.log("previewUrl: ", previewUrl, typeof previewUrl)
+    // console.log("title: ", title, typeof title)
+    // console.log("courseDescription: ", courseDescription, typeof courseDescription)
+    // console.log("loanDescription: ", loanDescription, typeof loanDescription)
+    // console.log("scholarshipDescription: ", scholarshipDescription, typeof scholarshipDescription)
+    // console.log("website: ", website, typeof website)
+    // console.log("acceptanceFee: ", acceptanceFee, typeof acceptanceFee)
+    // console.log("coursePrice: ", coursePrice, typeof coursePrice)
+    // console.log("courseDuration: ", courseDuration , typeof courseDuration)
+    // console.log("programLevel: ", programLevel, typeof programLevel)
+    // console.log("durationPeriod: ", durationPeriod, typeof durationPeriod)
+    // console.log("isScholarship: ", isScholarship, typeof isScholarship)
+    // console.log("currency: ", currency, typeof currency)
+    // console.log("coursePriceCurrency: ", coursePriceCurrency, typeof courseDescription)
+
     if (previewUrl && title.length > 0 && courseDescription && loanDescription.length > 0 && 
-      scholarshipDescription.length > 0 && website.length > 0 && website.length > 0 && acceptanceFee.length > 0 &&
+      scholarshipDescription.length > 0 && website.length > 0 && acceptanceFee.length > 0 &&
       coursePrice.length > 0 && courseDuration.length > 0 && programLevel.length > 0
     ) {
       return true
@@ -169,12 +189,12 @@ export default function AddCourse () {
 
     if (Object.keys(responseObj).length > 0) {
       if (imageFile) {
-        formData.append("profile", imageFile)
+        formData.append("image", imageFile)
       } else {
-        formData.append("profile", responseObj?.profile)
+        formData.append("image", responseObj?.image)
       }
     } else {
-      formData.append("profile", imageFile!) 
+      formData.append("image", imageFile!) 
     }
 
 
@@ -184,32 +204,36 @@ export default function AddCourse () {
     formData.append("duration", courseDuration)
     formData.append("durationPeriod", durationPeriod)
     formData.append("price", coursePrice)
-    formData.append("currency", "NAIRA")
+    formData.append("currency", coursePriceCurrency);
     formData.append("acceptanceFee", acceptanceFee)
-    formData.append("acceptanceFeeCurrency", CURRENCYOBJECT[currency])
-    formData.append("description", courseDescription)  
+    formData.append("acceptanceFeeCurrency", currency)
+    formData.append("objectives", courseDescription)  
     formData.append("requirements", JSON.stringify(["High school","diploma","equivalent"]))
     formData.append("courseInformation", "course Information here")
     formData.append("programLevel", programLevel)
-    // formData.append("careerOpportunities", JSON.stringify('["first opportunity","second opportunity","third opportunity"]'))
     formData.append("estimatedLivingCost", "50000")
     formData.append("loanInformation", "five years apart or more")
     formData.append("courseWebsiteUrl", website)
+    formData.append("scholarshipInformation", scholarshipDescription)
 
-    console.log(token, createCourse)
-    setActiveTab("tab2")
+    // Log the key/value pairs
+    // for (var pair of formData.entries()) {
+    //   console.log(pair[0] + " - " + pair[1]);
+    // }
+
+    // console.log(token, createCourse)
+    // setActiveTab("tab2")
 
     try {
       setIsLoading(true)
-      // const response =   await createCourse(formData, token as string, currentCourseID ? currentCourseID : undefined)
-      // console.log("response: ", response)
-      // if (currentCourseID) {
-      //   toast.success("Course Updated Successfully");
-      // } else {
-      //   toast.success("Course Created Successfully");
-      // }
-      
-      // navigate(-1);
+      const response =   await createCourse(formData, token as string, currentCourseID ? currentCourseID : undefined)
+      console.log("response: ", response)
+      if (currentCourseID) {
+        toast.success("Course Updated Successfully");
+      } else {
+        toast.success("Course Created Successfully");
+      }
+      navigate(-1);
     } catch (error) {
       if (currentCourseID) {
         toast.error("Failed to update course");
@@ -231,18 +255,20 @@ export default function AddCourse () {
       const tempCourse = await getCourseDetails(currentCourseID)
       setResponseObj(tempCourse)
 
-      setPreviewUrl(tempCourse.profile)
+      setPreviewUrl(tempCourse.image)
       setTitle(tempCourse.title)
       setWebsite(tempCourse.courseWebsiteUrl)
       setProgramLevel(tempCourse.programLevel)
-      setCourseDuration(tempCourse.duration)
+      setCourseDuration(JSON.stringify(tempCourse.duration))
       setDurationPeriod(tempCourse.durationPeriod)
       setIsScholarship(tempCourse.scholarship)
-      setAcceptanceFee(tempCourse.acceptanceFee)
-      setCoursePrice(tempCourse.price)
+      setAcceptanceFee(JSON.stringify(tempCourse.acceptanceFee))
+      setCoursePrice(JSON.stringify(tempCourse.price))
       setLoanDescription(tempCourse.loanInformation)
-      setCourseDescription(tempCourse.description)
-      setCurrency(CURRENCYVALUE[tempCourse.acceptanceFeeCurrency])
+      setCourseDescription(tempCourse.objectives)
+      setCurrency(tempCourse.acceptanceFeeCurrency)
+      setScholarshipDescription(tempCourse.scholarshipInformation)
+      setCoursePriceCurrency(tempCourse.currency)
     }
   }
 
@@ -278,7 +304,7 @@ export default function AddCourse () {
 
         {
           activeTab === "tab1" &&
-          <form className="w-full h-[2050px] bg-[#FAFAFA] border-[1px] border-[#E0E0E0] rounded-lg flex flex-col gap-5 p-5">
+          <form className="w-full size-max bg-[#FAFAFA] border-[1px] border-[#E0E0E0] rounded-lg flex flex-col gap-5 p-5">
             <div className="flex">
               <p className="text-[18px] font-semibold text-[#1E1E1E] w-[190px] ">
                 Basic Information
@@ -455,21 +481,55 @@ export default function AddCourse () {
 
               <div className="w-full flex flex-col gap-y-[5px]">
                 <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.coursePrice ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Price*</p>
-                <input
-                  type="number"
-                  placeholder="0.00"
-                  name="CoursePrice"
-                  onFocus={() => setErrorObj((prev) => ({...prev, coursePrice: false}))}
-                  value={coursePrice}
-                  onChange={(e) => setCoursePrice(e.target.value)}
-                  className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none 
-                  border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
-                />
+                <div className="relative">
+                  <input
+                    type="number"
+                    placeholder="0.00"
+                    name="CoursePrice"
+                    onFocus={() => setErrorObj((prev) => ({ ...prev, coursePrice: false }))}
+                    value={coursePrice}
+                    onChange={(e) => setCoursePrice(e.target.value)}
+                    className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none 
+                      border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+                  />
+                  <div className="absolute h-[40px] top-[0] right-0 flex items-center">
+                    <button
+                      type="button"
+                      onClick={() => setShowCoursePriceCurrencyDropdown(!showCoursePriceCurrencyDropdown)}
+                      className="h-full rounded-r-md border-l border-gray-300 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    >
+                      {coursePriceCurrency}
+                      <span className="ml-1">▼</span>
+                    </button>
+                  </div>
+                  {showCoursePriceCurrencyDropdown && (
+                    <div className="absolute right-0 z-10 mt-1 w-20 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div className="py-1">
+                        {currencies.map((curr) => (
+                          <button
+                            key={curr}
+                            onClick={() => {
+                              setCoursePriceCurrency(curr);
+                              setShowCoursePriceCurrencyDropdown(false);
+                            }}
+                            className={`block w-full px-4 py-2 text-sm ${
+                              coursePriceCurrency === curr
+                                ? "bg-blue-100 text-blue-900"
+                                : "text-gray-700 hover:bg-gray-100"
+                            }`}
+                          >
+                            {curr}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
             </div>
 
-            <div className="w-full flex flex-col gap-y-[5px] h-max">
+            <div className="w-full flex flex-col gap-y-[5px] h-max ">
               <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.courseDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Description*</p>
               <RichTextEditor 
                 placeholder="Write few things about the course..." 
@@ -494,6 +554,7 @@ export default function AddCourse () {
                 onChange={setLoanDescription}
                 onFocus={() => setErrorObj((prev) => ({...prev, loanDescription: false}))}
               />
+              {/* <p className="text-[12px] text-[#737373] font-normal">What students will learn and achieve by completing this course.</p> */}
             </div>
 
             <div className="flex mt-[50px]">
@@ -511,6 +572,7 @@ export default function AddCourse () {
                 onFocus={() => setErrorObj((prev) => ({...prev, scholarshipDescription: false}))}
                 placeholder="Write few things about the course..."
               />
+              {/* <p className="text-[12px] text-[#737373] font-normal">What students will learn and achieve by completing this course.</p> */}
             </div>
             
             <div className="flex gap-x-[20px] mt-[50px]">
