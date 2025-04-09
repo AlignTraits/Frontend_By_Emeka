@@ -25,17 +25,19 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange, placeh
   ];
 
   return (
-    <ReactQuill
-      theme="snow"
-      value={value}
-      onChange={onChange}
-      modules={{ toolbar: toolbarOptions }}
-      // style={{ height: "200px", backgroundColor: 'white' }}
-      className="h-[300px] bg-[white] rounded-lg"
-      placeholder={placeholder}
-      onFocus={onFocus}
-      
-    />
+    <div>
+      <ReactQuill
+        theme="snow"
+        value={value}
+        onChange={onChange}
+        modules={{ toolbar: toolbarOptions }}
+        // style={{ height: "200px", backgroundColor: 'white' }}
+        className="h-[200px] bg-[white] rounded-lg"
+        placeholder={placeholder}
+        onFocus={onFocus}
+        
+      />
+    </div>
   );
 };
 

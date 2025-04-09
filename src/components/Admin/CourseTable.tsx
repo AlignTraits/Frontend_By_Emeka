@@ -4,7 +4,6 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { MdOutlineEdit } from "react-icons/md";
 import { Course } from "../../types/course.types";
 import fileIcon from "../../assets/IconWrap.svg"
-import { getDays } from "../../services/schools";
 import { useAuth } from "../../contexts/useAuth";
 import DeleteModal from "./DeleteSchoolModal";
 import { useState } from "react";
@@ -63,21 +62,50 @@ const [itemForDelete, setItemForDelete] = useState({
       setSelectedCourseList(tempList)
     }
   }
+
+  const formatDate = (date: string) => {
+    // const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };  
+    const dateTemp = new Date(date);
+
+    const formattedDate = new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }).format(dateTemp);
+    return formattedDate;
+  }
+
+  function formatDuration(durationType: string, period: number) {
+    const validDurations = ["YEARS", "MONTHS", "WEEKS"];
+  
+    if (!validDurations.includes(durationType)) {
+      throw new Error("Invalid duration type. Must be one of: YEARS, MONTHS, WEEKS.");
+    }
+  
+    let formatted = durationType;
+    if (period === 1) {
+      formatted = durationType.slice(0, -1); // Remove the 'S'
+    }
+  
+    return `${period} ${formatted}`;
+  }
+
+  
   
   return (
     <>
       {isLoading && (
-        <div className="mx-auto">
+        <div className="mx-auto w-full flex justify-center items-center h-[500px]">
           <ClipLoader />
         </div>
       )}
 
       {!isLoading && (
-        <div className="w-full min-h-[500px] border border-[#EAECF0] rounded-lg">
+        <div className="w-full min-h-[500px] border-b border-gray-300">
           <table className="w-full table-auto space-y-4">
             <thead className="border-b-[0.8px] border-[#EAECF0] p-[20px]">
               <tr className="[&>th]:text-[#000000] [&>th]:text-[14px] [&>th]:font-medium [&>th]:pb-2">
-                <th className="w-[16.6%] p-[20px]">
+                <th className="w-[25%] p-[20px]">
                   <div className="flex items-center">
                     Title <FiArrowDown className="ml-2 mb-1" />
                   </div>
@@ -119,26 +147,26 @@ const [itemForDelete, setItemForDelete] = useState({
                     key={index + course.id}
                     onClick={() => handleTestClick(course.id)}
                   >
-                    <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-10">
-                    <div onClick={(e) => handleSelect(e, course.id)} className="cursor-pointer border-[#D0D5DD] border-[1px] h-[25px] w-[25px] rounded-md flex justify-center items-center">
-                      {
-                        selectedCourseList.includes(course.id) && 
-                        <div className="h-[15px] w-[15px] bg-[#004085] rounded-[50%]"></div>
-                      }
+                    <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-2 items-center">
+                      <div onClick={(e) => handleSelect(e, course.id)} className="cursor-pointer border-[#D0D5DD] border-[1px] h-[25px] w-[25px] rounded-md flex justify-center items-center">
+                        {
+                          selectedCourseList.includes(course.id) && 
+                          <div className="h-[15px] w-[15px] bg-[#004085] rounded-[50%]"></div>
+                        }
                       </div>
-                      {course.title}
+                      <p>{course.title}</p>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       {course.programLevel}
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {course.duration}
+                      {formatDuration(course.durationPeriod, course.duration)}
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {course.price}
+                      {course.currency} {course.price}
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {getDays(course.updatedAt)}
+                      {formatDate(course.updatedAt)}
                     </td>
                     <td className="p-[20px] flex gap-x-[20px] items-center">
                       <FaRegTrashCan onClick={(e) => handleTrashClick(e, course)} className="text-[#D92D20] h-5 w-5 cursor-pointer" />

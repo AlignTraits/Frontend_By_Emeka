@@ -16,6 +16,7 @@ export interface  Course {
   programLevel: string
   duration: number;
   updatedAt: string
+  durationPeriod: string
 } 
 
 export interface  Loan {
