@@ -54,7 +54,8 @@ export default function Index() {
   console.log("selectedSchool: ", selectedSchool)
 
   const handleGetSchools = async () => {
-    const schoolsInLocationList = await getSchoolsByLocation(selectedState)
+
+    const schoolsInLocationList = await getSchoolsByLocation(selectedCountry, selectedState)
     
     if (schoolsInLocationList.length > 0) {
       let tempList:string[] = []
@@ -204,7 +205,7 @@ export default function Index() {
              outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
           >
           <MdFilterList className="w-6 h-6"  />
-          <p>Apply Filters</p>
+          <p>Reset Filters</p>
         </button>
       </div>
 

@@ -288,7 +288,7 @@ export default function DatePicker({ setShowModal, setEndDate, endDate }: ModalP
               </div>
               <div className="flex space-x-2">
                 <button onClick={() => setShowModal(false)} className="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
-                <button className="px-4 py-2 bg-[#004085] text-white rounded hover:bg-blue-700">Apply</button>
+                <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-[#004085] text-white rounded hover:bg-blue-700">Apply</button>
               </div>
             </div>
           </div>

@@ -6,10 +6,10 @@ import { FiEdit2 } from "react-icons/fi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import CustomSelectWithProps from "../dashboard/CustomSelectWithProps";
 import { ErrorObjType, SubjectGrade, RequirementList } from "../../types/course.types";
-import countriesData from "../../data/countries_states.json"
+// import countriesData from "../../data/countries_states.json"
 
 
-const COUNTRIES = countriesData.map((country) => country.name);
+const COUNTRIES = ["Nigeria"]
 
 const EXAMTYPE = [
   "JAMB",
@@ -43,7 +43,6 @@ const SUBJECTS = [
   "Test",
   "IOT",
   "Cyber Security",
-  "Jamb",
 ]
 
 interface RequirementProps {
@@ -234,7 +233,7 @@ const AdmissionRequirements = ({
               <div className="w-[50%]">
                 <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Grade*</p>
                 {
-                  item.subject === "Jamb" ?
+                  examType === "JAMB" ?
                   <CustomSelect
                     placeholder="Select Grade"
                     options={JAMB_SCORE_lLIST.map((typeValue) => ({
