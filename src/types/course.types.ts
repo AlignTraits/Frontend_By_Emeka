@@ -57,7 +57,6 @@ export interface SubjectGrade {
   grade: string;
 }
 
-
 export interface Condition {
   examType: string;
   operator: 'or' | '+';

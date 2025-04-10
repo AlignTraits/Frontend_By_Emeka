@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CustomSelect from "../../components/dashboard/CustomSelect";
 import { RxCross1 } from "react-icons/rx";
 import { toast } from "react-toastify";
@@ -6,7 +6,6 @@ import { FiEdit2 } from "react-icons/fi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import CustomSelectWithProps from "../dashboard/CustomSelectWithProps";
 import { ErrorObjType, SubjectGrade, RequirementList } from "../../types/course.types";
-// import countriesData from "../../data/countries_states.json"
 
 
 const COUNTRIES = ["Nigeria"]
@@ -50,98 +49,143 @@ interface RequirementProps {
   errorObj: ErrorObjType,
   requirementList: RequirementList[];
   setRequirementList: React.Dispatch<React.SetStateAction<RequirementList[]>>
+  schoolData?: any
 } 
 
 const AdmissionRequirements = ({
-    setErrorObj, 
-    errorObj,
-    requirementList,
-    setRequirementList
-  }
-  : RequirementProps) => {
-    
+  setErrorObj,
+  errorObj,
+  requirementList,
+  setRequirementList,
+  schoolData
+}: RequirementProps) => {
   const [subjectList, setSubjectList] = useState<SubjectGrade[]>([]);
   const [programLocation, setProgramLocation] = useState("");
   const [examType, setExamType] = useState("");
   const [reqId, setReqId] = useState<number | null>(null);
+
+  // Parse and load requirements from school data on component mount
+  useEffect(() => {
+    if (schoolData) {
+      const parsedRequirements: RequirementList[] = [];
+      
+      // Process up to 10 exam types from school data
+      for (let i = 1; i <= 10; i++) {
+        const countryKey = `ExamCountry${i}`;
+        const typeKey = `ExamType${i}`;
+        const subjectsKey = `ExamType${i}Subjects`;
+        const gradesKey = `ExamType${i}SubGrades`;
+        
+        if (schoolData[countryKey] && schoolData[typeKey] && 
+            schoolData[subjectsKey] && schoolData[gradesKey]) {
+          
+          const subjects: SubjectGrade[] = [];
+          
+          // Create subject-grade pairs
+          for (let j = 0; j < schoolData[subjectsKey].length; j++) {
+            subjects.push({
+              id: Date.now() + j,
+              subject: schoolData[subjectsKey][j],
+              grade: schoolData[gradesKey][j]
+            });
+          }
+          
+          // Add to requirements list
+          parsedRequirements.push({
+            id: Date.now() + i,
+            location: schoolData[countryKey],
+            examType: schoolData[typeKey],
+            subjects: subjects
+          });
+        }
+      }
+      
+      // Only update if we found requirements and the current list is empty
+      if (parsedRequirements.length > 0 && requirementList.length === 0) {
+        setRequirementList(parsedRequirements);
+      }
+    }
+  }, [schoolData]);
 
   const addRequirements = () => {
     checkAllFields();
 
     if (!isFormValid()) {
       toast.error("Please fill all input fields!");
-      return 
+      return;
     }
 
     if (reqId) {
-      let tempList = requirementList.filter((item) => item.id !== reqId)
+      let tempList = requirementList.filter((item) => item.id !== reqId);
       setRequirementList([...tempList, {
         id: reqId,
         subjects: subjectList,
         location: programLocation,
         examType: examType
-      }])
+      }]);
     } else {
       setRequirementList((prev) => [...prev, {
         id: Date.now(),
         subjects: subjectList,
         location: programLocation,
         examType: examType
-      }])
+      }]);
     }
 
-    setProgramLocation("")
-    setExamType("")
-    setSubjectList([])
-    setReqId(null)
-  }
+    // Reset form
+    setProgramLocation("");
+    setExamType("");
+    setSubjectList([]);
+    setReqId(null);
+    
+    toast.success(reqId ? "Requirement updated successfully!" : "Requirement added successfully!");
+  };
 
   const removeRequirement = (id: number) => {
     setRequirementList(requirementList.filter((item) => item.id !== id));
+    toast.success("Requirement removed successfully!");
   };
-
 
   const editRequirement = (id: number) => {
-    let tempRequiremnt = requirementList.find((item) => item.id === id)
+    let tempRequirement = requirementList.find((item) => item.id === id);
 
-    if (tempRequiremnt) {
-      setProgramLocation(tempRequiremnt.location)
-      setExamType(tempRequiremnt.examType)
-      setSubjectList(tempRequiremnt.subjects)
-      setReqId(tempRequiremnt.id)
+    if (tempRequirement) {
+      setProgramLocation(tempRequirement.location);
+      setExamType(tempRequirement.examType);
+      setSubjectList(tempRequirement.subjects);
+      setReqId(tempRequirement.id);
+      
+      // Scroll to form
+      window.scrollTo({
+        top: document.getElementById('requirements-form')?.offsetTop || 0,
+        behavior: 'smooth'
+      });
     }
   };
-
 
   const checkAllFields = () => {
     if (examType.length === 0) {
-      setErrorObj((prev) => ({...prev, examType: true}))
+      setErrorObj((prev) => ({ ...prev, examType: true }));
     }
 
     if (programLocation.length === 0) {
-      setErrorObj((prev) => ({...prev, programLocation: true}))
+      setErrorObj((prev) => ({ ...prev, programLocation: true }));
     }
-  }
+  };
 
   const isFormValid = () => {
     if (examType.length > 0 && programLocation.length > 0 && subjectList.length > 0) {
       const allFieldsFilled = subjectList.every(
         (item) => item.subject.trim() !== "" && item.grade.trim() !== ""
       );
-      if (allFieldsFilled) {
-        return true
-      } else {
-        return false
-      }
-    } else {
-      return false
+      return allFieldsFilled;
     }
-  }
+    return false;
+  };
 
   const handleExamTypeError = () => {
-    setErrorObj((prev) => ({...prev, examType: false}))
-  }
-
+    setErrorObj((prev) => ({ ...prev, examType: false }));
+  };
 
   // Add new subject row
   const addSubject = () => {
@@ -162,61 +206,94 @@ const AdmissionRequirements = ({
     );
   };
 
+  // Reset form
+  const resetForm = () => {
+    setProgramLocation("");
+    setExamType("");
+    setSubjectList([]);
+    setReqId(null);
+    setErrorObj((prev) => ({ ...prev, examType: false, programLocation: false }));
+  };
+
   return (
-    <div className="w-full  bg-[#FAFAFA] border-[1px] border-[#E0E0E0] rounded-lg flex flex-col gap-6 p-5">
+    <div className="w-full bg-[#FAFAFA] border-[1px] border-[#E0E0E0] rounded-lg flex flex-col gap-6 p-5">
       <p className="text-[18px] font-semibold text-[#000000]">
         TERTIARY / SECONDARY / OTHERS SCHOOL EXAMINATION DETAILS
       </p>
 
-      <div className="w-full flex flex-col gap-y-[5px]">
-        <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.programLocation ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Program Location*</p>
-        <CustomSelectWithProps 
-          placeholder="Select Subject"
-          options={COUNTRIES.map((typeValue) => ({
-            value: typeValue,
-            label: typeValue,
-          }))}
-          onChange={(val) => setProgramLocation(val)}
-          selectedProps={{
-            value: programLocation,
-            label: programLocation
-          }}
-          handleError={() => setErrorObj((prev) => ({...prev, programLocation: false}))}
-        />
-      </div>
+      <div id="requirements-form" className="w-full flex flex-col gap-y-6">
+        {reqId && (
+          <div className="bg-blue-50 text-blue-700 p-3 rounded-md flex justify-between items-center">
+            <span>Editing requirement</span>
+            <button 
+              onClick={resetForm}
+              className="text-red-700 underline"
+            >
+              Cancel Editing
+            </button>
+          </div>
+        )}
+        
+        <div className="w-full flex flex-col gap-y-[5px]">
+          <p className={`text-[16px] font-medium ${errorObj.programLocation ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>
+            Program Location*
+          </p>
+          <CustomSelectWithProps
+            placeholder="Select Country"
+            options={COUNTRIES.map((typeValue) => ({
+              value: typeValue,
+              label: typeValue,
+            }))}
+            onChange={(val) => setProgramLocation(val)}
+            selectedProps={{
+              value: programLocation,
+              label: programLocation,
+            }}
+            handleError={() => setErrorObj((prev) => ({ ...prev, programLocation: false }))}
+          />
+        </div>
 
+        <div className="w-full flex flex-col gap-y-[5px]">
+          <p className={`text-[16px] font-medium ${errorObj.examType ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>
+            Exam Type*
+          </p>
+          <CustomSelectWithProps
+            placeholder="e.g Neco, Wassce etc"
+            options={EXAMTYPE.map((typeValue) => ({
+              value: typeValue,
+              label: typeValue,
+            }))}
+            onChange={(value) => setExamType(value)}
+            selectedProps={{
+              value: examType,
+              label: examType,
+            }}
+            handleError={handleExamTypeError}
+          />
+        </div>
 
-      <div className="w-full flex flex-col gap-y-[5px]">
-        <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.examType ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Exam Type*</p>
-        <CustomSelectWithProps
-          placeholder="e.g Neco, Wassce etc"
-          options={EXAMTYPE.map((typeValue) => ({
-            value: typeValue,
-            label: typeValue,
-          }))}
-          onChange={(value) => setExamType(value)}
-          selectedProps={{
-            value: examType,
-            label: examType
-          }}
-          handleError={handleExamTypeError}
-        />
-      </div>
+        <div className="flex justify-between items-center">
+          <p className="text-[16px] font-medium text-[#1E1E1E]">Required Subjects*</p>
+          <button
+            onClick={addSubject}
+            className="text-[#1E1E1E] text-[14px] font-semibold border-[#DDDDDD] border-[1px] h-[44px] w-[127px] rounded-md hover:bg-gray-50"
+          >
+            Add Subjects
+          </button>
+        </div>
 
-      <div className="flex justify-between items-center">
-        <p>Required Subjects*</p>
+        {subjectList.length === 0 && (
+          <div className="text-center py-4 text-gray-500 bg-gray-50 rounded-md">
+            No subjects added. Click "Add Subjects" to add required subjects.
+          </div>
+        )}
 
-        <button onClick={addSubject} className="text-[#1E1E1E] text-[14px] font-semibold border-[#DDDDDD] border-[1px] h-[44px] w-[127px] rounded-md">Add Subjects</button>
-      </div>
-
-
-      <div className="flex flex-col gap-y-[10px]">
-        {
-          subjectList.map((item: SubjectGrade) => 
+        <div className="flex flex-col gap-y-[10px]">
+          {subjectList.map((item: SubjectGrade) => (
             <div key={item.id} className="flex gap-x-[20px] items-end">
               <div className="w-[50%]">
-                <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Subject*</p>
-                <CustomSelect 
+                <p className="text-[16px] font-medium text-[#1E1E1E]">Subject*</p>
+                <CustomSelect
                   placeholder="Select Subject"
                   options={SUBJECTS.map((typeValue) => ({
                     value: typeValue,
@@ -225,15 +302,14 @@ const AdmissionRequirements = ({
                   onChange={(val) => updateSubject(item.id, "subject", val)}
                   selectedProps={{
                     value: item.subject,
-                    label: item.subject
+                    label: item.subject,
                   }}
                 />
               </div>
 
               <div className="w-[50%]">
-                <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Grade*</p>
-                {
-                  examType === "JAMB" ?
+                <p className="text-[16px] font-medium text-[#1E1E1E]">Grade*</p>
+                {examType === "JAMB" ? (
                   <CustomSelect
                     placeholder="Select Grade"
                     options={JAMB_SCORE_lLIST.map((typeValue) => ({
@@ -243,10 +319,11 @@ const AdmissionRequirements = ({
                     onChange={(val) => updateSubject(item.id, "grade", val)}
                     selectedProps={{
                       value: item.grade,
-                      label: item.grade
+                      label: item.grade,
                     }}
-                  /> :
-                  <CustomSelect 
+                  />
+                ) : (
+                  <CustomSelect
                     placeholder="Select Grade"
                     options={GRADES.map((typeValue) => ({
                       value: typeValue,
@@ -255,61 +332,98 @@ const AdmissionRequirements = ({
                     onChange={(val) => updateSubject(item.id, "grade", val)}
                     selectedProps={{
                       value: item.grade,
-                      label: item.grade
+                      label: item.grade,
                     }}
                   />
-                }
+                )}
               </div>
 
-              <div onClick={() => removeSubject(item.id)} className="cursor-pointer border-[#E9E9E9] border-[1px] rounded-md w-[40px] h-[40px] flex justify-center items-center">
+              <div
+                onClick={() => removeSubject(item.id)}
+                className="cursor-pointer border-[#E9E9E9] border-[1px] rounded-md w-[40px] h-[40px] flex justify-center items-center hover:bg-red-50"
+              >
                 <RxCross1 className="text-[#D92D20]" />
               </div>
             </div>
-          )
-        }
+          ))}
+        </div>
 
+        <div className="w-full flex justify-end gap-x-[20px] mt-4">
+          <button 
+            onClick={resetForm}
+            className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#1E1E1E] text-[14px] font-semibold rounded-md hover:bg-gray-50"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={addRequirements}
+            className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#ffffff] text-[14px] font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
+          >
+            {reqId ? "Update Requirement" : "Add Requirement"}
+          </button>
+        </div>
       </div>
 
-      <div className="w-full flex justify-end gap-x-[20px]">
-        <button className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#1E1E1E] text-[14px] font-semibold rounded-md">Cancel</button>
-        <button onClick={addRequirements} className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#ffffff] text-[14px] font-semibold rounded-md bg-[#004085]">Add Requirements</button>
-      </div>
+      <div className="flex flex-col gap-y-[20px] mt-6">
+        <div className="flex justify-between items-center">
+          <h3 className="text-[16px] font-semibold text-[#1E1E1E]">Requirements List</h3>
+          <span className="text-gray-500 text-sm">{requirementList.length} {requirementList.length === 1 ? 'requirement' : 'requirements'}</span>
+        </div>
 
-      <div className="flex flex-col gap-y-[20px]">
-        {
-          requirementList.length > 0 &&
-          requirementList.map((item) => 
-            <div key={item.id} className="border-[#E9E9E9] border-[1px] w-full h-[138px] flex justify-between p-5 rounded-md items-center">
+        {requirementList.length === 0 ? (
+          <div className="border-[#E9E9E9] border-[1px] w-full p-8 rounded-md flex flex-col items-center justify-center text-gray-500">
+            <p>No requirements added yet.</p>
+            <p className="text-sm mt-2">Add requirements using the form above.</p>
+          </div>
+        ) : (
+          requirementList.map((item) => (
+            <div
+              key={item.id}
+              className="border-[#E9E9E9] border-[1px] w-full p-5 rounded-md flex justify-between items-center hover:bg-gray-50"
+            >
               <div className="flex flex-col gap-y-[5px]">
                 <div className="flex gap-x-[10px] items-center">
-                  <p className="font-[#000000] font-[16px] font-semibold">{item.examType}</p>
-                  <p className="w-max px-[10px] h-[30px] flex justify-center items-center text-center font-[#000000] font-[12px] font-medium border-[#E9E9E9] border-[1px] rounded-2xl">{item.location}</p>
+                  <p className="font-semibold text-[16px]">{item.examType}</p>
+                  <p className="w-max px-[10px] h-[30px] flex justify-center items-center text-center text-[12px] font-medium border-[#E9E9E9] border-[1px] rounded-2xl">
+                    {item.location}
+                  </p>
                 </div>
-                <p className="font-[#000000] font-[16px] font-medium">Required Subjects:</p>
-                <div className="flex gap-x-[10px]">
-                  {
-                    item.subjects.map((innerItem) => (
-                      <p 
-                        key={innerItem.id}
-                        className="w-max px-[10px] h-[30px] flex justify-center items-center text-center font-[#000000] font-[10px] font-normal border-[#E9E9E9] border-[1px] rounded-2xl"
-                      >
-                          {innerItem.subject}: {innerItem.grade}
-                      </p>))
-                  }
+                <p className="text-[16px] font-medium">Required Subjects:</p>
+                <div className="flex flex-wrap gap-2">
+                  {item.subjects.map((innerItem) => (
+                    <p
+                      key={innerItem.id}
+                      className="w-max px-[10px] h-[30px] flex justify-center items-center text-center text-[10px] font-normal border-[#E9E9E9] border-[1px] rounded-2xl"
+                    >
+                      {innerItem.subject}: {innerItem.grade}
+                    </p>
+                  ))}
                 </div>
               </div>
 
               <div className="flex gap-x-[20px]">
-                <FiEdit2 onClick={() => editRequirement(item.id)} className="text-[#595959] cursor-pointer" />
+                <button
+                  onClick={() => editRequirement(item.id)}
+                  className="flex items-center gap-1 text-[#595959] hover:text-[#353535] p-2 rounded hover:bg-gray-100"
+                >
+                  <FiEdit2 className="text-[#595959]" />
+                  <span className="text-sm">Edit</span>
+                </button>
 
-                <FaRegTrashAlt onClick={() => removeRequirement(item.id)} className="text-[#F04438] cursor-pointer" />
+                <button
+                  onClick={() => removeRequirement(item.id)}
+                  className="flex items-center gap-1 text-[#F04438] hover:text-[#D92D20] p-2 rounded hover:bg-red-50"
+                >
+                  <FaRegTrashAlt className="text-[#F04438]" />
+                  <span className="text-sm">Delete</span>
+                </button>
               </div>
             </div>
-          )
-        }
+          ))
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdmissionRequirements
+export default AdmissionRequirements;

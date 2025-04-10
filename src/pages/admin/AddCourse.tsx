@@ -10,7 +10,7 @@ import { BeatLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import AdmissionRequirements from "../../components/Admin/AdmissionRequirements";
 import AdmissionRules from "../../components/Admin/AdmissionRules";
-import { ErrorObjType, RequirementList, Rule } from "../../types/course.types";
+import { ErrorObjType, RequirementList, Rule, Condition } from "../../types/course.types";
 type ExamEntry = {
   examType: string;
   operator: string;
@@ -75,6 +75,7 @@ export default function AddCourse () {
 
   const [coursePriceCurrency, setCoursePriceCurrency] = useState<string>("NGN");
   const [showCoursePriceCurrencyDropdown, setShowCoursePriceCurrencyDropdown] = useState(false);
+  const [tempRules1, setTempRules1] = useState<any>(null) 
 
 
   const handleCurrencyChange = (selectedCurrency: string) => {
@@ -145,21 +146,6 @@ export default function AddCourse () {
   }
 
   const isFormValid = () => {
-    // console.log("previewUrl: ", previewUrl, typeof previewUrl)
-    // console.log("title: ", title, typeof title)
-    // console.log("courseDescription: ", courseDescription, typeof courseDescription)
-    // console.log("loanDescription: ", loanDescription, typeof loanDescription)
-    // console.log("scholarshipDescription: ", scholarshipDescription, typeof scholarshipDescription)
-    // console.log("website: ", website, typeof website)
-    // console.log("acceptanceFee: ", acceptanceFee, typeof acceptanceFee)
-    // console.log("coursePrice: ", coursePrice, typeof coursePrice)
-    // console.log("courseDuration: ", courseDuration , typeof courseDuration)
-    // console.log("programLevel: ", programLevel, typeof programLevel)
-    // console.log("durationPeriod: ", durationPeriod, typeof durationPeriod)
-    // console.log("isScholarship: ", isScholarship, typeof isScholarship)
-    // console.log("currency: ", currency, typeof currency)
-    // console.log("coursePriceCurrency: ", coursePriceCurrency, typeof courseDescription)
-
     if (previewUrl && title.length > 0 && courseDescription && loanDescription.length > 0 && 
       scholarshipDescription.length > 0 && website.length > 0 && acceptanceFee.length > 0 &&
       coursePrice.length > 0 && courseDuration.length > 0 && programLevel.length > 0
@@ -214,13 +200,6 @@ export default function AddCourse () {
     formData.append("courseWebsiteUrl", website)
     formData.append("scholarshipInformation", scholarshipDescription)
 
-    // Log the key/value pairs
-    // for (var pair of formData.entries()) {
-    //   console.log(pair[0] + " - " + pair[1]);
-    // }
-
-    // console.log(token, createCourse)
-    // setActiveTab("tab2")
 
     try {
       setIsLoading(true)
@@ -271,6 +250,16 @@ export default function AddCourse () {
       setCurrency(tempCourse.acceptanceFeeCurrency)
       setScholarshipDescription(tempCourse.scholarshipInformation)
       setCoursePriceCurrency(tempCourse.currency)
+
+      let tempRules = {} as any
+      Object.keys(tempCourse).forEach((key) => {
+        if (key.startsWith("Adminrule")) {
+          const ruleIndex = parseInt(key.replace("Adminrule", "")) - 1;
+          const ruleValue = tempCourse[key];
+          tempRules[`Adminrule${ruleIndex + 1}`] = ruleValue;
+        }
+      })
+      setTempRules1(tempRules)
     }
   }
 
@@ -310,24 +299,35 @@ export default function AddCourse () {
   const handleUpdateLogic = async () => {
     setIsLoadingTwo(true)
 
-    let temPayload = {}
+    let temPayload:any = {}
 
-    requirementList.forEach((elem, i) => {
-      temPayload = {
-        ...temPayload,
-        [`ExamCountry${i + 1}`]: elem.location,
-        [`ExamType${i + 1}`]: elem.examType,
-        [`ExamType${i + 1}Subjects`]: elem.subjects.map((subj) => subj.subject),
-        [`ExamType${i + 1}SubGrades`]: elem.subjects.map((subj) => subj.grade),
-      }
-    })
+    const maxEntries = 10;
 
-    rules.forEach((elem, i) => {
-      temPayload = {
-        ...temPayload,
-        [`Adminrule${i + 1}`]: buildExamString(elem.conditions),
+    for (let i = 0; i < maxEntries; i++) {
+      if (i < requirementList.length) {
+        const elem = requirementList[i];
+        temPayload[`ExamCountry${i + 1}`] = elem.location;
+        temPayload[`ExamType${i + 1}`] = elem.examType;
+        temPayload[`ExamType${i + 1}Subjects`] = elem.subjects.map(sub => sub.subject);
+        temPayload[`ExamType${i + 1}SubGrades`] = elem.subjects.map(sub => sub.grade);
+      } else {
+        // Pad with nulls
+        temPayload[`ExamCountry${i + 1}`] = null;
+        temPayload[`ExamType${i + 1}`] = null;
+        temPayload[`ExamType${i + 1}Subjects`] = null;
+        temPayload[`ExamType${i + 1}SubGrades`] = null;
       }
-    })
+    }
+
+    const maxRules = 5;
+
+    for (let i = 0; i < maxRules; i++) {
+      if (i < rules.length) {
+        temPayload[`Adminrule${i + 1}`] = buildExamString(rules[i].conditions);
+      } else {
+        temPayload[`Adminrule${i + 1}`] = null;
+      }
+    }
 
     console.log("temPayload: ", temPayload)
     temPayload = { ...temPayload, id: currentCourseID }
@@ -345,6 +345,38 @@ export default function AddCourse () {
     }
   }
 
+  useEffect(() => {
+    if (!tempRules1) return;
+  
+    const isValidOperator = (op: string): op is "or" | "+" => op === "or" || op === "+";
+  
+    const parsedRules: Rule[] = Object.entries(tempRules1)
+      .filter(([key, value]) => key.toLowerCase().startsWith("adminrule") && value)
+      .map(([key, value]) => {
+        const tokens = (value as string).trim().split(/\s+/);
+        const conditions: Condition[] = [];
+  
+        for (let i = 0; i < tokens.length; i++) {
+          const token = tokens[i];
+          if (i === 0) {
+            conditions.push({ examType: token, operator: "or" });
+          } else if (isValidOperator(token)) {
+            const nextExam = tokens[i + 1];
+            if (nextExam) {
+              conditions.push({ examType: nextExam, operator: token });
+              i++;
+            }
+          }
+        }
+  
+        return {
+          ruleName: key,
+          conditions,
+        };
+      });
+  
+    setRules(parsedRules);
+  }, [tempRules1]);
 
   return (
     <div className="relative">
@@ -670,12 +702,15 @@ export default function AddCourse () {
               setErrorObj={setErrorObj}
               requirementList={requirementList}
               setRequirementList={setRequirementList}
+              schoolData={responseObj}
             />
 
             <AdmissionRules 
               requirementList={requirementList}
               setRules={setRules}
               rules={rules}
+              // schoolData={responseObj}
+              // tempRules={extractAdminRules()}
             />
 
             <div className="mt-5">
