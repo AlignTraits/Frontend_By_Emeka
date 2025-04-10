@@ -6,10 +6,10 @@ import { FiEdit2 } from "react-icons/fi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import CustomSelectWithProps from "../dashboard/CustomSelectWithProps";
 import { ErrorObjType, SubjectGrade, RequirementList } from "../../types/course.types";
-import countriesData from "../../data/countries_states.json"
+// import countriesData from "../../data/countries_states.json"
 
 
-const COUNTRIES = countriesData.map((country) => country.name);
+const COUNTRIES = ["Nigeria"]
 
 const EXAMTYPE = [
   "JAMB",
