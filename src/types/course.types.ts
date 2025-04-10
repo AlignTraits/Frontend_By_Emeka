@@ -56,3 +56,14 @@ export interface SubjectGrade {
   subject: string;
   grade: string;
 }
+
+
+export interface Condition {
+  examType: string;
+  operator: 'or' | '+';
+}
+
+export interface Rule {
+  ruleName: string;
+  conditions: Condition[];
+}

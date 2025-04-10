@@ -43,7 +43,6 @@ const SUBJECTS = [
   "Test",
   "IOT",
   "Cyber Security",
-  "Jamb",
 ]
 
 interface RequirementProps {
@@ -234,7 +233,7 @@ const AdmissionRequirements = ({
               <div className="w-[50%]">
                 <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Grade*</p>
                 {
-                  item.subject === "Jamb" ?
+                  examType === "JAMB" ?
                   <CustomSelect
                     placeholder="Select Grade"
                     options={JAMB_SCORE_lLIST.map((typeValue) => ({

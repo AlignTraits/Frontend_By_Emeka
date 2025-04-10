@@ -1,31 +1,28 @@
 import { useEffect, useState } from 'react';
-import { RequirementList } from "../../types/course.types";
+import { RequirementList, Condition, Rule } from "../../types/course.types";
 
 // const examTypeList = ['WAEC', 'NECO', 'GCE', 'JAMB', 'UTME', 'A_LEVEL', 'NABTEB'];
 
-interface Condition {
-  examType: string;
-  operator: 'or' | '+';
-}
+// interface Condition {
+//   examType: string;
+//   operator: 'or' | '+';
+// }
 
-interface Rule {
-  ruleName: string;
-  conditions: Condition[];
-}
+// interface Rule {
+//   ruleName: string;
+//   conditions: Condition[];
+// }
 
 interface RuleBuilderProps {
   requirementList: RequirementList[];
+  setRules: React.Dispatch<React.SetStateAction<Rule[]>>
+  rules: Rule[]
 }
 
-export default function RuleBuilder({requirementList}: RuleBuilderProps) {
-  console.log("requirementList: ", requirementList);
+export default function RuleBuilder({requirementList, setRules, rules}: RuleBuilderProps) {
+  // console.log("requirementList: ", requirementList);
 
   const [examTypeList, setExamTypeList] = useState<string[]>([]);
-  const [rules, setRules] = useState<Rule[]>([{
-    ruleName: '',
-    conditions: [{ examType: '', operator: 'or' }],
-  }]);
-
 
   const addRule = () => {
     setRules([...rules, { ruleName: '', conditions: [{ examType: '', operator: 'or' }] }]);
@@ -116,13 +113,6 @@ export default function RuleBuilder({requirementList}: RuleBuilderProps) {
       >
         Add Rule
       </button>
-
-      <div className="mt-4">
-        <h2 className="text-lg font-semibold">Generated Rules:</h2> 
-        <button className="text-blue-500 underline mt-2" onClick={() => console.log("rulez: ", rules)}>
-          Log Rules
-        </button>
-      </div>  
     </div>
   );
 }

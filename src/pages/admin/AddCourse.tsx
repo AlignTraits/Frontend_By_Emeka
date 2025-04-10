@@ -4,27 +4,17 @@ import { IoIosArrowBack } from "react-icons/io";
 import ImageUploadWithPreview from "../../components/Admin/ImageUpload";
 import CustomSelect from "../../components/dashboard/CustomSelect";
 import RichTextEditor from "../../components/Admin/RichTextEditor";
-import { createCourse, getCourseDetails } from "../../services/schools";
+import { createCourse, getCourseDetails, updateAdmissionLogic } from "../../services/schools";
 import { useAuth } from "../../contexts/useAuth";
 import { BeatLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import AdmissionRequirements from "../../components/Admin/AdmissionRequirements";
 import AdmissionRules from "../../components/Admin/AdmissionRules";
-import { ErrorObjType, RequirementList } from "../../types/course.types";
-
-// import TextEditor from "../../components/Admin/TextEditorTwo";
-
-// const CURRENCYOBJECT: Record<string, string> = {
-//   NGN: "NAIRA",
-//   USD: "DOLLAR",
-//   EUR: "EURO",
-// };
-
-// const CURRENCYVALUE: Record<string, string> = {
-//   NAIRA: "NGN",
-//   DOLLAR: "USD",
-//   EURO: "EUR"
-// };
+import { ErrorObjType, RequirementList, Rule } from "../../types/course.types";
+type ExamEntry = {
+  examType: string;
+  operator: string;
+};
 
 const programLevelList = ["Associate Degree", "Master's Degree", "Diploma", "PGD", "PHD"]
 
@@ -38,9 +28,13 @@ const currencies = ["NGN", "USD", "EUR"]; //
 
 export default function AddCourse () {
   const { schoolId } = useParams<{ schoolId: string}>();
-  const { token, currentCourseID } = useAuth();
+  const { token, currentCourseID, setCurrentCourseID } = useAuth();
   const navigate = useNavigate()
-   const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
+  const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
+  const [rules, setRules] = useState<Rule[]>([{
+    ruleName: '',
+    conditions: [{ examType: '', operator: 'or' }],
+  }]);
   const [errorObj, setErrorObj] = useState<ErrorObjType>({
     title: false,
     courseDescription: false,
@@ -60,6 +54,7 @@ export default function AddCourse () {
   const [loanDescription, setLoanDescription] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingTwo, setIsLoadingTwo] = useState(false);
   const [scholarshipDescription, setScholarshipDescription] = useState("");
 
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -90,6 +85,8 @@ export default function AddCourse () {
   const [responseObj, setResponseObj] = useState({} as any)
 
   const [activeTab, setActiveTab] = useState("tab1");
+
+  const [calledCreatedCourseAPI, setCalledCreatedCourseAPI] = useState(false)
 
   const handleFileError = () => {
     setErrorObj((prev) => ({...prev, previewUrl: false}))
@@ -229,12 +226,17 @@ export default function AddCourse () {
       setIsLoading(true)
       const response =   await createCourse(formData, token as string, currentCourseID ? currentCourseID : undefined)
       console.log("response: ", response)
+      setCalledCreatedCourseAPI(true)
       if (currentCourseID) {
         toast.success("Course Updated Successfully");
       } else {
         toast.success("Course Created Successfully");
       }
-      navigate(-1);
+      if (response.status === 201) {
+        setCurrentCourseID(response.data.id)
+      }
+      // navigate(-1);
+      setActiveTab("tab2")
     } catch (error) {
       if (currentCourseID) {
         toast.error("Failed to update course");
@@ -244,7 +246,6 @@ export default function AddCourse () {
     } finally {
       setIsLoading(false);
     }
-    
   }
 
   useEffect(() => {
@@ -273,6 +274,77 @@ export default function AddCourse () {
     }
   }
 
+  const verifyTabChange = () => {
+    if (currentCourseID) {
+      return true
+    } else if (calledCreatedCourseAPI) {
+      return true
+    }
+    return false
+  }
+
+
+  const handleTabChange = (tab:string) => {
+    if (tab === "tab1") {
+      setActiveTab("tab1")
+    } else if (verifyTabChange()) {
+      setActiveTab("tab2")
+    }
+  }
+  
+  function buildExamString(exams: ExamEntry[]): string {
+    if (exams.length === 0) return "";
+  
+    // Start with the first examType
+    let result = exams[0].examType;
+  
+    // Append the rest with operator and examType
+    for (let i = 1; i < exams.length; i++) {
+      result += ` ${exams[i].operator} ${exams[i].examType}`;
+    }
+  
+    return result;
+  }
+
+
+  const handleUpdateLogic = async () => {
+    setIsLoadingTwo(true)
+
+    let temPayload = {}
+
+    requirementList.forEach((elem, i) => {
+      temPayload = {
+        ...temPayload,
+        [`ExamCountry${i + 1}`]: elem.location,
+        [`ExamType${i + 1}`]: elem.examType,
+        [`ExamType${i + 1}Subjects`]: elem.subjects.map((subj) => subj.subject),
+        [`ExamType${i + 1}SubGrades`]: elem.subjects.map((subj) => subj.grade),
+      }
+    })
+
+    rules.forEach((elem, i) => {
+      temPayload = {
+        ...temPayload,
+        [`Adminrule${i + 1}`]: buildExamString(elem.conditions),
+      }
+    })
+
+    console.log("temPayload: ", temPayload)
+    temPayload = { ...temPayload, id: currentCourseID }
+
+    try {
+      let response = await updateAdmissionLogic(temPayload, token as string, currentCourseID as string)
+      console.log("response of updateAdmissionLogic: ", response)
+      toast.success("Admission Logic Created Successfully")
+      navigate(-1)
+    } catch(err) {
+      toast.error("Failed to create admission logic")
+    }
+    finally {
+      setIsLoadingTwo(false)
+    }
+  }
+
 
   return (
     <div className="relative">
@@ -295,7 +367,9 @@ export default function AddCourse () {
                       ? "border-[#003064] text-[#003064] text-[16px] font-semibold"
                       : "border-transparent hover:text-blue-500 text-[#999999]"
                   }`}
-                onClick={() => setActiveTab(tabKey)}
+                onClick={() => 
+                  handleTabChange(tabKey)
+                }
               >
                 {tab}
               </button>
@@ -600,22 +674,19 @@ export default function AddCourse () {
 
             <AdmissionRules 
               requirementList={requirementList}
+              setRules={setRules}
+              rules={rules}
             />
 
             <div className="mt-5">
-              <button className="rounded-lg w-full h-[40px] bg-[#004085] text-[14px] text-[white] semi-bold cursor-pointer">
-                {isLoading ? <BeatLoader /> : currentCourseID ? "Update Admission Logic" : "Create Admission Logic"}
+              <button onClick={handleUpdateLogic} className="rounded-lg w-full h-[40px] bg-[#004085] text-[14px] text-[white] semi-bold cursor-pointer">
+                {isLoadingTwo ? <BeatLoader /> : currentCourseID ? "Update Admission Logic" : "Create Admission Logic"}
               </button>
             </div>
           </div>
 
 
         }
-
-        {/* {
-          activeTab === "tab3" &&
-          <AdmissionRules />
-        } */}
       </div>
     </div>
     
