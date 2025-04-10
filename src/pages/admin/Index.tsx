@@ -51,6 +51,8 @@ export default function Index() {
     setSchoolList([])
   };
 
+  console.log("selectedSchool: ", selectedSchool)
+
   const handleGetSchools = async () => {
 
     const schoolsInLocationList = await getSchoolsByLocation(selectedCountry, selectedState)
