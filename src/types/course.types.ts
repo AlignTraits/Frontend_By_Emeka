@@ -51,6 +51,7 @@ export interface ErrorObjType {
   title: boolean;
   courseDescription: boolean;
   loanDescription: boolean;
+  isScholarship: boolean;
   scholarshipDescription: boolean;
   website: boolean;
   acceptanceFee: boolean;

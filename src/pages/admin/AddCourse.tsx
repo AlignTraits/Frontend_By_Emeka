@@ -40,6 +40,7 @@ export default function AddCourse () {
     courseDescription: false,
     loanDescription: false,
     scholarshipDescription: false,
+    isScholarship: false,
     website: false,
     acceptanceFee: false,
     coursePrice: false,
@@ -105,6 +106,11 @@ export default function AddCourse () {
     setErrorObj((prev) => ({...prev, durationPeriod: false}))
   }
 
+  const handleIsScholarshipError = () => {
+    setErrorObj((prev) => ({...prev, isScholarship: false}))
+  }
+
+
   const checkAllFields = () => {
     if (title.length === 0) {
       setErrorObj((prev) => ({...prev, title: true}))
@@ -112,12 +118,11 @@ export default function AddCourse () {
     if (courseDescription.length === 0) {
       setErrorObj((prev) => ({...prev, courseDescription: true}))
     }
-    if (loanDescription.length === 0) {
-      setErrorObj((prev) => ({...prev, loanDescription: true}))
+
+    if (isScholarship.length === 0) {
+      setErrorObj((prev) => ({...prev, isScholarship: true}))
     }
-    if (scholarshipDescription.length === 0) {
-      setErrorObj((prev) => ({...prev, scholarshipDescription: true}))
-    }
+
     if (website.length === 0) {
       setErrorObj((prev) => ({...prev, website: true}))
     }
@@ -146,9 +151,8 @@ export default function AddCourse () {
   }
 
   const isFormValid = () => {
-    if (previewUrl && title.length > 0 && courseDescription && loanDescription.length > 0 && 
-      scholarshipDescription.length > 0 && website.length > 0 && acceptanceFee.length > 0 &&
-      coursePrice.length > 0 && courseDuration.length > 0 && programLevel.length > 0
+    if (previewUrl && title.length > 0 && courseDescription && website.length > 0 && acceptanceFee.length > 0 &&
+      coursePrice.length > 0 && courseDuration.length > 0 && programLevel.length > 0 && isScholarship.length > 0
     ) {
       return true
     } else {
@@ -312,8 +316,8 @@ export default function AddCourse () {
         temPayload[`ExamType${i + 1}SubGrades`] = elem.subjects.map(sub => sub.grade);
       } else {
         // Pad with nulls
-        temPayload[`ExamCountry${i + 1}`] = null;
-        temPayload[`ExamType${i + 1}`] = null;
+        temPayload[`ExamCountry${i + 1}`] = "";
+        temPayload[`ExamType${i + 1}`] = "";
         temPayload[`ExamType${i + 1}Subjects`] = null;
         temPayload[`ExamType${i + 1}SubGrades`] = null;
       }
@@ -325,7 +329,7 @@ export default function AddCourse () {
       if (i < rules.length) {
         temPayload[`Adminrule${i + 1}`] = buildExamString(rules[i].conditions);
       } else {
-        temPayload[`Adminrule${i + 1}`] = null;
+        temPayload[`Adminrule${i + 1}`] = "";
       }
     }
 
@@ -524,7 +528,7 @@ export default function AddCourse () {
 
             <div className="flex gap-x-[20px]">
               <div className="w-full flex flex-col gap-y-[5px]">
-                <p className="text-[16px] text-[#1E1E1E] font-medium">Scholarship*</p>
+                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.isScholarship ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Scholarship*</p>
                 <CustomSelect
                   placeholder="Select Level"
                   options={scholarshipList.map((level) => ({
@@ -536,7 +540,7 @@ export default function AddCourse () {
                     value: isScholarship,
                     label: isScholarship
                   }}
-                  handleError={handleDurationPeriodError}
+                  handleError={handleIsScholarshipError}
                 />
               </div>
 
@@ -654,12 +658,12 @@ export default function AddCourse () {
             </div>
 
             <div className="w-full flex flex-col gap-y-[5px] h-max">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.loanDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Loan Description*</p>
+              <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Loan Description*</p>
               <RichTextEditor 
                 placeholder="Write few things about the course..." 
                 value={loanDescription} 
                 onChange={setLoanDescription}
-                onFocus={() => setErrorObj((prev) => ({...prev, loanDescription: false}))}
+                onFocus={() => {}}
               />
               {/* <p className="text-[12px] text-[#737373] font-normal">What students will learn and achieve by completing this course.</p> */}
             </div>
@@ -672,11 +676,11 @@ export default function AddCourse () {
             </div>
 
             <div className="w-full flex flex-col gap-y-[5px] h-max">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.scholarshipDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Scholarship Description*</p>
+              <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Scholarship Description*</p>
               <RichTextEditor 
                 value={scholarshipDescription} 
                 onChange={setScholarshipDescription} 
-                onFocus={() => setErrorObj((prev) => ({...prev, scholarshipDescription: false}))}
+                onFocus={() => {}}
                 placeholder="Write few things about the course..."
               />
               {/* <p className="text-[12px] text-[#737373] font-normal">What students will learn and achieve by completing this course.</p> */}
