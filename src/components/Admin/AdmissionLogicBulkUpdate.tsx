@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import fileIcon from "../../assets/fileIcon.svg"
 import { FiX } from "react-icons/fi";
 import { RiUploadCloud2Line } from "react-icons/ri";
@@ -7,19 +7,23 @@ import api from "../../api/axios";
 import { useAuth } from "../../contexts/useAuth";
 import {toast} from 'react-toastify'
 import { BeatLoader } from "react-spinners";
+import { Course } from "../../types/course.types";
 
 
 interface ModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  getSchools: Function
+  getSchools: Function;
+  courseList: Course[]
 }
-export default function BulkCourseModal({setShowModal, getSchools}: ModalProps) {
-  const { schoolId } = useParams<{ schoolId: string}>();
+export default function AdmissionLogicBulkUpdate({setShowModal, getSchools, courseList}: ModalProps) {
+  // const { schoolId } = useParams<{ schoolId: string}>();
   const { token } = useAuth();
 
   const [activeTab, setActiveTab] = useState("tab1");
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  console.log("courseList: ", courseList)
 
   const handleClose = () => {
     setShowModal(false)
@@ -32,84 +36,45 @@ export default function BulkCourseModal({setShowModal, getSchools}: ModalProps) 
     }
   };
 
-    // Define the CSV header and rows
-    const headers: string[] = [
-      "title", "image", "schoolId", "scholarship", "duration", "durationPeriod", "price", "currency",
-      "acceptanceFee", "acceptanceFeeCurrency", "objectives", "programLevel", "loanInformation",
-      "scholarshipInformation", "courseWebsiteUrl"
-    ];
+  const headers: string[] = [
+    "id",
+    "ExamCountry1",
+    "ExamType1",
+    "ExamType1Subjects",
+    "ExamType1SubGrades",
+    "ExamCountry2",
+    "ExamType2",
+    "ExamType2Subjects",
+    "ExamType2SubGrades",
+    "ExamCountry3",
+    "ExamType3",
+    "ExamType3Subjects",
+    "ExamType3SubGrades",
+    "Adminrule1",
+    "Adminrule2"
+  ];
   
-    const rows: (string | number)[][] = [
-      [
-        "Computer Science",
-        "https://res.cloudinary.com/dlq1y7tql/image/upload/v1743433536/school_logos/file_h85voq.jpg",
-        `${schoolId}`,
-        "Full Scholarship",
-        4,
-        "YEARS",
-        20000,
-        "NGN",
-        500,
-        "NGN",
-        "Comprehensive program on CS",
-        "Undergraduate",
-        "",
-        "Minimum GPA of 3.5",
-        "https://example.com/cs"
-      ],
-      [
-        "Business Admin",
-        "https://res.cloudinary.com/dlq1y7tql/image/upload/v1743433536/school_logos/file_h85voq.jpg",
-        `${schoolId}`,
-        "Partial Scholarship",
-        3,
-        "YEARS",
-        15000,
-        "NGN",
-        800,
-        "NGN",
-        "In-depth business management program",
-        "Undergraduate",
-        "",
-        "Minimum GPA of 3.5",
-        "https://example.com/ba"
-      ],
-      [
-        "Engineering Data New",
-        "https://res.cloudinary.com/dlq1y7tql/image/upload/v1743433536/school_logos/file_h85voq.jpg",
-        `${schoolId}`,
-        "Partial Scholarship",
-        2,
-        "YEAR",
-        5000,
-        "NGN",
-        600,
-        "NGN",
-        "wqjhadjsh",
-        "Postgraduate",
-        "Info about loans",
-        "",
-        "example.com"
-      ],
-      [
-        "fake name New",
-        "https://res.cloudinary.com/dlq1y7tql/image/upload/v1743433536/school_logos/file_h85voq.jpg",
-        `${schoolId}`,
-        "Partial Scholarship",
-        2,
-        "YEARS",
-        5000,
-        "NGN",
-        600,
-        "NGN",
-        "wqjhadjsh",
-        "Postgraduate",
-        "Info about loans",
-        "",
-        "example.com"
-      ]
-    ];
   
+  const rows: (string | number)[][] = [
+    ...courseList.map((course) => [
+      course.id,
+      "Nigeria",
+      "JAMB",
+      `["Chemistry", "Physics"]`,
+      `[80, 50]`,
+      "Nigeria",
+      "WAEC",
+      `["Math", "English", "Biology"]`,
+      `["A1", "B2", "C4"]`,
+      "Ghana",
+      "NECO",
+      `["Math", "English", "Biology"]`,
+      `["A1", "B2", "B2"]`,
+      "JAMB",
+      "WAEC + JAMB or NECO"
+    ])
+  ];
+
     // Function to escape CSV values if needed (wrap in quotes and escape quotes)
     const escapeCSV = (value: string | number): string => {
       const stringValue = String(value);
@@ -163,17 +128,17 @@ export default function BulkCourseModal({setShowModal, getSchools}: ModalProps) 
 
     try {
 
-      const response = await api.post("/bulk/csv/bulk-add-courses", formData, {
+      const response = await api.put("/admission-logic/bulk-update-admission-logic", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         toast.success('Schools Uploaded Successfully')
       } else {
-        toast.error(response.data.message)
+        toast.success(response.data.message)
       }
     } catch (error) {
       console.error("Error uploading file:", error);
