@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import fileIcon from "../../assets/fileIcon.svg"
 import { FiX } from "react-icons/fi";
 import { RiUploadCloud2Line } from "react-icons/ri";
@@ -16,7 +16,7 @@ interface ModalProps {
   courseList: Course[]
 }
 export default function BulkUpdateCourseModal({setShowModal, getSchools, courseList}: ModalProps) {
-  const { schoolId } = useParams<{ schoolId: string}>();
+  // const { schoolId } = useParams<{ schoolId: string}>();
   const { token } = useAuth();
 
   const [activeTab, setActiveTab] = useState("tab1");
@@ -36,79 +36,46 @@ export default function BulkUpdateCourseModal({setShowModal, getSchools, courseL
     }
   };
 
-    // Define the CSV header and rows
-    const headers: string[] = [
-      "title", "profile", "schoolId", "scholarship", "duration", "durationPeriod", "price", "currency",
-      "acceptanceFee", "acceptanceFeeCurrency", "description", "requirements", "ratings", "courseInformation",
-      "programLevel", "careerOpportunities", "loanInformation", "estimatedLivingCost", "courseWebsiteUrl"
-    ];
+  const headers: string[] = [
+    "title",
+    "id",
+    "schoolId",
+    "scholarship",
+    "duration",
+    "durationPeriod",
+    "price",
+    "currency",
+    "acceptanceFee",
+    "acceptanceFeeCurrency",
+    "description",
+    "programLevel",
+    "loanInformation",
+    "scholarshipInformation",
+    "courseWebsiteUrl",
+    "image"
+  ];
   
-    const rows: (string | number)[][] = [
-      [
-        "Tech 22",
-        "https://drive.google.com/uc?export=view&id=1QoRkwCwSh__TlbnlyVO6mIj9ZgzTlObw",
-        `${schoolId}`,
-        "Full Scholarship",
-        4,
-        "YEAR",
-        20000,
-        "DOLLAR",
-        500,
-        "DOLLAR",
-        "Comprehensive program on CS",
-        '["Math", "Physics"]',
-        0,
-        "Info about the CS course",
-        "Undergraduate",
-        '["Software Engineer", "Data Scientist"]',
-        "Info about loans",
-        12000,
-        "https://example.com/cs"
-      ],
-      [
-        "Business Newst",
-        "https://drive.google.com/uc?export=view&id=1QoRkwCwSh__TlbnlyVO6mIj9ZgzTlObw",
-        `${schoolId}`,
-        "Partial Scholarship",
-        3,
-        "YEAR",
-        15000,
-        "DOLLAR",
-        800,
-        "DOLLAR",
-        "In-depth business management program",
-        '["Economics", "Finance"]',
-        0,
-        "Info about the Business course",
-        "Undergraduate",
-        '["Manager", "Consultant"]',
-        "Info about loans",
-        10000,
-        "https://example.com/ba"
-      ],
-      [
-        "Engineering Data",
-        "https://drive.google.com/uc?export=view&id=1JGUzzPmNmbiQsYDAeZtm_V0pVmryJ4TB",
-        `${schoolId}`,
-        "Partial Scholarship",
-        2,
-        "YEAR",
-        5000,
-        "DOLLAR",
-        600,
-        "DOLLAR",
-        "wqjhadjsh",
-        '["Economics", "Finance", "others"]',
-        1,
-        "infomatic and more",
-        "Postgraduate",
-        '["Manager", "Consultant", "more"]',
-        "Info about loans",
-        2000,
-        "example.com"
-      ]
-    ];
-  
+  const rows: (string | number)[][] = [
+    ...courseList.map((course) => [
+      course.title,
+      course.id,
+      course.schoolId || "",
+      course.scholarship || "",
+      course.duration || 0,
+      course.durationPeriod || "",
+      course.price || 0,
+      course.currency || "",
+      course.acceptanceFee || 0,
+      course.acceptanceFeeCurrency || "",
+      course.courseDescription || "",
+      course.programLevel || "",
+      course.loanInformation || "",
+      course.scholarshipInformation || "",
+      course.courseWebsiteUrl || "",
+      course.image || ""
+    ])
+  ];
+
     // Function to escape CSV values if needed (wrap in quotes and escape quotes)
     const escapeCSV = (value: string | number): string => {
       const stringValue = String(value);
@@ -162,17 +129,17 @@ export default function BulkUpdateCourseModal({setShowModal, getSchools, courseL
 
     try {
 
-      const response = await api.post("/bulk/csv/bulk-add-courses", formData, {
+      const response = await api.put("/bulk/bulk-update-courses", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         toast.success('Schools Uploaded Successfully')
       } else {
-        toast.error(response.data.message)
+        toast.success(response.data.message)
       }
     } catch (error) {
       console.error("Error uploading file:", error);

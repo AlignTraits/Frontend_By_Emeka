@@ -16,7 +16,25 @@ export interface  Course {
   programLevel: string
   duration: number;
   updatedAt: string
-  durationPeriod: string
+  durationPeriod: string;
+  scholarshipInformation: string;
+  loanInformation: string;
+  courseWebsiteUrl: string;
+  acceptanceFee: number;
+  acceptanceFeeCurrency: string;
+  courseDescription: string;
+  programLocation: string;
+  examType: string;
+  courseDuration: string;
+  coursePrice: number;
+  courseAcceptanceFee: number;
+  courseDurationPeriod: string;
+  courseProgramLevel: string;
+  courseLocation: string;
+  courseExamType: string; 
+  courseWebsite: string;
+  website: string;
+  schoolId: string;
 } 
 
 export interface  Loan {

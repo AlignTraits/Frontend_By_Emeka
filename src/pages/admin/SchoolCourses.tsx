@@ -13,6 +13,7 @@ import { useAuth } from "../../contexts/useAuth";
 import BulkCourseModal from "../../components/Admin/BulkCourseModal";
 import { deleteCourses } from "../../services/schools";
 import BulkUpdateCourseModal from "../../components/Admin/BulkUpdateCourses";
+import AdmissionLogicBulkUpdate from "../../components/Admin/AdmissionLogicBulkUpdate";
 import { toast } from "react-toastify";
 
 interface SchoolWithCourses extends School {
@@ -31,6 +32,7 @@ export default function SchoolCourses() {
   const [selectedCourseList, setSelectedCourseList] = useState<string[]>([]);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showUpdateModalAdmissionLogic, setShowUpdateModalAdmissionLogic] = useState(false);
   const temSelectedCourses = courses.filter((elem) => selectedCourseList.includes(elem.id));
 
   // --- Search and Pagination State ---
@@ -168,6 +170,14 @@ export default function SchoolCourses() {
               >
                 {"Update Course"}
               </button>
+
+              <button
+                className="text-[#FFFFFF] bg-[#004085] px-5 py-2 rounded-md size-max text-center cursor-pointer"
+                disabled={isLoading}
+                onClick={() => setShowUpdateModalAdmissionLogic(true)}
+              >
+                {"Update Admission Logic"}
+              </button>
             </div>
           )}
         </>
@@ -208,7 +218,23 @@ export default function SchoolCourses() {
       </div>
 
       {showBulkModal && <BulkCourseModal setShowModal={setShowBulkModal} getSchools={fetchSchool} />}
-      {showUpdateModal && <BulkUpdateCourseModal setShowModal={setShowUpdateModal} getSchools={fetchSchool} courseList={temSelectedCourses} />}
+      {
+        showUpdateModal && 
+        <BulkUpdateCourseModal 
+          setShowModal={setShowUpdateModal} 
+          getSchools={fetchSchool} 
+          courseList={temSelectedCourses} 
+        />
+      }
+
+      {
+        showUpdateModalAdmissionLogic && 
+        <AdmissionLogicBulkUpdate 
+          setShowModal={setShowUpdateModalAdmissionLogic} 
+          getSchools={fetchSchool} 
+          courseList={temSelectedCourses} 
+        />
+      }
     </div>
   );
 }
