@@ -46,7 +46,14 @@ export interface AuthContextType {
   token: string | undefined;
   isAuthenticated: boolean;
   currentCourseID: string | null;
-  creatingCourseClicked: boolean
+  creatingCourseClicked: boolean;
+  setEndDate: React.Dispatch<React.SetStateAction<string>>;
+  setStartDate: React.Dispatch<React.SetStateAction<string>>
+  startDate: string;
+  endDate: string;
+  setDatePickerClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  datePickerClicked: boolean;
+
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -65,5 +72,11 @@ export const AuthContext = createContext<AuthContextType>({
   currentCourseID: null,
   creatingCourseClicked: false,
   setCurrentCourseID: () => {},
-  setCreatingCourseClicked: () => {}
+  setCreatingCourseClicked: () => {},
+  setEndDate: () => {},
+  setStartDate: () => {},
+  endDate: "",
+  startDate: "",
+  setDatePickerClicked: () => {},
+  datePickerClicked: false,
 });

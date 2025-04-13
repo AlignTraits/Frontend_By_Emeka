@@ -18,19 +18,12 @@ const Header = ({
   setOpen,
 
 }: HeaderProps) => {
-  const { admin } = useAuth();
+  const { admin, endDate, setDatePickerClicked } = useAuth();
 
   const location = useLocation()
 
   const [showModal, setShowModal] = useState(false)
 
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-  const today = new Date();
-  const formattedToday = `${monthNames[today.getMonth()].slice(0, 3)} ${today.getDate()}, ${today.getFullYear()}`;
-  const [endDate, setEndDate] = useState<string>(formattedToday);
   const RenderTitle = () => {
     if (location.pathname.endsWith("/add-course")) {
       return (
@@ -78,6 +71,11 @@ const Header = ({
     } 
   }
 
+  const handleShowModal = () => {
+    setDatePickerClicked(false)
+    setShowModal(true)
+  }
+
   return (
     <div className="relative bg-[#FAFAFA] border-[0.4px] border-y-[#E0E0E0] pl-5 py-3  sticky top-0 z-10 w-full overflow-hidden">
       <FiMenu
@@ -87,7 +85,7 @@ const Header = ({
       <div className="flex items-center justify-between lg:gap-5 relative">
         <RenderTitle />
         <div className='flex gap-5 mr-[50px]'>
-          <div onClick={() => setShowModal(true)} className="flex cursor-pointer h-[45px] w-[150px] gap-2 border-[#DDDDDD] rounded-lg border-2 flex items-center justify-center">
+          <div onClick={handleShowModal} className="flex cursor-pointer h-[45px] w-[150px] gap-2 border-[#DDDDDD] rounded-lg border-2 flex items-center justify-center">
             <FiCalendar className="w-6 h-6"  />
             <p className="text-sm font-medium text-gray-900 my-auto">
               {endDate}
@@ -101,7 +99,7 @@ const Header = ({
   
       </div>
       {
-        showModal && <DatePicker setEndDate={setEndDate} endDate={endDate} setShowModal={setShowModal} />
+        showModal && <DatePicker setShowModal={setShowModal} />
       }
     </div>
   );

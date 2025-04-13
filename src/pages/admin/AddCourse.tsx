@@ -11,12 +11,13 @@ import { toast } from "react-toastify";
 import AdmissionRequirements from "../../components/Admin/AdmissionRequirements";
 import AdmissionRules from "../../components/Admin/AdmissionRules";
 import { ErrorObjType, RequirementList, Rule, Condition } from "../../types/course.types";
+
 type ExamEntry = {
   examType: string;
   operator: string;
 };
 
-const programLevelList = ["Associate Degree", "Master's Degree", "Diploma", "PGD", "PHD"]
+const programLevelList = ["Bachelor Degree", "Masters Degree", "Diploma", "PGD", "PHD"]
 
 const programDurationList = ["1", "2", "3", "4"]
 
