@@ -641,7 +641,7 @@ export default function AddCourse () {
 
             </div>
 
-            <div className="w-full flex flex-col gap-y-[5px] h-max ">
+            <div className="w-full flex flex-col gap-y-[5px] h-[300px] relative">
               <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.courseDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Description*</p>
               <RichTextEditor 
                 placeholder="Write few things about the course..." 
@@ -649,34 +649,18 @@ export default function AddCourse () {
                 onFocus={() => setErrorObj((prev) => ({...prev, courseDescription: false}))}
                 onChange={setCourseDescription} 
               />
+              <p className="text-[#737373] text-[12px] font-normal absolute bottom-[0px]">What students will learn and achieve by completing this course.</p>
             </div>
 
-            <div className="flex mt-[50px]">
-              <p className="text-[18px] font-semibold text-[#1E1E1E] w-[210px] ">
-                Loan Requirements
-              </p>
-              <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
-            </div>
 
-            <div className="w-full flex flex-col gap-y-[5px] h-max">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Loan Description*</p>
-              <RichTextEditor 
-                placeholder="Write few things about the course..." 
-                value={loanDescription} 
-                onChange={setLoanDescription}
-                onFocus={() => {}}
-              />
-              {/* <p className="text-[12px] text-[#737373] font-normal">What students will learn and achieve by completing this course.</p> */}
-            </div>
-
-            <div className="flex mt-[50px]">
+            <div className="flex mt-[0px]">
               <p className="text-[18px] font-semibold text-[#1E1E1E] w-[300px] ">
                 Scholarship Requirements
               </p>
-              <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
+              {/* <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div> */}
             </div>
 
-            <div className="w-full flex flex-col gap-y-[5px] h-max">
+            <div className="w-full flex flex-col gap-y-[5px] h-[300px] relative">
               <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Scholarship Description*</p>
               <RichTextEditor 
                 value={scholarshipDescription} 
@@ -684,10 +668,28 @@ export default function AddCourse () {
                 onFocus={() => {}}
                 placeholder="Write few things about the course..."
               />
-              {/* <p className="text-[12px] text-[#737373] font-normal">What students will learn and achieve by completing this course.</p> */}
+              <p className="text-[12px] text-[#737373] font-normal absolute bottom-[0px]">Details about scholarship</p>
+            </div>
+
+            <div className="flex mt-[0px]">
+              <p className="text-[18px] font-semibold text-[#1E1E1E] w-[210px] ">
+                Loan Requirements
+              </p>
+              {/* <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div> */}
+            </div>
+
+            <div className="w-full flex flex-col gap-y-[5px] h-[300px]  relative">
+              <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Loan Description*</p>
+              <RichTextEditor 
+                placeholder="Write few things about the course..." 
+                value={loanDescription} 
+                onChange={setLoanDescription}
+                onFocus={() => {}}
+              />
+              <p className="text-[12px] text-[#737373] font-normal absolute bottom-[0px]">Details about loan eligibility, terms, and application process for this course.</p>
             </div>
             
-            <div className="flex gap-x-[20px] mt-[50px]">
+            <div className="flex gap-x-[20px] mt-[20px]">
               <button type="button" onClick={handleCancel} className="rounded-lg w-full h-[40px] bg-[#D9E2ED] text-[14px] text-[#004085] semi-bold cursor-pointer">Cancel</button>
 
               <button type="button" onClick={handleSubmit} className="rounded-lg w-full h-[40px] bg-[#004085] text-[14px] text-[white] semi-bold cursor-pointer">
