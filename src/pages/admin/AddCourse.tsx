@@ -11,12 +11,13 @@ import { toast } from "react-toastify";
 import AdmissionRequirements from "../../components/Admin/AdmissionRequirements";
 import AdmissionRules from "../../components/Admin/AdmissionRules";
 import { ErrorObjType, RequirementList, Rule, Condition } from "../../types/course.types";
+
 type ExamEntry = {
   examType: string;
   operator: string;
 };
 
-const programLevelList = ["Associate Degree", "Master's Degree", "Diploma", "PGD", "PHD"]
+const programLevelList = ["Bachelor Degree", "Masters Degree", "Diploma", "PGD", "PHD"]
 
 const programDurationList = ["1", "2", "3", "4"]
 
@@ -416,39 +417,11 @@ export default function AddCourse () {
         {
           activeTab === "tab1" &&
           <form className="w-full size-max bg-[#FAFAFA] border-[1px] border-[#E0E0E0] rounded-lg flex flex-col gap-5 p-5">
-            <div className="flex">
+            <div>
               <p className="text-[18px] font-semibold text-[#1E1E1E] w-[190px] ">
-                Basic Information
+                Create Course
               </p>
-              <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
-            </div>
-
-            <div className="flex gap-x-[20px]">
-              <div className="w-full flex flex-col gap-y-[5px]">
-                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.title ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Title*</p>
-                <input
-                  onFocus={() => setErrorObj((prev) => ({...prev, title: false}))}
-                  type="text"
-                  placeholder="What is your title?"
-                  name="courseTitle"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
-                />
-              </div>
-
-              <div className="w-full flex flex-col gap-y-[5px]">
-                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.website ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Website Url*</p>
-                <input
-                  type="text"
-                  placeholder="https://"
-                  name="courseWebsite"
-                  onFocus={() => setErrorObj((prev) => ({...prev, website: false}))}
-                  value={website}
-                  onChange={(e) => setWebsite(e.target.value)}
-                  className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
-                />
-              </div>
+              <p className="text-[#737373] text-[16px] font-normal">Add a new course to University of Lagos with all required details.</p>
             </div>
 
             <div className="w-[300px] flex flex-col gap-y-[5px]">
@@ -462,6 +435,34 @@ export default function AddCourse () {
                 handleFileError={handleFileError}
                 
               />
+            </div>
+
+            <div className="w-full flex flex-col gap-y-[5px]">
+              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.title ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Title*</p>
+              <input
+                onFocus={() => setErrorObj((prev) => ({...prev, title: false}))}
+                type="text"
+                placeholder="What is your title?"
+                name="courseTitle"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+              />
+              <p className="text-[#737373] text-[12px] font-normal">The official title of the course or program.</p>
+            </div>
+
+            <div className="w-full flex flex-col gap-y-[5px] relative">
+              <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.website ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Website Url*</p>
+              <input
+                type="text"
+                placeholder="https://"
+                name="courseWebsite"
+                onFocus={() => setErrorObj((prev) => ({...prev, website: false}))}
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+              />
+              <p className="text-[#737373] text-[12px] font-normal">The official website page for this course.</p>
             </div>
 
             <div className="flex">
@@ -640,53 +641,55 @@ export default function AddCourse () {
 
             </div>
 
-            <div className="w-full flex flex-col gap-y-[5px] h-max ">
+            <div className="w-full flex flex-col gap-y-[5px] h-[300px] relative">
               <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.courseDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Description*</p>
               <RichTextEditor 
-                placeholder="Write few things about the course..." 
+                placeholder="Describe the main objectives of this course...." 
                 value={courseDescription} 
                 onFocus={() => setErrorObj((prev) => ({...prev, courseDescription: false}))}
                 onChange={setCourseDescription} 
               />
+              <p className="text-[#737373] text-[12px] font-normal absolute bottom-[0px]">What students will learn and achieve by completing this course.</p>
             </div>
 
-            <div className="flex mt-[50px]">
-              <p className="text-[18px] font-semibold text-[#1E1E1E] w-[210px] ">
-                Loan Requirements
-              </p>
-              <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
-            </div>
 
-            <div className="w-full flex flex-col gap-y-[5px] h-max">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Loan Description*</p>
-              <RichTextEditor 
-                placeholder="Write few things about the course..." 
-                value={loanDescription} 
-                onChange={setLoanDescription}
-                onFocus={() => {}}
-              />
-              {/* <p className="text-[12px] text-[#737373] font-normal">What students will learn and achieve by completing this course.</p> */}
-            </div>
-
-            <div className="flex mt-[50px]">
+            <div className="flex mt-[0px]">
               <p className="text-[18px] font-semibold text-[#1E1E1E] w-[300px] ">
                 Scholarship Requirements
               </p>
-              <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
+              {/* <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div> */}
             </div>
 
-            <div className="w-full flex flex-col gap-y-[5px] h-max">
+            <div className="w-full flex flex-col gap-y-[5px] h-[300px] relative">
               <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Scholarship Description*</p>
               <RichTextEditor 
                 value={scholarshipDescription} 
                 onChange={setScholarshipDescription} 
                 onFocus={() => {}}
-                placeholder="Write few things about the course..."
+                placeholder="Describe the main objectives of this course...."
               />
-              {/* <p className="text-[12px] text-[#737373] font-normal">What students will learn and achieve by completing this course.</p> */}
+              <p className="text-[12px] text-[#737373] font-normal absolute bottom-[0px]">Details about scholarship</p>
+            </div>
+
+            <div className="flex mt-[0px]">
+              <p className="text-[18px] font-semibold text-[#1E1E1E] w-[210px] ">
+                Loan Requirements
+              </p>
+              {/* <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div> */}
+            </div>
+
+            <div className="w-full flex flex-col gap-y-[5px] h-[300px]  relative">
+              <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Loan Description*</p>
+              <RichTextEditor 
+                placeholder="Describe the main objectives of this course...." 
+                value={loanDescription} 
+                onChange={setLoanDescription}
+                onFocus={() => {}}
+              />
+              <p className="text-[12px] text-[#737373] font-normal absolute bottom-[0px]">Details about loan eligibility, terms, and application process for this course.</p>
             </div>
             
-            <div className="flex gap-x-[20px] mt-[50px]">
+            <div className="flex gap-x-[20px] mt-[20px]">
               <button type="button" onClick={handleCancel} className="rounded-lg w-full h-[40px] bg-[#D9E2ED] text-[14px] text-[#004085] semi-bold cursor-pointer">Cancel</button>
 
               <button type="button" onClick={handleSubmit} className="rounded-lg w-full h-[40px] bg-[#004085] text-[14px] text-[white] semi-bold cursor-pointer">

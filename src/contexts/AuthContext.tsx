@@ -17,7 +17,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [currentCourseID, setCurrentCourseID] = useState<string | null>(null);
   const [creatingCourseClicked, setCreatingCourseClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [datePickerClicked, setDatePickerClicked] = useState(false);
+  
   const [error, setError] = useState<string | null>(null);
+
+  const today = new Date();
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  const formattedToday = `${monthNames[today.getMonth()].slice(0, 3)} ${today.getDate()}, ${today.getFullYear()}`;
+
+  const [startDate, setStartDate] = useState<string>(formattedToday);
+  const [endDate, setEndDate] = useState<string>(formattedToday);
 
 const login = async (email: string, password: string): Promise<number> => {
   try {
@@ -169,7 +181,13 @@ const login = async (email: string, password: string): Promise<number> => {
     currentCourseID,
     setCurrentCourseID,
     setCreatingCourseClicked,
-    creatingCourseClicked
+    creatingCourseClicked,
+    setEndDate,
+    setStartDate,
+    endDate,
+    startDate,
+    setDatePickerClicked,
+    datePickerClicked,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

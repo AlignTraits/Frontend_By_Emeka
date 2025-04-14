@@ -8,6 +8,7 @@ import { LuSchool } from "react-icons/lu";
 
 import Logo from "../../assets/logo.svg";
 import { FiGrid, FiLogOut, FiX } from "react-icons/fi";
+import { PiTextAlignCenterFill } from "react-icons/pi";
 import { TbMoneybag } from "react-icons/tb";
 import { TiGroupOutline } from "react-icons/ti";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -38,6 +39,7 @@ const SideBar = ({
   };
 
   let schoolPath:boolean = location.pathname.startsWith("/admin/schools")
+  let bulkCenterPath:boolean = location.pathname.startsWith("/admin/bulk-center")
   let accountPath:boolean = location.pathname.startsWith("/admin/accounts")
   let dataManagementPath:boolean = location.pathname.startsWith("/admin/data-management")
   let dataLoansPath:boolean = location.pathname.startsWith("/admin/loans")
@@ -86,6 +88,21 @@ const SideBar = ({
           <LuSchool className="w-5 h-5 mr-3"  />
           <span className={schoolPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
             Schools
+          </span>
+        </NavLink>
+
+        <NavLink
+          to="/admin/bulk-center"
+          className={({ isActive }) =>
+            `flex items-center p-2 font-bold rounded-md transition-colors ${
+              isActive || bulkCenterPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
+            }`
+          }
+          end
+        >
+          <PiTextAlignCenterFill className="w-5 h-5 mr-3"  />
+          <span className={bulkCenterPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
+            Bulk Center
           </span>
         </NavLink>
 

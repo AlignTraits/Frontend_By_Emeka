@@ -1,22 +1,18 @@
 import { useState } from 'react';
+import { useAuth } from '../../contexts/useAuth';
 
 interface ModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setEndDate: React.Dispatch<React.SetStateAction<string>>;
-  endDate: string;
 }
 
-export default function DatePicker({ setShowModal, setEndDate, endDate }: ModalProps) {
+export default function DatePicker({ setShowModal }: ModalProps) {
+  const { startDate, setStartDate, setEndDate, endDate, setDatePickerClicked } = useAuth();
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
 
   const today = new Date();
-  const formattedToday = `${monthNames[today.getMonth()].slice(0, 3)} ${today.getDate()}, ${today.getFullYear()}`;
-
-  const [startDate, setStartDate] = useState<string>(formattedToday);
-  // const [endDate, setEndDate] = useState<string>(formattedToday);
   const [currentMonth, setCurrentMonth] = useState<number>(today.getMonth());
   const [nextMonth, setNextMonth] = useState<number>((today.getMonth() + 1) % 12);
   const [currentYear, setCurrentYear] = useState<number>(today.getFullYear());
@@ -217,6 +213,11 @@ export default function DatePicker({ setShowModal, setEndDate, endDate }: ModalP
 
   const weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sat", "Su"];
 
+  const handleApply = () => {
+    setDatePickerClicked(true);
+    setShowModal(false)
+  }
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-lg p-2 w-full max-w-2xl">
@@ -288,7 +289,7 @@ export default function DatePicker({ setShowModal, setEndDate, endDate }: ModalP
               </div>
               <div className="flex space-x-2">
                 <button onClick={() => setShowModal(false)} className="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
-                <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-[#004085] text-white rounded hover:bg-blue-700">Apply</button>
+                <button onClick={handleApply} className="px-4 py-2 bg-[#004085] text-white rounded hover:bg-blue-700">Apply</button>
               </div>
             </div>
           </div>

@@ -35,6 +35,7 @@ import AddCourse from "./pages/admin/AddCourse";
 import CourseDetails from "./pages/admin/CourseDetails";
 import DataManagement from "./pages/admin/DataManagement";
 import Loans from "./pages/admin/Loans";
+import BulkCenter from "./pages/admin/BulkCenter";
 
 const router = createBrowserRouter([
   {
@@ -135,6 +136,11 @@ const router = createBrowserRouter([
           {
             path: 'accounts',
             element: <AccountsPage />
+          },
+
+          {
+            path: 'bulk-center',
+            element: <BulkCenter />
           },
 
           {

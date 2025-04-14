@@ -22,7 +22,7 @@ type Country = {
 
 export default function Index() {
   // State to store selected country and states
-  const {token} = useAuth()
+  const {token, startDate, endDate, datePickerClicked} = useAuth()
   const [countries, setCountries] = useState<Country[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [states, setStates] = useState<string[]>([]);
@@ -32,12 +32,21 @@ export default function Index() {
   const [schoolLength, setSchoolLength] = useState<number>(0)
   const [courseLength, setCourseLength] = useState<number>(0)
 
+  // console.log("endDate: ", endDate, " startDate: ", startDate)
+
   // Load countries from JSON on mount
   useEffect(() => {
     setCountries(countriesData);
     getAllSchools()
     getAllCourses()
   }, []);
+
+  useEffect(() => {
+    if (datePickerClicked) {
+      getAllSchools()
+      getAllCourses()
+    }
+  }, [datePickerClicked])
 
   // Handle country change
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -51,7 +60,13 @@ export default function Index() {
     setSchoolList([])
   };
 
-  console.log("selectedSchool: ", selectedSchool)
+  const resetFilter = () => {
+    setSchoolList([])
+    setStates([])
+    setSelectedState("")
+    setSelectedCountry("")
+  }
+
 
   const handleGetSchools = async () => {
 
@@ -76,7 +91,19 @@ export default function Index() {
   const getAllSchools = async () => {
     try {
       let reponse = await getSchools(token || "")
-      setSchoolLength(reponse.length)
+
+      if (reponse.length > 0) {
+        const tempStartDate = new Date(startDate);
+        const tempEndDate = new Date(endDate);
+
+        const filteredSchools = reponse.filter((school) => {
+          const createdAtDate = new Date(school.createdAt);
+          return createdAtDate >= tempStartDate && createdAtDate <= tempEndDate;
+        });
+        setSchoolLength(filteredSchools.length);
+      } else {
+        setSchoolLength(0);
+      }
 
     } catch (error) { 
       setSchoolLength(0)
@@ -86,15 +113,25 @@ export default function Index() {
 
   const getAllCourses = async () => {
     try {
-      let response = await getCourses(token || "")
-      setCourseLength(response.length)
+      let response: { createdAt: string }[] = await getCourses(token || "")
+      if (response.length > 0) {
+        const tempStartDate = new Date(startDate);
+        const tempEndDate = new Date(endDate);
+
+        const filteredCourses = response.filter((course) => {
+          const createdAtDate = new Date(course.createdAt);
+          return createdAtDate >= tempStartDate && createdAtDate <= tempEndDate;
+        });
+
+        // console.log("filteredCourses: ", filteredCourses)
+        setCourseLength(filteredCourses.length);
+      } else {
+        setCourseLength(0);
+      }
     } catch (error) { 
       console.error("Error fetching courses:", error);
     } 
   }
-
-
-  
   
   return (
     <div className="flex h-screen flex-col gap-y-[20px] p-5">
@@ -180,7 +217,7 @@ export default function Index() {
           <div className="w-[200px] relative">
             <select
               className="h-[40px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium appearance-none"
-              value={selectedState}
+              value={selectedSchool}
               onChange={(e) => {
                 setSelectedSchool(e.target.value)
               }}
@@ -200,6 +237,7 @@ export default function Index() {
         </div>
 
         <button 
+          onClick={resetFilter}
           type="button" 
           className="w-[150px] text-white py-2 h-[40px] bg-[#004085] p-2 rounded-md 
              outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
