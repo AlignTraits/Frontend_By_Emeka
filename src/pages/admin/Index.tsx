@@ -123,7 +123,7 @@ export default function Index() {
           return createdAtDate >= tempStartDate && createdAtDate <= tempEndDate;
         });
 
-        console.log("filteredCourses: ", filteredCourses)
+        // console.log("filteredCourses: ", filteredCourses)
         setCourseLength(filteredCourses.length);
       } else {
         setCourseLength(0);
