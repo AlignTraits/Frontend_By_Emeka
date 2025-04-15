@@ -11,6 +11,9 @@ import { toast } from "react-toastify";
 import AdmissionRequirements from "../../components/Admin/AdmissionRequirements";
 import AdmissionRules from "../../components/Admin/AdmissionRules";
 import { ErrorObjType, RequirementList, Rule, Condition } from "../../types/course.types";
+import ngnFlag from "../../assets/ngn.png"
+import usdFlag from "../../assets/usd.png"
+import eurFlag from "../../assets/eur.jpeg"
 
 type ExamEntry = {
   examType: string;
@@ -19,7 +22,7 @@ type ExamEntry = {
 
 const programLevelList = ["Bachelor Degree", "Masters Degree", "Diploma", "PGD", "PHD"]
 
-const programDurationList = ["1", "2", "3", "4"]
+const programDurationList = ["0", "1", "2", "3", "4"]
 
 const periodList = ["YEARS", "MONTHS", "WEEKS"]
 
@@ -72,7 +75,7 @@ export default function AddCourse () {
   const [acceptanceFee, setAcceptanceFee] = useState("")
   const [coursePrice, setCoursePrice] = useState("")
 
-  const [currency, setCurrency] = useState<string>("NGN");
+  const [currency, setCurrency] = useState<keyof typeof currencyFlags>("NGN");
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
 
   const [coursePriceCurrency, setCoursePriceCurrency] = useState<string>("NGN");
@@ -80,10 +83,10 @@ export default function AddCourse () {
   const [tempRules1, setTempRules1] = useState<any>(null) 
 
 
-  const handleCurrencyChange = (selectedCurrency: string) => {
-    setCurrency(selectedCurrency);
-    setShowCurrencyDropdown(false);
-  };
+  const handleCurrencyChange = (selectedCurrency: "NGN" | "USD" | "EUR") => {
+      setCurrency(selectedCurrency);
+      setShowCurrencyDropdown(false);
+    };
 
   const [responseObj, setResponseObj] = useState({} as any)
 
@@ -201,7 +204,7 @@ export default function AddCourse () {
     formData.append("courseInformation", "course Information here")
     formData.append("programLevel", programLevel)
     formData.append("estimatedLivingCost", "50000")
-    formData.append("loanInformation", "five years apart or more")
+    formData.append("loanInformation", loanDescription)
     formData.append("courseWebsiteUrl", website)
     formData.append("scholarshipInformation", scholarshipDescription)
 
@@ -383,6 +386,13 @@ export default function AddCourse () {
     setRules(parsedRules);
   }, [tempRules1]);
 
+  // Currency flag mapping
+  const currencyFlags = {
+    NGN: ngnFlag,
+    USD: usdFlag,
+    EUR: eurFlag
+  };
+
   return (
     <div className="relative">
       <div className="flex flex-col w-full gap-5 p-5 xl:p-6">
@@ -392,31 +402,34 @@ export default function AddCourse () {
           <p className="text-[#004085] text-[14px] font-medium cursor-pointer">Go back</p>
         </div> 
 
-        <div className="flex border-b border-gray-300 ">
-          {["Basic Info", "Admission Logic"].map((tab, index) => {
-            const tabKey = `tab${index + 1}`;
-            return (
-              <button
-                key={tabKey}
-                className={`py-2 px-4 text-[16px] font-semibold border-b-2 font-medium transition 
-                  ${
-                    activeTab === tabKey
-                      ? "border-[#003064] text-[#003064] text-[16px] font-semibold"
-                      : "border-transparent hover:text-blue-500 text-[#999999]"
-                  }`}
-                onClick={() => 
-                  handleTabChange(tabKey)
-                }
-              >
-                {tab}
-              </button>
-            );
-          })}
-        </div>
+        {
+          currentCourseID &&
+          <div className="flex border-b border-gray-300 ">
+            {["Basic Info", "Admission Logic"].map((tab, index) => {
+              const tabKey = `tab${index + 1}`;
+              return (
+                <button
+                  key={tabKey}
+                  className={`py-2 px-4 text-[16px] font-semibold border-b-2 font-medium transition 
+                    ${
+                      activeTab === tabKey
+                        ? "border-[#003064] text-[#003064] text-[16px] font-semibold"
+                        : "border-transparent hover:text-blue-500 text-[#999999]"
+                    }`}
+                  onClick={() => 
+                    handleTabChange(tabKey)
+                  }
+                >
+                  {tab}
+                </button>
+              );
+            })}
+          </div>
+        }
 
         {
           activeTab === "tab1" &&
-          <form className="w-full size-max bg-[#FAFAFA] border-[1px] border-[#E0E0E0] rounded-lg flex flex-col gap-5 p-5">
+          <form className="w-full size-max rounded-lg flex flex-col gap-5">
             <div>
               <p className="text-[18px] font-semibold text-[#1E1E1E] w-[190px] ">
                 Create Course
@@ -465,12 +478,12 @@ export default function AddCourse () {
               <p className="text-[#737373] text-[12px] font-normal">The official website page for this course.</p>
             </div>
 
-            <div className="flex">
+            {/* <div className="flex">
               <p className="text-[18px] font-semibold text-[#1E1E1E] w-[210px] ">
                 Course Information
               </p>
               <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
-            </div>
+            </div> */}
 
             <div className="flex gap-x-[20px]">
               <div className="w-full flex flex-col gap-y-[5px]">
@@ -494,7 +507,7 @@ export default function AddCourse () {
               <div className="w-full flex flex-col gap-y-[5px]">
                 <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.courseDuration ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Program Duration*</p>
                 <CustomSelect
-                  placeholder="0"
+                  placeholder="Enter Duration"
                   options={programDurationList.map((duration) => ({
                     value: duration,
                     label: duration,
@@ -509,7 +522,7 @@ export default function AddCourse () {
               </div>
 
               <div className="w-full flex flex-col gap-y-[5px]">
-                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.durationPeriod ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Year*</p>
+                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.durationPeriod ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Program Period*</p>
                 <CustomSelect
                   placeholder="Year"
                   options={periodList.map((paramPeriod) => ({
@@ -545,7 +558,7 @@ export default function AddCourse () {
                 />
               </div>
 
-              <div className="w-full flex flex-col gap-y-[5px]">
+              {/* <div className="w-full flex flex-col gap-y-[5px]">
                 <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.acceptanceFee ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Acceptance Fee*</p>
                 <div className="relative">
                   <input
@@ -574,7 +587,7 @@ export default function AddCourse () {
                         {currencies.map((curr) => (
                           <button
                             key={curr}
-                            onClick={() => handleCurrencyChange(curr)}
+                            onClick={() => handleCurrencyChange(curr as "NGN" | "USD" | "EUR")}
                             className={`block w-full px-4 py-2 text-sm ${
                               currency === curr
                                 ? "bg-blue-100 text-blue-900"
@@ -588,6 +601,61 @@ export default function AddCourse () {
                     </div>
                   )}
                   
+                </div>
+              </div> */}
+
+              <div className="w-full flex flex-col gap-y-[5px]">
+                <p className={`text-[16px] font-medium ${errorObj.acceptanceFee ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>
+                  Acceptance Fee*
+                </p>
+                <div className="relative">
+                  <input 
+                    type="number"
+                    placeholder="e.g N10,000,00"
+                    name="AcceptanceFee"
+                    onFocus={() => setErrorObj((prev) => ({...prev, acceptanceFee: false}))}
+                    value={acceptanceFee}
+                    onChange={(e) => setAcceptanceFee(e.target.value)}
+                    className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+                  />
+                  <div className="absolute h-[40px] top-[0] right-0 flex items-center">
+                    <button 
+                      type="button"
+                      onClick={() => setShowCurrencyDropdown(!showCurrencyDropdown)}
+                      className="h-full flex items-center rounded-r-md border-l border-gray-300 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    >
+                      {/* <span className="mr-2">{currencyFlags[currency as keyof typeof currencyFlags]}</span> */}
+                      <img 
+                        src={currencyFlags[currency]} 
+                        alt={`${currency} flag`} 
+                        className="w-5 h-5 mr-2 object-cover"
+                      />
+                      {currency}
+                      <span className="ml-1">▼</span>
+                    </button>
+                  </div>
+                  {showCurrencyDropdown && (
+                    <div className="absolute right-0 z-10 mt-1 w-24 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div className="py-1">
+                        {currencies.map((curr) => (
+                          <button
+                            key={curr}
+                            onClick={() => handleCurrencyChange(curr as "NGN" | "USD" | "EUR")}
+                            className={`block w-full px-4 py-2 text-sm flex items-center ${
+                              currency === curr ? "bg-blue-100 text-blue-900" : "text-gray-700 hover:bg-gray-100"
+                            }`}
+                          >
+                            <img 
+                              src={currencyFlags[curr as keyof typeof currencyFlags]} 
+                              alt={`${curr} flag`} 
+                              className="w-5 h-5 mr-2 object-cover"
+                            />
+                            {curr}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -608,8 +676,14 @@ export default function AddCourse () {
                     <button
                       type="button"
                       onClick={() => setShowCoursePriceCurrencyDropdown(!showCoursePriceCurrencyDropdown)}
-                      className="h-full rounded-r-md border-l border-gray-300 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="h-full flex items-center  rounded-r-md border-l border-gray-300 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     >
+                      <img 
+                        src={currencyFlags[coursePriceCurrency as keyof typeof currencyFlags]} 
+                        alt={`${coursePriceCurrency} flag`} 
+                        className="w-5 h-5 mr-2 object-cover"
+                      />
+
                       {coursePriceCurrency}
                       <span className="ml-1">▼</span>
                     </button>
@@ -624,12 +698,17 @@ export default function AddCourse () {
                               setCoursePriceCurrency(curr);
                               setShowCoursePriceCurrencyDropdown(false);
                             }}
-                            className={`block w-full px-4 py-2 text-sm ${
+                            className={`flex w-full px-4 py-2 text-sm ${
                               coursePriceCurrency === curr
                                 ? "bg-blue-100 text-blue-900"
                                 : "text-gray-700 hover:bg-gray-100"
                             }`}
                           >
+                            <img 
+                              src={currencyFlags[curr as keyof typeof currencyFlags]} 
+                              alt={`${curr} flag`} 
+                              className="w-5 h-5 mr-2 object-cover"
+                            />
                             {curr}
                           </button>
                         ))}
@@ -689,10 +768,10 @@ export default function AddCourse () {
               <p className="text-[12px] text-[#737373] font-normal absolute bottom-[0px]">Details about loan eligibility, terms, and application process for this course.</p>
             </div>
             
-            <div className="flex gap-x-[20px] mt-[20px]">
-              <button type="button" onClick={handleCancel} className="rounded-lg w-full h-[40px] bg-[#D9E2ED] text-[14px] text-[#004085] semi-bold cursor-pointer">Cancel</button>
+            <div className="flex gap-x-[20px] mt-[20px] w-full flex justify-end">
+              <button type="button" onClick={handleCancel} className="rounded-lg w-[150px] h-[40px] border-[1px] border-[#DDDDDD] text-[14px] text-[#1E1E1E] semi-bold cursor-pointer">Cancel</button>
 
-              <button type="button" onClick={handleSubmit} className="rounded-lg w-full h-[40px] bg-[#004085] text-[14px] text-[white] semi-bold cursor-pointer">
+              <button type="button" onClick={handleSubmit} className="rounded-lg w-[150px] h-[40px] bg-[#004085] text-[14px] text-[white] semi-bold cursor-pointer">
                 {isLoading ? <BeatLoader /> : currentCourseID ? "Update Course" : "Add Course"}
               </button>
 
