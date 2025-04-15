@@ -93,13 +93,27 @@ export default function Index() {
       let reponse = await getSchools(token || "")
 
       if (reponse.length > 0) {
-        const tempStartDate = new Date(startDate);
-        const tempEndDate = new Date(endDate);
+
+        let tempStartDate = new Date(startDate);
+        let tempEndDate = new Date(endDate);
+        
+        // Normalize both to full-day range
+        tempStartDate.setHours(0, 0, 0, 0);
+        tempEndDate.setHours(23, 59, 59, 999);
+        
+        // If both dates are the same, show everything from Jan 1, 1970 to that date
+        const isSameDate = tempStartDate.toDateString() === tempEndDate.toDateString();
+        if (isSameDate) {
+          tempStartDate = new Date('1970-01-01T00:00:00Z');
+        }
+        
 
         const filteredSchools = reponse.filter((school) => {
           const createdAtDate = new Date(school.createdAt);
-          return createdAtDate >= tempStartDate && createdAtDate <= tempEndDate;
+          const isIncluded = createdAtDate >= tempStartDate && createdAtDate <= tempEndDate;
+          return isIncluded;
         });
+
         setSchoolLength(filteredSchools.length);
       } else {
         setSchoolLength(0);
@@ -115,15 +129,25 @@ export default function Index() {
     try {
       let response: { createdAt: string }[] = await getCourses(token || "")
       if (response.length > 0) {
-        const tempStartDate = new Date(startDate);
-        const tempEndDate = new Date(endDate);
-
+        let tempStartDate = new Date(startDate);
+        let tempEndDate = new Date(endDate);
+        
+        // Normalize to day boundaries
+        tempStartDate.setHours(0, 0, 0, 0);
+        tempEndDate.setHours(23, 59, 59, 999);
+        
+        // If start and end dates are the same, go from 1970 to endDate
+        const isSameDate = tempStartDate.toDateString() === tempEndDate.toDateString();
+        if (isSameDate) {
+          tempStartDate = new Date('1970-01-01T00:00:00Z');
+        }
+        
         const filteredCourses = response.filter((course) => {
           const createdAtDate = new Date(course.createdAt);
-          return createdAtDate >= tempStartDate && createdAtDate <= tempEndDate;
+          const isIncluded = createdAtDate >= tempStartDate && createdAtDate <= tempEndDate;
+          return isIncluded;
         });
 
-        // console.log("filteredCourses: ", filteredCourses)
         setCourseLength(filteredCourses.length);
       } else {
         setCourseLength(0);
