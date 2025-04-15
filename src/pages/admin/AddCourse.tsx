@@ -772,7 +772,7 @@ export default function AddCourse () {
               <button type="button" onClick={handleCancel} className="rounded-lg w-[150px] h-[40px] border-[1px] border-[#DDDDDD] text-[14px] text-[#1E1E1E] semi-bold cursor-pointer">Cancel</button>
 
               <button type="button" onClick={handleSubmit} className="rounded-lg w-[150px] h-[40px] bg-[#004085] text-[14px] text-[white] semi-bold cursor-pointer">
-                {isLoading ? <BeatLoader /> : currentCourseID ? "Update Course" : "Add Course"}
+                {isLoading ? <BeatLoader /> : currentCourseID ? "Update Course" : "Create Course"}
               </button>
 
             </div>
