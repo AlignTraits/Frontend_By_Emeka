@@ -359,3 +359,4 @@ export const updateAdmissionLogic = async (payload:any , token: string, id:strin
     throw err;
   }
 }
+

@@ -36,6 +36,7 @@ import CourseDetails from "./pages/admin/CourseDetails";
 import DataManagement from "./pages/admin/DataManagement";
 import Loans from "./pages/admin/Loans";
 import BulkCenter from "./pages/admin/BulkCenter";
+import ProfileManagement from "./pages/admin/ProfileManagement";
 
 const router = createBrowserRouter([
   {
@@ -150,6 +151,11 @@ const router = createBrowserRouter([
           {
             path: 'data-management',
             element: <DataManagement />
+          },
+
+          {
+            path: 'profile',
+            element: <ProfileManagement />
           },
 
           {
