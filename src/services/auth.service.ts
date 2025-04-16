@@ -88,7 +88,7 @@ export const verifyEmail = async (): Promise<void> => {
 
 export const getAdminDetails = async (token: string) => {
   try{
-const response = await api.get('/auth/admin/details', {
+    const response = await api.get('/auth/admin/details', {
     headers: {
       "Authorization": `Bearer ${token}`
     }
@@ -145,6 +145,28 @@ export const getUserDetails = async ( token: string) => {
        window.location.href = "/admin/login";
      }
    }
+}
+
+export const updateUserDetails = async (data: any, token: string) => {
+  try {
+    const response = await api.patch("/auth/admin/profile", data, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    // if (!response.data.ok) {
+    //   await logout();
+    //   window.location.href = "/admin/login";
+    // }
+    return response;
+  } catch (err) {
+    console.log("error: ", err)
+    toast.error("An unexpected error occurred")
+    // if (err) {
+    //   await logout();
+    //   window.location.href = "/admin/login";
+    // }
+  }
 }
 
 export const upDateUserProfile = async (data: User, token: string, img?: File | null, ) => {

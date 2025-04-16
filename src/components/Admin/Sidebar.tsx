@@ -43,6 +43,7 @@ const SideBar = ({
   let accountPath:boolean = location.pathname.startsWith("/admin/accounts")
   let dataManagementPath:boolean = location.pathname.startsWith("/admin/data-management")
   let dataLoansPath:boolean = location.pathname.startsWith("/admin/loans")
+  let profilePath:boolean = location.pathname.startsWith("/admin/profile")
 
 
   return (
@@ -103,6 +104,21 @@ const SideBar = ({
           <PiTextAlignCenterFill className="w-5 h-5 mr-3"  />
           <span className={bulkCenterPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
             Bulk Center
+          </span>
+        </NavLink>
+
+        <NavLink
+          to="/admin/profile"
+          className={({ isActive }) =>
+            `flex items-center p-2 font-bold rounded-md transition-colors ${
+              isActive || profilePath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
+            }`
+          }
+          end
+        >
+          <CgProfile className="w-5 h-5 mr-3"  />
+          <span className={profilePath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
+            Profile Management
           </span>
         </NavLink>
 
