@@ -159,9 +159,57 @@ export const updateUserDetails = async (data: any, token: string) => {
     //   window.location.href = "/admin/login";
     // }
     return response;
-  } catch (err) {
-    console.log("error: ", err)
-    toast.error("An unexpected error occurred")
+  } catch (err:any) {
+    if (err.response && err.response.data && err.response.data.errors) {
+      const errors = err.response.data.errors;
+      errors.forEach((error: { message: string }) => {
+        if (error.message) {
+          toast.error(error.message);
+        }
+      });
+    }
+
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error || err.response.data.message);
+    } else {
+      toast.error("An unexpected error occurred");
+    }
+
+    // if (err) {
+    //   await logout();
+    //   window.location.href = "/admin/login";
+    // }
+  }
+}
+
+export const updatePassword = async (data: any, token: string) => {
+  try {
+    const response = await api.patch("/auth/admin/password", data, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    // if (!response.data.ok) {
+    //   await logout();
+    //   window.location.href = "/admin/login";
+    // }
+    return response;
+  } catch (err:any) {
+    if (err.response && err.response.data && err.response.data.errors) {
+      const errors = err.response.data.errors;
+      errors.forEach((error: { message: string }) => {
+        if (error.message) {
+          toast.error(error.message);
+        }
+      });
+    }
+
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error || err.response.data.message);
+    } else {
+      toast.error("An unexpected error occurred");
+    }
+
     // if (err) {
     //   await logout();
     //   window.location.href = "/admin/login";

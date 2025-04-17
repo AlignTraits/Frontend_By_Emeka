@@ -65,15 +65,13 @@ const PersonalDetails = () => {
   }
 
   const handleSubmit = async () => {
-    // Handle form submission logic here
-    console.log(checkAllFields(), "checkAllFields()")
-
     checkAllFields()
 
     if (!isFormValid()) {
       toast.error("Please fill all input fields!");
       return 
     }
+
 
     const payload = {
       data: {
@@ -83,8 +81,6 @@ const PersonalDetails = () => {
       }
     }
 
-    console.log("payload: ", JSON.stringify(payload))
-
     try {
       setIsLoading(true)
       let response:any;
@@ -92,14 +88,11 @@ const PersonalDetails = () => {
         response = await updateUserDetails(JSON.stringify(payload), token);
       } else {
         toast.error("Authentication token is missing!");
-        // logout()
-        // window.location.href = "/admin/login";
+
         return;
       }
 
-      console.log("response: ", response) 
-
-      if (response.ok) {
+      if (response.status === 200) {
         const admin = localStorage.getItem("admin")
         const adminData = admin ? JSON.parse(admin) : null;
         if (adminData) {
@@ -115,7 +108,6 @@ const PersonalDetails = () => {
       setIsLoading(false)
     } catch (error) {
       setIsLoading(false)
-      toast.error("An error occurred while updating user details!")
     }
     finally {
 
