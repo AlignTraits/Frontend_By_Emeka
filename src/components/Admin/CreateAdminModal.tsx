@@ -13,6 +13,7 @@ interface ModalProps {
 
 interface ErrorObjType {
   fullName: boolean;
+  lastName: boolean;
   email: boolean;
   phone: boolean;
   role: boolean;
@@ -25,12 +26,14 @@ export default function CreateAdminModal({setModal }: ModalProps) {
 
   const [isLoading, setIsLoading] = useState(false)
   const [fullName, setFullName] = useState("")
+  const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
   const [role, setRole] = useState("")
 
   const [errorObj, setErrorObj] = useState<ErrorObjType>({
     fullName: false,
+    lastName: false,
     email: false,
     phone: false,
     role: false
@@ -51,6 +54,10 @@ export default function CreateAdminModal({setModal }: ModalProps) {
       setErrorObj((prev) => ({ ...prev, email: true }));
     }
 
+    if (lastName.length === 0) {
+      setErrorObj((prev) => ({ ...prev, lastName: true }));
+    }
+
     if (phone.length === 0) {
       setErrorObj((prev) => ({ ...prev, phone: true }));
     } 
@@ -61,7 +68,7 @@ export default function CreateAdminModal({setModal }: ModalProps) {
   }
 
   const isFormValid = () => {
-    if (fullName.length > 0 && email.length > 0 && phone.length > 0 && role.length > 0) {
+    if (fullName.length > 0 && email.length > 0 && phone.length > 0 && role.length > 0 && lastName.length > 0) {
       return true;
     }
     return false;
@@ -104,6 +111,18 @@ export default function CreateAdminModal({setModal }: ModalProps) {
               onFocus={() => setErrorObj((prev) => ({...prev, fullName: false}))}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
+              className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+            />
+          </div>
+
+          <div className="flex flex-col w-full">
+            <p className={`text-[16px] font-medium  ${errorObj.lastName ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Last Name*</p>
+            <input
+              type="text"
+              name="lastname"
+              onFocus={() => setErrorObj((prev) => ({...prev, lastName: false}))}
+              value={fullName}
+              onChange={(e) => setLastName(e.target.value)}
               className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
             />
           </div>
