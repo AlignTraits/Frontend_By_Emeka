@@ -44,6 +44,13 @@ export default function CreateAdminModal({setModal }: ModalProps) {
     setModal(false)
   }
 
+  function isValidEmail(email: string): boolean {
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email.trim());
+  }
+
+
     
   const checkAllFields = () => {
     if (fullName.length === 0) {
@@ -81,6 +88,11 @@ export default function CreateAdminModal({setModal }: ModalProps) {
     if (!isFormValid()) {
       toast.error("Please fill all input fields!");
       return 
+    }
+
+    if (isValidEmail(email)) {
+      toast.error("Enter a proper email address!");
+      return
     }
     setIsLoading(false)
   }
