@@ -90,7 +90,7 @@ export default function CreateAdminModal({setModal }: ModalProps) {
       return 
     }
 
-    if (isValidEmail(email)) {
+    if (!isValidEmail(email)) {
       toast.error("Enter a proper email address!");
       return
     }
