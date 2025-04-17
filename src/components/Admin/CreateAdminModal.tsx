@@ -133,7 +133,7 @@ export default function CreateAdminModal({setModal }: ModalProps) {
               type="text"
               name="lastname"
               onFocus={() => setErrorObj((prev) => ({...prev, lastName: false}))}
-              value={fullName}
+              value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
             />
