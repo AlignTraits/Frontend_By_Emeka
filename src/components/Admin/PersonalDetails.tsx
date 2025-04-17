@@ -88,12 +88,9 @@ const PersonalDetails = () => {
         response = await updateUserDetails(JSON.stringify(payload), token);
       } else {
         toast.error("Authentication token is missing!");
-        // logout()
-        // window.location.href = "/admin/login";
+
         return;
       }
-
-      console.log("response: ", response) 
 
       if (response.status === 200) {
         const admin = localStorage.getItem("admin")
