@@ -2,20 +2,40 @@ import { useState , useEffect } from "react";
 import { FiPlus } from "react-icons/fi";
 import AdminTable from "./AdminTable";
 import CreateAdminModal from "./CreateAdminModal";
+import { getAllAdmins } from "../../services/schools";
+import { useAuth } from "../../contexts/useAuth";
+import { AdminUser } from "../../types/school.types";
+import { toast } from "react-toastify";
 
 const AdminManagement = () => {
   // Filter courses based on search term
-  const [adminList, setAdminList] = useState([])
+  const [adminList, setAdminList] = useState<AdminUser[]>([])
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const {token} = useAuth()
+
+  const handleGetAllAdmins = async () => {
+    setIsLoading(true);
+    try {
+      const response: AdminUser[] = await getAllAdmins(token as string);
+      console.log("response: ", response)
+      setAdminList(response)
+    } catch (e: any) {
+      toast.error(e.response.data)
+    }
+    finally {
+      setIsLoading(false);
+    }
+  }
 
   const itemsPerPage = 10;
 
-     // Compute pagination
+  // Compute pagination
   const totalPages = Math.ceil(adminList.length / itemsPerPage);
 
   useEffect(() => {
-    setAdminList([])
+    handleGetAllAdmins();
   }, [])
 
   return (
@@ -38,7 +58,7 @@ const AdminManagement = () => {
       </div>
 
       <div className="overflow-x-auto border border-[#E0E0E0] rounded-md py-2">
-        <AdminTable admins={[]} isLoading={false} />
+        <AdminTable admins={adminList} isLoading={isLoading} />
 
         {/* Pagination Controls */}
         <div className="flex justify-between items-center px-5 mt-5">
@@ -65,7 +85,7 @@ const AdminManagement = () => {
       </div>
 
       {
-        showModal && <CreateAdminModal setModal={setShowModal} />
+        showModal && <CreateAdminModal fetchAllAdmins={handleGetAllAdmins} setModal={setShowModal} />
       }
     </div>  
   )

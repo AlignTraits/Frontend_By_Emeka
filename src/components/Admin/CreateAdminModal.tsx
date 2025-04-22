@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { FiX } from "react-icons/fi";
 import "react-datepicker/dist/react-datepicker.css";
+import api from "../../api/axios";
 // import { useAuth } from "../../contexts/useAuth";
 // import { HiOutlineDownload } from "react-icons/hi";
 import { toast } from "react-toastify";
 import CustomSelect from "../dashboard/CustomSelect";
 import { BeatLoader } from "react-spinners";
+import { useAuth } from "../../contexts/useAuth";
 
 interface ModalProps {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchAllAdmins: () => void
 }
 
 interface ErrorObjType {
@@ -19,10 +22,10 @@ interface ErrorObjType {
   role: boolean;
 }
 
-const ROLE_LIST = ["Admin", "Super Admin", "Content Manager", "Analyst"]
+const ROLE_LIST = ["ADMIN", "SUPER_ADMIN"]
 
-export default function CreateAdminModal({setModal }: ModalProps) {
-  // const {token} = useAuth()
+export default function CreateAdminModal({setModal, fetchAllAdmins}: ModalProps) {
+  const {token} = useAuth()
 
   const [isLoading, setIsLoading] = useState(false)
   const [fullName, setFullName] = useState("")
@@ -49,8 +52,6 @@ export default function CreateAdminModal({setModal }: ModalProps) {
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email.trim());
   }
-
-
     
   const checkAllFields = () => {
     if (fullName.length === 0) {
@@ -82,7 +83,7 @@ export default function CreateAdminModal({setModal }: ModalProps) {
   }
 
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     checkAllFields()
 
     if (!isFormValid()) {
@@ -94,12 +95,41 @@ export default function CreateAdminModal({setModal }: ModalProps) {
       toast.error("Enter a proper email address!");
       return
     }
-    setIsLoading(false)
+
+    let tempData = {
+      firstname: fullName,
+      lastname: lastName,
+      email: email,
+      contactNumber: phone,
+      role: role,
+      "password": "@MySecurePassword123"
+    }
+
+    try {
+      setIsLoading(true)
+      let response = await api.post("super-admin/admin/profiles", JSON.stringify(tempData), {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type" : 'application/json'
+        }
+      })
+
+      console.log("response: ", response)
+      setModal(false)
+      fetchAllAdmins()
+
+    } catch (err) {
+      console.log("error: ", err)
+    }
+    finally {
+      setIsLoading(false)
+    }
   }
 
   const handleRoleError = () => {
     setErrorObj((prev) => ({...prev, role: false}))
   }
+
 
   return (
     <div 
@@ -116,7 +146,7 @@ export default function CreateAdminModal({setModal }: ModalProps) {
 
         <div className="flex flex-col gap-y-[10px]">
           <div className="flex flex-col w-full">
-            <p className={`text-[16px] font-medium  ${errorObj.fullName ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Full Name*</p>
+            <p className={`text-[16px] font-medium  ${errorObj.fullName ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>First Name*</p>
             <input
               type="text"
               name="firstName"

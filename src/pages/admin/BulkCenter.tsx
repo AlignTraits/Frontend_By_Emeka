@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState, useMemo} from "react";
 import { FiSearch } from "react-icons/fi";
 import { CiFilter } from "react-icons/ci";
 import { AiOutlineDownload } from "react-icons/ai";
@@ -9,39 +9,82 @@ import {
   FiCalendar,
 } from 'react-icons/fi';
 import BulkCenterTable from "../../components/Admin/BulCenterTable";
+import { getBulkHistory } from "../../services/schools";
+import { useAuth } from "../../contexts/useAuth";
+import { ApiResponseItem  } from "../../types/school.types";
 
 const STATUS = ["All", "Pending", "Processing", "Completed", "Failed"];
-const ACTIONS = ["All Actions", "Create", "Update", "Download", "Delete"];
+const ACTIONS = ["All Actions", "Bulk Create", "Update", "Download", "Delete"];
 const ENTITIES = ["All Entities", "Courses", "Schools"];
 
 export default function BulkCenter () {
+  const {token} = useAuth()
 
    const [searchTerm, setSearchTerm] = useState("");
    const [status, setStatus] = useState("");
    const [actions, setActions] = useState("");
    const [entities, setEntities] = useState("");
-   const [startDate, setStartDate] = useState<Date | null>(null);
+   const [startDate, setStartDate] = useState<Date>(new Date());
+   const [bulkHistory, setBulkHistory] = useState<ApiResponseItem[]>([]); 
 
    const [isLoading, setIsLoading] = useState(true);
 
-   const [currentPage, setCurrentPage] = useState(0);
+   const [currentPage, setCurrentPage] = useState(1);
    const itemsPerPage = 10;
 
   const handleStartDateChange = (date: Date | null) => {
-    setStartDate(date);
+    if (date) {
+      setStartDate(date);
+    }
   };
 
-
-  setTimeout(() => {
-    setIsLoading(false)
-  }, 3000)
-
-  const filterBulkCenter: [] = []
-
+  const filterBulkCenter = useMemo(() => {
+    const term = searchTerm.toLowerCase().trim();
+    // if (!term) return bulkHistory;
+  
+    return bulkHistory.filter((s) => {
+      // default to empty string if missing
+      let date1 = new Date(s.timestamp);
+      let date2 =  new Date(startDate);
+      const name = (s.metadata.fileName ?? "").toLowerCase();
+      return name.includes(term) 
+      && (s.action === actions || actions === "All Actions" || actions === "")
+      && (entities === "" || entities === "All Entities" || entities.includes(s.entity))
+      && date2 && date2 > date1;
+    });
+  }, [bulkHistory, searchTerm, actions, entities, startDate]);
+  
   // Compute pagination
   const totalPages = Math.ceil(filterBulkCenter.length / itemsPerPage);
 
+  const paginatedBulkHistory = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filterBulkCenter.slice(start, start + itemsPerPage);
+  }, [filterBulkCenter, currentPage]);
+
+  const handleGetBulkHistory = async () => {
+    setIsLoading(true);
+    try {
+      const response: ApiResponseItem[] = await getBulkHistory(token as string);
+      setBulkHistory(response)
+    } catch (e) {
+      console.log("e: ", e)
+    }
+    finally {
+      setIsLoading(false);
+    }
+  }
   
+  useEffect(() => {
+    handleGetBulkHistory()
+  }, [])
+
+  const resetFilter = () => {
+    setStartDate(new Date())
+    setSearchTerm("")
+    setStatus("")
+    setEntities("")
+  }
 
   return (
     <div className="relative">
@@ -55,7 +98,7 @@ export default function BulkCenter () {
           <div className="relative w-[450px]">
             <input
               type="text"
-              placeholder="Search by file name or ID..."
+              placeholder="Search by file name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[14px] font-[400] text-[#8F8F8F]"
@@ -65,6 +108,7 @@ export default function BulkCenter () {
 
           <div className="flex gap-x-[20px]">
             <button 
+              onClick={resetFilter}
               type="button" 
               className="w-[130px] text-[#737373] text-[14px] font-medium py-2 h-[40px] p-2 rounded-md 
                   rounded-md font-semibold border-[1px] border-[#DDDDDD] flex justify-between items-center gap-x-[10px]"
@@ -145,7 +189,7 @@ export default function BulkCenter () {
         </div>
 
         <div className="overflow-x-auto border border-[#E0E0E0] rounded-md py-2">
-          <BulkCenterTable isLoading={isLoading} />
+          <BulkCenterTable isLoading={isLoading} bulkHistory={paginatedBulkHistory} />
 
           {/* 4️⃣ Pagination controls */}
           <div className="flex justify-between items-center px-5 mt-5">
