@@ -4,14 +4,19 @@ import fileIcon from "../../assets/IconWrap.svg"
 import { FiEdit2 } from "react-icons/fi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { AdminUser } from "../../types/school.types";
+import { toast } from "react-toastify";
 interface Props {
   admins: AdminUser[];
   isLoading: boolean;
+  setDeleteItem: React.Dispatch<React.SetStateAction<AdminUser|null>>;
+  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function AdminTable({
   admins,
   isLoading,
+  setDeleteItem,
+  setShowDeleteModal
 }: Props) {
 
   const splitString = (text: any) => {
@@ -92,7 +97,17 @@ export default function AdminTable({
                     </td>
                     <td className="p-[20px] flex gap-x-[20px] items-center">
                       <FiEdit2 className="mt-3 h-5 w-5 cursor-pointer" />
-                      <FaRegTrashAlt className="text-[#F04438] mt-3 h-5 w-5 cursor-pointer" />
+                      <FaRegTrashAlt onClick={() => {
+                        let tempData = localStorage.getItem("admin") ? JSON.parse(localStorage.getItem("admin") as string) : null;
+                        console.log("tempData: ", tempData)
+                        console.log("delete user: ", item)
+                        if (tempData.id === item.id) {
+                          toast.error("You are logged in, user can't be deleted now!")
+                          return
+                        }
+                        setShowDeleteModal(true)
+                        setDeleteItem(item)
+                      }} className="text-[#F04438] mt-3 h-5 w-5 cursor-pointer" />
                     </td>
                   </tr>
                 ))}

@@ -6,6 +6,7 @@ import { getAllAdmins } from "../../services/schools";
 import { useAuth } from "../../contexts/useAuth";
 import { AdminUser } from "../../types/school.types";
 import { toast } from "react-toastify";
+import DeleteAdminModal from "./DeleteAdminModal";
 
 const AdminManagement = () => {
   // Filter courses based on search term
@@ -14,6 +15,9 @@ const AdminManagement = () => {
   const [showModal, setShowModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const {token} = useAuth()
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [deleteItem, setDeleteItem] = useState<AdminUser | null>(null)
 
   const handleGetAllAdmins = async () => {
     setIsLoading(true);
@@ -58,7 +62,7 @@ const AdminManagement = () => {
       </div>
 
       <div className="overflow-x-auto border border-[#E0E0E0] rounded-md py-2">
-        <AdminTable admins={adminList} isLoading={isLoading} />
+        <AdminTable admins={adminList} isLoading={isLoading} setDeleteItem={setDeleteItem} setShowDeleteModal={setShowDeleteModal} />
 
         {/* Pagination Controls */}
         <div className="flex justify-between items-center px-5 mt-5">
@@ -85,7 +89,19 @@ const AdminManagement = () => {
       </div>
 
       {
-        showModal && <CreateAdminModal fetchAllAdmins={handleGetAllAdmins} setModal={setShowModal} />
+        showModal && <CreateAdminModal 
+          fetchAllAdmins={handleGetAllAdmins} 
+          setModal={setShowModal} 
+        />
+      }
+
+      {
+        showDeleteModal && 
+        <DeleteAdminModal 
+          setShowModal={setShowDeleteModal} 
+          getAllAdmins={handleGetAllAdmins} 
+          deleteItem={deleteItem}
+        />
       }
     </div>  
   )
