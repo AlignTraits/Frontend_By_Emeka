@@ -113,8 +113,10 @@ export default function CreateAdminModal({setModal, fetchAllAdmins}: ModalProps)
           "Content-Type" : 'application/json'
         }
       })
+      
+      toast.success("Admin created successfully!")
 
-      console.log("response: ", response)
+      console.log("response:admins ", response)
       setModal(false)
       fetchAllAdmins()
 
