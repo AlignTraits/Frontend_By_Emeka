@@ -14,6 +14,14 @@ export default function AdminTable({
   isLoading,
 }: Props) {
 
+  const splitString = (text: any) => {
+    if (typeof text === 'string') {
+      return text.replace(/_/g, ' ');
+    } 
+    return text
+  }
+  
+
 
   return (
     <>
@@ -79,7 +87,7 @@ export default function AdminTable({
                       <p>{item.contactNumber}</p>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      <p>{item.role}</p>
+                      <p>{splitString(item.role)}</p>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       <p>_</p>
