@@ -21,8 +21,6 @@ export default function AdminTable({
     return text
   }
   
-
-
   return (
     <>
       {isLoading && (

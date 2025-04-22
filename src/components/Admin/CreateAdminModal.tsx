@@ -11,6 +11,7 @@ import { useAuth } from "../../contexts/useAuth";
 
 interface ModalProps {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchAllAdmins: () => void
 }
 
 interface ErrorObjType {
@@ -23,7 +24,7 @@ interface ErrorObjType {
 
 const ROLE_LIST = ["ADMIN", "SUPER_ADMIN"]
 
-export default function CreateAdminModal({setModal }: ModalProps) {
+export default function CreateAdminModal({setModal, fetchAllAdmins}: ModalProps) {
   const {token} = useAuth()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -109,11 +110,13 @@ export default function CreateAdminModal({setModal }: ModalProps) {
       let response = await api.post("super-admin/admin/profiles", JSON.stringify(tempData), {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
+          "Content-Type" : 'application/json'
         }
       })
 
       console.log("response: ", response)
+      setModal(false)
+      fetchAllAdmins()
 
     } catch (err) {
       console.log("error: ", err)

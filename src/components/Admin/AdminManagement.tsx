@@ -85,7 +85,7 @@ const AdminManagement = () => {
       </div>
 
       {
-        showModal && <CreateAdminModal setModal={setShowModal} />
+        showModal && <CreateAdminModal fetchAllAdmins={handleGetAllAdmins} setModal={setShowModal} />
       }
     </div>  
   )
