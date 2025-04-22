@@ -3,6 +3,8 @@ import { ClipLoader } from "react-spinners";
 // import { FaRegTrashCan } from "react-icons/fa6";
 import fileIcon from "../../assets/IconWrap.svg";
 import { ApiResponseItem } from "../../types/school.types";
+import BulkCenterModal from "./BulkCenterModal";
+import { useState } from "react";
 
 
 interface Props {
@@ -14,6 +16,10 @@ export default function BulkCenterTable({
   isLoading,
   bulkHistory
 }: Props) {
+
+  const [showModal, setShowModal] = useState(false)
+
+  const [previewDetails, setPreviewDetails] = useState<ApiResponseItem>()
 
   function formatDateTime(dateString: string): string {
     const date = new Date(dateString);
@@ -35,7 +41,7 @@ export default function BulkCenterTable({
   }
 
   const renderStatus = (status: string) => {
-    if (status === "Completed") {
+    if (status !== "Completed") {
       return <p className="h-[25px] w-[80px] bg-[#FEF3F2] flex justify-center items-center text-[#B42318] text-[12px] border-[1px] border-[#FECDCA] rounded-[20px]">Failed</p>
     } else {
       return <p className="h-[25px] w-[80px] bg-[#F0F9FF] flex justify-center items-center text-[#026AA2] text-[12px] border-[1px] border-[#B9E6FE] rounded-[20px]">Completed</p>
@@ -43,11 +49,17 @@ export default function BulkCenterTable({
   }
 
   const renderSuccessRecords = (successCount:number) => {
+    if (successCount === 0) {
+      return <></>
+    }
     return (
       <p className="text-[14px] text-[#067647]">{successCount} Success</p>
     )
   }
   const renderFailedRecords = (failedCount:number) => {
+    if (failedCount === 0) {
+      return <></>
+    }
     return (
       <p className="text-[14px] text-[#B42318]">{failedCount} Failed</p>
     )
@@ -141,7 +153,10 @@ export default function BulkCenterTable({
                     <td className="p-[10px] text-[14px]">
                       <p>{item.user.username}</p>
                     </td>
-                    <td className="p-[10px] text-[14px]">
+                    <td className="p-[10px] text-[14px] cursor-pointer" onClick={() => {
+                      setPreviewDetails(item)
+                      setShowModal(true)
+                    }}>
                       <p className="underline">Details</p>
                     </td>
                   </tr>
@@ -158,6 +173,7 @@ export default function BulkCenterTable({
         </div>
       )}
 
+      {showModal && previewDetails && <BulkCenterModal setModal={setShowModal} previewDetails={previewDetails} />}
 
     </>
   );

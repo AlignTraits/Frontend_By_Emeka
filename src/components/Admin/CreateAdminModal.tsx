@@ -49,8 +49,6 @@ export default function CreateAdminModal({setModal }: ModalProps) {
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email.trim());
   }
-
-
     
   const checkAllFields = () => {
     if (fullName.length === 0) {

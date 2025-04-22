@@ -1,8 +1,11 @@
 import { FiArrowDown } from "react-icons/fi";
 import { ClipLoader } from "react-spinners";
 import fileIcon from "../../assets/IconWrap.svg"
+import { FiEdit2 } from "react-icons/fi";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { AdminUser } from "../../types/school.types";
 interface Props {
-  admins: [];
+  admins: AdminUser[];
   isLoading: boolean;
 }
 
@@ -61,28 +64,29 @@ export default function AdminTable({
 
             {admins.length > 0 && (
               <tbody>
-                {admins.map((_, index) => (
+                {admins.map((item, index) => (
                   <tr
                     className="[&>td]:py-5 hover:bg-[#007BFF33] border-b border-gray-300 last:border-b-0"
                     key={index}
                   >
-                    <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-2 items-center">
-                      <p></p>
+                    <td className="text-[#000000] text-[16px] font-[400] p-[20px]">
+                      <p>{item.firstname}</p>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {/* {course.programLevel} */}
+                      <p>{item.email}</p>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {/* {formatDuration(course.durationPeriod, course.duration)} */}
+                      <p>{item.contactNumber}</p>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {/* {course.currency} {course.price} */}
+                      <p>{item.role}</p>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {/* {formatDate(course.updatedAt)} */}
+                      <p>_</p>
                     </td>
                     <td className="p-[20px] flex gap-x-[20px] items-center">
-                      
+                      <FiEdit2 className="mt-3 h-5 w-5 cursor-pointer" />
+                      <FaRegTrashAlt className="text-[#F04438] mt-3 h-5 w-5 cursor-pointer" />
                     </td>
                   </tr>
                 ))}

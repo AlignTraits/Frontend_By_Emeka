@@ -41,3 +41,12 @@ export interface ApiResponseItem {
   timestamp: string;
   user: User;
 }
+
+export interface AdminUser {
+  id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  contactNumber: string | null;
+  role: "ADMIN" | "SUPER_ADMIN"; // Add more roles if needed
+}
