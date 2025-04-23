@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { IoIosArrowBack } from "react-icons/io";
 import ImageUploadWithPreview from "../../components/Admin/ImageUpload";
 import CustomSelect from "../../components/dashboard/CustomSelect";
-import RichTextEditor from "../../components/Admin/RichTextEditor";
+// import RichTextEditor from "../../components/Admin/RichTextEditor";
 import { createCourse, getCourseDetails, updateAdmissionLogic } from "../../services/schools";
 import { useAuth } from "../../contexts/useAuth";
 import { BeatLoader } from "react-spinners";
@@ -14,6 +14,7 @@ import { ErrorObjType, RequirementList, Rule, Condition } from "../../types/cour
 import ngnFlag from "../../assets/ngn.png"
 import usdFlag from "../../assets/usd.png"
 import eurFlag from "../../assets/eur.jpeg"
+import TextEditorTwo from "../../components/Admin/TextEditorTwo";
 
 type ExamEntry = {
   examType: string;
@@ -674,52 +675,37 @@ export default function AddCourse () {
 
             </div>
 
-            <div className="w-full flex flex-col gap-y-[5px] h-[300px] relative">
+            <div className="w-full flex flex-col gap-y-[5px] size-max relative">
               <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.courseDescription ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Description*</p>
-              <RichTextEditor 
-                placeholder="Describe the main objectives of this course...." 
-                value={courseDescription} 
-                onFocus={() => setErrorObj((prev) => ({...prev, courseDescription: false}))}
+              <TextEditorTwo 
+                placeholder="Describe the main objectives of this course...."
+                initialValue={courseDescription} 
                 onChange={setCourseDescription} 
+                onFocus={() => setErrorObj((prev) => ({...prev, courseDescription: false}))}
               />
-              <p className="text-[#737373] text-[12px] font-normal absolute bottom-[0px]">What students will learn and achieve by completing this course.</p>
+              <p className="text-[#737373] text-[12px] font-normal">What students will learn and achieve by completing this course.</p>
             </div>
 
-
-            <div className="flex mt-[0px]">
-              <p className="text-[18px] font-semibold text-[#1E1E1E] w-[300px] ">
-                Scholarship Requirements
-              </p>
-              {/* <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div> */}
-            </div>
-
-            <div className="w-full flex flex-col gap-y-[5px] h-[300px] relative">
+            <div className="w-full flex flex-col gap-y-[5px] size-max relative">
               <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Scholarship Description*</p>
-              <RichTextEditor 
-                value={scholarshipDescription} 
+              <TextEditorTwo 
+                initialValue={scholarshipDescription} 
                 onChange={setScholarshipDescription} 
                 onFocus={() => {}}
                 placeholder="Describe the main objectives of this course...."
               />
-              <p className="text-[12px] text-[#737373] font-normal absolute bottom-[0px]">Details about scholarship</p>
+              <p className="text-[12px] text-[#737373] font-normal">Details about scholarship</p>
             </div>
 
-            <div className="flex mt-[0px]">
-              <p className="text-[18px] font-semibold text-[#1E1E1E] w-[210px] ">
-                Loan Requirements
-              </p>
-              {/* <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div> */}
-            </div>
-
-            <div className="w-full flex flex-col gap-y-[5px] h-[300px]  relative">
+            <div className="w-full flex flex-col gap-y-[5px] size-max relative">
               <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Loan Description*</p>
-              <RichTextEditor 
+              <TextEditorTwo 
                 placeholder="Describe the main objectives of this course...." 
-                value={loanDescription} 
+                initialValue={loanDescription} 
                 onChange={setLoanDescription}
                 onFocus={() => {}}
               />
-              <p className="text-[12px] text-[#737373] font-normal absolute bottom-[0px]">Details about loan eligibility, terms, and application process for this course.</p>
+              <p className="text-[12px] text-[#737373] font-normal">Details about loan eligibility, terms, and application process for this course.</p>
             </div>
             
             <div className="flex gap-x-[20px] mt-[20px] w-full flex justify-end">

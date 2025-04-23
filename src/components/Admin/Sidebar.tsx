@@ -43,7 +43,7 @@ const SideBar = ({
   let accountPath:boolean = location.pathname.startsWith("/admin/accounts")
   let dataManagementPath:boolean = location.pathname.startsWith("/admin/data-management")
   let dataLoansPath:boolean = location.pathname.startsWith("/admin/loans")
-  let profilePath:boolean = location.pathname.startsWith("/admin/profile")
+  // let profilePath:boolean = location.pathname.startsWith("/admin/profile")
 
 
   return (
@@ -107,7 +107,7 @@ const SideBar = ({
           </span>
         </NavLink>
 
-        <NavLink
+        {/* <NavLink
           to="/admin/profile"
           className={({ isActive }) =>
             `flex items-center p-2 font-bold rounded-md transition-colors ${
@@ -120,7 +120,7 @@ const SideBar = ({
           <span className={profilePath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
             Profile Management
           </span>
-        </NavLink>
+        </NavLink> */}
 
         <NavLink
           to="/admin/data-management"
