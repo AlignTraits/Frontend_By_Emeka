@@ -558,52 +558,6 @@ export default function AddCourse () {
                 />
               </div>
 
-              {/* <div className="w-full flex flex-col gap-y-[5px]">
-                <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.acceptanceFee ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Acceptance Fee*</p>
-                <div className="relative">
-                  <input
-                    type="number"
-                    placeholder="0.00"
-                    name="AcceptanceFee"
-                    onFocus={() => setErrorObj((prev) => ({...prev, acceptanceFee: false}))}
-                    value={acceptanceFee}
-                    onChange={(e) => setAcceptanceFee(e.target.value)}
-                    className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none 
-                      border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
-                  />
-                  <div className="absolute h-[40px] top-[0] right-0 flex items-center">
-                    <button
-                      type="button"
-                      onClick={() => setShowCurrencyDropdown(!showCurrencyDropdown)}
-                      className="h-full rounded-r-md border-l border-gray-300 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    >
-                      {currency}
-                      <span className="ml-1">▼</span>
-                    </button>
-                  </div>
-                  {showCurrencyDropdown && (
-                    <div className="absolute right-0 z-10 mt-1 w-20 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <div className="py-1">
-                        {currencies.map((curr) => (
-                          <button
-                            key={curr}
-                            onClick={() => handleCurrencyChange(curr as "NGN" | "USD" | "EUR")}
-                            className={`block w-full px-4 py-2 text-sm ${
-                              currency === curr
-                                ? "bg-blue-100 text-blue-900"
-                                : "text-gray-700 hover:bg-gray-100"
-                            }`}
-                          >
-                            {curr}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                </div>
-              </div> */}
-
               <div className="w-full flex flex-col gap-y-[5px]">
                 <p className={`text-[16px] font-medium ${errorObj.acceptanceFee ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>
                   Acceptance Fee*

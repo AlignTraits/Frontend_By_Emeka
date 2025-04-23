@@ -93,18 +93,15 @@ export const getAdminDetails = async (token: string) => {
       "Authorization": `Bearer ${token}`
     }
   } )
-  if(!response.data.ok) {
-    await logout()
-    window.location.href = '/admin/login'
-   
-  }
+  console.log("response: ", response)
     return response.data
 
-  } catch(err) {
-    if(err){
-      await logout();
-      window.location.href = "/admin/login";
-    }
+  } catch(err: any) {
+    console.log("ererer: ", err)
+    let errMsg = err.response.data
+    console.log("errMsg: ", errMsg)
+    throw new Error(errMsg)
+    // toast.error(errMsg)
   }
   
 }

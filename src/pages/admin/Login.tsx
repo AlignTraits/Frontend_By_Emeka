@@ -9,6 +9,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 import { IoIosStar } from "react-icons/io";
+import { toast } from "react-toastify";
 
 
 export default function Login() {
@@ -34,11 +35,19 @@ const {token} = useAuth()
       )) as AuthResponse;
 
       if (response.status !== null && response.status === 200) {
-        setToken(response.token);
-     const admin =  await getAdminDetails(response.token)
+        try {
+          const admin =  await getAdminDetails(response.token)
 
-        localStorage.setItem('admin', JSON.stringify(admin.data))
-        navigate("/admin");
+          if (admin) {
+            setToken(response.token);
+            localStorage.setItem('admin', JSON.stringify(admin.data))
+            navigate("/admin")
+          }
+        } catch (e:any) {
+          toast.error(e.message)
+          setAdminError(e.message)
+          console.log("e: ", e.message)
+        }
   
       }
     } catch (err: any) {
