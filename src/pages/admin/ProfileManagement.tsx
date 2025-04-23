@@ -5,9 +5,21 @@ import { RiAdminLine } from "react-icons/ri";
 import AdminPassword from "../../components/Admin/AdminPassword";
 import AdminManagement from "../../components/Admin/AdminManagement";
 import PersonalDetails from "../../components/Admin/PersonalDetails";
+import { AdminUser } from "../../types/school.types";
+
+
+const ADMIN_TAB = ["Personal Details", "Password"]
+
+const SUPER_ADMIN_TAB = ["Personal Details", "Password", "Admin Management"]
 
 export default function ProfileManagement () {
   const [activeTab, setActiveTab] = useState("tab1");
+
+  const admin = localStorage.getItem("admin")
+  const adminData:AdminUser = admin ? JSON.parse(admin) : null;
+
+  const TAB = adminData.role === "SUPER_ADMIN" ? SUPER_ADMIN_TAB : ADMIN_TAB
+
 
   const handleTabChange = (tab:string) => {
     if (tab === "tab1") {
@@ -25,6 +37,8 @@ export default function ProfileManagement () {
     tab3: <RiAdminLine />,
   }
 
+  
+
   return (
     <div className="relative">
       <div className="flex flex-col w-full gap-10 p-5 xl:p-6">
@@ -34,7 +48,7 @@ export default function ProfileManagement () {
       </div>
 
       <div className="flex border-b border-gray-300 w-max">
-        {["Personal Details", "Password", "Admin Management"].map((tab, index) => {
+        {TAB.map((tab, index) => {
           const tabKey = `tab${index + 1}` as keyof typeof tabImage;
           return (
             <button
