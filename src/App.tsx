@@ -29,7 +29,7 @@ import AdminLogin from './pages/admin/Login'
 import Schools from './pages/admin/Schools'
 import CreateCourse from "./pages/admin/CreateCourse";
 import EditSchool from "./pages/admin/EditSchool";
-import AccountsPage from "./pages/admin/AccountsPage";
+// import AccountsPage from "./pages/admin/AccountsPage";
 import SchoolCourses from "./pages/admin/SchoolCourses";
 import AddCourse from "./pages/admin/AddCourse";
 import CourseDetails from "./pages/admin/CourseDetails";
@@ -136,7 +136,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'accounts',
-            element: <AccountsPage />
+            element: <ProfileManagement />
           },
 
           {
@@ -153,10 +153,10 @@ const router = createBrowserRouter([
             element: <DataManagement />
           },
 
-          {
-            path: 'profile',
-            element: <ProfileManagement />
-          },
+          // {
+          //   path: 'profile',
+          //   element: <ProfileManagement />
+          // },
 
           {
             path: 'schools',
