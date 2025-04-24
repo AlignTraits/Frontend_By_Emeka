@@ -62,7 +62,13 @@ const AdminManagement = () => {
       </div>
 
       <div className="overflow-x-auto border border-[#E0E0E0] rounded-md py-2">
-        <AdminTable admins={adminList} isLoading={isLoading} setDeleteItem={setDeleteItem} setShowDeleteModal={setShowDeleteModal} />
+        <AdminTable 
+          admins={adminList} 
+          isLoading={isLoading} 
+          setDeleteItem={setDeleteItem} 
+          setShowModal={setShowModal}
+          setShowDeleteModal={setShowDeleteModal} 
+        />
 
         {/* Pagination Controls */}
         <div className="flex justify-between items-center px-5 mt-5">
@@ -92,6 +98,8 @@ const AdminManagement = () => {
         showModal && <CreateAdminModal 
           fetchAllAdmins={handleGetAllAdmins} 
           setModal={setShowModal} 
+          tempItem={deleteItem}
+          setDeleteItem={setDeleteItem}
         />
       }
 
