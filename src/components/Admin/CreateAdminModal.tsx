@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiX } from "react-icons/fi";
 import "react-datepicker/dist/react-datepicker.css";
 import api from "../../api/axios";
@@ -8,10 +8,13 @@ import { toast } from "react-toastify";
 import CustomSelect from "../dashboard/CustomSelect";
 import { BeatLoader } from "react-spinners";
 import { useAuth } from "../../contexts/useAuth";
+import { AdminUser } from "../../types/school.types";
 
 interface ModalProps {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  fetchAllAdmins: () => void
+  fetchAllAdmins: () => void;
+  tempItem: AdminUser | null;
+  setDeleteItem: React.Dispatch<React.SetStateAction<AdminUser|null>>;
 }
 
 interface ErrorObjType {
@@ -24,7 +27,7 @@ interface ErrorObjType {
 
 const ROLE_LIST = ["ADMIN", "SUPER_ADMIN"]
 
-export default function CreateAdminModal({setModal, fetchAllAdmins}: ModalProps) {
+export default function CreateAdminModal({setModal, fetchAllAdmins, tempItem, setDeleteItem}: ModalProps) {
   const {token} = useAuth()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -42,9 +45,25 @@ export default function CreateAdminModal({setModal, fetchAllAdmins}: ModalProps)
     role: false
   });
   
+  useEffect(() => {
+    console.log("tempItem: ", tempItem)
+    // let tempData = localStorage.getItem("admin") ? JSON.parse(localStorage.getItem("admin") as string) : null;
+
+    // console.log("tempData: ", tempData)
+    if (tempItem) {
+      setFullName(tempItem.firstname)
+      setLastName(tempItem.lastname)
+      setEmail(tempItem.email)
+      setPhone(tempItem.contactNumber)
+      setRole(tempItem.role)
+    }
+  }, [])
+
+  console.log("phone: phone: ", phone)
 
   const handleClose = () => {
     setModal(false)
+    setDeleteItem(null)
   }
 
   function isValidEmail(email: string): boolean {
@@ -120,13 +139,72 @@ export default function CreateAdminModal({setModal, fetchAllAdmins}: ModalProps)
       setModal(false)
       fetchAllAdmins()
 
-    } catch (err) {
-      console.log("error: ", err)
+    } catch (err:any) {
+      const errors = err.response.data.errors;
+
+      errors.forEach((error: { message: string }) => {
+        if (error.message) {
+          toast.error(error.message);
+        }
+      });
     }
     finally {
       setIsLoading(false)
+      setDeleteItem(null)
     }
   }
+
+  const handleEdit = async () => {
+    checkAllFields()
+
+    if (!isFormValid()) {
+      toast.error("Please fill all input fields!");
+      return 
+    }
+
+    if (!isValidEmail(email)) {
+      toast.error("Enter a proper email address!");
+      return
+    }
+
+    let tempData = {
+      firstname: fullName,
+      lastname: lastName,
+      email: email,
+      contactNumber: phone,
+      role: role,
+    }
+
+    try {
+      setIsLoading(true)
+      let response = await api.patch(`super-admin/admin/profiles/${tempItem?.id}`, JSON.stringify(tempData), {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type" : 'application/json'
+        }
+      })
+      
+      toast.success("Admin Edited successfully!")
+
+      console.log("response:admins ", response)
+      setModal(false)
+      fetchAllAdmins()
+
+    } catch (err: any) {
+      const errors = err.response.data.errors;
+
+      errors.forEach((error: { message: string }) => {
+        if (error.message) {
+          toast.error(error.message);
+        }
+      });
+    }
+    finally {
+      setDeleteItem(null)
+      setIsLoading(false)
+    }
+  }
+
 
   const handleRoleError = () => {
     setErrorObj((prev) => ({...prev, role: false}))
@@ -139,7 +217,7 @@ export default function CreateAdminModal({setModal, fetchAllAdmins}: ModalProps)
     >
       <div className="mt-20 bg-white rounded-lg w-[533px] relative size-max p-[20px] flex flex-col justify-between">
         <div className="flex flex-col gap-y-[5px]">
-          <p className="text-[18px] text-[#1E1E1E] font-semibold">Create Admin</p>
+          <p className="text-[18px] text-[#1E1E1E] font-semibold">{tempItem ? "Edit" : "Create"} Admin</p>
 
           <p className="text-[12px] text-[#737373] font-normal">Add a new admin to the platform. They will have access according to their assigned role.</p>
         </div>
@@ -218,7 +296,7 @@ export default function CreateAdminModal({setModal, fetchAllAdmins}: ModalProps)
             <p className="text-[14px] font-semibold text-[#1E1E1E]">Cancel</p>
           </button>
 
-          <button onClick={handleSubmit} className="bg-[#004085] w-[120px] h-[40px] rounded-md flex justify-center gap-x-[10px] items-center">
+          <button onClick={tempItem ? handleEdit : handleSubmit} className="bg-[#004085] w-[120px] h-[40px] rounded-md flex justify-center gap-x-[10px] items-center">
             {isLoading ? (
                 <BeatLoader color="#ffffff" size={8} />
             ) : (

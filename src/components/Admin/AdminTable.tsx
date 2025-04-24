@@ -10,13 +10,15 @@ interface Props {
   isLoading: boolean;
   setDeleteItem: React.Dispatch<React.SetStateAction<AdminUser|null>>;
   setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function AdminTable({
   admins,
   isLoading,
   setDeleteItem,
-  setShowDeleteModal
+  setShowDeleteModal,
+  setShowModal
 }: Props) {
 
   const splitString = (text: any) => {
@@ -96,11 +98,20 @@ export default function AdminTable({
                       <p>_</p>
                     </td>
                     <td className="p-[20px] flex gap-x-[20px] items-center">
-                      <FiEdit2 className="mt-3 h-5 w-5 cursor-pointer" />
+                      <FiEdit2 
+                        onClick={() => {
+                          // let tempData = localStorage.getItem("admin") ? JSON.parse(localStorage.getItem("admin") as string) : null;
+                          // if (tempData.id === item.id) {
+                          //   toast.error("You are logged in, user can't be edited now!")
+                          //   return
+                          // }
+                          setShowModal(true)
+                          setDeleteItem(item)
+                        }}
+                        className="mt-3 h-5 w-5 cursor-pointer" 
+                      />
                       <FaRegTrashAlt onClick={() => {
                         let tempData = localStorage.getItem("admin") ? JSON.parse(localStorage.getItem("admin") as string) : null;
-                        console.log("tempData: ", tempData)
-                        console.log("delete user: ", item)
                         if (tempData.id === item.id) {
                           toast.error("You are logged in, user can't be deleted now!")
                           return
