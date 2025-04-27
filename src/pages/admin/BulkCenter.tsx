@@ -139,12 +139,13 @@ export default function BulkCenter () {
         escapeCSVValue(item.entity),
         escapeCSVValue(tempStatus),
         escapeCSVValue(records),
-        escapeCSVValue(item.user.username)
+        escapeCSVValue(item.user.username),
+        item.metadata.failedMessages.length > 0 ? item.metadata.failedMessages : ""
       ];
     });
   
     const csvData = [
-      ["File Name", "Update Date", "Action", "Entity", "Status", "Records", "Uploaded By"].map(escapeCSVValue),
+      ["File Name", "Update Date", "Action", "Entity", "Status", "Records", "Uploaded By", "Errors"].map(escapeCSVValue),
       ...tempList
     ];
   
