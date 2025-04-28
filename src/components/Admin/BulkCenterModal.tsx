@@ -17,7 +17,7 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
   const generateCSV = () => {
     let tempList:any = []
 
-    previewDetails.metadata.failedMessages.map((elem) => tempList.push([elem]))
+    previewDetails.metadata?.failedMessages.map((elem) => tempList.push([elem]))
 
     const csvData = [
       ["errors"],
@@ -103,12 +103,12 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
           <div className="w-[200px]">
             <p className="text-[#737373] text-[14px]">File Name</p>
 
-            <p>File.CSV</p>
+            <p>{previewDetails.metadata?.fileName}</p>
           </div>
 
           <div>
             <p className="text-[#737373] text-[14px]">Status</p>
-            {previewDetails.metadata.failedMessages.length > 0 ? renderStatus("Failed") : renderStatus("Completed")}
+            {previewDetails.metadata?.failedMessages.length > 0 ? renderStatus("Failed") : renderStatus("Completed")}
           </div>
         </div>
 
@@ -144,21 +144,21 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
             <p className="text-[#737373] text-[14px]">Processing Results</p>
 
             <div className="flex gap-x-[5px]">
-              {renderSuccessRecords(previewDetails.metadata.successCount)}
-              {renderFailedRecords(previewDetails.metadata.failedCount)}
+              {renderSuccessRecords(previewDetails.metadata?.successCount)}
+              {renderFailedRecords(previewDetails.metadata?.failedCount)}
             </div>
           </div>
         </div>
 
       {
-        previewDetails.metadata.failedMessages.length > 0 &&
+        previewDetails.metadata?.failedMessages.length > 0 &&
         <>
           <div>
             <p className="text-[#1E1E1E] text-[14px] font-medium">Error</p>
 
             <div className="mt-1 border-[1px] border-dashed border-[#F04438] min-h-[100px] bg-[#FBEAE9] rounded-lg p-2 flex flex-col gap-y-[2px]">
               {
-                previewDetails.metadata.failedMessages.map((elem, i) => 
+                previewDetails.metadata?.failedMessages.map((elem, i) => 
                   <div key={i} className="flex gap-x-[10px] items-center">
                     <div className="h-[6px] w-[6px] bg-[#B42318] rounded-[50%]"></div>
                     <p className="text-[#B42318] text-[14px] font-medium">{elem}</p>

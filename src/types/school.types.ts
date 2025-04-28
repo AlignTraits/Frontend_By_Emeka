@@ -48,5 +48,5 @@ export interface AdminUser {
   lastname: string;
   email: string;
   contactNumber: string;
-  role: "ADMIN" | "SUPER_ADMIN"; // Add more roles if needed
+  role: "ADMIN" | "SUPER_ADMIN" | "CONTENT_MANAGER" | "ANALYST"; // Add more roles if needed
 }

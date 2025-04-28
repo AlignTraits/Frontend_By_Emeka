@@ -132,7 +132,7 @@ export default function BulkCenterTable({
                     key={index}
                   >
                     <td className="p-[10px] text-[14px]">
-                      <p>{item.metadata.fileName}</p>
+                      <p>{item.metadata?.fileName}</p>
                     </td>
                     <td className="p-[10px] text-[14px]">
                       <p>{formatDateTime(item.timestamp)}</p>
@@ -144,11 +144,11 @@ export default function BulkCenterTable({
                       <p>{item.entity}</p>
                     </td>
                     <td className="p-[10px] text-[14px]">
-                      {item.metadata.failedMessages.length > 0 ? renderStatus("Failed") : renderStatus("Completed")}
+                      {item.metadata?.failedMessages?.length > 0 ? renderStatus("Failed") : renderStatus("Completed")}
                     </td>
                     <td className="mt-3 p-[10px] text-[14px]">
-                      {renderSuccessRecords(item.metadata.successCount)}
-                      {renderFailedRecords(item.metadata.failedCount)}
+                      {renderSuccessRecords(item.metadata?.successCount)}
+                      {renderFailedRecords(item.metadata?.failedCount)}
                     </td>
                     <td className="p-[10px] text-[14px]">
                       <p>{item.user.username}</p>

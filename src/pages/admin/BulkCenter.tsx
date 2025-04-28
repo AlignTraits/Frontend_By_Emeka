@@ -45,10 +45,10 @@ export default function BulkCenter () {
   
     return bulkHistory.filter((s) => {
       // default to empty string if missing
-      let tempStatus = s.metadata.failedMessages.length > 0 ? "Failed" : "Completed"
+      let tempStatus = s.metadata?.failedMessages?.length > 0 ? "Failed" : "Completed"
       let date1 = new Date(s.timestamp);
       let date2 =  new Date(startDate);
-      const name = (s.metadata.fileName ?? "").toLowerCase();
+      const name = (s.metadata?.fileName ?? "").toLowerCase();
       return name.includes(term) 
       && (s.action === actions || actions === "All Actions" || actions === "")
       && (entities === "" || entities === "All Entities" || entities.includes(s.entity))
@@ -130,21 +130,22 @@ export default function BulkCenter () {
     };
   
     const tempList = bulkHistory.map((item) => {
-      const tempStatus = item.metadata.failedMessages.length > 0 ? "Failed" : "Completed";
-      const records = `${item.metadata.successCount} Success ${item.metadata.failedCount} Failed`;
+      const tempStatus = item.metadata?.failedMessages.length > 0 ? "Failed" : "Completed";
+      const records = `${item.metadata?.successCount} Success ${item.metadata?.failedCount} Failed`;
       return [
-        escapeCSVValue(item.metadata.fileName),
+        escapeCSVValue(item.metadata?.fileName),
         escapeCSVValue(formatDateTime(item.timestamp)),
         escapeCSVValue(item.action),
         escapeCSVValue(item.entity),
         escapeCSVValue(tempStatus),
         escapeCSVValue(records),
-        escapeCSVValue(item.user.username)
+        escapeCSVValue(item.user.username),
+        item.metadata?.failedMessages.length > 0 ? item.metadata?.failedMessages : ""
       ];
     });
   
     const csvData = [
-      ["File Name", "Update Date", "Action", "Entity", "Status", "Records", "Uploaded By"].map(escapeCSVValue),
+      ["File Name", "Update Date", "Action", "Entity", "Status", "Records", "Uploaded By", "Errors"].map(escapeCSVValue),
       ...tempList
     ];
   

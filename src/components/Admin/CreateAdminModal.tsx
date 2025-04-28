@@ -25,7 +25,7 @@ interface ErrorObjType {
   role: boolean;
 }
 
-const ROLE_LIST = ["ADMIN", "SUPER_ADMIN"]
+const ROLE_LIST = ["ADMIN", "SUPER_ADMIN", "ANALYST", "CONTENT_MANAGER"]
 
 export default function CreateAdminModal({setModal, fetchAllAdmins, tempItem, setDeleteItem}: ModalProps) {
   const {token} = useAuth()
@@ -59,7 +59,7 @@ export default function CreateAdminModal({setModal, fetchAllAdmins, tempItem, se
     }
   }, [])
 
-  console.log("phone: phone: ", phone)
+  // console.log("phone: phone: ", phone)
 
   const handleClose = () => {
     setModal(false)
