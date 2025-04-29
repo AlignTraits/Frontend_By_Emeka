@@ -43,7 +43,9 @@ export default function BulkCenter () {
     const term = searchTerm.toLowerCase().trim();
     // if (!term) return bulkHistory;
   
-    return bulkHistory.filter((s) => {
+    return bulkHistory.sort((a, b) => {
+      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+    }).filter((s) => {
       // default to empty string if missing
       let tempStatus = s.metadata?.failedMessages?.length > 0 ? "Failed" : "Completed"
       let date1 = new Date(s.timestamp);
@@ -140,12 +142,12 @@ export default function BulkCenter () {
         escapeCSVValue(tempStatus),
         escapeCSVValue(records),
         escapeCSVValue(item.user.username),
-        item.metadata?.failedMessages.length > 0 ? item.metadata?.failedMessages : ""
+        // item.metadata?.failedMessages.length > 0 ? item.metadata?.failedMessages : ""
       ];
     });
   
     const csvData = [
-      ["File Name", "Update Date", "Action", "Entity", "Status", "Records", "Uploaded By", "Errors"].map(escapeCSVValue),
+      ["File Name", "Update Date", "Action", "Entity", "Status", "Records", "Uploaded By"].map(escapeCSVValue),
       ...tempList
     ];
   
@@ -161,41 +163,6 @@ export default function BulkCenter () {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-
-
-  // const generateCSV = () => {
-  //   let tempList:any = []
-
-  //   bulkHistory.forEach((item) => {
-  //     let tempStatus = item.metadata.failedMessages.length > 0 ? "Failed" : "Completed"
-  //     tempList.push([
-  //       `${item.metadata.fileName}`, `${formatDateTime(item.timestamp)}`, `${item.action}`, `${item.entity}`, `${tempStatus}`,
-  //       `${renderSuccessRecords(item.metadata.successCount)} ${renderFailedRecords(item.metadata.failedCount)}`,
-  //       `${item.user.username}`
-  //     ])
-  //   })
-
-  //   const csvData = [
-  //     ["File Name", "Update Date", "Action", "Entity", "Status", "Records", "Uploaded By"],
-  //     ...tempList
-  //   ];
-  
-  //   // Convert to CSV format
-  //   const csvContent = csvData.map(row => row.join(",")).join("\n");
-  //   const blob = new Blob([csvContent], { type: "text/csv" });
-  //   const url = URL.createObjectURL(blob);
-  
-  //   // Create download link
-  //   const a = document.createElement("a");
-  //   a.href = url;
-  //   a.download = "Report.csv";
-  //   document.body.appendChild(a);
-  //   a.click();
-  
-  //   // Cleanup
-  //   document.body.removeChild(a);
-  //   URL.revokeObjectURL(url);
-  // };
 
   return (
     <div className="relative">
@@ -301,7 +268,10 @@ export default function BulkCenter () {
         </div>
 
         <div className="overflow-x-auto border border-[#E0E0E0] rounded-md py-2">
-          <BulkCenterTable isLoading={isLoading} bulkHistory={paginatedBulkHistory} />
+          <BulkCenterTable 
+            isLoading={isLoading} 
+            bulkHistory={paginatedBulkHistory} 
+          />
 
           {/* 4️⃣ Pagination controls */}
           <div className="flex justify-between items-center px-5 mt-5">
