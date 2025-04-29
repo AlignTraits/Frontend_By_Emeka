@@ -1,9 +1,9 @@
 import React from "react";
 import { FiX } from "react-icons/fi";
-import { ApiResponseItem } from "../../types/school.types";
+// import { ApiResponseItem } from "../../types/school.types";
 interface ModalProps {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  previewDetails: ApiResponseItem
+  previewDetails: any
 }
 
 export default function BulkCenterModal({setModal, previewDetails }: ModalProps) {
@@ -13,35 +13,40 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
   const handleClose = () => {
     setModal(false)
   }
-
   const generateCSV = () => {
-    let tempList:any = []
-
-    previewDetails.metadata?.failedMessages.map((elem) => tempList.push([elem]))
-
-    const csvData = [
-      ["errors"],
-      ...tempList
-    ];
+    const failedItems:any = previewDetails.metadata?.failedItems ?? [];
   
-    // Convert to CSV format
-    const csvContent = csvData.map(row => row.join(",")).join("\n");
+    let csvRows: string[] = [];
+  
+    failedItems.forEach((item:any) => {
+      const headers = Object.keys(item);
+      const values = Object.values(item);
+  
+      csvRows.push(headers.join(","));
+      csvRows.push(values.map(value => `"${String(value).replace(/"/g, '""')}"`).join(","));
+      csvRows.push(""); // Empty row for spacing
+    });
+  
+    // If you also want to include failedMessages in the CSV
+    if (previewDetails.metadata?.failedMessages?.length) {
+      csvRows.push("Error Messages");
+      previewDetails.metadata.failedMessages.forEach((message:any) => {
+        csvRows.push(`"${message}"`);
+      });
+    }
+  
+    const csvContent = csvRows.join("\n");
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
   
-    // Create download link
     const a = document.createElement("a");
     a.href = url;
     a.download = "errorReport.csv";
     document.body.appendChild(a);
     a.click();
-  
-    // Cleanup
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-  };
- 
-
+  }
   function formatDateTime(dateString: string): string {
     const date = new Date(dateString);
   
@@ -88,7 +93,7 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
 
   return (
     <div 
-      className="absolute inset-0 bg-black bg-opacity-50 flex justify-center"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[200]"
     >
       <div className="mt-20 bg-white rounded-lg w-[533px] relative size-max p-[20px] flex flex-col gap-y-[20px]">
         <div className="flex flex-col gap-y-[5px]">
@@ -158,7 +163,7 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
 
             <div className="mt-1 border-[1px] border-dashed border-[#F04438] min-h-[100px] bg-[#FBEAE9] rounded-lg p-2 flex flex-col gap-y-[2px]">
               {
-                previewDetails.metadata?.failedMessages.map((elem, i) => 
+                previewDetails.metadata?.failedMessages.slice(0, 4).map((elem:any, i: number) => 
                   <div key={i} className="flex gap-x-[10px] items-center">
                     <div className="h-[6px] w-[6px] bg-[#B42318] rounded-[50%]"></div>
                     <p className="text-[#B42318] text-[14px] font-medium">{elem}</p>
