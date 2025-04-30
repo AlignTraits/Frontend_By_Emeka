@@ -93,9 +93,9 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
 
   return (
     <div 
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[200]"
+      className="fixed inset-0 flex items-center justify-center items-center bg-black bg-opacity-50 z-[200]"
     >
-      <div className="mt-20 bg-white rounded-lg w-[533px] relative size-max p-[20px] flex flex-col gap-y-[20px]">
+      <div className="bg-white rounded-lg w-[533px] relative size-max p-[20px] flex flex-col gap-y-[20px]">
         <div className="flex flex-col gap-y-[5px]">
           <p className="text-[18px] text-[#1E1E1E] font-semibold">Upload Details</p>
 
@@ -135,7 +135,7 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
           <div className="w-[200px]">
             <p className="text-[#737373] text-[14px]">Updated By</p>
 
-            <p>{previewDetails.user.username}</p>
+            <p className="capitalize">{previewDetails.user.username || previewDetails.user.firstname || previewDetails.user.lastname }</p>
           </div>
 
           <div>

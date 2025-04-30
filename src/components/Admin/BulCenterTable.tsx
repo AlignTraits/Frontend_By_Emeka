@@ -150,8 +150,8 @@ export default function BulkCenterTable({
                       {renderSuccessRecords(item.metadata?.successCount)}
                       {renderFailedRecords(item.metadata?.failedCount)}
                     </td>
-                    <td className="p-[10px] text-[14px]">
-                      <p>{item.user.username}</p>
+                    <td className="p-[10px] text-[14px] capitalize">
+                      <p>{item.user.username || item.user.firstname || item.user.lastname }</p>
                     </td>
                     <td className="p-[10px] text-[14px] cursor-pointer" onClick={() => {
                       setPreviewDetails(item)
