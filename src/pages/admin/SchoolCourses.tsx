@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import { FiSearch } from "react-icons/fi";
-import { FaAngleDown } from "react-icons/fa6";
-import { BeatLoader } from "react-spinners";
+// import { FaAngleDown } from "react-icons/fa6";
+import { ClipLoader } from "react-spinners";
+import { FaTrashAlt } from "react-icons/fa";
+// import { BeatLoader } from "react-spinners";
 import { FiPlus } from "react-icons/fi";
 import { IoIosArrowBack } from "react-icons/io";
 import { useParams, useNavigate } from "react-router-dom";
@@ -9,6 +11,7 @@ import { getSchool } from "../../services/schools";
 import { School } from "../../services/schools";
 import { Course } from "../../types/course.types";
 import CoursesTable from "../../components/Admin/CourseTable";
+import CustomSelectWithProps from "../../components/dashboard/CustomSelectWithProps";
 import { useAuth } from "../../contexts/useAuth";
 import BulkCourseModal from "../../components/Admin/BulkCourseModal";
 import { deleteCourses } from "../../services/schools";
@@ -16,6 +19,7 @@ import BulkUpdateCourseModal from "../../components/Admin/BulkUpdateCourses";
 import AdmissionLogicBulkUpdate from "../../components/Admin/AdmissionLogicBulkUpdate";
 import { toast } from "react-toastify";
 
+const UPLOAD_LIST = ["Bulk Upload New", "Bulk Upload Update", "Update Admission Logic"]
 interface SchoolWithCourses extends School {
   courses: Course[];
 }
@@ -33,7 +37,9 @@ export default function SchoolCourses() {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showUpdateModalAdmissionLogic, setShowUpdateModalAdmissionLogic] = useState(false);
-  const temSelectedCourses = courses.filter((elem) => selectedCourseList.includes(elem.id));
+  // const temSelectedCourses = courses.filter((elem) => selectedCourseList.includes(elem.id));
+
+  const [bulkUploadType, setBulkUploadType] = useState("")
 
   // --- Search and Pagination State ---
   const [searchTerm, setSearchTerm] = useState("");
@@ -56,6 +62,17 @@ export default function SchoolCourses() {
   useEffect(() => {
     fetchSchool();
   }, [schoolId]);
+
+  useEffect(() => {
+    if (bulkUploadType === "Bulk Upload New") {
+      setShowBulkModal(true) 
+    } else if (bulkUploadType === "Bulk Upload Update") {
+      setShowUpdateModal(true)
+    } else if (bulkUploadType === "Update Admission Logic") {
+      setShowUpdateModalAdmissionLogic(true)
+    }
+  }, [bulkUploadType])
+
 
   // Filter courses based on search term
   const filteredCourses = useMemo(() => {
@@ -130,7 +147,14 @@ export default function SchoolCourses() {
               <FiSearch className="absolute left-2 top-1/2 -translate-y-1/2 text-[#999999] w-5 h-5" />
             </div>
 
-            <button
+            {
+              selectedCourseList.length > 0 ?  
+              <div className="flex justify-center items-center">
+                {isDeleteLoading ? <ClipLoader /> : <FaTrashAlt  onClick={handleDeleteCourses} className="cursor-pointer text-[#D92D20]" />}
+              </div> : <></>
+            }
+
+            {/* <button
               onClick={() => setShowBulkModal(true)}
               type="button"
               className="w-[150px] text-[#1E1E1E] text-[14px] font-medium py-2 h-[40px] bg-[#F6C648] p-2 rounded-md 
@@ -138,7 +162,21 @@ export default function SchoolCourses() {
             >
               <p>Bulk Uploads</p>
               <FaAngleDown className="text-[#1E1E1E]" />
-            </button>
+            </button> */}
+
+            <CustomSelectWithProps
+              placeholder="Bulk Uploads"
+              options={UPLOAD_LIST.map((typeValue) => ({
+                value: typeValue,
+                label: typeValue,
+              }))}
+              onChange={(val) => setBulkUploadType(val)}
+              selectedProps={{
+                value: bulkUploadType,
+                label: bulkUploadType,
+              }}
+              handleError={() => {}}
+            />
 
             <button
               onClick={handleAddCourse}
@@ -151,36 +189,6 @@ export default function SchoolCourses() {
             </button>
           </div>
         </div>
-
-        <>
-          {selectedCourseList.length > 0 && (
-            <div className="flex gap-x-[20px]">
-              <button
-                className="text-[#FFFFFF] bg-[#D92D20] px-5 py-2 rounded-md w-[170px] text-center cursor-pointer"
-                disabled={isLoading}
-                onClick={handleDeleteCourses}
-              >
-                {isDeleteLoading ? <BeatLoader /> : "Delete Courses"}
-              </button>
-
-              <button
-                className="text-[#FFFFFF] bg-[#004085] px-5 py-2 rounded-md w-[160px] text-center cursor-pointer"
-                disabled={isLoading}
-                onClick={() => setShowUpdateModal(true)}
-              >
-                {"Update Course"}
-              </button>
-
-              <button
-                className="text-[#FFFFFF] bg-[#004085] px-5 py-2 rounded-md size-max text-center cursor-pointer"
-                disabled={isLoading}
-                onClick={() => setShowUpdateModalAdmissionLogic(true)}
-              >
-                {"Update Admission Logic"}
-              </button>
-            </div>
-          )}
-        </>
 
         <div className="overflow-x-auto border border-[#E0E0E0] rounded-md py-2">
           <CoursesTable
@@ -217,13 +225,14 @@ export default function SchoolCourses() {
 
       </div>
 
-      {showBulkModal && <BulkCourseModal setShowModal={setShowBulkModal} getSchools={fetchSchool} />}
+      {showBulkModal && <BulkCourseModal setBulkUploadType={setBulkUploadType} setShowModal={setShowBulkModal} getSchools={fetchSchool} />}
       {
         showUpdateModal && 
         <BulkUpdateCourseModal 
           setShowModal={setShowUpdateModal} 
+          setBulkUploadType={setBulkUploadType}
           getSchools={fetchSchool} 
-          courseList={temSelectedCourses} 
+          courseList={courses} 
         />
       }
 
@@ -232,7 +241,7 @@ export default function SchoolCourses() {
         <AdmissionLogicBulkUpdate 
           setShowModal={setShowUpdateModalAdmissionLogic} 
           getSchools={fetchSchool} 
-          courseList={temSelectedCourses} 
+          courseList={courses} 
         />
       }
     </div>

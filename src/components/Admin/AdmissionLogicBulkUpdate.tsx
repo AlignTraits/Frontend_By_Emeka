@@ -152,10 +152,10 @@ export default function AdmissionLogicBulkUpdate({setShowModal, getSchools, cour
 
   return (
     <div 
-      // className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[200]"
-      className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[200]"
+      // className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
     >
-      <div className="bg-white rounded-lg md:w-1/2 w-full xl:w-[80%] relative size-max">
+      <div className="bg-white rounded-lg md:w-1/2 w-[50%] relative size-max">
         <img src={fileIcon} alt="Upload file" className="absolute left-[-20px] top-[5px]" />
         <FiX className="cursor-pointer absolute right-6 top-[30px] -translate-y-1/2 text-[#595959] w-5 h-5" onClick={handleClose} />
 
