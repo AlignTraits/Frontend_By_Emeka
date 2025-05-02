@@ -31,8 +31,8 @@ const ImageUploadWithPreview = ({
     }
 
     const file = files[0];
-    if (file.size > 100000) {
-      toast.error("image should not be more than 100kb");
+    if (file.size > 2000000) {
+      toast.error("image should not be more than 2MB");
       return;
     }
 
