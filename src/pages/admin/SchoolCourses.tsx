@@ -239,6 +239,7 @@ export default function SchoolCourses() {
       {
         showUpdateModalAdmissionLogic && 
         <AdmissionLogicBulkUpdate 
+          setBulkUploadType={setBulkUploadType}
           setShowModal={setShowUpdateModalAdmissionLogic} 
           getSchools={fetchSchool} 
           courseList={courses} 

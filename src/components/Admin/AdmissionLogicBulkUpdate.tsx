@@ -12,10 +12,11 @@ import { Course } from "../../types/course.types";
 
 interface ModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setBulkUploadType: React.Dispatch<React.SetStateAction<string>>;
   getSchools: Function;
   courseList: Course[]
 }
-export default function AdmissionLogicBulkUpdate({setShowModal, getSchools, courseList}: ModalProps) {
+export default function AdmissionLogicBulkUpdate({setShowModal, getSchools, courseList, setBulkUploadType}: ModalProps) {
   // const { schoolId } = useParams<{ schoolId: string}>();
   const { token } = useAuth();
 
@@ -27,6 +28,7 @@ export default function AdmissionLogicBulkUpdate({setShowModal, getSchools, cour
 
   const handleClose = () => {
     setShowModal(false)
+    setBulkUploadType("")
   }
 
   // Handle file selection
@@ -145,7 +147,7 @@ export default function AdmissionLogicBulkUpdate({setShowModal, getSchools, cour
       toast.error("Error uploading file")
     } finally {
       setUploading(false);
-      setShowModal(false);
+      handleClose()
       getSchools()
     }
   };

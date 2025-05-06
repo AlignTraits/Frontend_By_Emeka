@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CustomSelect from "../dashboard/CustomSelect";
+import SearchSelect from "../dashboard/SearchSelect";
 import ImageUpload from "./ImageUpload";
 import api from "../../api/axios";
 import { useAuth } from "../../contexts/useAuth";
@@ -297,7 +298,7 @@ export default function EditSchoolModal({
           <div className="flex gap-x-[20px]">
             <div className="w-full">
               <p className={`text-[12px] ${errorObj.country ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>School Country*</p>
-              <CustomSelect
+              <SearchSelect
                 placeholder="Select Country"
                 options={Object.keys(countryStateData).map((country) => ({
                   value: country,
@@ -321,7 +322,7 @@ export default function EditSchoolModal({
 
             <div className="w-full">
               <p className={`text-[12px] ${errorObj.state ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>School State*</p>
-              <CustomSelect
+              <SearchSelect
                 placeholder="Select State"
                 options={states.map((state) => ({
                   value: state,
