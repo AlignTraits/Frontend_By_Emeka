@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import DashboardCard from "../../components/Admin/DashboardCard";
 import { RiSchoolLine } from "react-icons/ri";
 import { MdOutlineReceiptLong } from "react-icons/md";
 import { IoMdStats } from "react-icons/io";
 // import CustomSelect from "../../components/dashboard/CustomSelect";
 import { MdFilterList } from "react-icons/md";
-import { FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiSearch } from "react-icons/fi";
 // import { School } from "../../services/schools";
 
 import countriesData from "../../data/countries_states.json"
@@ -32,6 +32,81 @@ export default function Index() {
   const [schoolLength, setSchoolLength] = useState<number>(0)
   const [courseLength, setCourseLength] = useState<number>(0)
 
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const [stateSearchTerm, setStateSearchTerm] = useState<string>("");
+  const [stateDropdownOpen, setStateDropdownOpen] = useState<boolean>(false);
+  const stateDropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    setDropdownOpen(true); // Open the dropdown when typing
+  };
+
+
+  const filteredCountries = countries.filter((country) =>
+    country.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleCountrySelect = (countryName: string) => {
+    setSelectedCountry(countryName);
+    setSearchTerm(countryName); // Set the search term to the selected country
+    const countryData = countries.find((c) => c.name === countryName);
+    setStates(countryData ? countryData.states : []);
+    setSelectedState(""); // Reset state selection
+    setStateSearchTerm("")
+    setSchoolList([]);
+    setDropdownOpen(false); // Close the dropdown
+  };
+
+  const filteredStates = states.filter((state) =>
+    state.toLowerCase().includes(stateSearchTerm.toLowerCase())
+  );
+
+  const handleStateSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setStateSearchTerm(event.target.value);
+    setStateDropdownOpen(true); // Open the dropdown when typing
+  };
+  
+  const handleStateSelect = (stateName: string) => {
+    setSelectedState(stateName);
+    setStateSearchTerm(stateName); // Set the search term to the selected state
+    setSchoolList([]); // Reset the school list
+    setStateDropdownOpen(false); // Close the dropdown
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        stateDropdownRef.current &&
+        !stateDropdownRef.current.contains(event.target as Node)
+      ) {
+        setStateDropdownOpen(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   // console.log("endDate: ", endDate, " startDate: ", startDate)
 
   // Load countries from JSON on mount
@@ -47,18 +122,6 @@ export default function Index() {
       getAllCourses()
     }
   }, [datePickerClicked])
-
-  // Handle country change
-  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const countryName = event.target.value;
-    setSelectedCountry(countryName);
-
-    // Find the selected country's states
-    const country = countries.find((c) => c.name === countryName);
-    setStates(country ? country.states : []);
-    setSelectedState(""); // Reset state selection
-    setSchoolList([])
-  };
 
   const resetFilter = () => {
     setSchoolList([])
@@ -107,7 +170,6 @@ export default function Index() {
           tempStartDate = new Date('1970-01-01T00:00:00Z');
         }
         
-
         const filteredSchools = reponse.filter((school) => {
           const createdAtDate = new Date(school.createdAt);
           const isIncluded = createdAtDate >= tempStartDate && createdAtDate <= tempEndDate;
@@ -198,44 +260,65 @@ export default function Index() {
 
       <div className="flex justify-between items-center">
         <div className="flex gap-x-[10px] my-[20px]">
-          <div className="w-[200px] relative">
-            <select
-              className="h-[40px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium appearance-none"
-              value={selectedCountry}
-              onChange={handleCountryChange}
-            >
-              <option value="">All Countries</option>
-              {countries.map((country) => (
-                <option key={country.name} value={country.name}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-              <FiChevronDown />
-            </div>
+          <div className="w-[200px] relative" ref={dropdownRef}>
+            <FiSearch className="absolute top-[25%] right-[10px] text-[#999999]" />
+            <input
+              type="text"
+              className="h-[40px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+              placeholder="Search Country"
+              value={searchTerm}
+              onFocus={() => setDropdownOpen(true)} // Open dropdown on focus
+              onChange={handleSearchChange}
+            />
+              {dropdownOpen && (
+                <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
+                  {filteredCountries.map((country) => (
+                    <div
+                      key={country.name}
+                      className={`p-2 cursor-pointer hover:bg-gray-100 ${
+                        selectedCountry === country.name ? "bg-gray-200" : ""
+                      }`}
+                      onClick={() => handleCountrySelect(country.name)}
+                    >
+                      {country.name}
+                    </div>
+                  ))}
+                  {filteredCountries.length === 0 && (
+                    <div className="p-2 text-gray-500">No countries found</div>
+                  )}
+                </div>
+              )}
           </div>
 
-          <div className="w-[200px] relative">
-            <select
-              className="h-[40px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium appearance-none"
-              value={selectedState}
-              onChange={(e) => {
-                setSelectedState(e.target.value)
-                setSchoolList([])
-              }}
-              disabled={selectedCountry ? false : true}
-            >
-              <option value="">All Regions</option>
-              {states.map((state, index) => (
-                <option key={index} value={state}>
-                  {state}
-                </option>
-              ))}
-            </select>
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-              <FiChevronDown />
-            </div>
+          <div className="w-[200px] relative" ref={stateDropdownRef}>
+            <FiSearch className="absolute top-[25%] right-[10px] text-[#999999]" />
+            <input
+              type="text"
+              className="h-[40px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+              placeholder="Search State"
+              value={stateSearchTerm}
+              onFocus={() => setStateDropdownOpen(true)} // Open dropdown on focus
+              onChange={handleStateSearchChange}
+              disabled={!selectedCountry} // Disable if no country is selected
+            />
+            {stateDropdownOpen && (
+              <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
+                {filteredStates.map((state, index) => (
+                  <div
+                    key={index}
+                    className={`p-2 cursor-pointer hover:bg-gray-100 ${
+                      selectedState === state ? "bg-gray-200" : ""
+                    }`}
+                    onClick={() => handleStateSelect(state)}
+                  >
+                    {state}
+                  </div>
+                ))}
+                {filteredStates.length === 0 && (
+                  <div className="p-2 text-gray-500">No states found</div>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="w-[200px] relative">
