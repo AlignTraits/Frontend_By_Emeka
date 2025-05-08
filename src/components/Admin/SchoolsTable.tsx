@@ -86,9 +86,9 @@ export default function SchoolsTable({
       )}
 
       {!isLoading && (
-        <div className="w-full min-h-[500px] border-b border-gray-300">
+        <div className="w-full h-[400px] border-b border-gray-300 overflow-y-scroll">
           <table className="w-full table-auto space-y-4">
-            <thead className="border-b-[0.8px] border-[#EAECF0] p-[20px]">
+            <thead className="border-b-[0.8px] border-[#EAECF0] p-[20px] bg-white sticky top-0 z-10">
               <tr className="[&>th]:text-[#000000] [&>th]:text-[14px] [&>th]:font-medium [&>th]:pb-2">
                 <th className="w-[16%] p-[20px]">
                   <div className="flex items-end">
@@ -110,7 +110,6 @@ export default function SchoolsTable({
                     Type <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
-
                 <th className="w-[13.3%] p-[20px]">
                   <div className="flex items-end">
                     Action <FiArrowDown className="ml-2 mb-1" />

@@ -19,12 +19,9 @@ interface ModalProps {
 export default function AdmissionLogicBulkUpdate({setShowModal, getSchools, courseList, setBulkUploadType}: ModalProps) {
   // const { schoolId } = useParams<{ schoolId: string}>();
   const { token } = useAuth();
-
-  const [activeTab, setActiveTab] = useState("tab1");
+  
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
-
-  console.log("courseList: ", courseList)
 
   const handleClose = () => {
     setShowModal(false)
@@ -166,29 +163,7 @@ export default function AdmissionLogicBulkUpdate({setShowModal, getSchools, cour
           <p className="text-[#737373] text-[16px] font-normal">Upload a CSV to quickly import more courses.</p>
         </div>
 
-        <div className="flex border-b border-gray-300 m-[15px] mx-[20px]">
-          {["New Upload", "All Upload",].map((tab, index) => {
-            const tabKey = `tab${index + 1}`;
-            return (
-              <button
-                key={tabKey}
-                className={`py-2 px-4 text-[16px] font-semibold border-b-2 font-medium transition 
-                  ${
-                    activeTab === tabKey
-                      ? "border-[#003064] text-[#003064] text-[16px] font-semibold"
-                      : "border-transparent hover:text-blue-500 text-[#999999]"
-                  }`}
-                onClick={() => setActiveTab(tabKey)}
-              >
-                {tab}
-              </button>
-            );
-          })}
-        </div>
-
-          {
-            activeTab === "tab1" && 
-            <div className="p-4 bg-[#F9FAFB] m-[15px] mx-[20px] 
+        <div className="p-4 bg-[#F9FAFB] m-[15px] mx-[20px] 
               h-[224px] border-[1px] border-[#DDDDDD] rounded-lg flex flex-col justify-center items-center gap-y-[15px]">
               <div className="border-[1px] border-[#DDDDDD] rounded-md h-[40px] w-[40px] flex justify-center items-center">
                 <RiUploadCloud2Line className="w-5 h-5 text-[#737373]"  />
@@ -232,13 +207,6 @@ export default function AdmissionLogicBulkUpdate({setShowModal, getSchools, cour
                 }
               </div>
             </div>  
-          }
-          {
-            activeTab === "tab2" &&           
-            <div className="p-4 bg-[#F9FAFB] m-[15px] mx-[20px] h-[224px] border-[1px] border-[#DDDDDD] rounded-lg">
-              <p className="text-gray-700">This is Tab 2 content.</p>
-            </div>  
-          }
       </div>
 
     </div>

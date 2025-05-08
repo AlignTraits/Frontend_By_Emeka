@@ -37,7 +37,6 @@ export default function SchoolDetails({
     navigate(`/admin/schools/${schoolId}/courses`);
   };
 
-
   const splitString = (text: any) => {
     if (typeof text === 'string') {
       return text.replace(/_/g, ' ');
@@ -47,7 +46,7 @@ export default function SchoolDetails({
   
 
   return (
-    <div className="absolute inset-0 bg-white p-10">
+    <div className="absolute inset-0 bg-white p-10 z-10">
       <div className="relative">
         <div className="flex gap-x-[10px] items-center">
 
