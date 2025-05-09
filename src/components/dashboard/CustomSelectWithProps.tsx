@@ -92,7 +92,7 @@ const CustomSelectWithProps: React.FC<SelectProps> = ({
   
 
   return (
-    <div ref={selectRef} className={`relative ${className}`}>
+    <div ref={selectRef} className={`relative z-9 ${className}`}>
     
       <button
         type="button"

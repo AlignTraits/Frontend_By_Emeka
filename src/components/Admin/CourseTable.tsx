@@ -22,8 +22,9 @@ export default function CoursesTable({
   isLoading,
   getSchool,
   selectedCourseList,
-  setSelectedCourseList
-}: Props) {
+  setSelectedCourseList,
+  children, // Accept children
+}: Props & { children?: React.ReactNode }) {
 
   const navigate = useNavigate()
   const { schoolId } = useParams<{ schoolId: string}>();
@@ -101,9 +102,9 @@ const [itemForDelete, setItemForDelete] = useState({
       )}
 
       {!isLoading && (
-        <div className="w-full h-[400px] border-b border-gray-300 overflow-y-scroll">
+        <div className="w-full h-[400px] overflow-y-scroll">
           <table className="w-full table-auto space-y-4">
-            <thead className="border-b-[0.8px] border-[#EAECF0] p-[20px] bg-white sticky top-0 z-1">
+            <thead className="border-b-[0.8px] border-[#EAECF0] p-[20px] bg-white sticky top-0">
               <tr className="[&>th]:text-[#000000] [&>th]:text-[14px] [&>th]:font-medium [&>th]:pb-2">
                 <th className="w-[25%] p-[20px]">
                   <div className="flex items-center">
@@ -143,7 +144,7 @@ const [itemForDelete, setItemForDelete] = useState({
               <tbody>
                 {courses.map((course, index) => (
                   <tr
-                    className="[&>td]:py-5 hover:bg-[#007BFF33] border-b border-gray-300 last:border-b-0"
+                    className="[&>td]:py-5 hover:bg-[#007BFF33] border-b border-gray-300"
                     key={index + course.id}
                     onClick={() => handleTestClick(course.id)}
                   >
@@ -179,6 +180,7 @@ const [itemForDelete, setItemForDelete] = useState({
               </tbody>
             )}
           </table>
+          {children}
           {!isLoading && courses.length === 0 && (
             <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[400px]">
               <img src={fileIcon} alt="Not found" />

@@ -20,8 +20,9 @@ export default function SchoolsTable({
   schools,
   isLoading, getSchools,
   selectedSchoolList,
-  setSelectedSchoolList
-}: Props) {
+  setSelectedSchoolList,
+  children, // Accept children
+}: Props & { children?: React.ReactNode }) {
 
   const [viewModal, setViewModal] = useState(false)
 
@@ -86,9 +87,9 @@ export default function SchoolsTable({
       )}
 
       {!isLoading && (
-        <div className="w-full h-[400px] border-b border-gray-300 overflow-y-scroll">
+        <div className="w-full h-[400px] border-gray-300 overflow-y-scroll">
           <table className="w-full table-auto space-y-4">
-            <thead className="border-b-[0.8px] border-[#EAECF0] p-[20px] bg-white sticky top-0 z-10">
+            <thead className="border-b-[0.8px] border-[#EAECF0] p-[20px] bg-white sticky top-0">
               <tr className="[&>th]:text-[#000000] [&>th]:text-[14px] [&>th]:font-medium [&>th]:pb-2">
                 <th className="w-[16%] p-[20px]">
                   <div className="flex items-end">
@@ -98,6 +99,11 @@ export default function SchoolsTable({
                 <th className="w-[13.3%] p-[20px]">
                   <div className="flex items-end">
                     Location <FiArrowDown className="ml-2 mb-1" />
+                  </div>
+                </th>
+                <th className="w-[13.3%] p-[20px]">
+                  <div className="flex items-end">
+                    Courses <FiArrowDown className="ml-2 mb-1" />
                   </div>
                 </th>
                 <th className="w-[16%] p-[20px]">
@@ -122,7 +128,7 @@ export default function SchoolsTable({
               <tbody>
                 {schools.map((school, index) => (
                   <tr
-                    className="[&>td]:py-5 hover:bg-[#007BFF33] border-b border-gray-300 last:border-b-0 cursor-pointer"
+                    className="[&>td]:py-5 hover:bg-[#007BFF33] border-b border-gray-300 cursor-pointer"
                     key={index + school.id}
                   >
                     <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-2 items-center">
@@ -144,6 +150,7 @@ export default function SchoolsTable({
                       </span>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.country}, {school.region}</td>
+                    <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school._count?.courses}</td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       {formatDate(school.updatedAt)}
                     </td>
@@ -156,7 +163,11 @@ export default function SchoolsTable({
                 ))}
               </tbody>
             )}
+            {/* <tfoot>
+              {children}
+            </tfoot> */}
           </table>
+          {children}
           {!isLoading && schools.length === 0 && (
             <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[400px]">
               <img src={fileIcon} alt="Not found" />
