@@ -77,7 +77,9 @@ export default function Schools() {
   const totalPages = Math.ceil(filteredSchools.length / itemsPerPage);
   const paginatedSchools = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
-    return filteredSchools.slice(start, start + itemsPerPage);
+    return filteredSchools.sort((a, b) => {
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    }).slice(start, start + itemsPerPage);
   }, [filteredSchools, currentPage]);
 
 
@@ -200,35 +202,37 @@ export default function Schools() {
         <div className="overflow-x-auto border border-[#E0E0E0] rounded-md py-2">
           <SchoolsTable 
             getSchools={getSchoolNow} 
-            schools={paginatedSchools} setShowModal={setShowModal} 
+            schools={paginatedSchools} 
+            setShowModal={setShowModal} 
             isLoading={isLoading}
             setSelectedSchoolList={setSelectedSchoolList}
             selectedSchoolList={selectedSchoolList}
             // setIsLoading={setIsLoading}
-          />
+          >
 
-          {/* 4️⃣ Pagination controls */}
-          <div className="flex justify-between items-center px-5 mt-5">
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
-            >
-              Previous
-            </button>
+            {/* 4️⃣ Pagination controls */}
+            <div className="flex justify-between items-center px-5 mt-5">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
+              >
+                Previous
+              </button>
 
-            <span className="text-sm">
-              Page {currentPage} of {totalPages}
-            </span>
+              <span className="text-sm">
+                Page {currentPage} of {totalPages}
+              </span>
 
-            <button
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
+              <button
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          </SchoolsTable>
         </div>
         {showModal && <CreateSchoolModal setShowModal={setShowModal} setSchools={setSchools} />}
       </div>

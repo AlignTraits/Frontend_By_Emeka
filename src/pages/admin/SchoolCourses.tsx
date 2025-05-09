@@ -95,7 +95,9 @@ export default function SchoolCourses() {
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
   const paginatedCourses = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
-    return filteredCourses.slice(start, start + itemsPerPage);
+    return filteredCourses.sort((a, b) => {
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    }).slice(start, start + itemsPerPage);
   }, [filteredCourses, currentPage]);
 
   const handleAddCourse = (event: React.MouseEvent) => {
@@ -122,8 +124,8 @@ export default function SchoolCourses() {
 
   return (
     <div className="relative">
-      <div className="flex flex-col w-full gap-10 p-5 xl:p-6">
-        <div className="flex justify-between items-center gap-x-[10px] border-b border-[#EAECF0] py-[20px]">
+      <div className="flex flex-col w-full gap-5 p-5 xl:p-6">
+        <div className="flex justify-between items-center gap-x-[10px] border-b border-[#EAECF0] py-[10px]">
           <div className="flex gap-x-[10px] items-center">
             <div>
               <div onClick={() => navigate(-1)} className="flex gap-x-[5px] items-center">
@@ -153,16 +155,6 @@ export default function SchoolCourses() {
                 {isDeleteLoading ? <ClipLoader /> : <FaTrashAlt  onClick={handleDeleteCourses} className="cursor-pointer text-[#D92D20]" />}
               </div> : <></>
             }
-
-            {/* <button
-              onClick={() => setShowBulkModal(true)}
-              type="button"
-              className="w-[150px] text-[#1E1E1E] text-[14px] font-medium py-2 h-[40px] bg-[#F6C648] p-2 rounded-md 
-                  outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
-            >
-              <p>Bulk Uploads</p>
-              <FaAngleDown className="text-[#1E1E1E]" />
-            </button> */}
 
             <CustomSelectWithProps
               placeholder="Bulk Uploads"
@@ -197,9 +189,8 @@ export default function SchoolCourses() {
             getSchool={fetchSchool}
             setSelectedCourseList={setSelectedCourseList}
             selectedCourseList={selectedCourseList}
-          />
-
-          {/* Pagination Controls */}
+          >
+                      {/* Pagination Controls */}
           <div className="flex justify-between items-center px-5 mt-5">
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
@@ -221,6 +212,7 @@ export default function SchoolCourses() {
               Next
             </button>
           </div>
+          </CoursesTable>
         </div>
 
       </div>
