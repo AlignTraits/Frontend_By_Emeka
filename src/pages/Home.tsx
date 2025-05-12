@@ -325,7 +325,7 @@ export default function Home() {
         </button>
       </div>
 
-      <div className="h-[20px] w-[10px]"></div>
+      <div className="h-[20px] w-[100px]"></div>
     </div>
   );
 } 
