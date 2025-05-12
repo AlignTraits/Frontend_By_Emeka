@@ -1,196 +1,331 @@
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { FiSearch } from "react-icons/fi";
+import CustomSelectWithProps from "../components/dashboard/CustomSelectWithProps";
+import { IoIosRefresh } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
+import CourseCard from "../components/dashboard/CourseCard";
+import countriesData from "../data/countries_states.json"
 
-import React,  {useState } from "react"
+const TAB_NAV = ["Programs", "Scholarship Opportunities", "STEM", "Business & Management", "IT & Computer Science",
+  "Health & Medicine", "Law & Legal Studies", "Engineering",
+]
 
-import AlignTraitBanner from '../assets/aligntraits-banner.svg'
-import OtherUsers from '../assets/other-users.svg'
-import { FiMail,  } from "react-icons/fi"
-import Confetti from '../assets/confetti.svg'
-import Glove from '../assets/Glove.svg'
-import DirectionArrow from '../assets/DirectionArrow.svg'
-import Study from '../assets/study.svg'
-import api from '../api/axios'
-import {toast, ToastContainer} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import SuccessCheck from '../assets/success-check.svg'
-import { BeatLoader } from "react-spinners"
+const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
+
+// Define TypeScript types
+type Country = {
+  name: string;
+  states: string[];
+};
+
 
 export default function Home() {
-  const date = new Date()
-  const [email, setEmail] = useState('')
-  const [modalOpen, setModalOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const handleSubmit =async ()=> {
-    const form = {
-      email: email
-    }
-    setIsLoading(true)
-    try {
-      const response = await api.post('/waitlist/add-waitlist',JSON.stringify(form) , {
-        headers: {
-          "Content-Type" : 'application/json'
-        }
-      })
-      
-      setIsLoading(false)
-      // toast.success(response.data.message)
-      setModalOpen(true)
-      return response
-    } catch (err: any) {
-      setIsLoading(false);
-    if (err.response && err.response.data && err.response.data.errors) {
-      
-      const errors = err.response.data.errors;
-     
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchAllTerm, setSearchAllTerm] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [stateSearchTerm, setStateSearchTerm] = useState<string>("");
+  const [stateDropdownOpen, setStateDropdownOpen] = useState<boolean>(false);
+  const stateDropdownRef = useRef<HTMLDivElement>(null);
+  const [fieldStudy, setFieldStudy] = useState("")
+  const [scholarshipOptions, setScholarshipOptions] = useState("")
 
-      errors.forEach((error: { message: string }) => {
-        if (error.message) {
-          toast.error(error.message);
-        }
-      });
-    }
-    if (err.response && err.response.data) {
-      toast.error(err.response.data.error);
-    }
+    // State to store selected country and states
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [states, setStates] = useState<string[]>([]);
+  const [selectedState, setSelectedState] = useState<string>("")
 
-    if (
-      err.response &&
-      err.response.data.message &&
-      !err.response.data.errors
-    ) {
-      toast.error(err.response.data.message);
-    }
-    throw err;
-  } 
+    const [currentPage, setCurrentPage] = useState(1);
+    // const itemsPerPage = 10;
+    const totalPages = 0
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    setDropdownOpen(true); // Open the dropdown when typing
+  };
+
+
+  const filteredCountries = countries.filter((country) =>
+    country.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleCountrySelect = (countryName: string) => {
+    setSelectedCountry(countryName);
+    setSearchTerm(countryName); // Set the search term to the selected country
+    const countryData = countries.find((c) => c.name === countryName);
+    setStates(countryData ? countryData.states : []);
+    setSelectedState(""); // Reset state selection
+    setStateSearchTerm("")
+    setDropdownOpen(false); // Close the dropdown
+  };
+
+  const filteredStates = states.filter((state) =>
+    state.toLowerCase().includes(stateSearchTerm.toLowerCase())
+  );
+
+  const handleStateSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setStateSearchTerm(event.target.value);
+    setStateDropdownOpen(true); // Open the dropdown when typing
+  };
+  
+  const handleStateSelect = (stateName: string) => {
+    setSelectedState(stateName);
+    setStateSearchTerm(stateName); // Set the search term to the selected state
+    setStateDropdownOpen(false); // Close the dropdown
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        stateDropdownRef.current &&
+        !stateDropdownRef.current.contains(event.target as Node)
+      ) {
+        setStateDropdownOpen(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // console.log("endDate: ", endDate, " startDate: ", startDate)
+
+  // Load countries from JSON on mount
+  useEffect(() => {
+    setCountries(countriesData);
+  }, []);
+
+
+
+  const resetFilter = () => {
+    setStates([])
+    setSelectedState("")
+    setStateSearchTerm("")
+    setSelectedCountry("")
+    setSearchTerm("")
+    setFieldStudy("")
+    setScholarshipOptions("")
   }
 
-  return (
-    <div className="relative flex flex-col justify-center items-center h-screen w-full bg-[#001833] p-5 md:p-10 gap-2 lg:gap-5">
-      <img
-        src={AlignTraitBanner}
-        alt="AlignTraits Banner Image"
-        className=" w-[300px] h-[50px] lg:w-[400px] lg:h-[50px]"
-      />
-      <h1 className="relative text-center text-[#E0E0E0] text-[30px] lg:text-[40px] font-normal lg:font-semibold  md:w-[80%] lg:w-[80%] xl:w-[50%] leading-[40px] lg:eading-[48px]">
-        Discover Your Ideal Career Path with AlignTraits
-        <img
-          src={Confetti}
-          alt=""
-          className="absolute top-[-20px] xl:top-0 right-0 bottom-0"
-        />
-      </h1>
-      <p className=" text-center text-[#E0E0E0] text-[16px] lg:text-[20px] font-medium md:w-[80%] lg:w-[70%] xl:w-[50%] leading-[20px] md:leading-[30px]">
-        Join our waitlist and unlock personalized career recommendations based
-        on your unique personality traits. Simplify your career decisions and
-        empower your future with insights just for you.
-      </p>
+  const [activeTab, setActiveTab] = useState("tab1");
 
-      <div className="border-[#E5EFFF] border-[1px] rounded-full flex items-center mt-8 px-2 lg:px-5 py-2 bg-[#F7FAFF] mt-20">
-        <FiMail />
-        <input
-          type="email"
-          placeholder="Enter Your Email"
-          className="ml-2 outline-none text-[14px] text-[#666666] font-normal lg:p-2"
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-        />
+
+  const goLogin = () => {
+    navigate("/admin/login")
+  }
+  return (
+    <div className="relative h-screen w-full bg-[#FCFCFD]">
+      <div className="bg-[#FCFCFD] flex justify-between p-5 border-b border-b-[#DDDDDD] sticky top-0 z-[1000]">
+        <div>
+          <h1 className="text-[20px] font-semibold text-[#101828]">Welcome to Aligntraits</h1>
+          <p className="text-[12px] font-normal text-[#999999]">Find your career path today!</p>
+        </div>
+
+        <div className="flex gap-x-[20px]">
+          <div className="relative w-[550px] h-[40px]">
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchAllTerm}
+              onChange={(e) => setSearchAllTerm(e.target.value)}
+              className="w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[14px] font-[400] text-[#8F8F8F]"
+            />
+            <FiSearch className="absolute left-2 top-[20px] -translate-y-1/2 text-[#999999] w-5 h-5" />
+          </div>
+
+          <button className="bg-[#004085] h-[40px] w-[180px] font-semibold text-[12px] text-[white] rounded-md">
+            Career Recommendation
+          </button>
+
+          <button onClick={goLogin} className="bg-[#F6C648] h-[40px] w-[70px] font-semibold text-[12px] text-[#1E1E1E] rounded-md">
+            Login
+          </button>
+        </div>
+      </div>
+
+      <div className="flex border-b border-b-[#EAECF0] px-[20px] mt-[20px]">
+        {TAB_NAV.map((tab, index) => {
+          const tabKey = `tab${index + 1}`;
+          return (
+            <button
+              key={tabKey}
+              className={`py-2 px-4 text-[12px] font-semibold border-b-2 font-medium transition 
+                ${
+                  activeTab === tabKey
+                    ? "border-[#003064] text-[#004085] text-[12px] font-semibold"
+                    : "border-transparent hover:text-blue-500 text-[#999999]"
+                }`}
+              onClick={() => setActiveTab(tabKey)}
+            >
+              {tab}
+            </button>
+          );
+        })}
+      </div>
+
+
+      <div className="flex justify-between items-center px-[20px] border-b border-b-[#DDDDDD] pb-[10px]">
+        <div className="flex gap-x-[10px] my-[20px]">
+
+          <div className="w-200px">
+            <CustomSelectWithProps
+              placeholder="Field Of Study"
+              classNameStyle="h-[35px]"
+              options={["Test"].map((typeValue) => ({
+                value: typeValue,
+                label: typeValue,
+              }))}
+              onChange={(val) => setFieldStudy(val)}
+              selectedProps={{
+                value: fieldStudy,
+                label: fieldStudy,
+              }}
+              handleError={() => {}}
+            />
+          </div>
+
+          <div className="w-[200px] relative" ref={dropdownRef}>
+            <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
+            <input
+              type="text"
+              className="h-[35px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+              placeholder="Country"
+              value={searchTerm}
+              onFocus={() => setDropdownOpen(true)} // Open dropdown on focus
+              onChange={handleSearchChange}
+            />
+              {dropdownOpen && (
+                <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
+                  {filteredCountries.map((country) => (
+                    <div
+                      key={country.name}
+                      className={`p-2 cursor-pointer hover:bg-gray-100 ${
+                        selectedCountry === country.name ? "bg-gray-200" : ""
+                      }`}
+                      onClick={() => handleCountrySelect(country.name)}
+                    >
+                      {country.name}
+                    </div>
+                  ))}
+                  {filteredCountries.length === 0 && (
+                    <div className="p-2 text-gray-500">No countries found</div>
+                  )}
+                </div>
+              )}
+          </div>
+
+          <div className="w-[200px] relative" ref={stateDropdownRef}>
+            <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
+            <input
+              type="text"
+              className="h-[35px] bg-[white] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+              placeholder="Region"
+              value={stateSearchTerm}
+              onFocus={() => setStateDropdownOpen(true)} // Open dropdown on focus
+              onChange={handleStateSearchChange}
+              disabled={!selectedCountry} // Disable if no country is selected
+            />
+            {stateDropdownOpen && (
+              <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
+                {filteredStates.map((state, index) => (
+                  <div
+                    key={index}
+                    className={`p-2 cursor-pointer hover:bg-gray-100 ${
+                      selectedState === state ? "bg-gray-200" : ""
+                    }`}
+                    onClick={() => handleStateSelect(state)}
+                  >
+                    {state}
+                  </div>
+                ))}
+                {filteredStates.length === 0 && (
+                  <div className="p-2 text-gray-500">No states found</div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="w-200px">
+            <CustomSelectWithProps
+              placeholder="Scholarship Options"
+              classNameStyle="h-[35px]"
+              options={scholarshipList.map((typeValue) => ({
+                value: typeValue,
+                label: typeValue,
+              }))}
+              onChange={(val) => setScholarshipOptions(val)}
+              selectedProps={{
+                value: scholarshipOptions,
+                label: scholarshipOptions,
+              }}
+              handleError={() => {}}
+            />
+          </div>
+
+          <button 
+            onClick={resetFilter}
+            type="button" 
+            className="w-[150px] bg-[white] text-[#999999] text-[14px] font-medium py-2 h-[35px] p-2 border border-gray-300 rounded-md
+                outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
+            >
+            <p>Clear Filters</p>
+            <IoIosRefresh className="w-4 h-4"  />
+          </button>
+
+        </div>
+
+      </div>
+      
+
+      <div className="p-5 flex flex-wrap gap-[20px]">
+        <CourseCard /> <CourseCard /> <CourseCard />
+        <CourseCard /> <CourseCard /> <CourseCard />
+        <CourseCard /> <CourseCard /> <CourseCard />
+        <CourseCard /> <CourseCard /> <CourseCard />
+      </div>
+      
+      <div className="flex justify-between items-center px-5 mt-1">
         <button
-          className="text-[#FFFFFF] text-[14px] font-normal bg-gradient-to-r from-[#0062FF] to-[#65D1FF] px-5 py-2 rounded-full w-[150px]"
-          onClick={() => handleSubmit()}
-          disabled={isLoading}
+          onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+          disabled={currentPage === 1}
+          className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
         >
-          {isLoading ? <BeatLoader className="w-full"/> : "Secure My Spot"}
+          Previous
+        </button>
+
+        <span className="text-sm">
+          Page {currentPage} of {totalPages}
+        </span>
+
+        <button
+          onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
+        >
+          Next
         </button>
       </div>
-      <p className="text-[14px] lg:text-[18px] text-[#E0E0E0] font-normal text-center  md:w-[60%] lg:w-[60%] my-5 lg:mt-10">
-        AlignTraits' AI-driven career guidance is here to revolutionize your
-        future. Join our waitlist today!
-      </p>
-      <div className="flex gap-5 ">
-        <img src={OtherUsers} alt="" />
-        <span className="text-[14px] text-[#F6C648] font-medium my-auto">
-          Join 500+ others who signed up
-        </span>
-      </div>
-      <p className="text-[14px] text-[#F6C648] font-medium ">
-        © {date.getUTCFullYear()} AlignTraits
-      </p>
 
-      <img
-        src={Glove}
-        alt=""
-        className="absolute top-[30%] xl:left-20 left-10 hidden lg:block"
-      />
-      <img
-        src={Study}
-        alt=""
-        className="lg:absolute bottom-[20%] right-10 w-[200px] h-[200px] xl:w-[250px] xl:h-[250px] xl:right-20 xl:bottom-[30%]"
-      />
-      <img
-        src={DirectionArrow}
-        alt=""
-        className="absolute top-[31%] left-[7%] md:top-[30%] md:left-[15%] lg:top-[40%] xl:top-[42%] xl:left-[23%] h-[55px] md:h-[100px] lg:h-[150px] "
-      />
-
-      <ToastContainer />
-      {modalOpen && <Modal setModalOpen={setModalOpen} setEmail={setEmail} />}
+      <div className="h-[20px] w-[10px]"></div>
     </div>
   );
 } 
-
-interface ModalProps {
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  setEmail: React.Dispatch<React.SetStateAction<string>>
-}
-
-const Modal = ({ setModalOpen, setEmail }: ModalProps) => {
-  const [isVisible, setIsVisible] = React.useState(true);
-
-  const handleClose = () => {
-    setIsVisible(false); 
-    setTimeout(() => setModalOpen(false), 300); 
-  };
-
-  const handleSubmitClose = () => {
-    setIsVisible(false);
-    setEmail("") 
-    setTimeout(() => setModalOpen(false), 300); 
-  };
-
-  return (
-    <div
-      className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-5 md:px-0 transition-opacity duration-300 ease-out ${
-        isVisible ? "opacity-100" : "opacity-0"
-      }`}
-    >
-      <div
-        className={`bg-[#001833] rounded-lg flex flex-col p-5 px-10 lg:px-20 md:w-1/2 w-full xl:w-1/3 gap-5 transform transition-transform duration-300 ease-out ${
-          isVisible ? "scale-100" : "scale-95"
-        }`}
-      >
-        <div className="bg-[#F6C648] w-20 h-20 rounded-full flex items-center mx-auto">
-          <img src={SuccessCheck} alt="" className="w-[60%] h-[60%] mx-auto" />
-        </div>
-        <h2 className="text-[30.64px] font-medium leading-[36.77px] text-[#FFFFFF] text-center">
-          We’ve added you to our waiting list!
-        </h2>
-        <p className="text-[13.67px] text-[#FFFFFF] font-normal leading-[16.4px] text-center">
-          We’ll let you know when AlignTraits is ready
-        </p>
-        <button
-          className="bg-[#F6C648] text-[#FFFFFF] text-[18px] font-medium w-[80%] rounded-md mx-auto h-[50px]"
-          onClick={handleClose}
-        >
-          Got it
-        </button>
-
-        <button
-          className="bg-[#2E415B] text-[#FFFFFF] text-[18px] font-medium w-[80%] rounded-md mx-auto h-[50px]"
-          onClick={handleSubmitClose}
-        >
-          Submit another Address
-        </button>
-      </div>
-    </div>
-  );
-};
-

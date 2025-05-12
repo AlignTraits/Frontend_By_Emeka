@@ -101,7 +101,7 @@ const CustomSelect: React.FC<SelectProps> = ({
       >
         {selected?.value  ? <p className="text-[#1E1E1E] text-[14px]">{splitString(selected.label)}</p> : 
         <p className="text-[#999999] text-[14px]">{placeholder}</p>}
-        <FiChevronDown className="" />
+        <FiChevronDown className="text-[#999999]" />
       </button>
 
       
