@@ -38,6 +38,10 @@ export default function Home() {
   const [states, setStates] = useState<string[]>([]);
   const [selectedState, setSelectedState] = useState<string>("")
 
+    const [currentPage, setCurrentPage] = useState(1);
+    // const itemsPerPage = 10;
+    const totalPages = 0
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
     setDropdownOpen(true); // Open the dropdown when typing
@@ -130,7 +134,7 @@ export default function Home() {
   }
   return (
     <div className="relative h-screen w-full bg-[#FCFCFD]">
-      <div className="flex justify-between p-5 border-b border-b-[#DDDDDD]">
+      <div className="bg-[#FCFCFD] flex justify-between p-5 border-b border-b-[#DDDDDD] sticky top-0 z-[10]">
         <div>
           <h1 className="text-[20px] font-semibold text-[#101828]">Welcome to Aligntraits</h1>
           <p className="text-[12px] font-normal text-[#999999]">Find your career path today!</p>
@@ -292,10 +296,36 @@ export default function Home() {
       </div>
       
 
-      <div className="p-5">
-        <CourseCard />
+      <div className="p-5 flex flex-wrap gap-[20px]">
+        <CourseCard /> <CourseCard /> <CourseCard />
+        <CourseCard /> <CourseCard /> <CourseCard />
+        <CourseCard /> <CourseCard /> <CourseCard />
+        <CourseCard /> <CourseCard /> <CourseCard />
       </div>
       
+      <div className="flex justify-between items-center px-5 mt-1">
+        <button
+          onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+          disabled={currentPage === 1}
+          className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
+        >
+          Previous
+        </button>
+
+        <span className="text-sm">
+          Page {currentPage} of {totalPages}
+        </span>
+
+        <button
+          onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+
+      <div className="h-[20px] w-[10px]"></div>
     </div>
   );
 } 
