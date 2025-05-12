@@ -106,7 +106,7 @@ const SearchSelect: React.FC<SelectProps> = ({
         ) : (
           <p className="text-[#999999] text-[14px]">{placeholder}</p>
         )}
-        <FiChevronDown className="" />
+        <FiChevronDown className="text-[#999999]" />
       </button>
 
       {isOpen && (

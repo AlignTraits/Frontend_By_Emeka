@@ -10,7 +10,7 @@ interface SelectProps {
   options: Option[];
   placeholder?: string;
   onChange: (value: string) => void;
-  className?: string;
+  classNameStyle?: string;
   selectedProps: {
     value: string,
     label: string
@@ -23,7 +23,7 @@ const CustomSelectWithProps: React.FC<SelectProps> = ({
   options,
   placeholder = "Select an option",
   onChange,
-  className = "",
+  classNameStyle = "",
   selectedProps,
   disabledState=false,
   handleError=()=> {}
@@ -92,17 +92,17 @@ const CustomSelectWithProps: React.FC<SelectProps> = ({
   
 
   return (
-    <div ref={selectRef} className={`relative z-9 ${className}`}>
+    <div ref={selectRef} className={`relative z-9 ${classNameStyle}`}>
     
       <button
         type="button"
         disabled={disabledState}
-        className="w-full px-4 py-2  bg-white p-2 rounded-md border-[0.8px] border-gray-300 focus:outline-none capitalize flex justify-between items-center gap-x-[10px]"
+        className={`${classNameStyle} w-full px-4 py-2  bg-white p-2 rounded-md border-[0.8px] border-gray-300 focus:outline-none capitalize flex justify-between items-center gap-x-[10px]`}
         onClick={handleClick}
       >
         {selected?.value  ? <p className="text-[#1E1E1E] text-[14px]">{splitString(selected.label)}</p> : 
         <p className="text-[#999999] text-[14px]">{placeholder}</p>}
-        <FiChevronDown className="" />
+        <FiChevronDown className="text-[#999999]" />
       </button>
 
       
