@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import Header from "../../../components/Settings/Header";
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { FiToggleLeft, FiToggleRight } from "react-icons/fi";

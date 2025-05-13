@@ -1,10 +1,7 @@
-// import { useState } from "react";
+
 import { NavLink, useLocation  } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
-// import { useNavigate } from "react-router-dom";
-// import SchoolIcon from "../../assets/admin/icons/school-icon.png";
 import { LuSchool } from "react-icons/lu";
-// import AccountIcon from "../../assets/admin/icons/account-icon.png";
 
 import Logo from "../../assets/logo.svg";
 import { FiGrid, FiLogOut, FiX } from "react-icons/fi";
