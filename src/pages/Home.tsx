@@ -129,6 +129,7 @@ export default function Home() {
     setStateSearchTerm("")
     setSelectedCountry("")
     setSearchTerm("")
+    setSearchAllTerm("")
     setFieldStudy("")
     setScholarshipOptions("")
   }
@@ -384,7 +385,7 @@ export default function Home() {
         </button>
 
         <span className="text-sm">
-          Page {currentPage} of {totalPages}
+          Showing Page {currentPage} of {totalPages}
         </span>
 
         <button
