@@ -1,11 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
+import { Course } from "../types/course.types";
+import { ClipLoader } from "react-spinners";
 import CustomSelectWithProps from "../components/dashboard/CustomSelectWithProps";
 import { IoIosRefresh } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import CourseCard from "../components/dashboard/CourseCard";
 import countriesData from "../data/countries_states.json"
+import fileIcon from "../assets/IconWrap.svg"
+import { getCoursesWithoutToken } from "../services/schools";
 
 const TAB_NAV = ["Programs", "Scholarship Opportunities", "STEM", "Business & Management", "IT & Computer Science",
   "Health & Medicine", "Law & Legal Studies", "Engineering",
@@ -22,6 +26,7 @@ type Country = {
 
 export default function Home() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("");
   const [searchAllTerm, setSearchAllTerm] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
@@ -32,15 +37,18 @@ export default function Home() {
   const [fieldStudy, setFieldStudy] = useState("")
   const [scholarshipOptions, setScholarshipOptions] = useState("")
 
+
+
     // State to store selected country and states
   const [countries, setCountries] = useState<Country[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [states, setStates] = useState<string[]>([]);
   const [selectedState, setSelectedState] = useState<string>("")
 
-    const [currentPage, setCurrentPage] = useState(1);
-    // const itemsPerPage = 10;
-    const totalPages = 0
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -107,7 +115,6 @@ export default function Home() {
     };
   }, []);
 
-  // console.log("endDate: ", endDate, " startDate: ", startDate)
 
   // Load countries from JSON on mount
   useEffect(() => {
@@ -122,6 +129,7 @@ export default function Home() {
     setStateSearchTerm("")
     setSelectedCountry("")
     setSearchTerm("")
+    setSearchAllTerm("")
     setFieldStudy("")
     setScholarshipOptions("")
   }
@@ -132,6 +140,48 @@ export default function Home() {
   const goLogin = () => {
     navigate("/admin/login")
   }
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setIsLoading(true);
+        const response = await getCoursesWithoutToken()
+
+        setCourses(response);
+      } catch (err) {
+        // setError(err instanceof Error ? err.message : 'An error occurred');
+        console.log("error: ", err)
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  const filteredCourses = useMemo(() => {
+    const term = searchAllTerm.toLowerCase().trim();
+  
+    return courses.filter((s) => {
+      // default to empty string if missing
+      const name = s.title.toLowerCase();
+      return name.includes(term)
+      && (scholarshipOptions === "" || scholarshipOptions.toLowerCase() === s.scholarship?.toLowerCase())
+      && (selectedCountry === "" || selectedCountry.toLowerCase() === s.university?.country.toLowerCase())
+      && (selectedState === "" || selectedState.toLowerCase() === s.university?.region.toLowerCase());
+    });
+  }, [courses, searchAllTerm, scholarshipOptions, selectedCountry, selectedState]);
+
+
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
+
+  const paginatedCourses = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredCourses.sort((a, b) => {
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    }).slice(start, start + itemsPerPage);
+  }, [filteredCourses, currentPage]);
+  
   return (
     <div className="relative h-screen w-full bg-[#FCFCFD]">
       <div className="bg-[#FCFCFD] flex justify-between p-5 border-b border-b-[#DDDDDD] sticky top-0 z-[1000]">
@@ -296,12 +346,34 @@ export default function Home() {
       </div>
       
 
-      <div className="p-5 flex flex-wrap gap-[20px]">
-        <CourseCard /> <CourseCard /> <CourseCard />
-        <CourseCard /> <CourseCard /> <CourseCard />
-        <CourseCard /> <CourseCard /> <CourseCard />
-        <CourseCard /> <CourseCard /> <CourseCard />
+      <div className="p-5 flex justify-center">
+        {isLoading && (
+          <div className="mx-auto w-full flex justify-center items-center h-[500px]">
+            <ClipLoader />
+          </div>
+        )}
       </div>
+
+      <div>
+        {
+          !isLoading && (
+            <div className="p-5 flex flex-wrap gap-[20px]">
+              {
+                paginatedCourses.length > 0 && paginatedCourses.map((elem, i) => (
+                  <CourseCard courseItem={elem} key={i} />
+                ))
+              }
+            </div>
+          )
+        }
+      </div>
+
+      {!isLoading && courses.length === 0 && (
+        <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[400px]">
+          <img src={fileIcon} alt="Not found" />
+          <p className="text-[#101828] text-[16px] font-semibold">No courses Found</p>
+        </div>
+      )}
       
       <div className="flex justify-between items-center px-5 mt-1">
         <button
@@ -313,7 +385,7 @@ export default function Home() {
         </button>
 
         <span className="text-sm">
-          Page {currentPage} of {totalPages}
+          Showing Page {currentPage} of {totalPages}
         </span>
 
         <button
