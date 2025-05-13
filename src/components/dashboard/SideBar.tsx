@@ -1,7 +1,6 @@
 import  { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
-// import { useNavigate } from "react-router-dom";
 import PathfinderIcon from "../../assets/dashboard/icons/PathfinderIcon.svg";
 import Logo from "../../assets/logo.svg";
 import {
