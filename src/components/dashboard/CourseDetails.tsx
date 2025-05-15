@@ -64,13 +64,13 @@ const CourseDetails = ({courseItem, setShowDetails}: CoursesProps) => {
           })}
         </div>
 
-        { activeTab === "tab1" && <SchoolInfo /> }
+        { activeTab === "tab1" && <SchoolInfo courseItem={courseItem} /> }
 
-        { activeTab === "tab2" && <CourseInfo /> }
+        { activeTab === "tab2" && <CourseInfo courseItem={courseItem}  /> }
 
-        { activeTab === "tab3" && <ScholarshipInfo /> }
+        { activeTab === "tab3" && <ScholarshipInfo courseItem={courseItem}  /> }
 
-        { activeTab === "tab4" && <LoanInfo /> }
+        { activeTab === "tab4" && <LoanInfo courseItem={courseItem}  /> }
       </div>
     </div>
   )
