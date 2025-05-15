@@ -1,18 +1,20 @@
-import courseIcon from "../../assets/Imageholder.svg"
+// import courseIcon from "../../assets/Imageholder.svg"
 import { Course } from '../../types/course.types';
 import courseIconTwo from "../../assets/imageHolderTwo.svg"
 import locationIcon from "../../assets/locationIcon.svg"
 
 interface CoursesProps {
   courseItem: Course;
+  setCourseDetails: React.Dispatch<React.SetStateAction<Course|null>>;
+  setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CourseCard = ({courseItem}: CoursesProps) => {
+const CourseCard = ({courseItem, setCourseDetails, setShowDetails}: CoursesProps) => {
   // console.log("courseItem: ", courseItem)
   return (
     <div className="w-[300px] size-max rounded-md border-[2px] border-[#EAECF0] p-[8px] flex flex-col gap-y-[10px]">
       <div className="w-[100%] h-[180px] rounded-md">
-        <img alt="course Icon" src={courseIcon} className="h-[100%] w-[100%] rounded-md" />
+        <img alt="course Icon" src={courseItem.image} className="h-[100%] w-[100%] rounded-md" />
       </div>
 
       <div className="flex gap-x-[10px] p-[5px]">
@@ -46,7 +48,10 @@ const CourseCard = ({courseItem}: CoursesProps) => {
         </div>
       </div>
 
-      <button className="bg-[#004085] h-[40px] w-[100%] font-semibold text-[12px] text-[white] rounded-md">
+      <button onClick={() => {
+        setShowDetails(true);
+        setCourseDetails(courseItem);
+      }} className="bg-[#004085] h-[40px] w-[100%] font-semibold text-[12px] text-[white] rounded-md">
         View Details
       </button>
     </div>
