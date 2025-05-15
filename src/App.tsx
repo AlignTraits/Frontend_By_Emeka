@@ -37,6 +37,7 @@ import DataManagement from "./pages/admin/DataManagement";
 import Loans from "./pages/admin/Loans";
 import BulkCenter from "./pages/admin/BulkCenter";
 import ProfileManagement from "./pages/admin/ProfileManagement";
+import HomeSearch from "./pages/HomeSearch";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "search",
+        element: <HomeSearch />
       },
       {
         path: "signup",
