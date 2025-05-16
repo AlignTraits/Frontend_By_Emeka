@@ -15,10 +15,11 @@ import SuccessCheck from '../assets/success-check.svg'
 import { BeatLoader } from "react-spinners"
 
 export default function Home() {
-  const date = new Date()
+  const date = new Date();
   const [email, setEmail] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  
   const handleSubmit =async ()=> {
     const form = {
       email: email

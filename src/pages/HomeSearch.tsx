@@ -358,19 +358,17 @@ export default function HomeSearch() {
               )}
             </div>
 
-            <div>
-              {
-                !isLoading && (
-                  <div className="p-5 flex flex-wrap gap-[20px]">
-                    {
-                      paginatedCourses.length > 0 && paginatedCourses.map((elem, i) => (
-                        <CourseCard setShowDetails={setShowDetails} courseItem={elem} key={i} setCourseDetails={setCourseDetails} />
-                      ))
-                    }
-                  </div>
-                )
-              }
-            </div>
+            {
+              !isLoading && (
+                <div className="p-5 flex flex-wrap justify-between gap-y-[30px] w-[100%]">
+                  {
+                    paginatedCourses.length > 0 && paginatedCourses.map((elem, i) => (
+                      <CourseCard setShowDetails={setShowDetails} courseItem={elem} key={i} setCourseDetails={setCourseDetails} />
+                    ))
+                  }
+                </div>
+              )
+            }
 
             {!isLoading && courses.length === 0 && (
               <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[400px]">
