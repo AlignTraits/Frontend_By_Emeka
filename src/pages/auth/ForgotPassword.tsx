@@ -1,6 +1,7 @@
 import { useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
 import * as authService from '../../services/auth.service'
+import resetIcon from "../../assets/resetRediret.svg"
 import { AxiosError } from 'axios'
 import BeatLoader from "react-spinners/BeatLoader";
 import Header from '../../components/Header';
@@ -48,9 +49,9 @@ export default function ForgotPassword() {
 
       {
         success ? (
-          <div className='flex flex-col items-center bg-[white] p-[20px] gap-y-[20px]'>
-            <div className='h-[400px] w-[400px] rounded-[50%] bg-[#cce9ff]'>
-
+          <div className='flex flex-col items-center bg-[white] p-[20px] gap-y-[20px] mt-10'>
+            <div className=''>
+              <img src={resetIcon} />
             </div>
             <p className='text-[#4C4E53]'>We’ve sent an email to <span className='text-[#101828]'>{email}</span> with a link to get back into your account.</p>
           </div>

@@ -132,6 +132,7 @@ const login = async (email: string, password: string): Promise<number> => {
     email: string,
     password: string
   ) => {
+    setIsLoading(true)
     try {
       const response = await api.put(`/auth/reset-password`, {
         email: email,
