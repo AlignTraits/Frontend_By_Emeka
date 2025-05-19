@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import Papa from 'papaparse';
 import { FiSearch } from "react-icons/fi";
 import { Course } from "../types/course.types";
 import { ClipLoader } from "react-spinners";
@@ -11,6 +12,7 @@ import countriesData from "../data/countries_states.json"
 import fileIcon from "../assets/IconWrap.svg"
 import { getCoursesWithoutToken } from "../services/schools";
 import CourseDetails from "../components/dashboard/CourseDetails";
+// import csvFile from "../assets/csvFile.csv"
 
 const TAB_NAV = ["Programs", "Scholarship Opportunities", "STEM", "Business & Management", "IT & Computer Science",
   "Health & Medicine", "Law & Legal Studies", "Engineering",
@@ -45,12 +47,14 @@ export default function HomeSearch() {
   const [selectedState, setSelectedState] = useState<string>("")
 
   const [courses, setCourses] = useState<Course[]>([]);
+  const [programList, setProgramList] = useState<string[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   const [showDetails, setShowDetails] = useState(false)
   const [courseDetails, setCourseDetails] = useState<Course|null>(null);
+  const [fieldDropdownOpen, setFieldDropdownOpen] = useState(false);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -116,6 +120,22 @@ export default function HomeSearch() {
     };
   }, []);
 
+  const fieldDropdownRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        fieldDropdownRef.current &&
+        !fieldDropdownRef.current.contains(event.target as Node)
+      ) {
+        setFieldDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
 
   // Load countries from JSON on mount
   useEffect(() => {
@@ -139,6 +159,30 @@ export default function HomeSearch() {
   const goLogin = () => {
     navigate("/login")
   }
+
+  useEffect(() => {
+  Papa.parse("/csvFile.csv", {
+    download: true,
+    header: true,
+    complete: (result) => {
+      const data = result.data;
+
+      // Find the key with course/subject names
+      const key = Object.keys(data[0] as object).find(k =>
+        k.toLowerCase().includes('course') || k.toLowerCase().includes('subject')
+      );
+
+      let uniqueCourses: string[] = [];
+      if (key) {
+        uniqueCourses = Array.from(new Set(
+          data.map(row => (row as any)[key]?.toString().trim()).filter(Boolean)
+        ));
+      }
+
+      setProgramList(uniqueCourses);
+    },
+  });
+}, []);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -240,22 +284,48 @@ export default function HomeSearch() {
             <div className="flex justify-between items-center px-[20px] border-b border-b-[#DDDDDD] pb-[10px]">
               <div className="flex gap-x-[10px] my-[20px]">
 
-                <div className="w-200px">
-                  <CustomSelectWithProps
+ 
+                <div className="w-[200px] relative" ref={fieldDropdownRef}>
+                  <input
+                    type="text"
+                    className="h-[35px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
                     placeholder="Field Of Study"
-                    classNameStyle="h-[35px]"
-                    options={["Test"].map((typeValue) => ({
-                      value: typeValue,
-                      label: typeValue,
-                    }))}
-                    onChange={(val) => setFieldStudy(val)}
-                    selectedProps={{
-                      value: fieldStudy,
-                      label: fieldStudy,
+                    value={fieldStudy}
+                    onFocus={() => setFieldDropdownOpen(true)}
+                    onChange={e => {
+                      setFieldStudy(e.target.value);
+                      setFieldDropdownOpen(true);
                     }}
-                    handleError={() => {}}
                   />
+                  {fieldDropdownOpen && (
+                    <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
+                      {programList
+                        .filter(typeValue =>
+                          typeValue.toLowerCase().includes(fieldStudy.toLowerCase())
+                        )
+                        .map((typeValue, idx) => (
+                          <div
+                            key={idx}
+                            className={`p-2 cursor-pointer hover:bg-gray-100 ${
+                              fieldStudy === typeValue ? "bg-gray-200" : ""
+                            }`}
+                            onClick={() => {
+                              setFieldStudy(typeValue);
+                              setFieldDropdownOpen(false);
+                            }}
+                          >
+                            {typeValue}
+                          </div>
+                        ))}
+                      {programList.filter(typeValue =>
+                        typeValue.toLowerCase().includes(fieldStudy.toLowerCase())
+                      ).length === 0 && (
+                        <div className="p-2 text-gray-500">No fields found</div>
+                      )}
+                    </div>
+                  )}
                 </div>
+
 
                 <div className="w-[200px] relative" ref={dropdownRef}>
                   <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
