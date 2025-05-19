@@ -122,7 +122,7 @@ useEffect(()=> {
                 <div className="relative">
                   <input
                     id="confirm-password"
-                    type={showPassword ? "text" : "password"}
+                    type={showConfirmPassword ? "text" : "password"}
                     required
                     className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
                     placeholder="Re-enter your new password"
