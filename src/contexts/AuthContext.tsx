@@ -176,6 +176,7 @@ const login = async (email: string, password: string): Promise<number> => {
     register,
     isLoading,
     error,
+    setError,
     verifyEmailToken,
     token: authService.getToken(),
     isAuthenticated: !!authService.getToken(),
