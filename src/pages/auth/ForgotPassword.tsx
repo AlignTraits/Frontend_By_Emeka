@@ -1,5 +1,5 @@
 import { useState } from 'react'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import * as authService from '../../services/auth.service'
 import resetIcon from "../../assets/resetRediret.svg"
 import { AxiosError } from 'axios'
@@ -9,7 +9,7 @@ import resetImage from "../../assets/resetImage.svg"
 import traitText from "../../assets/traitstext.svg"
 
 export default function ForgotPassword() {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -42,6 +42,10 @@ export default function ForgotPassword() {
   //     setSuccess(true)
   //   }, 3000)
   // }
+
+  const gotToLogin = () => {
+    navigate("/login")
+  }
 
   return (
     <div className="relative h-screen w-full bg-[#FCFCFD]">
@@ -93,18 +97,20 @@ export default function ForgotPassword() {
                 {isLoading ? <BeatLoader /> : "Reset Password"}
               </button>
 
-              <p className='text-center text-[#101828] text-[12px] font-semibold'>Didn’t receive any email? <span className='text-[#004085]'>Resend</span></p>
+              <p className='text-center text-[#101828] text-[12px] font-semibold'>Remember password? <span onClick={gotToLogin} className='text-[#004085] cursor-pointer'>Login</span></p>
             </form>
           </div>
 
-          <div className='w-[320px] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
-            <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
+          <div className='w-[50%] flex justify-center'>
+            <div className='w-[320px] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
+              <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
 
-            <p className='text-[20px] text-[white] font-semibold'>The simplest way to navigate your educational future</p>
+              <p className='text-[20px] text-[white] font-semibold'>The simplest way to navigate your educational future</p>
 
-            <p className='text-[white] text-[12px]'>Enter your credentials to access your account</p>
+              <p className='text-[white] text-[12px]'>Enter your credentials to access your account</p>
 
-            <img src={resetImage} alt='reset Image' className='h-[300px]' />
+              <img src={resetImage} alt='reset Image' className='h-[300px]' />
+            </div>
           </div>
         </div>
         )
