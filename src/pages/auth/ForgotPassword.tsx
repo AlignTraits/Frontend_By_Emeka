@@ -56,9 +56,9 @@ export default function ForgotPassword() {
             <p className='text-[#4C4E53]'>We’ve sent an email to <span className='text-[#101828]'>{email}</span> with a link to get back into your account.</p>
           </div>
         ) : (
-        <div className='flex justify-between bg-[white] p-[20px]'>
+        <div className='flex gap-x-[30px] bg-[white] p-[20px] pl-[100px]'>
           <div className="w-[700px] h-[500px] flex flex-col justify-center items-center gap-y-[30px]">
-            <div className="space-y-2 w-[500px]">
+            <div className="space-y-2 w-[650px]">
               <h2 className="text-2xl font-bold text-[#101828]">
                 Forget your password?
               </h2>
@@ -74,7 +74,7 @@ export default function ForgotPassword() {
                   type="email"
                   placeholder='Please enter your email'
                   required
-                  className="mt-1 block w-[500px] rounded-xl border border-[#000000] p-2"
+                  className="mt-1 block w-[650px] rounded-xl border border-[#000000] p-2"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -88,7 +88,7 @@ export default function ForgotPassword() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-[500px] py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
+                className="w-[650px] py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
               >
                 {isLoading ? <BeatLoader /> : "Reset Password"}
               </button>
@@ -97,14 +97,14 @@ export default function ForgotPassword() {
             </form>
           </div>
 
-          <div className='w-[600px] h-[900px] bg-[#004085] rounded-xl flex flex-col gap-y-[30px] p-[40px] items-start'>
+          <div className='w-[320px] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
             <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
 
-            <p className='text-[25px] text-[white] font-semibold'>The simplest way to navigate your educational future</p>
+            <p className='text-[20px] text-[white] font-semibold'>The simplest way to navigate your educational future</p>
 
             <p className='text-[white] text-[12px]'>Enter your credentials to access your account</p>
 
-            <img src={resetImage} alt='reset Image' className='h-[600px]' />
+            <img src={resetImage} alt='reset Image' className='h-[300px]' />
           </div>
         </div>
         )

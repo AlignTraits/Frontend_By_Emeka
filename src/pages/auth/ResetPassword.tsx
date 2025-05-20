@@ -8,7 +8,7 @@ import { useAuth } from "../../contexts/useAuth";
 import { BeatLoader } from "react-spinners";
 // import { verifyEmail } from "../../services/auth.service";
 
-const ResetPassword: React.FC = () => {
+  const ResetPassword: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [status, setStatus] = useState<boolean>(false);
@@ -16,9 +16,12 @@ const ResetPassword: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-const {error, isLoading, verifyEmailToken} = useAuth()
-const [token, setToken]  = useState<string>('')
-const [email, setEmail] = useState<string>('')
+  const {error, isLoading, verifyEmailToken, setError} = useAuth()
+  const [token, setToken]  = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+
+  const [passwordError, setPasswordError] = useState("")
+  const [confirmPasswordError, setConfirmPasswordError] = useState("")
 
 
 
@@ -34,11 +37,34 @@ useEffect(()=> {
     
 }, [searchParams, navigate])
 
+  function isValidPassword(password: string): boolean {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&^])[A-Za-z\d@$!%*?#&^]{8,}$/;
+    return passwordRegex.test(password);
+  }
+
    
 
-    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-     
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!isValidPassword(password)) {
+      setPasswordError("at least 8 characters, include uppercase and lowercase letters, numbers, and special characters.")
+    }
+
+    if (!isValidPassword(confirmPassword)) {
+      setConfirmPasswordError("at least 8 characters, include uppercase and lowercase letters, numbers, and special characters.")
+    }
+
+    if (password !== confirmPassword) {
+      setError("New password and confirm password should be the same!")
+    }
+
+    if (!isValidPassword(confirmPassword) || !isValidPassword(password) || password !== confirmPassword) {
+      return
+    }
+
+    try {
       const response = await verifyEmailToken(
         token,
         email,
@@ -48,8 +74,17 @@ useEffect(()=> {
         setStatus(true)
         setTimeout(() => navigate('/login'), 3000)
       }
-    
-    };
+    } catch(err) {
+        console.log(err)
+    }
+  };
+
+
+  const resetInput = () => {
+    setError("")
+    setConfirmPasswordError("")
+    setPasswordError("")
+  } 
 
    
 
@@ -98,7 +133,9 @@ useEffect(()=> {
                     placeholder="Enter your new password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onFocus={resetInput}
                   />
+                  {passwordError && <p className="mt-1 text-[#E33629] font-normal italic text-[10px]">{passwordError}</p>}
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -128,7 +165,9 @@ useEffect(()=> {
                     placeholder="Re-enter your new password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    onFocus={resetInput}
                   />
+                  {confirmPasswordError && <p className="mt-1 text-[#E33629] font-normal italic text-[10px]">{confirmPasswordError}</p>}
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}

@@ -43,6 +43,7 @@ export interface AuthContextType {
   ) => Promise<{ status: number }>;
   isLoading: boolean;
   error: string | null;
+  setError: React.Dispatch<React.SetStateAction<string | null>>;
   token: string | undefined;
   isAuthenticated: boolean;
   currentCourseID: string | null;
@@ -73,6 +74,7 @@ export const AuthContext = createContext<AuthContextType>({
   creatingCourseClicked: false,
   setCurrentCourseID: () => {},
   setCreatingCourseClicked: () => {},
+  setError: () => {},
   setEndDate: () => {},
   setStartDate: () => {},
   endDate: "",
