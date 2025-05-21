@@ -5,7 +5,7 @@ import { LoginCredentials, } from '../../types/auth.types'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
 import Header from '../../components/Header';
-import resetImage from "../../assets/resetImage.svg"
+import imgReset from "../../assets/imgReset.png"
 import traitText from "../../assets/traitstext.svg"
 // import {setToken} from '../../services/auth.service'
 import BeatLoader from 'react-spinners/BeatLoader'
@@ -44,7 +44,7 @@ export default function Login() {
     <div className="relative h-screen w-full bg-[#FCFCFD]">
       <Header />
       <div className='flex gap-x-[30px] bg-[white] p-[20px] pl-[100px]'>
-        <div className="max-w-xl w-full space-y-5 p-8">
+        <div className="w-[50%] space-y-5 p-8">
           <div className="flex flex-col justify-center">
             <h2 className="text-3xl font-bold">
               Welcome back
@@ -160,14 +160,14 @@ export default function Login() {
         </div>
 
         <div className='w-[50%] flex justify-center'>
-          <div className='w-[320px] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
+          <div className='w-[100%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
             <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
 
             <p className='text-[20px] text-[white] font-semibold'>The simplest way to navigate your educational future</p>
 
             <p className='text-[white] text-[12px]'>Enter your credentials to access your account</p>
 
-            <img src={resetImage} alt='reset Image' className='h-[300px]' />
+            <img src={imgReset} alt='reset Image' className='h-[350px] w-[100%]' />
           </div>
         </div>
       </div>

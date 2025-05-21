@@ -39,6 +39,7 @@ const Loans = lazy(() => import("./pages/admin/Loans"));
 const BulkCenter = lazy(() => import("./pages/admin/BulkCenter"));
 const ProfileManagement = lazy(() => import("./pages/admin/ProfileManagement"));
 const HomeSearch = lazy(() => import("./pages/HomeSearch"));
+const OnboardingPage = lazy(() => import("./pages/auth/OnboardingPage"))
 
 const router = createBrowserRouter([
   {
@@ -52,7 +53,8 @@ const router = createBrowserRouter([
       { path: "signup", element: <SignUp /> },
       { path: "forgot-password", element: <ForgotPassword /> },
       { path: '/email-verify', element: <VerifyEmail /> },
-      { path: '/reset-password', element: <ResetPassword /> }
+      { path: '/reset-password', element: <ResetPassword /> },
+      { path: '/onboarding-form', element: <OnboardingPage /> },
     ],
   },
   {
