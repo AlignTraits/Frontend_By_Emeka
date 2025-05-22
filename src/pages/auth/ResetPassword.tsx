@@ -86,10 +86,14 @@ useEffect(()=> {
     setPasswordError("")
   } 
 
+
+  // bg-gradient-to-br from-[#F1F5FF] via-white to-[#FFF7E6]
+
+  // bg-gradient-to-br from-[#F1F5FF] via-white to-[#FFF7E6]
    
 
   return (
-    <div className="relative h-screen w-full bg-[white]">
+    <div className="relative h-screen w-full bg-gradient-to-br from-blue-50 via-blue-25 to-amber-50">
       <Header />
       {
         status ? (
