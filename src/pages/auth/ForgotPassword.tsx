@@ -79,7 +79,8 @@ export default function ForgotPassword() {
                   type="email"
                   placeholder='Please enter your email'
                   required
-                  className="mt-1 block w-[450px] rounded-xl border border-[#000000] p-2"
+                  // className="mt-1 block w-[450px] rounded-xl border border-[#000000] p-2"
+                  className="mt-1 w-[450px] h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -93,7 +94,7 @@ export default function ForgotPassword() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-[450px] py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
+                className="w-[450px] h-[50px] py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-full disabled:opacity-50"
               >
                 {isLoading ? <BeatLoader /> : "Reset Password"}
               </button>
