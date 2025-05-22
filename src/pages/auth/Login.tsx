@@ -5,7 +5,7 @@ import { LoginCredentials, } from '../../types/auth.types'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
 import Header from '../../components/Header';
-import resetImage from "../../assets/resetImage.svg"
+import imgReset from "../../assets/imgReset.png"
 import traitText from "../../assets/traitstext.svg"
 // import {setToken} from '../../services/auth.service'
 import BeatLoader from 'react-spinners/BeatLoader'
@@ -44,7 +44,7 @@ export default function Login() {
     <div className="relative h-screen w-full bg-[#FCFCFD]">
       <Header />
       <div className='flex gap-x-[30px] bg-[white] p-[20px] pl-[100px]'>
-        <div className="max-w-xl w-full space-y-5 p-8">
+        <div className="w-[50%] space-y-5 p-8">
           <div className="flex flex-col justify-center">
             <h2 className="text-3xl font-bold">
               Welcome back
@@ -64,7 +64,7 @@ export default function Login() {
                 id="email"
                 type="email"
                 required
-                className="mt-1 w-full h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
+                className="mt-1 w-[500px] h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                 style={{
                   boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
                 }}
@@ -76,7 +76,7 @@ export default function Login() {
               />
             </div>
 
-            <div>
+            <div className='w-[500px]'>
               <label htmlFor="password" className="block text-[16px] font-[600]">
                 Password
               </label>
@@ -85,7 +85,7 @@ export default function Login() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   required
-                  className="mt-1 w-full h-14 px-4 py-3 rounded-full bg-white border-[1px] border-[#ccc] shadow-md focus:outline-none"
+                  className="mt-1 w-[500px] h-14 px-4 py-3 rounded-full bg-white border-[1px] border-[#ccc] shadow-md focus:outline-none"
                   style={{
                     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
                   }}
@@ -98,7 +98,7 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#004085] "
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-[#004085] "
                 >
                   {showPassword ? (
                     <AiOutlineEyeInvisible size={20} />
@@ -109,7 +109,7 @@ export default function Login() {
               </div>
             </div>
 
-            <div className="flex items-center justify-end">
+            <div className="flex items-center justify-end w-[500px]">
               <button
                 type="button"
                 onClick={() => navigate("/forgot-password")}
@@ -122,7 +122,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading || !isFormValid()}
-              className="w-[100%] h-14 rounded-full mx-auto flex items-center justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white disabled:opacity-50"
+              className="w-[500px] h-14 rounded-full flex items-center justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white disabled:opacity-50"
             >
               {isLoading ? <BeatLoader   /> : "Login"}
             </button>
@@ -160,14 +160,14 @@ export default function Login() {
         </div>
 
         <div className='w-[50%] flex justify-center'>
-          <div className='w-[320px] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
+          <div className='w-[100%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
             <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
 
             <p className='text-[20px] text-[white] font-semibold'>The simplest way to navigate your educational future</p>
 
             <p className='text-[white] text-[12px]'>Enter your credentials to access your account</p>
 
-            <img src={resetImage} alt='reset Image' className='h-[300px]' />
+            <img src={imgReset} alt='reset Image' className='h-[350px] w-[100%]' />
           </div>
         </div>
       </div>

@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 import { SignUpCredentials } from "../../types/auth.types";
 import { AiOutlineEye, AiOutlineEyeInvisible, } from "react-icons/ai";
 import { FcGoogle, } from "react-icons/fc";
-import { FaFacebook, FaApple,  } from "react-icons/fa";
-import { FiMail, FiArrowLeft } from "react-icons/fi";
-import Done from '../../assets/Done 1.png';
+// import { FiMail, FiArrowLeft } from "react-icons/fi";
+// import Done from '../../assets/Done 1.png';
+import imgReset from "../../assets/imgReset.png"
+import traitText from "../../assets/traitstext.svg"
 import BeatLoader from "react-spinners/BeatLoader";
+import Header from '../../components/Header';
 
 
 export default function Register() {
@@ -19,13 +21,40 @@ export default function Register() {
     email: "",
     password: "",
   });
+  const [agreed, setAgreed] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  const [counter, setCounter] = useState(119); // 1:59 = 119 seconds
+  const [disabled, setDisabled] = useState(false);
 
-  const openMail = ()=> {
-    window.open(`mailto:${credentials.email}`);
-  }
+
+  // const openMail = ()=> {
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (disabled && counter > 0) {
+      timer = setInterval(() => {
+        setCounter((prev) => prev - 1);
+      }, 1000);
+    } else if (counter === 0) {
+      setDisabled(false);
+    }
+    return () => clearInterval(timer);
+  }, [counter, disabled]);
+
+  const formatTime = (seconds: number): string => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, '0')} seconds`;
+  };
+
+  const handleResend = () => {
+    // Simulate resend action
+    console.log('OTP resent');
+    setCounter(119);
+    setDisabled(true);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -36,6 +65,7 @@ export default function Register() {
         credentials.password
       );
       setSuccess(true); // Update success state
+      setDisabled(true);
       // navigate("/dashboard"); // Redirect to dashboard
     } catch (err) {
       console.error("Registration failed:", err);
@@ -45,133 +75,101 @@ export default function Register() {
 
   const isFormValid = () => {
     return (
-      credentials.firstname.trim() !== "" &&
-      credentials.lastname.trim() !== "" &&
       credentials.email.trim() !== "" &&
-      credentials.password.trim() !== ""
+      credentials.password.trim() !== "" &&
+      agreed
     );
   };
 
+  const handleClick = () => {
+    // You can open a modal or do nothing
+    console.log('Terms & Privacy clicked');
+  };
+
+
   return (
-    <>
+    <div className="relative h-screen w-full bg-[#FCFCFD]">
+      <Header />
       {success ? (
-        <div className="relative min-h-screen flex justify-center bg-[#F7FAFF]">
-          <div className="max-w-xl w-full space-y-8 p-20">
-            <div className=" flex flex-col items-center  space-y-4">
-              <FiMail className="text-6xl  " />
-              <h2 className="text-3xl font-[400] text-center text-[#212121]">
-                Verify with your email
-              </h2>
-              <div className="flex flex-col text-center space-y-4 text-[#212121]">
-                <span className="text-[16px] font-[400]">
-                  We’ve sent a confirmation link to your email
-                </span>
-                <span className="text-[16px] font-[400]">
-                  {credentials.email}
-                </span>
-                <a
-                  href={"mailto:"+ credentials.email}
-                  className=" mx-auto flex justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-md disabled:opacity-50"
-                >
-                  Open email app
-                </a>
-                <span className="text-[16px] font-[400] mt-2">
-                  Didn’t receive the email?{" "}
-                  <button
-                    type="button"
-                    className="text-[16px] text-[#007AFF] font-[700]"
-                    onClick={() => openMail()}
-                  >
-                    click to resend
-                  </button>
-                </span>
-                <button
-                  className="flex mx-auto cursor-pointer"
-                  onClick={() => navigate("/login")}
-                >
-                  <FiArrowLeft className="text-2xl" />
-                  <span className="my-auto w-full">back to login</span>
-                </button>
-              </div>
-              <div className="absolute left-[50%] top-0 bottom-0 ">
-                <img src={Done} alt="AlignTraits succes image" />
-              </div>
+        <div className="flex gap-x-[30px] bg-[white] p-[20px]">
+          <div className="w-[50%] flex flex-col gap-y-[10px] justify-center items-center">
+            <p className="w-[500px] text-[#1F2228] text-[25px] font-semibold">Verify Your Email Address</p>
+            <p className="w-[500px] text-[#4C4E53] text-[14px]">
+              A verification mail has been sent to 
+              <span className="text-[#101828] font-semibold">{credentials.email}</span>. <br />Please click on the link to verify your account.
+            </p>
+
+            <div className="flex flex-col items-center space-y-2">
+              <button
+                disabled={disabled}
+                onClick={handleResend}
+                className={`px-4 py-2 rounded-lg text-white text-sm font-semibold ${
+                  disabled ? 'bg-gray-500 cursor-not-allowed' : 'bg-[#004085] hover:bg-blue-700'
+                }`}
+              >
+                Resend OTP
+              </button>
+              {/* {disabled && ( */}
+                <p className="text-sm italic text-gray-600">{formatTime(counter)}</p>
+              {/* )} */}
+            </div>
+          </div>
+
+          <div className='w-[50%] flex justify-center'>
+            <div className='w-[100%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
+              <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
+
+              <p className='text-[20px] text-[white] font-semibold'>The simplest way to navigate your educational future</p>
+
+              <p className='text-[white] text-[12px]'>Enter your credentials to access your account</p>
+
+              <img src={imgReset} alt='reset Image' className='h-[350px] w-[100%]' />
             </div>
           </div>
         </div>
       ) : (
-        <div className="relative min-h-screen flex items-center justify-center bg-[#F7FAFF]">
-          <div className="max-w-xl w-full space-y-8 p-8 bg-white rounded-lg shadow-xl">
-            <div className="flex flex-col items-center justify-center">
-              <h2 className="text-3xl font-bold text-center">
-                Create Your Account
+        <div className="flex gap-x-[30px] bg-[white] p-[20px]">
+          <div className="w-[50%] space-y-5 p-8 flex flex-col items-center">
+            <div className="flex flex-col justify-center items-center">
+              <h2 className="text-3xl font-bold w-[500px]">
+                Get Started Now
               </h2>
-              <div className="text-center mt-1">
-                <span className="text-[16px] font-[400]">
-                  Already have an account?{" "}
+              <p className='w-[500px] text-[#757575] text-[12px] font-medium'>Enter your credentials to access your account</p>
+            </div>
+
+            <div className="mt-6 flex gap-3 justift-center">
+              <button
+                type="button"
+                onClick={() => {
+                  /* Add Google sign-in logic */
+                }}
+                style={{
+                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
+                }}
+                className="w-[300px] flex justify-center items-center gap-x-[10px] px-2 py-1 rounded-full border border-[#ccc] shadow-sm hover:bg-gray-50"
+              >
+                <FcGoogle className="text-4xl" />
+                <p>Log in with Google</p>
+              </button>
+            </div>
+
+            <div className="relative w-[500px]">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">
+                  Or
                 </span>
-                <button
-                  onClick={() => navigate("/login")}
-                  className="text-[16px] text-[#007AFF] font-[700] underline"
-                >
-                  Login
-                </button>
               </div>
             </div>
+
 
             {error && (
               <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label
-                    htmlFor="firstName"
-                    className="block text-[16px] font-[600]"
-                  >
-                    First Name
-                  </label>
-                  <input
-                    id="firstName"
-                    type="text"
-                    required
-                    className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
-                    placeholder="Enter your first name"
-                    value={credentials.firstname}
-                    onChange={(e) =>
-                      setCredentials({
-                        ...credentials,
-                        firstname: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="lastName"
-                    className="block text-[16px] font-[600]"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    id="lastName"
-                    type="text"
-                    required
-                    className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
-                    placeholder="Enter your last name"
-                    value={credentials.lastname}
-                    onChange={(e) =>
-                      setCredentials({
-                        ...credentials,
-                        lastname: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-
+            <form onSubmit={handleSubmit} className="space-y-6 flex flex-col items-center">
               <div>
                 <label htmlFor="email" className="block text-[16px] font-[600]">
                   Email
@@ -180,7 +178,7 @@ export default function Register() {
                   id="email"
                   type="email"
                   required
-                  className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
+                  className="mt-1 w-[500px] h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                   placeholder="Enter your email address"
                   value={credentials.email}
                   onChange={(e) =>
@@ -196,12 +194,12 @@ export default function Register() {
                 >
                   Password
                 </label>
-                <div className="relative">
+                <div className="relative w-[500px]">
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     required
-                    className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
+                    className="mt-1 w-[500px] h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                     placeholder="Enter your Password"
                     value={credentials.password}
                     onChange={(e) =>
@@ -214,7 +212,7 @@ export default function Register() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#004085]"
+                    className="absolute right-6 top-1/2 -translate-y-1/2 text-[#004085]"
                   >
                     {showPassword ? (
                       <AiOutlineEyeInvisible size={20} />
@@ -225,52 +223,61 @@ export default function Register() {
                 </div>
               </div>
 
+              <label className="w-full inline-flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={agreed}
+                  onChange={() => setAgreed(!agreed)}
+                  className="form-checkbox w-4 h-4 text-blue-600 border-gray-300 rounded"
+                />
+                <span className="text-sm text-gray-800">
+                  I agree to the{' '}
+                  <button
+                    type="button"
+                    onClick={handleClick}
+                    className="underline font-medium text-gray-900 hover:text-gray-700"
+                  >
+                    Terms & Privacy
+                  </button>
+                </span>
+              </label>
+
               <button
                 type="submit"
                 disabled={isLoading || !isFormValid()}
-                className="w-1/4 mx-auto flex justify-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:opacity-50"
+                className="w-[500px] flex justify-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full disabled:opacity-50"
               >
-                {isLoading ? <BeatLoader /> : "REGISTER"}
+                {isLoading ? <BeatLoader /> : "Sign Up"}
               </button>
 
-              <div className="mt-6">
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-300"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">
-                      More Sign-In Options
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-6 flex gap-3 w-1/2 mx-auto">
-                  <button
-                    type="button"
-                    className="w-full flex justify-center items-center px-2 py-4 border border-[#007AFF] shadow-sm rounded-2xl hover:bg-gray-50"
-                  >
-                    <FcGoogle className="text-4xl" />
-                  </button>
-                  <button
-                    type="button"
-                    className="w-full flex justify-center items-center px-2 py-4 border border-[#007AFF] shadow-sm rounded-2xl hover:bg-gray-50"
-                  >
-                    <FaFacebook className="text-4xl text-[#1877F2]" />
-                  </button>
-                  <button
-                    type="button"
-                    className="w-full flex justify-center items-center px-2 py-4 border border-[#007AFF] shadow-sm rounded-2xl hover:bg-gray-50"
-                  >
-                    <FaApple className="text-4xl" />
-                  </button>
-                </div>
+              <div className="text-center">
+                <span className="text-[16px] font-[400] ">
+                  Have an account?{" "}
+                </span>
+                <button
+                  onClick={() => navigate("/login")}
+                  className="text-[16px] text-[#007AFF] font-[700] underline"
+                >
+                  Login
+                </button>
               </div>
             </form>
           </div>
+
+          <div className='w-[50%] flex justify-center'>
+            <div className='w-[100%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
+              <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
+
+              <p className='text-[20px] text-[white] font-semibold'>The simplest way to navigate your educational future</p>
+
+              <p className='text-[white] text-[12px]'>Enter your credentials to access your account</p>
+
+              <img src={imgReset} alt='reset Image' className='h-[350px] w-[100%]' />
+            </div>
+          </div>
         </div>
       )}
-    </>
+    </div>
   );
   
 }
