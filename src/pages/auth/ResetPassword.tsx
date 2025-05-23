@@ -72,7 +72,7 @@ useEffect(()=> {
       );
       if(response.status === 200) {
         setStatus(true)
-        setTimeout(() => navigate('/login'), 3000)
+        setTimeout(() => navigate('/login'), 8000)
       }
     } catch(err) {
         console.log(err)
@@ -97,7 +97,7 @@ useEffect(()=> {
       <Header />
       {
         status ? (
-          <div className='flex flex-col items-center bg-[white] p-[20px] gap-y-[20px] mt-10'>
+          <div className='flex flex-col items-center p-[20px] gap-y-[20px] mt-10'>
             <div className=''>
               <img src={resetIcon} />
             </div>
