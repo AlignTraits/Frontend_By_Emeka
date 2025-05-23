@@ -12,9 +12,8 @@ import BeatLoader from 'react-spinners/BeatLoader'
 // import { AxiosError } from 'axios'
 
 
-
 export default function Login() {
-  const { login, isLoading, error } = useAuth()
+  const { login, isLoading, error, token } = useAuth()
   const navigate = useNavigate()
   const [credentials, setCredentials] = useState<LoginCredentials>({
     email: '',
@@ -26,8 +25,13 @@ export default function Login() {
     e.preventDefault();
     try {
       const status = await login(credentials.email, credentials.password);
+
+      console.log("status: ", status, "token: ", token)
+
       if (status === 200) {
         navigate("/dashboard");
+      } else if (status === 800) {
+        navigate("/onboarding-form")
       } else {
         console.error("Unexpected status:", status);
       }
@@ -145,6 +149,7 @@ export default function Login() {
                   type="button"
                   onClick={() => {
                     /* Add Google sign-in logic */
+                    // googleLogin()
                   }}
                   style={{
                     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'

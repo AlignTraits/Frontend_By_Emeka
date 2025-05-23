@@ -29,6 +29,7 @@ export interface AuthContextType {
   setCreatingCourseClicked: React.Dispatch<React.SetStateAction<boolean>>
   setAdmin: React.Dispatch<React.SetStateAction<Admin | null>>
   login: (email: string, password: string) => Promise<void | number>;
+  googleLogin: () => Promise<void | number>;
   logout: () => Promise<void>;
   register: (
     firstname: string,
@@ -63,6 +64,7 @@ export const AuthContext = createContext<AuthContextType>({
   setAdmin: () => {},
   setUser: ()=> {},
   login: async () => {},
+  googleLogin: async () => {},
   logout: async () => {},
   register: async () => {},
   verifyEmailToken: async () => ({ status: 0 }), 

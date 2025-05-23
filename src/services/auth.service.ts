@@ -5,6 +5,7 @@ import { User} from '../types/auth.types'
 import {toast} from "react-toastify";
 
 
+
 const TOKEN_KEY = 'auth_token'
 const COOKIE_EXPIRY = 0.0208 // days
 
@@ -29,8 +30,17 @@ export const login = async (credentials: LoginCredentials) => {
   } catch(err) {
    throw(err)
   }
-  
-  // setToken(data.token)
+ 
+}
+
+export const googleLogin = async () => {
+ 
+  try{
+    const response = await api.get('/google-auth/google') 
+    return response
+  } catch(err) {
+   throw(err)
+  }
  
 }
 
@@ -223,6 +233,8 @@ export const upDateUserProfile = async (data: User, token: string, img?: File | 
       },
     });
 
+    // setToken(token)
+
     let imageResponse;
     if (img) {
       const image = await api.patch("/users/picture", img, {
@@ -250,5 +262,7 @@ export const upDateUserProfile = async (data: User, token: string, img?: File | 
     }
 
     throw err;
+  } finally {
+    logout()
   }
 };

@@ -16,6 +16,8 @@ export default function DashboardLayout() {
   const location = useLocation(); 
   const [isLoading, setIsloading] = useState(true)
 
+  // console.log("token: ", token, "isAuthenticated: ", isAuthenticated)
+
 
   useEffect(() => {
     if (user == null && token) {
@@ -34,8 +36,6 @@ export default function DashboardLayout() {
       getData();
     }
     
-    
-  
   }, [token, setUser, user]);
 
 
