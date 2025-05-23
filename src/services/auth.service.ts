@@ -29,8 +29,17 @@ export const login = async (credentials: LoginCredentials) => {
   } catch(err) {
    throw(err)
   }
-  
-  // setToken(data.token)
+ 
+}
+
+export const googleLogin = async () => {
+ 
+  try{
+    const response = await api.get('/google-auth/google') 
+    return response
+  } catch(err) {
+   throw(err)
+  }
  
 }
 

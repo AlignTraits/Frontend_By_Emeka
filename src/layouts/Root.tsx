@@ -7,15 +7,14 @@ export default function Root() {
 //  const [open, setOpen] = useState(false);
  const location = useLocation();
 
-
   if(!isAuthenticated && !token) {
-return (
-  <div className="min-h-screen bg-gray-100">
-    <main>
-      <Outlet />
-    </main>
-  </div>
-);
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <main>
+          <Outlet />
+        </main>
+      </div>
+    );
   } else {
     return <Navigate to='/dashboard' state={{ from:location }} replace />
   }
