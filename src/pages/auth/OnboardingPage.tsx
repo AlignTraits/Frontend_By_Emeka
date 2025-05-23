@@ -13,7 +13,7 @@ import { MdOutlineCalendarToday } from "react-icons/md";
 import 'react-phone-input-2/lib/style.css';
 import countriesData from "../../data/countries_states.json"
 
-import { upDateUserProfile, setToken } from '../../services/auth.service';
+import { upDateUserProfile, removeToken } from '../../services/auth.service';
 
 const countryStateData: Record<string, string[]> = {
 };
@@ -212,11 +212,14 @@ const OnboardingPage = () => {
         token as string,
         imageFile
       );
+      console.log("response: ", response)
       if(response[0].ok) {
-
-        setToken(token)
+        // setToken(token)
         toast.success("Profile updated successfully");
-        navigate("/dashboard")
+        localStorage.clear();
+        removeToken()
+        navigate("/login")
+        window.location.reload();
       }
 
     } catch (error) {

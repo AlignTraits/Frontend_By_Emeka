@@ -35,6 +35,7 @@ const login = async (email: string, password: string): Promise<number> => {
   try {
     setIsLoading(true);
     setError(null);
+    console.log("token: ", token)
     if (!token) {
       const response = await authService.login({ email, password });
       setToken(response?.data.data.token);
