@@ -73,7 +73,7 @@ export default function ForgotPassword() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6 flex flex-col">
-              <div className="space-y-4">
+              <div className="">
                 <input
                   id="email"
                   type="email"
@@ -83,13 +83,14 @@ export default function ForgotPassword() {
                   className="mt-1 w-[450px] h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onFocus={() => setError(null)}
                 />
+                {error && (
+                  <p className="text-[#E33629] text-[12px] mt-1">
+                    {error}
+                  </p>
+                )}
               </div>
-              {error && (
-                <div className="bg-red-50 text-red-500 p-3 rounded">
-                  {error}
-                </div>
-              )}
 
               <button
                 type="submit"

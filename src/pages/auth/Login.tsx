@@ -13,7 +13,7 @@ import BeatLoader from 'react-spinners/BeatLoader'
 
 
 export default function Login() {
-  const { login, isLoading, error, token } = useAuth()
+  const { login, isLoading, error } = useAuth()
   const navigate = useNavigate()
   const [credentials, setCredentials] = useState<LoginCredentials>({
     email: '',
@@ -25,8 +25,6 @@ export default function Login() {
     e.preventDefault();
     try {
       const status = await login(credentials.email, credentials.password);
-
-      console.log("status: ", status, "token: ", token)
 
       if (status === 200) {
         navigate("/dashboard");
@@ -56,7 +54,9 @@ export default function Login() {
             <p className='text-[#757575] text-[12px] font-medium'>Log in to your Aligntraits account</p>
           </div>
           {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
+            <p className="text-[#E33629] text-[12px] mt-1">
+              {error}
+            </p>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">

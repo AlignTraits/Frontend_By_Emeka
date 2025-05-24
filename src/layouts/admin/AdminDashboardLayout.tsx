@@ -3,8 +3,6 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 import Sidebar from "../../components/Admin/Sidebar";
 import Header from "../../components/Admin/Header";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { getAdminDetails } from "../../services/auth.service";
 
 
@@ -44,7 +42,6 @@ export default function DashboardLayout() {
             <Outlet />
           {/* </main> */}
         </div>
-        <ToastContainer />
       </div>
     );
   } else {

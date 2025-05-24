@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/useAuth"; 
 import Sidebar from "../components/dashboard/SideBar";
 import Header from "../components/dashboard/Header";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { getUserDetails } from "../services/auth.service";
 import { ClipLoader } from "react-spinners";
 
@@ -14,22 +12,28 @@ export default function DashboardLayout() {
 
   const [open, setOpen] = useState(false); 
   const location = useLocation(); 
-  const [isLoading, setIsloading] = useState(true)
+  const [isLoading, setIsloading] = useState(false)
 
-  // console.log("token: ", token, "isAuthenticated: ", isAuthenticated)
-
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (user == null && token) {
       async function getData() {
+        let response;
+        setIsloading(true)
         try {
-          const response = await getUserDetails(token as string);
+          response = await getUserDetails(token as string);
           localStorage.setItem("user", JSON.stringify(response.data))
           setUser(response.data)
-          setIsloading(false)
 
         } catch (error) {
           console.error("Error fetching user details:", error);
+        } finally {
+          setIsloading(false)
+
+          if (response.data.firstname === "") {
+            navigate("/onboarding-form")
+          }
         }
       }
       
@@ -37,7 +41,6 @@ export default function DashboardLayout() {
     }
     
   }, [token, setUser, user]);
-
 
   if (isAuthenticated && token) {
     return (
@@ -55,7 +58,6 @@ export default function DashboardLayout() {
                 <Outlet />
               </main>
             </div>
-            <ToastContainer />
           </div>
         )}
       </>

@@ -4,6 +4,8 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from './contexts/AuthContext'
 import { lazy, Suspense } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Lazy imports for code splitting
 const Root = lazy(() => import("./layouts/Root"));
@@ -42,19 +44,19 @@ const HomeSearch = lazy(() => import("./pages/HomeSearch"));
 const OnboardingPage = lazy(() => import("./pages/auth/OnboardingPage"))
 
 const router = createBrowserRouter([
+  { path: "/login", element: <Login /> },
+  { path: "/signup", element: <SignUp /> },
+  { path: "/forgot-password", element: <ForgotPassword /> },
+  { path: '/email-verify', element: <VerifyEmail /> },
+  { path: '/reset-password', element: <ResetPassword /> },
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
-      { path: "login", element: <Login /> },
       { path: "search", element: <HomeSearch /> },
-      { path: "signup", element: <SignUp /> },
-      { path: "forgot-password", element: <ForgotPassword /> },
-      { path: '/email-verify', element: <VerifyEmail /> },
-      { path: '/reset-password', element: <ResetPassword /> },
-      { path: '/onboarding-form', element: <OnboardingPage /> },
+      { path: 'onboarding-form', element: <OnboardingPage /> },
     ],
   },
   {
@@ -141,6 +143,7 @@ function App() {
       >
         <RouterProvider router={router} />
       </Suspense>
+      <ToastContainer position="top-right" autoClose={3000} />
     </AuthProvider>
   );
 }

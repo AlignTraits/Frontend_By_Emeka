@@ -9,7 +9,7 @@ import Glove from '../assets/Glove.svg'
 import DirectionArrow from '../assets/DirectionArrow.svg'
 import Study from '../assets/study.svg'
 import api from '../api/axios'
-import {toast, ToastContainer} from 'react-toastify'
+import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import SuccessCheck from '../assets/success-check.svg'
 import { BeatLoader } from "react-spinners"
@@ -131,8 +131,6 @@ export default function Home() {
         alt=""
         className="absolute top-[31%] left-[7%] md:top-[30%] md:left-[15%] lg:top-[40%] xl:top-[42%] xl:left-[23%] h-[55px] md:h-[100px] lg:h-[150px] "
       />
-
-      <ToastContainer />
       {modalOpen && <Modal setModalOpen={setModalOpen} />}
     </div>
   );

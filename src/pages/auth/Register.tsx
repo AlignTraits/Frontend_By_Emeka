@@ -96,7 +96,7 @@ export default function Register() {
             <p className="w-[500px] text-[#1F2228] text-[25px] font-semibold">Verify Your Email Address</p>
             <p className="w-[500px] text-[#4C4E53] text-[14px]">
               A verification mail has been sent to 
-              <span className="text-[#101828] font-semibold">{credentials.email}</span>. <br />Please click on the link to verify your account.
+              <span className="text-[#101828] font-semibold"> {credentials.email}</span>. <br />Please click on the link to verify your account.
             </p>
 
             <div className="flex flex-col items-center space-y-2">
@@ -166,7 +166,9 @@ export default function Register() {
 
 
             {error && (
-              <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
+              <p className="text-[#E33629] text-[12px] mt-1">
+                {error}
+              </p>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6 flex flex-col items-center">
