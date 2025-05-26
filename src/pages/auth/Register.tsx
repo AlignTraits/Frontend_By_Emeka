@@ -246,7 +246,7 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={isLoading || !isFormValid()}
-                className="w-[500px] flex justify-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full disabled:opacity-50"
+                className="w-[500px] h-14 flex justify-center items-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full disabled:opacity-50"
               >
                 {isLoading ? <BeatLoader /> : "Sign Up"}
               </button>

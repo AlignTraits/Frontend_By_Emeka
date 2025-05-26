@@ -199,7 +199,7 @@ const googleLogin = async () => {
         setError(err.response.data.message);
       }
 
-      setTimeout(() => setError(null), 2000);
+      setTimeout(() => setError(null), 4000);
       throw err;
     } finally {
       setIsLoading(false);

@@ -49,7 +49,7 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="relative h-screen w-full bg-[#FCFCFD]">
+    <div className="relative h-screen w-full bg-[white]">
       <Header />
 
       {
