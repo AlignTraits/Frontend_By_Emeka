@@ -6,7 +6,6 @@ import Header from "../components/dashboard/Header";
 import { getUserDetails } from "../services/auth.service";
 import { ClipLoader } from "react-spinners";
 
-
 export default function DashboardLayout() {
   const { token, isAuthenticated, user, setUser } = useAuth();
 

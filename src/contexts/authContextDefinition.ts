@@ -26,6 +26,7 @@ export interface AuthContextType {
   admin: Admin | null
   setUser: React.Dispatch<React.SetStateAction<User | null>>
   setCurrentCourseID: React.Dispatch<React.SetStateAction<string | null>>
+
   setCreatingCourseClicked: React.Dispatch<React.SetStateAction<boolean>>
   setAdmin: React.Dispatch<React.SetStateAction<Admin | null>>
   login: (email: string, password: string) => Promise<void | number>;
@@ -50,7 +51,8 @@ export interface AuthContextType {
   currentCourseID: string | null;
   creatingCourseClicked: boolean;
   setEndDate: React.Dispatch<React.SetStateAction<string>>;
-  setStartDate: React.Dispatch<React.SetStateAction<string>>
+  setStartDate: React.Dispatch<React.SetStateAction<string>>;
+  setToken: React.Dispatch<React.SetStateAction<string | undefined>>;
   startDate: string;
   endDate: string;
   setDatePickerClicked: React.Dispatch<React.SetStateAction<boolean>>;
@@ -65,6 +67,7 @@ export const AuthContext = createContext<AuthContextType>({
   setUser: ()=> {},
   login: async () => {},
   googleLogin: async () => {},
+  setToken: () => {},
   logout: async () => {},
   register: async () => {},
   verifyEmailToken: async () => ({ status: 0 }), 

@@ -42,6 +42,7 @@ const BulkCenter = lazy(() => import("./pages/admin/BulkCenter"));
 const ProfileManagement = lazy(() => import("./pages/admin/ProfileManagement"));
 const HomeSearch = lazy(() => import("./pages/HomeSearch"));
 const OnboardingPage = lazy(() => import("./pages/auth/OnboardingPage"))
+const GoogleAuthSuccess = lazy(() => import("./pages/auth/GoogleAuthSuccess"));
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
   { path: "/forgot-password", element: <ForgotPassword /> },
   { path: '/email-verify', element: <VerifyEmail /> },
   { path: '/reset-password', element: <ResetPassword /> },
+  { path: '/auth/success', element: <GoogleAuthSuccess /> },
   {
     path: "/",
     element: <Root />,

@@ -11,6 +11,7 @@ import traitText from "../../assets/traitstext.svg"
 import BeatLoader from 'react-spinners/BeatLoader'
 // import { AxiosError } from 'axios'
 
+const GOOGLE_AUTH_URL = "https://backend-oo07.onrender.com/api/v1/google-auth/google";
 
 export default function Login() {
   const { login, isLoading, error } = useAuth()
@@ -147,10 +148,7 @@ export default function Login() {
               <div className="mt-6 flex gap-3 w-1/2 mx-auto">
                 <button
                   type="button"
-                  onClick={() => {
-                    /* Add Google sign-in logic */
-                    // googleLogin()
-                  }}
+                  onClick={() => window.location.href = GOOGLE_AUTH_URL}
                   style={{
                     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
                   }}
