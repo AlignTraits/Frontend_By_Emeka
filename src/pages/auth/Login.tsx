@@ -9,9 +9,8 @@ import imgReset from "../../assets/imgReset.png"
 import traitText from "../../assets/traitstext.svg"
 // import {setToken} from '../../services/auth.service'
 import BeatLoader from 'react-spinners/BeatLoader'
+import { GOOGLE_AUTH_URL } from '../../constants/auth.constant'
 // import { AxiosError } from 'axios'
-
-const GOOGLE_AUTH_URL = "https://backend-oo07.onrender.com/api/v1/google-auth/google";
 
 export default function Login() {
   const { login, isLoading, error } = useAuth()

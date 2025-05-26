@@ -1,0 +1,1 @@
+export const GOOGLE_AUTH_URL = "https://backend-oo07.onrender.com/api/v1/google-auth/google";

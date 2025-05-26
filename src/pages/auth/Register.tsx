@@ -10,6 +10,7 @@ import imgReset from "../../assets/imgReset.png"
 import traitText from "../../assets/traitstext.svg"
 import BeatLoader from "react-spinners/BeatLoader";
 import Header from '../../components/Header';
+import { GOOGLE_AUTH_URL } from '../../constants/auth.constant'
 
 
 export default function Register() {
@@ -140,9 +141,7 @@ export default function Register() {
             <div className="mt-6 flex gap-3 justift-center">
               <button
                 type="button"
-                onClick={() => {
-                  /* Add Google sign-in logic */
-                }}
+                 onClick={() => window.location.href = GOOGLE_AUTH_URL}
                 style={{
                   boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
                 }}
