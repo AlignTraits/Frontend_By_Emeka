@@ -13,7 +13,8 @@ import { MdOutlineCalendarToday } from "react-icons/md";
 import 'react-phone-input-2/lib/style.css';
 import countriesData from "../../data/countries_states.json"
 
-import { upDateUserProfile, removeToken } from '../../services/auth.service';
+import { upDateUserProfile } from '../../services/auth.service';
+import { useAuth } from '../../contexts/useAuth';
 
 const countryStateData: Record<string, string[]> = {
 };
@@ -23,7 +24,8 @@ countriesData.map((elem:any) => {
 })
 
 const OnboardingPage = () => {
-  const [token, setTokenNew] = useState("")
+  const {token} = useAuth()
+  // const [token, setTokenNew] = useState("")
   const navigate = useNavigate()
   const [firstName, setFirstName] = useState("")
 
@@ -57,9 +59,9 @@ const OnboardingPage = () => {
   const [uploadError, setUploadError] = useState("")
 
   useEffect(() => {
-    let tempData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData") as string) : null;
+    let tempData = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") as string) : null;
     setEmail(tempData.email)
-    setTokenNew(tempData.token)
+    // setTokenNew(tempData.token)
   }, [])
 
 
@@ -214,12 +216,10 @@ const OnboardingPage = () => {
       );
       console.log("response: ", response)
       if(response[0].ok) {
-        // setToken(token)
         toast.success("Profile updated successfully");
-        localStorage.clear();
-        removeToken()
-        navigate("/login")
-        window.location.reload();
+        setTimeout(() => {
+          navigate("/dashboard")
+        }, 3000)
       }
 
     } catch (error) {

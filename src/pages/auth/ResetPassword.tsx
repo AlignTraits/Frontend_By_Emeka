@@ -90,10 +90,18 @@ useEffect(()=> {
   // bg-gradient-to-br from-[#F1F5FF] via-white to-[#FFF7E6]
 
   // bg-gradient-to-br from-[#F1F5FF] via-white to-[#FFF7E6]
+
+  // bg-gradient-to-br from-blue-50 via-blue-25 to-amber-50
+
+  // bg-gradient-to-br from-blue-50 to-gray-100
+
+  // bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white
+
+
    
 
   return (
-    <div className="relative h-screen w-full bg-gradient-to-br from-blue-50 via-blue-25 to-amber-50">
+    <div className="relative h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white">
       <Header />
       {
         status ? (
@@ -106,7 +114,7 @@ useEffect(()=> {
             </p>
           </div>
         ) : (
-          <div className="mx-auto mt-[60px] w-[600px] space-y-5 p-10 bg-white rounded-lg shadow-lg">
+          <div className="mx-auto mt-[80px] w-[600px] space-y-5 p-10 bg-white rounded-lg shadow-lg border-[#ccc] border-[1px]">
             <div className="mx-auto space-y-2">
               <h2 className="text-2xl text-[#101828]">
                 Reset password
@@ -133,7 +141,8 @@ useEffect(()=> {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     required
-                    className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
+                    // className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
+                    className="mt-1 w-full h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                     placeholder="Enter your new password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -165,7 +174,8 @@ useEffect(()=> {
                     id="confirm-password"
                     type={showConfirmPassword ? "text" : "password"}
                     required
-                    className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
+                    // className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
+                    className="mt-1 w-full h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                     placeholder="Re-enter your new password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}

@@ -10,6 +10,7 @@ import imgReset from "../../assets/imgReset.png"
 import traitText from "../../assets/traitstext.svg"
 import BeatLoader from "react-spinners/BeatLoader";
 import Header from '../../components/Header';
+import { GOOGLE_AUTH_URL } from '../../constants/auth.constant'
 
 
 export default function Register() {
@@ -96,7 +97,7 @@ export default function Register() {
             <p className="w-[500px] text-[#1F2228] text-[25px] font-semibold">Verify Your Email Address</p>
             <p className="w-[500px] text-[#4C4E53] text-[14px]">
               A verification mail has been sent to 
-              <span className="text-[#101828] font-semibold">{credentials.email}</span>. <br />Please click on the link to verify your account.
+              <span className="text-[#101828] font-semibold"> {credentials.email}</span>. <br />Please click on the link to verify your account.
             </p>
 
             <div className="flex flex-col items-center space-y-2">
@@ -140,9 +141,7 @@ export default function Register() {
             <div className="mt-6 flex gap-3 justift-center">
               <button
                 type="button"
-                onClick={() => {
-                  /* Add Google sign-in logic */
-                }}
+                 onClick={() => window.location.href = GOOGLE_AUTH_URL}
                 style={{
                   boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
                 }}
@@ -166,7 +165,9 @@ export default function Register() {
 
 
             {error && (
-              <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
+              <p className="text-[#E33629] text-[12px] mt-1">
+                {error}
+              </p>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6 flex flex-col items-center">
@@ -245,7 +246,7 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={isLoading || !isFormValid()}
-                className="w-[500px] flex justify-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full disabled:opacity-50"
+                className="w-[500px] h-14 flex justify-center items-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full disabled:opacity-50"
               >
                 {isLoading ? <BeatLoader /> : "Sign Up"}
               </button>

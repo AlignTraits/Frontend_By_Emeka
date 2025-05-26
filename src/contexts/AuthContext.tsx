@@ -35,18 +35,9 @@ const login = async (email: string, password: string): Promise<number> => {
   try {
     setIsLoading(true);
     setError(null);
-    console.log("token: ", token)
     if (!token) {
       const response = await authService.login({ email, password });
       setToken(response?.data.data.token);
-      const userDetails = await authService.getUserDetails(response?.data.data.token)
-
-      let userWithToken = {...userDetails.data, token: response?.data.data.token}
-      
-      if (userDetails.status === 200 && userDetails.data.firstname === "") {
-        localStorage.setItem("userData", JSON.stringify(userWithToken))
-        return 800
-      }
 
       authService.setToken(response.data.data.token);
       return response.data.status; // Ensure status is always returned
@@ -72,7 +63,7 @@ const login = async (email: string, password: string): Promise<number> => {
       setError(err.response.data.message);
     }
 
-    setTimeout(() => setError(null), 2000);
+    setTimeout(() => setError(null), 4000);
     throw err;
   } finally {
     setIsLoading(false);
@@ -208,7 +199,7 @@ const googleLogin = async () => {
         setError(err.response.data.message);
       }
 
-      setTimeout(() => setError(null), 2000);
+      setTimeout(() => setError(null), 4000);
       throw err;
     } finally {
       setIsLoading(false);
@@ -240,6 +231,7 @@ const googleLogin = async () => {
     setDatePickerClicked,
     datePickerClicked,
     googleLogin,
+    setToken
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -7,7 +7,7 @@ export default function Root() {
 //  const [open, setOpen] = useState(false);
  const location = useLocation();
 
-  if(!isAuthenticated && !token) {
+  if(isAuthenticated && token) {
     return (
       <div className="min-h-screen bg-gray-100">
         <main>
@@ -16,7 +16,7 @@ export default function Root() {
       </div>
     );
   } else {
-    return <Navigate to='/dashboard' state={{ from:location }} replace />
+    return <Navigate to='/login' state={{ from:location }} replace />
   }
 
   

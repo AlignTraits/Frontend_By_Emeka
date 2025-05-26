@@ -143,13 +143,13 @@ export const getUserDetails = async ( token: string) => {
      });
      if (!response.data.ok) {
        await logout();
-       window.location.href = "/admin/login";
+       window.location.href = "/login";
      }
      return response.data;
    } catch (err) {
      if (err) {
        await logout();
-       window.location.href = "/admin/login";
+       window.location.href = "/login";
      }
    }
 }
@@ -237,9 +237,15 @@ export const upDateUserProfile = async (data: User, token: string, img?: File | 
 
     let imageResponse;
     if (img) {
-      const image = await api.patch("/users/picture", img, {
+      let tempData = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") as string) : null;
+      const formData = new FormData()
+      formData.append("profile", img); 
+      formData.append("userId", tempData.id);
+
+      const image = await api.patch("/users/picture", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`,
         },
       });
       imageResponse = image.data;
@@ -262,7 +268,5 @@ export const upDateUserProfile = async (data: User, token: string, img?: File | 
     }
 
     throw err;
-  } finally {
-    logout()
   }
 };
