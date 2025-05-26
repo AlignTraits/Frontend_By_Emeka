@@ -92,6 +92,12 @@ useEffect(()=> {
   // bg-gradient-to-br from-[#F1F5FF] via-white to-[#FFF7E6]
 
   // bg-gradient-to-br from-blue-50 via-blue-25 to-amber-50
+
+  // bg-gradient-to-br from-blue-50 to-gray-100
+
+  // bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white
+
+
    
 
   return (
