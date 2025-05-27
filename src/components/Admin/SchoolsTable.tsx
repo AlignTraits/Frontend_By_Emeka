@@ -87,7 +87,7 @@ export default function SchoolsTable({
       )}
 
       {!isLoading && (
-        <div className="w-full h-[400px] border-gray-300 overflow-y-scroll">
+        <div className="w-full h-[400px] border-gray-300 overflow-y-scroll relative">
           <table className="w-full table-auto space-y-4">
             <thead className="border-b-[0.8px] border-[#EAECF0] p-[20px] bg-white sticky top-0">
               <tr className="[&>th]:text-[#000000] [&>th]:text-[14px] [&>th]:font-medium [&>th]:pb-2">
@@ -167,9 +167,8 @@ export default function SchoolsTable({
               {children}
             </tfoot> */}
           </table>
-          {children}
           {!isLoading && schools.length === 0 && (
-            <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[400px]">
+            <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[250px]">
               <img src={fileIcon} alt="Not found" />
               <p className="text-[#101828] text-[16px] font-semibold">No School Found</p>
               <p className="text-center text-[#475467] text-[14px] font-normal">
@@ -177,6 +176,9 @@ export default function SchoolsTable({
               </p>
             </div>
           )}
+          <div className="absolute bottom-0 left-0 right-0 p-[20px]">
+            {children}
+          </div>
         </div>
       )}
 
