@@ -52,12 +52,12 @@ const router = createBrowserRouter([
   { path: '/reset-password', element: <ResetPassword /> },
   { path: '/auth/success', element: <GoogleAuthSuccess /> },
   { path: "search", element: <HomeSearch /> },
+    { index: true, element: <Home /> },
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Home /> },
       { path: 'onboarding-form', element: <OnboardingPage /> },
     ],
   },
