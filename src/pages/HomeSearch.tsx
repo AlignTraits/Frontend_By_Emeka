@@ -14,8 +14,9 @@ import { getCoursesWithoutToken } from "../services/schools";
 import CourseDetails from "../components/dashboard/CourseDetails";
 // import csvFile from "../assets/csvFile.csv"
 
-const TAB_NAV = ["Programs", "Scholarship Opportunities", "STEM", "Business & Management", "IT & Computer Science",
-  "Health & Medicine", "Law & Legal Studies", "Engineering",
+const TAB_NAV = ["All Programs", "Business and Management", "Humanities and Arts", "IT & Computer Science",
+  "Social Sciences", "Education", "Law and Legal Studies", "Communication and Media Studies",
+  "Health and Medical Sciences",  "Engineering", "Agriculture and Environmental Studies", "Architecture and Design"
 ]
 
 const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
