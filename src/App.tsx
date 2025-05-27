@@ -51,13 +51,13 @@ const router = createBrowserRouter([
   { path: '/email-verify', element: <VerifyEmail /> },
   { path: '/reset-password', element: <ResetPassword /> },
   { path: '/auth/success', element: <GoogleAuthSuccess /> },
+  { path: "search", element: <HomeSearch /> },
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
-      { path: "search", element: <HomeSearch /> },
       { path: 'onboarding-form', element: <OnboardingPage /> },
     ],
   },

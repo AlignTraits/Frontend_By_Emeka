@@ -180,9 +180,9 @@ const [itemForDelete, setItemForDelete] = useState({
               </tbody>
             )}
           </table>
-          {children}
+          
           {!isLoading && courses.length === 0 && (
-            <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[400px]">
+            <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[250px]">
               <img src={fileIcon} alt="Not found" />
               <p className="text-[#101828] text-[16px] font-semibold">No Course Created</p>
               <p className="text-center text-[#475467] text-[14px] font-normal">
@@ -190,6 +190,9 @@ const [itemForDelete, setItemForDelete] = useState({
               </p>
             </div>
           )}
+          <div className="absolute bottom-5 left-0 right-0 p-[20px]">
+            {children}
+          </div>
         </div>
       )}
 

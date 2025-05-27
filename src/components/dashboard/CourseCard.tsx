@@ -12,7 +12,7 @@ interface CoursesProps {
 const CourseCard = ({courseItem, setCourseDetails, setShowDetails}: CoursesProps) => {
   // console.log("courseItem: ", courseItem)
   return (
-    <div className="w-[300px] size-max rounded-md border-[2px] border-[#EAECF0] p-[8px] flex flex-col gap-y-[10px]">
+    <div className="w-[300px] h-[500px] rounded-md border-[2px] border-[#EAECF0] p-[8px] flex flex-col gap-y-[10px] justify-between bg-white">
       <div className="w-[100%] h-[180px] rounded-md">
         <img alt="course Icon" src={courseItem.image} className="h-[100%] w-[100%] rounded-md" />
       </div>

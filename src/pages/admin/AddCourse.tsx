@@ -15,10 +15,18 @@ import ngnFlag from "../../assets/ngn.png"
 import usdFlag from "../../assets/usd.png"
 import eurFlag from "../../assets/eur.jpeg"
 import TextEditorTwo from "../../components/Admin/TextEditorTwo";
+import Papa from 'papaparse';
+import SearchSelect from "../../components/dashboard/SearchSelect";
+import { getCoursesCategories } from "../../services/schools";
 
 type ExamEntry = {
   examType: string;
   operator: string;
+};
+
+type CategoryType = {
+  id: number;
+  name: string;
 };
 
 const programLevelList = ["Bachelor Degree", "Masters Degree", "Diploma", "PGD", "PHD"]
@@ -82,6 +90,12 @@ export default function AddCourse () {
   const [coursePriceCurrency, setCoursePriceCurrency] = useState<string>("NGN");
   const [showCoursePriceCurrencyDropdown, setShowCoursePriceCurrencyDropdown] = useState(false);
   const [tempRules1, setTempRules1] = useState<any>(null) 
+  const [programList, setProgramList] = useState<string[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+
+  const [categoryType, setCategoryType] = useState<{ [key: string]: any[] }>({});
+
+  const [categoryId, setCategoryId] = useState<number | null>(null);
 
 
   const handleCurrencyChange = (selectedCurrency: "NGN" | "USD" | "EUR") => {
@@ -208,12 +222,13 @@ export default function AddCourse () {
     formData.append("loanInformation", loanDescription)
     formData.append("courseWebsiteUrl", website)
     formData.append("scholarshipInformation", scholarshipDescription)
+    formData.append("categoryId", categoryId ? categoryId.toString() : "1");
 
 
     try {
       setIsLoading(true)
       const response =   await createCourse(formData, token as string, currentCourseID ? currentCourseID : undefined)
-      console.log("response: ", response)
+      // console.log("response: ", response)
       setCalledCreatedCourseAPI(true)
       if (currentCourseID) {
         toast.success("Course Updated Successfully");
@@ -239,6 +254,61 @@ export default function AddCourse () {
   useEffect(() => {
     getCourse()
   }, [])
+
+  useEffect(() => {
+    Papa.parse("/csvFile.csv", {
+      download: true,
+      header: true,
+      complete: (result) => {
+        const data = result.data;
+
+        // Find the key with course/subject names
+        const key = Object.keys(data[0] as object).find(k =>
+          k.toLowerCase().includes('course') || k.toLowerCase().includes('subject')
+        );
+
+        let uniqueCourses: string[] = [];
+        if (key) {
+          uniqueCourses = Array.from(new Set(
+            data.map(row => (row as any)[key]?.toString().trim()).filter(Boolean)
+          ));
+        }
+
+        setProgramList(uniqueCourses);
+      },
+    });
+
+    handleGetCoursesCategories();
+
+    fetch("/courseCategories.csv")
+      .then((response) => response.text())
+      .then((csvText) => {
+        Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (results) => {
+            const rows = results.data;
+
+            const tempData: Record<string, any[]> = {};
+
+            rows.forEach((row) => {
+              const rowObj = row as Record<string, any>;
+              for (const category in rowObj) {
+                if (!tempData[category]) {
+                  tempData[category] = [];
+                }
+                const value = rowObj[category];
+                if (value) {
+                  tempData[category].push(value);
+                }
+              }
+            });
+
+            setCategoryType(tempData);
+          },
+        });
+      });
+  }, []);
 
   const getCourse = async () => {
     if (currentCourseID) {
@@ -337,8 +407,6 @@ export default function AddCourse () {
         temPayload[`Adminrule${i + 1}`] = "";
       }
     }
-
-    console.log("temPayload: ", temPayload)
     temPayload = { ...temPayload, id: currentCourseID }
 
     try {
@@ -393,6 +461,34 @@ export default function AddCourse () {
     USD: usdFlag,
     EUR: eurFlag
   };
+
+  const handleGetCoursesCategories = async () => {
+    try {
+      const response = await getCoursesCategories();
+      if (response.status !== 200) {
+        toast.error("Failed to fetch course categories");
+      }
+      setCategories(response.data.data)
+    } catch (error) {
+      toast.error("Failed to fetch course categories");
+    }
+  }
+
+  useEffect(() => {
+    if (title.length > 0) {
+      for (const key of Object.keys(categoryType)) {
+        let category: string | undefined = categoryType[key].find((cat) => cat === title);
+        if (category && category.length > 0) {
+          categories.map((cat) => {
+            if (cat.name === key) {
+              setCategoryId(cat.id);
+            }
+          })
+          break; // Exit the loop if found
+        }
+      }
+    }
+  }, [title]);
 
   return (
     <div className="relative">
@@ -453,15 +549,20 @@ export default function AddCourse () {
 
             <div className="w-full flex flex-col gap-y-[5px]">
               <p className={`text-[16px] text-[#1E1E1E] font-medium ${errorObj.title ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Course Title*</p>
-              <input
-                onFocus={() => setErrorObj((prev) => ({...prev, title: false}))}
-                type="text"
-                placeholder="What is your title?"
-                name="courseTitle"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
-              />
+                <SearchSelect
+                  placeholder="Select Level"
+                  options={programList.map((level) => ({
+                    value: level,
+                    label: level,
+                  }))}
+                  onChange={(value) => setTitle(value)}
+                  selectedProps={{
+                    value: title,
+                    label: title
+                  }}
+                  handleError={() => setErrorObj((prev) => ({...prev, title: false}))}
+
+                />
               <p className="text-[#737373] text-[12px] font-normal">The official title of the course or program.</p>
             </div>
 
@@ -478,13 +579,6 @@ export default function AddCourse () {
               />
               <p className="text-[#737373] text-[12px] font-normal">The official website page for this course.</p>
             </div>
-
-            {/* <div className="flex">
-              <p className="text-[18px] font-semibold text-[#1E1E1E] w-[210px] ">
-                Course Information
-              </p>
-              <div className="w-[100%] border-b-[2px] border-[#E0E0E0]"></div>
-            </div> */}
 
             <div className="flex gap-x-[20px]">
               <div className="w-full flex flex-col gap-y-[5px]">

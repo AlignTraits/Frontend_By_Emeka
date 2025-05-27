@@ -14,8 +14,9 @@ import { getCoursesWithoutToken } from "../services/schools";
 import CourseDetails from "../components/dashboard/CourseDetails";
 // import csvFile from "../assets/csvFile.csv"
 
-const TAB_NAV = ["Programs", "Scholarship Opportunities", "STEM", "Business & Management", "IT & Computer Science",
-  "Health & Medicine", "Law & Legal Studies", "Engineering",
+const TAB_NAV = ["All Programs", "Business and Management", "Humanities and Arts", "IT & Computer Science",
+  "Social Sciences", "Education", "Law and Legal Studies", "Communication and Media Studies",
+  "Health and Medical Sciences",  "Engineering", "Agriculture and Environmental Studies", "Architecture and Design"
 ]
 
 const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
@@ -161,28 +162,28 @@ export default function HomeSearch() {
   }
 
   useEffect(() => {
-  Papa.parse("/csvFile.csv", {
-    download: true,
-    header: true,
-    complete: (result) => {
-      const data = result.data;
+    Papa.parse("/csvFile.csv", {
+      download: true,
+      header: true,
+      complete: (result) => {
+        const data = result.data;
 
-      // Find the key with course/subject names
-      const key = Object.keys(data[0] as object).find(k =>
-        k.toLowerCase().includes('course') || k.toLowerCase().includes('subject')
-      );
+        // Find the key with course/subject names
+        const key = Object.keys(data[0] as object).find(k =>
+          k.toLowerCase().includes('course') || k.toLowerCase().includes('subject')
+        );
 
-      let uniqueCourses: string[] = [];
-      if (key) {
-        uniqueCourses = Array.from(new Set(
-          data.map(row => (row as any)[key]?.toString().trim()).filter(Boolean)
-        ));
-      }
+        let uniqueCourses: string[] = [];
+        if (key) {
+          uniqueCourses = Array.from(new Set(
+            data.map(row => (row as any)[key]?.toString().trim()).filter(Boolean)
+          ));
+        }
 
-      setProgramList(uniqueCourses);
-    },
-  });
-}, []);
+        setProgramList(uniqueCourses);
+      },
+    });
+  }, []);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -210,10 +211,11 @@ export default function HomeSearch() {
       const name = s.title.toLowerCase();
       return name.includes(term)
       && (scholarshipOptions === "" || scholarshipOptions.toLowerCase() === s.scholarship?.toLowerCase())
+      && (fieldStudy === "" || fieldStudy === s.title)
       && (selectedCountry === "" || selectedCountry.toLowerCase() === s.university?.country.toLowerCase())
       && (selectedState === "" || selectedState.toLowerCase() === s.university?.region.toLowerCase());
     });
-  }, [courses, searchAllTerm, scholarshipOptions, selectedCountry, selectedState]);
+  }, [courses, searchAllTerm, scholarshipOptions, selectedCountry, selectedState, fieldStudy]);
 
 
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
@@ -259,7 +261,7 @@ export default function HomeSearch() {
         showDetails ? (
           <CourseDetails courseItem={courseDetails} setShowDetails={setShowDetails} />
         ) : (
-          <>
+          <div className="w-full min-h-screen">
             <div className="flex border-b border-b-[#EAECF0] px-[20px] mt-[20px]">
               {TAB_NAV.map((tab, index) => {
                 const tabKey = `tab${index + 1}`;
@@ -430,7 +432,7 @@ export default function HomeSearch() {
 
             {
               !isLoading && (
-                <div className="p-5 flex flex-wrap justify-between gap-y-[30px] w-[100%]">
+                <div className="p-5 flex flex-wrap gap-[30px] w-[100%]">
                   {
                     paginatedCourses.length > 0 && paginatedCourses.map((elem, i) => (
                       <CourseCard setShowDetails={setShowDetails} courseItem={elem} key={i} setCourseDetails={setCourseDetails} />
@@ -468,7 +470,7 @@ export default function HomeSearch() {
                 Next
               </button>
             </div>
-          </>
+          </div>
         )
       }
 
