@@ -12,12 +12,21 @@ import countriesData from "../data/countries_states.json"
 import fileIcon from "../assets/IconWrap.svg"
 import { getCoursesWithoutToken } from "../services/schools";
 import CourseDetails from "../components/dashboard/CourseDetails";
+import { getCoursesCategories } from "../services/schools";
+import { toast } from "react-toastify";
+import { courseCategoryList } from "../data/courseCategories";
 // import csvFile from "../assets/csvFile.csv"
 
-const TAB_NAV = ["All Programs", "Business and Management", "Humanities and Arts", "IT & Computer Science",
-  "Social Sciences", "Education", "Law and Legal Studies", "Communication and Media Studies",
-  "Health and Medical Sciences",  "Engineering", "Agriculture and Environmental Studies", "Architecture and Design"
-]
+
+type CategoryType = {
+  id: number;
+  name: string;
+};
+
+// const TAB_NAV = ["All Programs", "Business and Management", "Humanities and Arts", "IT & Computer Science",
+//   "Social Sciences", "Education", "Law and Legal Studies", "Communication and Media Studies",
+//   "Health and Medical Sciences",  "Engineering", "Agriculture and Environmental Studies", "Architecture and Design"
+// ]
 
 const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
 
@@ -56,6 +65,7 @@ export default function HomeSearch() {
   const [showDetails, setShowDetails] = useState(false)
   const [courseDetails, setCourseDetails] = useState<Course|null>(null);
   const [fieldDropdownOpen, setFieldDropdownOpen] = useState(false);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -152,10 +162,12 @@ export default function HomeSearch() {
     setSearchAllTerm("")
     setFieldStudy("")
     setScholarshipOptions("")
+    setActiveTab(0)
   }
 
-  const [activeTab, setActiveTab] = useState("tab1");
+  const [activeTab, setActiveTab] = useState(0);
 
+  console.log("activeTab: ", activeTab)
 
   const goLogin = () => {
     navigate("/login")
@@ -201,6 +213,8 @@ export default function HomeSearch() {
     };
 
     fetchCourses();
+
+    handleGetCoursesCategories();
   }, []);
 
   const filteredCourses = useMemo(() => {
@@ -212,10 +226,11 @@ export default function HomeSearch() {
       return name.includes(term)
       && (scholarshipOptions === "" || scholarshipOptions.toLowerCase() === s.scholarship?.toLowerCase())
       && (fieldStudy === "" || fieldStudy === s.title)
+      && (activeTab === 0 || activeTab === s.categoryId)
       && (selectedCountry === "" || selectedCountry.toLowerCase() === s.university?.country.toLowerCase())
       && (selectedState === "" || selectedState.toLowerCase() === s.university?.region.toLowerCase());
     });
-  }, [courses, searchAllTerm, scholarshipOptions, selectedCountry, selectedState, fieldStudy]);
+  }, [courses, searchAllTerm, scholarshipOptions, selectedCountry, selectedState, fieldStudy, activeTab]);
 
 
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
@@ -226,6 +241,20 @@ export default function HomeSearch() {
       return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
     }).slice(start, start + itemsPerPage);
   }, [filteredCourses, currentPage]);
+
+  const handleGetCoursesCategories = async () => {
+    try {
+      const response = await getCoursesCategories();
+      if (response.status !== 200) {
+        toast.error("Failed to fetch course categories");
+      }
+      setCategories(response.data.data)
+    } catch (error) {
+      toast.error("Failed to fetch course categories");
+    }
+  }
+
+  console.log("categories: ", categories)
   
   return (
     <div className="relative h-screen w-full bg-[#FCFCFD]">
@@ -263,20 +292,19 @@ export default function HomeSearch() {
         ) : (
           <div className="w-full min-h-screen">
             <div className="flex border-b border-b-[#EAECF0] px-[20px] mt-[20px]">
-              {TAB_NAV.map((tab, index) => {
-                const tabKey = `tab${index + 1}`;
+              {courseCategoryList.map((tab) => {
                 return (
                   <button
-                    key={tabKey}
+                    key={tab.id}
                     className={`py-2 px-4 text-[12px] font-semibold border-b-2 font-medium transition 
                       ${
-                        activeTab === tabKey
+                        activeTab === tab.id
                           ? "border-[#003064] text-[#004085] text-[12px] font-semibold"
                           : "border-transparent hover:text-blue-500 text-[#999999]"
                       }`}
-                    onClick={() => setActiveTab(tabKey)}
+                    onClick={() => setActiveTab(tab.id)}
                   >
-                    {tab}
+                    {tab.name}
                   </button>
                 );
               })}
@@ -442,7 +470,7 @@ export default function HomeSearch() {
               )
             }
 
-            {!isLoading && courses.length === 0 && (
+            {!isLoading && paginatedCourses.length === 0 && (
               <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[400px]">
                 <img src={fileIcon} alt="Not found" />
                 <p className="text-[#101828] text-[16px] font-semibold">No courses Found</p>

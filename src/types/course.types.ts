@@ -20,6 +20,7 @@ export interface  Course {
   scholarshipInformation: string;
   loanInformation: string;
   courseWebsiteUrl: string;
+  categoryId: number;
   acceptanceFee: number;
   acceptanceFeeCurrency: string;
   courseDescription: string;
