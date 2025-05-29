@@ -276,7 +276,7 @@ export default function HomeSearch() {
             <FiSearch className="absolute left-2 top-[20px] -translate-y-1/2 text-[#999999] w-5 h-5" />
           </div>
 
-          <button className="bg-[#004085] h-[40px] w-[180px] font-semibold text-[12px] text-[white] rounded-md">
+          <button onClick={() => navigate("/career-recommedation")} className="bg-[#004085] h-[40px] w-[180px] font-semibold text-[12px] text-[white] rounded-md">
             Career Recommendation
           </button>
 
