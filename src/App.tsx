@@ -43,6 +43,7 @@ const ProfileManagement = lazy(() => import("./pages/admin/ProfileManagement"));
 const HomeSearch = lazy(() => import("./pages/HomeSearch"));
 const OnboardingPage = lazy(() => import("./pages/auth/OnboardingPage"))
 const GoogleAuthSuccess = lazy(() => import("./pages/auth/GoogleAuthSuccess"));
+const Recommendation = lazy(() => import("./pages/Recommendation"))
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -51,8 +52,10 @@ const router = createBrowserRouter([
   { path: '/email-verify', element: <VerifyEmail /> },
   { path: '/reset-password', element: <ResetPassword /> },
   { path: '/auth/success', element: <GoogleAuthSuccess /> },
-  { path: "search", element: <HomeSearch /> },
-    { index: true, element: <Home /> },
+  { path: "/search", element: <HomeSearch /> },
+  { path: "/career-recommedation", element: <Recommendation /> },
+  { index: true, element: <Home /> },
+
   {
     path: "/",
     element: <Root />,
