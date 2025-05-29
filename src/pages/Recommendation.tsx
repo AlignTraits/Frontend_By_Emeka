@@ -33,15 +33,16 @@ export default function Recommendation() {
         <p className="text-[#004085]">Back to Explore</p>
       </div>
 
-      <div className="mx-auto mt-[80px] w-[600px] space-y-5 p-10 bg-white rounded-lg shadow-lg border-[#ccc] border-[1px]">
+      <div className="mt-[30px]">
+        <p className="text-[#101828] text-[20px] font-semibold w-[500px] mx-auto mb-[10px]">Career Pathway</p>
         <form
           onSubmit={(e) => handleSubmit(e)}
-          className="space-y-6 flex flex-col"
+          className="mx-auto space-y-6 flex flex-col items-center w-[500px] space-y-5 p-10 bg-white rounded-lg shadow-lg border-[#ccc] border-[1px]"
         >
           {error && (
             <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
           )}
-          <div>
+          <div className="w-[400px]">
             <label htmlFor="first-name" className="block text-[16px] font-[600] text-[#101828]">
               First Name
             </label>
@@ -50,7 +51,6 @@ export default function Recommendation() {
                 id="first-name"
                 type={"text"}
                 required
-                // className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
                 className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                 placeholder="Enter your new first name"
                 // value={password}
@@ -59,7 +59,8 @@ export default function Recommendation() {
               />
             </div>
           </div>
-          <div>
+
+          <div className="w-[400px]">
             <label
               htmlFor="last-name"
               className="block text-[16px] font-[600] text-[#101828]"
@@ -71,7 +72,6 @@ export default function Recommendation() {
                 id="last-name"
                 type={"text"}
                 required
-                // className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
                 className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                 placeholder="Enter your last name"
                 // value={confirmPassword}
@@ -81,7 +81,7 @@ export default function Recommendation() {
             </div>
           </div>
 
-          <div>
+          <div className="w-[400px]">
             <label
               htmlFor="email"
               className="block text-[16px] font-[600] text-[#101828]"
@@ -93,7 +93,6 @@ export default function Recommendation() {
                 id="email"
                 type={"email"}
                 required
-                // className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
                 className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                 placeholder="Enter your email"
                 // value={confirmPassword}
@@ -103,7 +102,7 @@ export default function Recommendation() {
             </div>
           </div>
 
-          <label className="w-full inline-flex items-center space-x-2 cursor-pointer">
+          <label className="w-[400px] inline-flex items-center space-x-2 cursor-pointer">
             <input
               type="checkbox"
               checked={agreed}
