@@ -14,15 +14,15 @@ export default function Recommendation() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    navigate("/questionaire")
     
   };
 
   const handleClick = () => {
     // You can open a modal or do nothing
     console.log('Terms & Privacy clicked');
-  };
-
-  
+  };  
 
   return (
     <div className="relative h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white">
@@ -33,11 +33,11 @@ export default function Recommendation() {
         <p className="text-[#004085]">Back to Explore</p>
       </div>
 
-      <div className="mt-[30px]">
+      <div className="mt-[20px]">
         <p className="text-[#101828] text-[20px] font-semibold w-[500px] mx-auto mb-[10px]">Career Pathway</p>
         <form
           onSubmit={(e) => handleSubmit(e)}
-          className="mx-auto space-y-6 flex flex-col items-center w-[500px] space-y-5 p-10 bg-white rounded-lg shadow-lg border-[#ccc] border-[1px]"
+          className="mx-auto space-y-4 flex flex-col items-center w-[500px] space-y-5 p-6 bg-white rounded-lg shadow-lg border-[#ccc] border-[1px]"
         >
           {error && (
             <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
