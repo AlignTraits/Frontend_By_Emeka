@@ -12,16 +12,16 @@ import countriesData from "../data/countries_states.json"
 import fileIcon from "../assets/IconWrap.svg"
 import { getCoursesWithoutToken } from "../services/schools";
 import CourseDetails from "../components/dashboard/CourseDetails";
-import { getCoursesCategories } from "../services/schools";
-import { toast } from "react-toastify";
+// import { getCoursesCategories } from "../services/schools";
+// import { toast } from "react-toastify";
 import { courseCategoryList } from "../data/courseCategories";
 // import csvFile from "../assets/csvFile.csv"
 
 
-type CategoryType = {
-  id: number;
-  name: string;
-};
+// type CategoryType = {
+//   id: number;
+//   name: string;
+// };
 
 // const TAB_NAV = ["All Programs", "Business and Management", "Humanities and Arts", "IT & Computer Science",
 //   "Social Sciences", "Education", "Law and Legal Studies", "Communication and Media Studies",
@@ -65,7 +65,7 @@ export default function HomeSearch() {
   const [showDetails, setShowDetails] = useState(false)
   const [courseDetails, setCourseDetails] = useState<Course|null>(null);
   const [fieldDropdownOpen, setFieldDropdownOpen] = useState(false);
-  const [categories, setCategories] = useState<CategoryType[]>([]);
+  // const [categories, setCategories] = useState<CategoryType[]>([]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -167,8 +167,6 @@ export default function HomeSearch() {
 
   const [activeTab, setActiveTab] = useState(0);
 
-  console.log("activeTab: ", activeTab)
-
   const goLogin = () => {
     navigate("/login")
   }
@@ -214,7 +212,7 @@ export default function HomeSearch() {
 
     fetchCourses();
 
-    handleGetCoursesCategories();
+    // handleGetCoursesCategories();
   }, []);
 
   const filteredCourses = useMemo(() => {
@@ -242,19 +240,19 @@ export default function HomeSearch() {
     }).slice(start, start + itemsPerPage);
   }, [filteredCourses, currentPage]);
 
-  const handleGetCoursesCategories = async () => {
-    try {
-      const response = await getCoursesCategories();
-      if (response.status !== 200) {
-        toast.error("Failed to fetch course categories");
-      }
-      setCategories(response.data.data)
-    } catch (error) {
-      toast.error("Failed to fetch course categories");
-    }
-  }
+  // const handleGetCoursesCategories = async () => {
+  //   try {
+  //     const response = await getCoursesCategories();
+  //     if (response.status !== 200) {
+  //       toast.error("Failed to fetch course categories");
+  //     }
+  //     setCategories(response.data.data)
+  //   } catch (error) {
+  //     toast.error("Failed to fetch course categories");
+  //   }
+  // }
 
-  console.log("categories: ", categories)
+  // console.log("categories: ", categories)
   
   return (
     <div className="relative h-screen w-full bg-[#FCFCFD]">

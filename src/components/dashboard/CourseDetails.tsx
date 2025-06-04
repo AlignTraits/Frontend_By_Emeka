@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Course } from "../../types/course.types"
+import { useEffect, useState } from "react";
 // import courseIcon from "../../assets/Imageholder.svg"
 import { FaArrowLeftLong } from "react-icons/fa6";
 import EligibilityCard from "./EligibilityCard";
@@ -7,6 +6,9 @@ import SchoolInfo from "./TabInfos/SchoolInfo";
 import CourseInfo from "./TabInfos/CourseInfo";
 import ScholarshipInfo from "./TabInfos/ScholarshipInfo";
 import LoanInfo from "./TabInfos/LoadInfo";
+import { getSchool } from "../../services/schools";
+import { School } from "../../services/schools";
+import { Course } from "../../types/course.types";
 
 
 interface CoursesProps {
@@ -14,10 +16,42 @@ interface CoursesProps {
   setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const TAB_NAV = ["School Information", "Course Information", "Scholarship Information", "Loan Information"]
+interface SchoolWithCourses extends School {
+  courses: Course[];
+}
+
+
+const TAB_NAV = ["School Information", "Course Information"]
+
+// const TAB_NAV = ["School Information", "Course Information", "Scholarship Information", "Loan Information"]
 
 const CourseDetails = ({courseItem, setShowDetails}: CoursesProps) => {
-  const [activeTab, setActiveTab] = useState("tab1");
+  // console.log("courseItem: ", courseItem)
+  const [activeTab, setActiveTab] = useState("School Information");
+  const [school, setSchool] = useState<SchoolWithCourses>();
+
+  const [tempNav, setTempNav] = useState<string[]>(TAB_NAV);
+
+  async function fetchSchool() {
+    const response = await getSchool(courseItem?.schoolId as string);
+    setSchool(response);
+  }
+  
+  useEffect(() => {
+    fetchSchool()
+    
+    let newTempNav = [...TAB_NAV];
+
+    if (courseItem?.scholarship && courseItem.scholarship.length > 0) {
+      newTempNav.push("Scholarship Information");
+    } 
+    if (courseItem?.loanInformation && courseItem.loanInformation.length > 0) {
+      newTempNav.push("Loan Information");
+    }
+
+    setTempNav(newTempNav);
+    
+  }, [])
   
   return (
     <div className="p-10">
@@ -45,7 +79,7 @@ const CourseDetails = ({courseItem, setShowDetails}: CoursesProps) => {
         </div>
 
         <div className="flex border-b border-b-[#EAECF0] mt-[20px] size-max gap-x-[10px]">
-          {TAB_NAV.map((tab, index) => {
+          {tempNav.map((tab, index) => {
             const tabKey = `tab${index + 1}`;
             return (
               <button
@@ -56,7 +90,7 @@ const CourseDetails = ({courseItem, setShowDetails}: CoursesProps) => {
                       ? "border-[#003064] text-[#004085] text-[16px] font-semibold"
                       : "border-transparent hover:text-blue-500 text-[#999999]"
                   }`}
-                onClick={() => setActiveTab(tabKey)}
+                onClick={() => setActiveTab(tab)}
               >
                 {tab}
               </button>
@@ -64,13 +98,13 @@ const CourseDetails = ({courseItem, setShowDetails}: CoursesProps) => {
           })}
         </div>
 
-        { activeTab === "tab1" && <SchoolInfo courseItem={courseItem} /> }
+        { activeTab === "School Information" && <SchoolInfo schoolItem={school ?? null} /> }
 
-        { activeTab === "tab2" && <CourseInfo courseItem={courseItem}  /> }
+        { activeTab === "Course Information" && <CourseInfo courseItem={courseItem}  /> }
 
-        { activeTab === "tab3" && <ScholarshipInfo courseItem={courseItem}  /> }
+        { activeTab === "Scholarship Information" && <ScholarshipInfo courseItem={courseItem}  /> }
 
-        { activeTab === "tab4" && <LoanInfo courseItem={courseItem}  /> }
+        { activeTab === "Loan Information" && <LoanInfo courseItem={courseItem}  /> }
       </div>
     </div>
   )
