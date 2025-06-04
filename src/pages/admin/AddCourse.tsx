@@ -244,7 +244,7 @@ export default function AddCourse () {
       if (currentCourseID) {
         toast.error("Failed to update course");
       } else {
-        toast.success("Failed to create course");
+        toast.error("Failed to create course");
       }
     } finally {
       setIsLoading(false);

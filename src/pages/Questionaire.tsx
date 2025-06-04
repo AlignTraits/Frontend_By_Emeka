@@ -6,6 +6,9 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import resetIcon from "../assets/recommedationIcon.svg"
 import menuIcon from "../assets/androidMenu.svg"
 import { questions } from "../data/questions";
+import { BeatLoader } from "react-spinners";
+import {toast} from 'react-toastify'
+import { sendCareerPath } from "../services/utils";
 
 type Answers = {
   [questionId: string]: string; // e.g., { q1: "blue", q2: "laptop" }
@@ -27,6 +30,11 @@ export default function Questionaire() {
     const stored = localStorage.getItem("questionnaire-answers");
     return stored ? JSON.parse(stored) : {};
   });
+  const [isLoading, setIsLoading] = useState(false);
+
+  // console.log("questions: ", questions)
+
+  // console.log("answers: ", answers)
 
   function handleSelectAnswer(questionId: string, value: string) {
     setAnswers((prev) => ({
@@ -43,13 +51,69 @@ export default function Questionaire() {
     if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
   };
 
-  const handleSubmit = () => {
-    setShowSignUpBtn(true)
+  const handleSubmit = async () => {
+    // setShowSignUpBtn(true)
+    // console.log("setShowSignUpBtn: ", setShowSignUpBtn)
+    setIsLoading(true)
+
+    let storedUserDetailsRaw = localStorage.getItem("pathway-data");
+    let storedUserDetails: { firstName?: string; lastName?: string; email?: string } = {};
+
+    if (storedUserDetailsRaw) {
+      try {
+        storedUserDetails = JSON.parse(storedUserDetailsRaw) || {};
+      } catch {
+        storedUserDetails = {};
+      }
+    }
+
+    let answerArray: { question: string; answer: string }[] = [];
+
+    questions.forEach((question) => {
+      const answer = answers[question.id];
+      if (answer) {
+        answerArray.push({
+          question: question.question,
+          answer: answer,
+        });
+      }
+    })
+
+    const finalObject = {
+      "answers": answerArray,
+      "firstName": storedUserDetails.firstName || "",
+      "lastName": storedUserDetails.lastName || "",
+      "email": storedUserDetails.email || "",
+    }
+
+    try {
+      setIsLoading(true)
+      const response = await sendCareerPath(finalObject);
+
+      console.log("response: ", response);
+      if (response.ok === true) {
+        setShowSignUpBtn(true)
+      }
+
+    } catch (e) {
+      toast.error("An error occurred while submitting your answers. Please try again later.");
+      console.error("Error submitting answers: ", e);
+    } finally {
+      setIsLoading(false)
+    }
+
+    setTimeout(() => {
+      setIsLoading(false)
+      toast.success("Your answers have been submitted successfully!");
+    }, 2000)
   }
 
   function resetAnswers() {
     setAnswers({});
     localStorage.removeItem("questionnaire-answers");
+    localStorage.removeItem("pathway-data");
+
+    navigate("/signup");
   }
 
   useEffect(() => {
@@ -160,7 +224,7 @@ export default function Questionaire() {
                 // disabled={currentIndex === questions.length - 1}
                 className="w-[200px] px-4 py-2 bg-[#004085] text-white font-semibold text-[18px] rounded-xl disabled:opacity-50"
               >
-                Submit
+                { isLoading ? <BeatLoader /> : "Submit"}
               </button>
             }
           </div>

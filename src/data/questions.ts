@@ -5,11 +5,11 @@ export const questions = [
     options: [
       {
         label: "optionA",
-        value: "Practical, hands-on experience (Sensing - S)"
+        value: "Practical, hands-on experience"
       },
       {
         label: "optionB",
-        value: "Exploring theories and possibilities (Intuition - N)"
+        value: "Exploring theories and possibilities"
       }
     ]
   },
@@ -19,11 +19,11 @@ export const questions = [
     options: [
       {
         label: "optionA",
-        value: "Prefer structured plans and clear goals (Judging - J)"
+        value: "Prefer structured plans and clear goals"
       },
       {
         label: "optionB",
-        value: "Adapt as you go and keep things flexible (Perceiving - P)"
+        value: "Adapt as you go and keep things flexible"
       }
     ]
   },
@@ -33,11 +33,11 @@ export const questions = [
     options: [
       {
         label: "optionA",
-        value: "Focus on facts and logic (Thinking - T)"
+        value: "Focus on facts and logic"
       },
       {
         label: "optionB",
-        value: "Consider how it affects people emotionally (Feeling - F)"
+        value: "Consider how it affects people emotionally"
       },
     ]
   },
@@ -47,11 +47,11 @@ export const questions = [
     options: [
       {
         label: "optionA",
-        value: "Socializing and working with groups (Extraversion - E)"
+        value: "Socializing and working with groups"
       },
       {
         label: "optionB",
-        value: "Working alone or in quiet environments (Introversion - I)"
+        value: "Working alone or in quiet environments"
       },
     ]
   },
@@ -61,19 +61,19 @@ export const questions = [
     options: [
       {
         label: "optionA",
-        value: "Take control and solve problems quickly (D)"
+        value: "Take control and solve problems quickly"
       },
       {
         label: "optionB",
-        value: "Persuade and inspire others to contribute (I)"
+        value: "Persuade and inspire others to contribute"
       },
       {
         label: "optionC",
-        value: "Work patiently and maintain team harmony (S)"
+        value: "Work patiently and maintain team harmony"
       },
       {
         label: "optionD",
-        value: "Analyze all details before making a decision (C)"
+        value: "Analyze all details before making a decision"
       }
     ]
   },
@@ -83,19 +83,19 @@ export const questions = [
     options: [
       {
         label: "optionA",
-        value: "Setting ambitious goals and leading from the front (D)"
+        value: "Setting ambitious goals and leading from the front"
       },
       {
         label: "optionB",
-        value: "Engaging people and ensuring collaboration (I)"
+        value: "Engaging people and ensuring collaboration"
       },
       {
         label: "optionC",
-        value: "Maintaining a stable workflow and supporting the team (S)"
+        value: "Maintaining a stable workflow and supporting the team"
       },
       {
         label: "optionD",
-        value: "Creating detailed plans and ensuring accuracy (C)"
+        value: "Creating detailed plans and ensuring accuracy"
       }
     ]
   },
@@ -105,19 +105,19 @@ export const questions = [
     options: [
       {
         label: "optionA",
-        value: "Becoming an expert in my field (Technical Competence)"
+        value: "Becoming an expert in my field"
       },
       {
         label: "optionB",
-        value: "Leading teams and making decisions (Managerial Competence)"
+        value: "Leading teams and making decisions"
       },
       {
         label: "optionC",
-        value: "Having job security and stability (Security/Stability)"
+        value: "Having job security and stability"
       },
       {
         label: "optionD",
-        value: "Helping people and making a difference (Service/Dedication)"
+        value: "Helping people and making a difference"
       }
     ]
   },
