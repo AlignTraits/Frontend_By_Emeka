@@ -10,13 +10,25 @@ export default function Recommendation() {
   const navigate = useNavigate()
 
   const [agreed, setAgreed] = useState(false);
+
+  const [data, setData] = useState({
+    firstName: "",
+    lastName: "",
+    email: ""
+  });
   
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    navigate("/questionaire")
-    
+    if (agreed) {
+      localStorage.setItem("pathway-data", JSON.stringify(data));
+      navigate("/questionaire")
+    }    
   };
 
   const handleClick = () => {
@@ -50,12 +62,12 @@ export default function Recommendation() {
               <input
                 id="first-name"
                 type={"text"}
+                name="firstName"
+                value={data.firstName}
+                onChange={handleChange}
                 required
                 className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                 placeholder="Enter your new first name"
-                // value={password}
-                // onChange={(e) => setPassword(e.target.value)}
-                // onFocus={resetInput}
               />
             </div>
           </div>
@@ -71,6 +83,9 @@ export default function Recommendation() {
               <input
                 id="last-name"
                 type={"text"}
+                name="lastName"
+                value={data.lastName}
+                onChange={handleChange}
                 required
                 className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                 placeholder="Enter your last name"
@@ -92,6 +107,9 @@ export default function Recommendation() {
               <input
                 id="email"
                 type={"email"}
+                name="email"
+                value={data.email}  
+                onChange={handleChange}
                 required
                 className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
                 placeholder="Enter your email"
