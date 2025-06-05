@@ -30,7 +30,7 @@ export default function DashboardLayout() {
         } finally {
           setIsloading(false)
 
-          if (response.data.firstname === "" || response.data.gender) {
+          if (response.data.firstname === "" || !response.data.gender) {
             navigate("/onboarding-form")
           }
         }

@@ -313,6 +313,8 @@ export default function AddCourse () {
   const getCourse = async () => {
     if (currentCourseID) {
       const tempCourse = await getCourseDetails(currentCourseID)
+
+      console.log("tempCourse: ", tempCourse)
       setResponseObj(tempCourse)
 
       setPreviewUrl(tempCourse.image)
@@ -781,7 +783,7 @@ export default function AddCourse () {
             </div>
 
             <div className="w-full flex flex-col gap-y-[5px] size-max relative">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Scholarship Information*</p>
+              <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Scholarship Information</p>
               <TextEditorTwo 
                 initialValue={scholarshipDescription} 
                 onChange={setScholarshipDescription} 
@@ -792,7 +794,7 @@ export default function AddCourse () {
             </div>
 
             <div className="w-full flex flex-col gap-y-[5px] size-max relative">
-              <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Loan Information*</p>
+              <p className={`text-[16px] text-[#1E1E1E] font-medium text-[#1E1E1E]`}>Loan Information</p>
               <TextEditorTwo 
                 placeholder="Describe the main objectives of this course...." 
                 initialValue={loanDescription} 

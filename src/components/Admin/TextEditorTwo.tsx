@@ -28,6 +28,13 @@ const TextEditorTwo: React.FC<TextEditorProps> = ({
   const editorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (editorRef.current && initialValue !== content) {
+      editorRef.current.innerHTML = initialValue;
+      setContent(initialValue);
+    }
+  }, [initialValue]);
+
+  useEffect(() => {
     if (onChange) {
       onChange(content);
     }

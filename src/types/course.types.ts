@@ -24,6 +24,7 @@ export interface  Course {
   acceptanceFee: number;
   acceptanceFeeCurrency: string;
   courseDescription: string;
+  objectives: string;
   programLocation: string;
   examType: string;
   courseDuration: string;
