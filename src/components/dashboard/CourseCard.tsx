@@ -1,7 +1,15 @@
 // import courseIcon from "../../assets/Imageholder.svg"
+import { useState, useEffect } from 'react';
 import { Course } from '../../types/course.types';
-import courseIconTwo from "../../assets/imageHolderTwo.svg"
+// import courseIconTwo from "../../assets/imageHolderTwo.svg"
 import locationIcon from "../../assets/locationIcon.svg"
+import { getSchool } from "../../services/schools";
+import { School } from "../../services/schools";
+
+interface SchoolWithCourses extends School {
+  courses: Course[];
+}
+
 
 interface CoursesProps {
   courseItem: Course;
@@ -10,6 +18,16 @@ interface CoursesProps {
 }
 
 const CourseCard = ({courseItem, setCourseDetails, setShowDetails}: CoursesProps) => {
+  const [school, setSchool] = useState<SchoolWithCourses>();
+
+  async function fetchSchool() {
+    const response = await getSchool(courseItem?.schoolId as string);
+    setSchool(response);
+  }
+  
+  useEffect(() => {
+    fetchSchool()
+  }, [])
   // console.log("courseItem: ", courseItem)
   return (
     <div className="w-[300px] h-[500px] rounded-md border-[2px] border-[#EAECF0] p-[8px] flex flex-col gap-y-[10px] justify-between bg-white">
@@ -18,7 +36,7 @@ const CourseCard = ({courseItem, setCourseDetails, setShowDetails}: CoursesProps
       </div>
 
       <div className="flex gap-x-[10px] p-[5px]">
-        <img alt="course Icon two" src={courseIconTwo} className="h-[35px] w-[35px] mt-[5px]" />
+        <img alt="course Icon two" src={school?.logo} className="h-[35px] w-[35px] mt-[5px] rounded-[50%]" />
 
         <div>
           <p className="text-[#000000] font-semibold text-[16px]">{courseItem.title}</p>

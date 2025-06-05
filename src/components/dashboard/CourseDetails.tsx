@@ -86,7 +86,7 @@ const CourseDetails = ({courseItem, setShowDetails}: CoursesProps) => {
                 key={tabKey}
                 className={`py-2 text-[16px] font-semibold border-b-2 font-semibold transition 
                   ${
-                    activeTab === tabKey
+                    activeTab === tab
                       ? "border-[#003064] text-[#004085] text-[16px] font-semibold"
                       : "border-transparent hover:text-blue-500 text-[#999999]"
                   }`}

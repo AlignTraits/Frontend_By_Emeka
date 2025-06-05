@@ -45,6 +45,7 @@ const OnboardingPage = lazy(() => import("./pages/auth/OnboardingPage"))
 const GoogleAuthSuccess = lazy(() => import("./pages/auth/GoogleAuthSuccess"));
 const Recommendation = lazy(() => import("./pages/Recommendation"))
 const Questionaire = lazy (() => import("./pages/Questionaire"))
+const CheckEligibility = lazy(() => import("./pages/CheckEligibility"));
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -56,6 +57,7 @@ const router = createBrowserRouter([
   { path: "/search", element: <HomeSearch /> },
   { path: "/career-recommedation", element: <Recommendation /> },
   { path: "/questionaire", element: <Questionaire /> },
+  { path: "/check-eligibility", element: <CheckEligibility /> },
   { index: true, element: <Home /> },
 
   {
