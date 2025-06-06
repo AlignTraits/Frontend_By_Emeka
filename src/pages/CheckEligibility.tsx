@@ -85,20 +85,24 @@ export default function CheckEligibility() {
 
       {
         displayRequirements ? (
-          <div className="mt-[20px] w-[700px] mx-auto p-6 bg-white rounded-lg shadow-lg border-[#ccc] border-[1px]">
-            <AdmissionRequirements 
-              errorObj={errorObj}
-              setErrorObj={setErrorObj}
-              requirementList={requirementList}
-              setRequirementList={setRequirementList}
-              schoolData={responseObj}
-            />
+          <div className="mt-[20px] space-y-2 w-[700px] mx-auto">
+            <p>Eligibility Check*</p>
+            <div className="w-full p-6 bg-white rounded-lg shadow-lg border-[#ccc] border-[1px]">
+              <AdmissionRequirements 
+                errorObj={errorObj}
+                setErrorObj={setErrorObj}
+                requirementList={requirementList}
+                setRequirementList={setRequirementList}
+                schoolData={responseObj}
+              />
 
-            <div className="flex justify-center mt-6">
-              <button className="w-[200px] py-2 px-4 bg-[#757575] hover:bg-blue-700 text-white rounded-[30px] disabled:opacity-50">
-                Submit
-              </button>
+              <div className="flex justify-center mt-6">
+                <button className="w-[200px] py-2 px-4 bg-[#757575] hover:bg-blue-700 text-white rounded-[30px] disabled:opacity-50">
+                  Submit
+                </button>
+              </div>
             </div>
+
           </div>
         ) :
         (        
