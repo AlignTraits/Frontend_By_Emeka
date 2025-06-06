@@ -75,7 +75,7 @@ export default function CheckEligibility() {
     }
 
   return (
-    <div className="relative size-max w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white">
+    <div className={`relative ${displayRequirements ? "size-max": "h-screen" } w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white`}>
       <Header />
 
       <div className="flex gap-x-[10px] items-center ml-[30px] mt-[20px] cursor-pointer" onClick={() => navigate(-1)}>
