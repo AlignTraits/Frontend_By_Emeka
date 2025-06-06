@@ -57,7 +57,7 @@ const router = createBrowserRouter([
   { path: "/search", element: <HomeSearch /> },
   { path: "/career-recommedation", element: <Recommendation /> },
   { path: "/questionaire", element: <Questionaire /> },
-  { path: "/check-eligibility", element: <CheckEligibility /> },
+  { path: "/check-eligibility/:courseId", element: <CheckEligibility /> },
   { index: true, element: <Home /> },
 
   {

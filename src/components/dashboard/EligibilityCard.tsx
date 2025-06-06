@@ -42,7 +42,7 @@ const EligibilityCard = ({courseItem}: Props) => {
         </a>
       </div>
       
-      <button onClick={() => navigate("/check-eligibility")} className="w-full bg-[#004085] text-white py-2 rounded font-medium hover:bg-blue-900 transition-colors">
+      <button onClick={() => navigate(`/check-eligibility/${courseItem?.id}`)} className="w-full bg-[#004085] text-white py-2 rounded font-medium hover:bg-blue-900 transition-colors">
         Check Eligibility
       </button>
     </div>
