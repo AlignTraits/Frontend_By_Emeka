@@ -82,7 +82,7 @@ const BankTransferComponent: React.FC = () => {
 
         {/* Bank Details */}
         <div className="bg-[#EAF2FB] rounded-lg p-4 mb-4 border border-[#004085] shadow-md">
-          <div className="flex justify-between items-start mb-3">
+          <div className="flex justify-between items-center mb-3">
             <div>
               <h3 className="font-semibold text-[#004085] text-lg mb-1">
                 {transferData.bankName}
