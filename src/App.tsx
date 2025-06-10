@@ -47,6 +47,7 @@ const Recommendation = lazy(() => import("./pages/Recommendation"))
 const Questionaire = lazy (() => import("./pages/Questionaire"))
 const CheckEligibility = lazy(() => import("./pages/CheckEligibility"));
 const SelectPayment = lazy(() => import("./pages/SelectPayment"))
+const PaymentPage = lazy(() => import("./pages/PaymentPage"));
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
   { path: "/search", element: <HomeSearch /> },
   { path: "/career-recommedation", element: <Recommendation /> },
   { path: "/questionaire", element: <Questionaire /> },
+  { path: "/make-payment", element: <PaymentPage /> },
   { path: "/select-payment", element: <SelectPayment /> },
   { path: "/check-eligibility/:courseId", element: <CheckEligibility /> },
   { index: true, element: <Home /> },
