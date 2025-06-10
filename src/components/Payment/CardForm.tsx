@@ -71,7 +71,7 @@ const CreditCardForm: React.FC = () => {
 
 
   return (
-    <div className="w-full p-5">
+    <div className="w-full p-5 transition-all duration-300">
       <div className="space-y-4 flex gap-x-[20px] flex-col">
         {/* Cardholder's Name */}
         <div>

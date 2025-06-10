@@ -10,6 +10,7 @@ import atmIcon from "../assets/atmCard.svg"
 import { useState } from "react";
 import SelectPaymentType from "../components/Payment/SelectPaymentType";
 import CardForm from "../components/Payment/CardForm";
+import BankTransferComponent from "../components/Payment/BankTransferComponent";
 
 export default function PaymentPage() {
 
@@ -32,7 +33,9 @@ export default function PaymentPage() {
           <div className="w-[50%] h-full bg-[#fff] rounded-r-2xl p-4">
             <SelectPaymentType setPaymentType={setPaymentType} paymentType={paymentType} />
 
-            <CardForm />
+            {
+              paymentType === "card" ? (<CardForm />) : (<BankTransferComponent />)
+            }
           </div>
         </div>
       </div>
