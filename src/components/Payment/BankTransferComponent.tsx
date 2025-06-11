@@ -155,13 +155,13 @@ const BankTransferComponent: React.FC = () => {
       </button>
 
       {/* Status Messages */}
-      {copySuccess && (
+      {/* {copySuccess && (
         <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
           <p className="text-sm text-green-800">
             Account number copied to clipboard!
           </p>
         </div>
-      )}
+      )} */}
 
       {timeRemaining === 0 && (
         <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">

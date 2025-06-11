@@ -43,12 +43,12 @@ export default function PaymentPage() {
         </div>
       </div>
 
-      <img src={bg1} alt="bg1" className="absolute top-[100px] right-[200px]" />
-      <img src={bg2} alt="bg2" className="absolute top-[120px] right-[250px]" />
-      <img src={bg3} alt="bg2" className="absolute top-[120px] right-[90px] z-[1]" />
-      <img src={bg4} alt="bg2" className="absolute top-[150px] right-[0px] z-[0]" />
-      <img src={bg5} alt="bg2" className="absolute bottom-[-300px] left-[0px] h-[600px] z-[1]" />
-      <img src={bg6} alt="bg2" className="absolute bottom-[-400px] right-[0px] h-[600px] z-[0]" />
+        <img src={bg1} alt="bg1" className="absolute top-[100px] right-[200px]" />
+        <img src={bg2} alt="bg2" className="absolute top-[120px] right-[250px]" />
+        <img src={bg3} alt="bg2" className="absolute top-[120px] right-[90px] z-[1]" />
+        <img src={bg4} alt="bg2" className="absolute top-[150px] right-[0px] z-[0]" />
+        <img src={bg5} alt="bg2" className="absolute bottom-[-300px] left-[0px] h-[600px] z-[1]" />
+        <img src={bg6} alt="bg2" className="absolute bottom-[-400px] right-[0px] h-[600px] z-[0]" />
 
       <div className="h-[60px] w-[40px]"></div>
     </div>
