@@ -78,7 +78,10 @@ interface RequirementProps {
   errorObj: ErrorObjType,
   requirementList: RequirementList[];
   setRequirementList: React.Dispatch<React.SetStateAction<RequirementList[]>>
-  schoolData?: any
+  schoolData?: any;
+  adminExamType?: string[];
+  btnTitle?: string;
+  listTitle?: string
 } 
 
 const AdmissionRequirements = ({
@@ -86,7 +89,10 @@ const AdmissionRequirements = ({
   errorObj,
   requirementList,
   setRequirementList,
-  schoolData
+  schoolData,
+  adminExamType = [],
+  btnTitle = "Requirement",
+  listTitle = "Requirements List"
 }: RequirementProps) => {
   const [subjectList, setSubjectList] = useState<SubjectGrade[]>([]);
   const [programLocation, setProgramLocation] = useState("");
@@ -244,6 +250,8 @@ const AdmissionRequirements = ({
     setErrorObj((prev) => ({ ...prev, examType: false, programLocation: false }));
   };
 
+  let filteredExamTypes = adminExamType.length > 0 ? adminExamType : EXAMTYPE;
+
   return (
     <div className="w-full bg-[#FAFAFA] border-[1px] border-[#E0E0E0] rounded-lg flex flex-col gap-6 p-5">
       <p className="text-[18px] font-semibold text-[#000000]">
@@ -288,7 +296,7 @@ const AdmissionRequirements = ({
           </p>
           <CustomSelectWithProps
             placeholder="e.g Neco, Wassce etc"
-            options={EXAMTYPE.map((typeValue) => ({
+            options={filteredExamTypes.map((typeValue) => ({
               value: typeValue,
               label: typeValue,
             }))}
@@ -388,14 +396,14 @@ const AdmissionRequirements = ({
             onClick={addRequirements}
             className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#ffffff] text-[14px] font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
           >
-            {reqId ? "Update Requirement" : "Add Requirement"}
+            {reqId ? `Update ${btnTitle}` : `Add ${btnTitle}`}
           </button>
         </div>
       </div>
 
       <div className="flex flex-col gap-y-[20px] mt-6">
         <div className="flex justify-between items-center">
-          <h3 className="text-[16px] font-semibold text-[#1E1E1E]">Requirements List</h3>
+          <h3 className="text-[16px] font-semibold text-[#1E1E1E]">{listTitle}</h3>
           <span className="text-gray-500 text-sm">{requirementList.length} {requirementList.length === 1 ? 'requirement' : 'requirements'}</span>
         </div>
 

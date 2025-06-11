@@ -68,7 +68,7 @@ const BankTransferComponent: React.FC = () => {
   };
 
   return (
-    <div className="w-full px-5 pt-2 transition-all duration-300 flex flex-col space-y-4">
+    <div className="w-full px-5 pt-2 transition-all duration-300 flex flex-col space-y-3">
       <div>
         {/* Header */}
         <div className="flex justify-between items-center mb-1">
@@ -81,7 +81,7 @@ const BankTransferComponent: React.FC = () => {
 
 
         {/* Bank Details */}
-        <div className="bg-[#EAF2FB] rounded-lg p-4 mb-4 border border-[#004085] shadow-md">
+        <div className="bg-[#EAF2FB] rounded-lg p-4 mb-1 border border-[#004085] shadow-md">
           <div className="flex justify-between items-center mb-3">
             <div>
               <h3 className="font-semibold text-[#004085] text-lg mb-1">
@@ -103,7 +103,7 @@ const BankTransferComponent: React.FC = () => {
       </div>
 
       {/* Instructions */}
-      <div className="mb-4">
+      <div className="mb-1">
         <p className="text-sm text-gray-600 leading-relaxed">
           Transfer to this account number, then click "I have made the transfer" 
           below and we will confirm your transfer.
@@ -119,7 +119,7 @@ const BankTransferComponent: React.FC = () => {
           I have made the transfer
         </button>
       ) : (
-        <div className="w-[250px] mb-4 p-3 bg-green-50 border border-green-200 rounded-md">
+        <div className="w-[250px] mb-1 p-3 bg-green-50 border border-green-200 rounded-md">
           <p className="text-sm text-green-800 font-medium">
             ✓ Transfer confirmation received
           </p>
@@ -127,7 +127,7 @@ const BankTransferComponent: React.FC = () => {
       )}
 
       {/* Total Payment */}
-      <div className="flex justify-between items-center py-3 mb-4">
+      <div className="flex justify-between items-center py-3 mb-1">
         <span className="text-sm font-medium text-gray-700">Total payment</span>
         <span className="text-lg font-bold text-gray-900">{transferData.totalPayment}</span>
       </div>
@@ -136,7 +136,7 @@ const BankTransferComponent: React.FC = () => {
       <button
         onClick={handleRedirect}
         disabled={!transferConfirmed || isRedirecting}
-        className={`w-full py-4 px-4 rounded-md font-semibold text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+        className={`w-full py-3 px-4 rounded-md font-semibold text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
           !transferConfirmed
             ? 'bg-gray-400 cursor-not-allowed'
             : isRedirecting
@@ -155,13 +155,13 @@ const BankTransferComponent: React.FC = () => {
       </button>
 
       {/* Status Messages */}
-      {copySuccess && (
+      {/* {copySuccess && (
         <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
           <p className="text-sm text-green-800">
             Account number copied to clipboard!
           </p>
         </div>
-      )}
+      )} */}
 
       {timeRemaining === 0 && (
         <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">

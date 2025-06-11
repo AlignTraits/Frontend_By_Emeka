@@ -1,5 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 interface PricingCardProps {
   title: string;
@@ -8,7 +10,7 @@ interface PricingCardProps {
   features: string[];
   type: string;
   isActive?: boolean;
-  onSelect?: () => void;
+  onSelect: () => void;
 }
 
 const PricingCard: React.FC<PricingCardProps> = ({
@@ -20,10 +22,27 @@ const PricingCard: React.FC<PricingCardProps> = ({
   isActive = false,
   onSelect
 }) => {
+
+  const navigate = useNavigate()
+
+  const handleInnerClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation(); // 🛑 stops the click from bubbling up
+    console.log('Inner button clicked');
+    onSelect()
+
+    toast.success(`Redirecting you to payment...`)
+
+    setTimeout(() => {
+      navigate("/make-payment")
+    }, 2000)
+
+  };
+
   return (
     <div
+      onClick={onSelect}
       className={classNames(
-        'relative flex flex-col p-6 rounded-2xl shadow-md w-[300px] max-w-sm transition-all duration-300',
+        'relative cursor-pointer flex flex-col p-6 rounded-2xl shadow-md w-[300px] max-w-sm transition-all duration-300',
         {
           'bg-white': !isActive,
           'bg-blue-900 text-white': isActive,
@@ -46,7 +65,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
       </ul>
       <div className="text-2xl font-bold text-center mb-4">{price}</div>
       <button
-        onClick={onSelect}
+        onClick={handleInnerClick}
         className={classNames(
           'w-full py-2 rounded font-semibold transition',
           {

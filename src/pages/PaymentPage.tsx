@@ -16,36 +16,39 @@ export default function PaymentPage() {
 
   const [paymentType, setPaymentType] = useState("card")
 
+  const selectedPlanRaw = localStorage.getItem("selectedPlan");
+  const selectedPlan = selectedPlanRaw ? JSON.parse(selectedPlanRaw) : 0;
+
   return (
-    <div className="relative overflow-hidden size-max w-full bg-gradient-to-b from-white via-[#e9eff7] to-[#CCE0F5]">
+    <div className="relative overflow-hidden h-screen w-full bg-gradient-to-b from-white via-[#e9eff7] to-[#CCE0F5]">
       <Header />
 
-      <div className="w-full flex flex-col space-y-2 mt-[100px]">
-        <p className="w-[75%] mx-auto text-[#101828] font-semibold text-[20px]">Payment Page</p>
+      <div className="w-full flex flex-col space-y-2 mt-[30px]">
+        <p className="w-[70%] mx-auto text-[#101828] font-semibold text-[20px]">Payment Page</p>
 
-        <div className="w-[75%] rounded-2xl h-[600px] mx-auto z-[100] border-[1px] border-[#D0D5DD] shadow-lg flex">
+        <div className="w-[70%] rounded-2xl h-[500px] mx-auto z-[100] border-[1px] border-[#D0D5DD] shadow-lg flex">
           <div className="w-[50%] h-full bg-[#EAF2FB] rounded-l-2xl flex flex-col justify-center p-10 space-y-10">
             <img src={alightTraitText} alt="Align Traits" className="w-[200px]" />
 
             <img src={atmIcon} alt="ATM Icon" className="w-[400px]" />
           </div>
 
-          <div className="w-[50%] h-full bg-[#fff] rounded-r-2xl p-4">
+          <div className="w-[50%] h-full bg-[#fff] rounded-r-2xl px-4 py-2">
             <SelectPaymentType setPaymentType={setPaymentType} paymentType={paymentType} />
 
             {
-              paymentType === "card" ? (<CardForm />) : (<BankTransferComponent />)
+              selectedPlan === 0 ? (<CardForm />) : (<BankTransferComponent />)
             }
           </div>
         </div>
       </div>
 
-      <img src={bg1} alt="bg1" className="absolute top-[100px] right-[200px]" />
-      <img src={bg2} alt="bg2" className="absolute top-[120px] right-[250px]" />
-      <img src={bg3} alt="bg2" className="absolute top-[120px] right-[90px] z-[1]" />
-      <img src={bg4} alt="bg2" className="absolute top-[150px] right-[0px] z-[0]" />
-      <img src={bg5} alt="bg2" className="absolute bottom-[-300px] left-[0px] h-[600px] z-[1]" />
-      <img src={bg6} alt="bg2" className="absolute bottom-[-400px] right-[0px] h-[600px] z-[0]" />
+        <img src={bg1} alt="bg1" className="absolute top-[100px] right-[200px]" />
+        <img src={bg2} alt="bg2" className="absolute top-[120px] right-[250px]" />
+        <img src={bg3} alt="bg2" className="absolute top-[120px] right-[90px] z-[1]" />
+        <img src={bg4} alt="bg2" className="absolute top-[150px] right-[0px] z-[0]" />
+        <img src={bg5} alt="bg2" className="absolute bottom-[-300px] left-[0px] h-[600px] z-[1]" />
+        <img src={bg6} alt="bg2" className="absolute bottom-[-400px] right-[0px] h-[600px] z-[0]" />
 
       <div className="h-[60px] w-[40px]"></div>
     </div>

@@ -7,12 +7,13 @@ export default function SelectPayment() {
 
   const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
 
-    const [selectedPlan, setSelectedPlan] = useState<number>(1); // Default to Silver plan (index 1)
+  const [selectedPlan, setSelectedPlan] = useState<number>(1); // Default to Silver plan (index 1)
 
-    const handleSelect = (planIndex: number) => {
-      setSelectedPlan(planIndex);
-    };
+  const handleSelect = (planIndex: number) => {
+    setSelectedPlan(planIndex);
 
+    localStorage.setItem("selectedPlan", JSON.stringify(planIndex))
+  };
 
   useEffect(() => {
     if (timeLeft <= 0) return;

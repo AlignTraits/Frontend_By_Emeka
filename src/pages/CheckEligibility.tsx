@@ -7,6 +7,7 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import { ErrorObjType, RequirementList } from "../types/course.types";
 import AdmissionRequirements from "../components/Admin/AdmissionRequirements";
 import { getCourseDetails } from "../services/schools";
+import { toast } from "react-toastify";
 
 
 export default function CheckEligibility() {
@@ -15,13 +16,15 @@ export default function CheckEligibility() {
   const navigate = useNavigate()
 
   const [agreed, setAgreed] = useState(false);
+  const [adminExamType, setAdminExamType] = useState<string[]>([]);
 
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
     email: ""
   });
-  const [responseObj, setResponseObj] = useState({} as any)
+  
+  // const [responseObj, setResponseObj] = useState({} as any)
 
   const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
   const [errorObj, setErrorObj] = useState<ErrorObjType>({
@@ -67,12 +70,30 @@ export default function CheckEligibility() {
     getCourse()
   }, [])
 
-    const getCourse = async () => {
-      if (courseId && courseId.length > 0) {
-        const tempCourse = await getCourseDetails(courseId)
-        setResponseObj(tempCourse)
+  const getCourse = async () => {
+    if (courseId && courseId.length > 0) {
+      const tempCourse = await getCourseDetails(courseId)
+      // setResponseObj(tempCourse)
+
+      let tempArray:any = []
+
+      for (let i = 1; i < 11; i++) {
+        if (tempCourse[`ExamType${i}`].length > 0) {
+          tempArray.push(tempCourse[`ExamType${i}`])
+        }
       }
+      setAdminExamType(tempArray)
+      // console.log("tempArray: ", tempArray)
     }
+  }
+
+  const handleEligibilityCheck = () => {
+    if (requirementList.length === 0) {
+      toast.error("Please select at least one exam type to proceed.");
+      return
+    }
+    navigate("/select-payment")
+  }
 
   return (
     <div className={`relative ${displayRequirements ? "size-max": "h-screen" } w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white`}>
@@ -93,11 +114,14 @@ export default function CheckEligibility() {
                 setErrorObj={setErrorObj}
                 requirementList={requirementList}
                 setRequirementList={setRequirementList}
-                schoolData={responseObj}
+                schoolData={null}
+                adminExamType={adminExamType}
+                btnTitle="Exam"
+                listTitle="Exam List"
               />
 
               <div className="flex justify-center mt-6">
-                <button className="w-[200px] py-2 px-4 bg-[#757575] hover:bg-blue-700 text-white rounded-[30px] disabled:opacity-50">
+                <button onClick={handleEligibilityCheck} className="w-[200px] py-2 px-4 bg-[#757575] hover:bg-blue-700 text-white rounded-[30px] disabled:opacity-50">
                   Submit
                 </button>
               </div>
