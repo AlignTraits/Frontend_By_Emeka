@@ -10,6 +10,7 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<AuthContextType["user"]>(null);
+  const [pageDesc, setPageDesc] = useState<AuthContextType["pageDesc"]>(null)
   const [admin, setAdmin] = useState<AuthContextType['admin']>(null)
   const [token, setToken] = useState<string | undefined>(
     authService.getToken()
@@ -208,6 +209,8 @@ const googleLogin = async () => {
 
   const value: AuthContextType = {
     user,
+    pageDesc,
+    setPageDesc,
     setUser,
     admin,
     setAdmin,

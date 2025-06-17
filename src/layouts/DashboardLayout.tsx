@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/useAuth"; 
-import Sidebar from "../components/dashboard/SideBar";
+// import Sidebar from "../components/dashboard/SideBar";
 import Header from "../components/dashboard/Header";
 import { getUserDetails } from "../services/auth.service";
 import { ClipLoader } from "react-spinners";
+import NewSidebar from "../components/dashboard/NewSidebar";
 
 export default function DashboardLayout() {
   const { token, isAuthenticated, user, setUser } = useAuth();
@@ -49,8 +50,8 @@ export default function DashboardLayout() {
             <ClipLoader />
           </div>
         ) : (
-          <div className="h-screen bg-gray-50 flex relative overflow-y-scroll [&>*]:border-red-900">
-            <Sidebar open={open} setOpen={setOpen} />
+          <div className="h-screen bg-gray-50 flex relative overflow-y-scroll">
+            <NewSidebar open={open} setOpen={setOpen} />
             <div className="flex-1 relative">
               <Header setOpen={setOpen} />
               <main className="">

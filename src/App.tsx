@@ -6,13 +6,13 @@ import { AuthProvider } from './contexts/AuthContext'
 import { lazy, Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DashboardLayout from "./layouts/DashboardLayout";
+import AdminLayout from "./layouts/admin/AdminLayout";
+import AdminDashboardLayout from './layouts/admin/AdminDashboardLayout'
+import Root from "./layouts/Root"
 
 // Lazy imports for code splitting
-const Root = lazy(() => import("./layouts/Root"));
-const DashboardLayout = lazy(() => import("./layouts/DashboardLayout"));
 const SettingsLayout = lazy(() => import("./layouts/SettingsLayout"));
-const AdminLayout = lazy(() => import("./layouts/admin/AdminLayout"));
-const AdminDashboardLayout = lazy(() => import('./layouts/admin/AdminDashboardLayout'));
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/auth/Login"));
@@ -48,6 +48,10 @@ const Questionaire = lazy (() => import("./pages/Questionaire"))
 const CheckEligibility = lazy(() => import("./pages/CheckEligibility"));
 const SelectPayment = lazy(() => import("./pages/SelectPayment"))
 const PaymentPage = lazy(() => import("./pages/PaymentPage"));
+const CareerPath = lazy(() => import("./pages/dashboard/CareerPath"))
+const ProgressTracker = lazy(() => import("./pages/dashboard/ProgressTracker"))
+const SchoolPage = lazy(() => import("./pages/dashboard/SchoolPage"))
+const SkillRoadMap = lazy(() => import("./pages/dashboard/SkillRoadMap"))
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -80,6 +84,10 @@ const router = createBrowserRouter([
       { index: true, element: <Dashboard /> },
       { path: "pathfinder", element: <Pathfinder /> },
       { path: "community", element: <Community /> },
+      { path: "career-pathway", element: <CareerPath />},
+      { path: "progres-tracker", element: <ProgressTracker /> },
+      { path: "school", element: <SchoolPage />},
+      { path: "skill-roadmap", element: <SkillRoadMap />},
       {
         path: "settings",
         element: <SettingsLayout />,

@@ -10,11 +10,19 @@ import { getCourses } from "../../services/schools";
 import { useAuth } from "../../contexts/useAuth";
 import { ClipLoader } from "react-spinners";
 
+
 export default function Dashboard() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const {token} = useAuth()
+  const {token, setPageDesc} = useAuth()
+  
+  useEffect(() => {
+    setPageDesc({
+      desc: "Here’s a summary  of your personalized career data!",
+      title: "Dashboard"
+    })
+  })
 
   useEffect(() => {
     const fetchCourses = async () => {

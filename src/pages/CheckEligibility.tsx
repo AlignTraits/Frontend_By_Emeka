@@ -8,10 +8,10 @@ import { ErrorObjType, RequirementList } from "../types/course.types";
 import AdmissionRequirements from "../components/Admin/AdmissionRequirements";
 import { getCourseDetails } from "../services/schools";
 import { toast } from "react-toastify";
-
+import { checkEligibility } from "../services/utils";
 
 export default function CheckEligibility() {
-  const {error, isLoading} = useAuth()
+  const {error} = useAuth()
   const { courseId } = useParams<{ courseId: string}>();
   const navigate = useNavigate()
 
@@ -24,7 +24,7 @@ export default function CheckEligibility() {
     email: ""
   });
   
-  // const [responseObj, setResponseObj] = useState({} as any)
+  const [responseObj, setResponseObj] = useState({} as any)
 
   const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
   const [errorObj, setErrorObj] = useState<ErrorObjType>({
@@ -43,6 +43,8 @@ export default function CheckEligibility() {
     programLocation: false,
     examType: false
   });
+ 
+  const [isLoading, setIsLoading] = useState(false)
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -73,7 +75,7 @@ export default function CheckEligibility() {
   const getCourse = async () => {
     if (courseId && courseId.length > 0) {
       const tempCourse = await getCourseDetails(courseId)
-      // setResponseObj(tempCourse)
+      setResponseObj(tempCourse)
 
       let tempArray:any = []
 
@@ -87,12 +89,58 @@ export default function CheckEligibility() {
     }
   }
 
-  const handleEligibilityCheck = () => {
+  const handleEligibilityCheck = async () => {
     if (requirementList.length === 0) {
       toast.error("Please select at least one exam type to proceed.");
       return
     }
-    navigate("/select-payment")
+
+    let tempPayload:any = []
+
+    let mainPayload:any = {}
+
+    requirementList.forEach((item) => {
+      let tempSubject: string[] = []
+      let tempGrade: string[] = []
+
+      item.subjects.forEach((item) => {
+        tempGrade.push(item.grade)
+      })
+
+      item.subjects.forEach((item) => {
+        tempSubject.push(item.subject)
+      })
+
+      tempPayload.push({
+        "examType": item.examType,
+        "subjects": tempSubject,
+        "grades": tempGrade
+      })
+    })
+
+    mainPayload["email"] = data.email;
+    mainPayload["courseId"] = courseId;
+    mainPayload["exams"] = tempPayload;
+    mainPayload["preferences"] = {
+      "university": responseObj?.university?.name
+    }
+
+    try {
+      setIsLoading(true)
+      const response = await checkEligibility(mainPayload);
+
+      console.log("response: ", response);
+      if (response.ok === true) {
+        // setShowSignUpBtn(true)
+        // navigate("/select-payment")
+      }
+
+    } catch (e) {
+      toast.error("An error occurred while submitting your answers. Please try again later.");
+      console.error("Error submitting answers: ", e);
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -122,7 +170,7 @@ export default function CheckEligibility() {
 
               <div className="flex justify-center mt-6">
                 <button onClick={handleEligibilityCheck} className="w-[200px] py-2 px-4 bg-[#757575] hover:bg-blue-700 text-white rounded-[30px] disabled:opacity-50">
-                  Submit
+                  { isLoading ? <BeatLoader /> : "Submit"}  
                 </button>
               </div>
             </div>
@@ -231,7 +279,7 @@ export default function CheckEligibility() {
                   disabled={isLoading}
                   className="w-[40%] mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-[30px] disabled:opacity-50"
                 >
-                  {isLoading ? <BeatLoader /> : "Continue"}
+                  {"Continue"}
                 </button>
               </form>
             </div>
