@@ -21,9 +21,16 @@ export  interface Admin {
     username: string
 }
 
+export interface PageDesc {
+  title: string;
+  desc: string
+}
+
 export interface AuthContextType {
   user: User | null;
-  admin: Admin | null
+  admin: Admin | null;
+  pageDesc: PageDesc | null;
+  setPageDesc: React.Dispatch<React.SetStateAction<PageDesc | null>>
   setUser: React.Dispatch<React.SetStateAction<User | null>>
   setCurrentCourseID: React.Dispatch<React.SetStateAction<string | null>>
 
@@ -58,6 +65,7 @@ export interface AuthContextType {
   setDatePickerClicked: React.Dispatch<React.SetStateAction<boolean>>;
   datePickerClicked: boolean;
 
+
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -86,4 +94,6 @@ export const AuthContext = createContext<AuthContextType>({
   startDate: "",
   setDatePickerClicked: () => {},
   datePickerClicked: false,
+  pageDesc: null,
+  setPageDesc: () => {}
 });
