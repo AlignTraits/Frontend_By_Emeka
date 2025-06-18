@@ -50,7 +50,7 @@ export default function DashboardLayout() {
             <ClipLoader />
           </div>
         ) : (
-          <div className="h-screen bg-gray-50 flex relative overflow-y-scroll">
+          <div className="h-screen bg-[white] flex relative overflow-y-scroll">
             <NewSidebar open={open} setOpen={setOpen} />
             <div className="flex-1 relative">
               <Header setOpen={setOpen} />

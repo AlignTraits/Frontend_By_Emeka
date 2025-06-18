@@ -1,7 +1,8 @@
 
 import { useEffect } from 'react';
-import Construction from '../../assets/dashboard/images/construction.png'
+// import Construction from '../../assets/dashboard/images/construction.png'
 import { useAuth } from '../../contexts/useAuth';
+import RecommendationResults from '../../components/dashboard/Pathway/RecommendationResults';
 
 
 export default function CareerPath() {
@@ -15,12 +16,12 @@ export default function CareerPath() {
   })
 
   return (
-    <div className="h-[90dvh]">
+    <div>
       <div className="flex items-center justify-center w-full h-full">
-        <div>
-          <img src={Construction} alt="" />
-        </div>
+        <RecommendationResults />
       </div>
+
+      <div className='h-[70px] w-[30px]'></div>
     </div>
   );
 }
