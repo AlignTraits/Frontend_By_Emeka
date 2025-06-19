@@ -1,21 +1,14 @@
-import { useState, useEffect, lazy, Suspense } from "react";
-const Courses = lazy(() => import("../../components/dashboard/Courses"));
-const LoanCalculator = lazy(
-  () => import("../../components/dashboard/LoanCalculator")
-);
-import { LoadingSkeleton } from "../../components/dashboard/Courses"; 
-import { Course } from "../../types/course.types";
+import { useEffect } from "react";
 
-import { getCourses } from "../../services/schools";
 import { useAuth } from "../../contexts/useAuth";
-import { ClipLoader } from "react-spinners";
-
+import { useNavigate } from "react-router-dom";
+import DashCard from "../../components/dashboard/DashCard";
+import roadSign from "../../assets/roadSign.svg"
+import historyIcon from "../../assets/dashHistoryIcon.svg"
 
 export default function Dashboard() {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const {token, setPageDesc} = useAuth()
+  const { setPageDesc} = useAuth()
+  const navigate = useNavigate()
   
   useEffect(() => {
     setPageDesc({
@@ -24,40 +17,24 @@ export default function Dashboard() {
     })
   })
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        setIsLoading(true);
-        const response = await getCourses(token as string)
-        // await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // const response = await fetch('/api/courses');
-        // const data = await response.json();
-        
-        setCourses(response);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCourses();
-  }, [token]);
-
-  if(isLoading) return <div className="flex w-full h-[90dvh] justify-center items-center"><ClipLoader /></div>
+  // if(isLoading) return <div className="flex w-full h-[90dvh] justify-center items-center"><ClipLoader /></div>
 
   return (
 
-    <div className="min-h-screen bg-[#F7FAFF]  px-10 py-10 xl:px-[4rem] xl:pr-[2rem]">
-      <div className="container mx-auto">
-        <div className="flex flex-row justify-between relative">
-          <Suspense fallback={<LoadingSkeleton />}>
-            <Courses courses={courses} isLoading={isLoading} error={error} />
-          </Suspense>
+    <div className="bg-[white] px-10 py-10 xl:px-[4rem] xl:pr-[2rem]">
+      <div className="container mx-auto flex justify-between w-[90%]">
+        <DashCard percentage={0} />
+        <DashCard percentage={0} title="Recommended pathway" svgImage={<img src={roadSign} alt="Pathway" />} />
+        <DashCard percentage={10} title="Activity History" svgImage={<img src={historyIcon} alt="Pathway" />}  />
+      </div>
 
-          <LoanCalculator />
-        </div>
+      <div className="mt-[70px] mx-auto flex flex-col items-center gap-y-[10px]">
+        <p className="text-[16px] font-semibold text-[#757575]">
+          Take Quiz
+        </p>
+        <button onClick={() => navigate("/career-recommedation")} className="bg-[#004085] h-[40px] w-[180px] font-semibold text-[12px] text-[white] rounded-md">
+          Career Recommendation
+        </button>
       </div>
     </div>
   );
