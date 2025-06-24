@@ -1,3 +1,4 @@
+import React from "react"
 import { SlGraph } from "react-icons/sl";
 
 const recommendations = new Array(8).fill({
@@ -5,7 +6,11 @@ const recommendations = new Array(8).fill({
   description: "Explore path",
 });
 
-export default function RecommendationResults() {
+interface RecommendationProps {
+  setShowCourse: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function RecommendationResults({setShowCourse}: RecommendationProps) {
   return (
     <div className="w-full max-w-2xl mx-auto mt-[50px] bg-white border-[1px] border-[#ccc] shadow-md rounded-xl p-6">
       <h2 className="text-lg font-semibold text-[#101828] mb-6 flex items-center">
@@ -30,7 +35,7 @@ export default function RecommendationResults() {
       </div>
 
       <div className="text-center">
-        <button className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
+        <button onClick={() => setShowCourse(true)} className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
           Get course recommendation
         </button>
       </div>
