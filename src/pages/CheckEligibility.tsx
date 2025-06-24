@@ -8,7 +8,7 @@ import { ErrorObjType, RequirementList } from "../types/course.types";
 import AdmissionRequirements from "../components/Admin/AdmissionRequirements";
 import { getCourseDetails } from "../services/schools";
 import { toast } from "react-toastify";
-import { checkEligibility } from "../services/utils";
+// import { checkEligibility } from "../services/utils";
 
 export default function CheckEligibility() {
   const {error} = useAuth()
@@ -127,13 +127,14 @@ export default function CheckEligibility() {
 
     try {
       setIsLoading(true)
-      const response = await checkEligibility(mainPayload);
+      // const response = await checkEligibility(mainPayload);
 
-      console.log("response: ", response);
-      if (response.ok === true) {
-        // setShowSignUpBtn(true)
-        // navigate("/select-payment")
-      }
+      // console.log("response: ", response);
+      // if (response.ok === true) {
+      //   // setShowSignUpBtn(true)
+      //   // navigate("/select-payment")
+      // }
+      navigate("/select-payment")
 
     } catch (e) {
       toast.error("An error occurred while submitting your answers. Please try again later.");
