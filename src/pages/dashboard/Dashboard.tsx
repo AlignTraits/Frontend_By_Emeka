@@ -15,7 +15,7 @@ export default function Dashboard() {
       desc: "Here’s a summary  of your personalized career data!",
       title: "Dashboard"
     })
-  })
+  }, [])
 
   // if(isLoading) return <div className="flex w-full h-[90dvh] justify-center items-center"><ClipLoader /></div>
 

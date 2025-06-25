@@ -9,6 +9,7 @@ import { BsPersonFillUp } from "react-icons/bs";
 import { IoSchoolSharp } from "react-icons/io5";
 import { CgGym } from "react-icons/cg";
 import { GiProgression } from "react-icons/gi";
+import { IoSettingsSharp } from "react-icons/io5";
 
 
 const NewSidebar = ({
@@ -36,6 +37,7 @@ const NewSidebar = ({
   let schoolPath:boolean = location.pathname.startsWith("/dashboard/school")
   let skillRoadMapPath:boolean = location.pathname.startsWith("/dashboard/skill-roadmap")
   let progressTrackerPath:boolean = location.pathname.startsWith("/dashboard/progres-tracker")
+  let accountPath:boolean = location.pathname.startsWith("/dashboard/account-settings")
   // let profilePath:boolean = location.pathname.startsWith("/admin/profile")
 
 
@@ -97,6 +99,21 @@ const NewSidebar = ({
           <IoSchoolSharp className="w-5 h-5 mr-3"  />
           <span className={schoolPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
             School
+          </span>
+        </NavLink>
+
+        <NavLink
+          to="/dashboard/account-settings"
+          className={({ isActive }) =>
+            `flex items-center p-2 font-bold rounded-md transition-colors ${
+              isActive || accountPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
+            }`
+          }
+          end
+        >
+          <IoSettingsSharp className="w-5 h-5 mr-3"  />
+          <span className={accountPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
+            Account Settings
           </span>
         </NavLink>
         

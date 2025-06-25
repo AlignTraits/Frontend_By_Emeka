@@ -12,7 +12,7 @@ export default function SkillRoadMap() {
         desc: "Welcome",
         title: "Skills Road Map"
       })
-    })
+    }, [])
 
   return (
     <div className="h-[90dvh]">
