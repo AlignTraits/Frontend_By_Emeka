@@ -52,6 +52,7 @@ const CareerPath = lazy(() => import("./pages/dashboard/CareerPath"))
 const ProgressTracker = lazy(() => import("./pages/dashboard/ProgressTracker"))
 const SchoolPage = lazy(() => import("./pages/dashboard/SchoolPage"))
 const SkillRoadMap = lazy(() => import("./pages/dashboard/SkillRoadMap"))
+const NewAccountSettings = lazy(() => import("./pages/dashboard/AccountSettings"))
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -88,6 +89,7 @@ const router = createBrowserRouter([
       { path: "progres-tracker", element: <ProgressTracker /> },
       { path: "school", element: <SchoolPage />},
       { path: "skill-roadmap", element: <SkillRoadMap />},
+      { path: "account-settings", element: <NewAccountSettings />},
       {
         path: "settings",
         element: <SettingsLayout />,

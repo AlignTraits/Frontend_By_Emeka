@@ -13,7 +13,7 @@ export default function SchoolPage() {
         desc: "Welcome to School Page",
         title: "School"
       })
-    })
+    }, [])
   return (
     <div className="h-[90dvh]">
       <div className="flex items-center justify-center w-full h-full">

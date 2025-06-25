@@ -2,17 +2,15 @@ import { useEffect } from 'react';
 import Construction from '../../assets/dashboard/images/construction.png'
 import { useAuth } from '../../contexts/useAuth';
 
+export default function AccountSettings() {
+  const {setPageDesc} = useAuth()
 
-
-export default function SkillRoadMap() {
-    const {setPageDesc} = useAuth()
-  
-    useEffect(() => {
-      setPageDesc({
-        desc: "Welcome",
-        title: "Skills Road Map"
-      })
-    }, [])
+  useEffect(() => {
+    setPageDesc({
+      desc: "Manage your profile, academic records, and security settings.",
+      title: "Account settings"
+    })
+  }, [])
 
   return (
     <div className="h-[90dvh]">

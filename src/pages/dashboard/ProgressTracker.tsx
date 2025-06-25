@@ -10,7 +10,7 @@ export default function ProgressTracker() {
       desc: "Welcome",
       title: "Progress Tracker"
     })
-  })
+  }, [])
 
   return (
     <div className="h-[90dvh]">
