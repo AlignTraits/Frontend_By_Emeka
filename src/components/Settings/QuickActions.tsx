@@ -13,17 +13,17 @@ const QuickActions = () => {
       <div className="mt-5 flex flex-col gap-y-[10px]">
         <div className="bg-[#E3E3E3] h-[40px] w-[100%] rounded-xl flex gap-x-[20px] items-center px-5">
           <BsPerson className="text-[#757575]" />
-          <p>Update Profile Information</p>
+          <p className="text-[#212529] font-medium text-[14px]">Update Profile Information</p>
         </div>
 
         <div className="bg-[#E3E3E3] h-[40px] w-[100%] rounded-xl flex gap-x-[20px] items-center px-5">
           <RiGraduationCapFill className="text-[#757575]" />
-          <p>Add Academic Record</p>
+          <p className="text-[#212529] font-medium text-[14px]">Add Academic Record</p>
         </div>
 
         <div className="bg-[#E3E3E3] h-[40px] w-[100%] rounded-xl flex gap-x-[20px] items-center px-5">
           <IoSettingsSharp className="text-[#757575]" />
-          <p>Change Password</p>
+          <p className="text-[#212529] font-medium text-[14px]">Change Password</p>
         </div>
       </div>
     </div>
