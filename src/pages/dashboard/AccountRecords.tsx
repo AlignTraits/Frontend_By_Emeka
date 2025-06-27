@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/useAuth';
 import Card from '../../components/AccountRecords/Card';
+import ManageRecord from '../../components/AccountRecords/ManageRecord';
 
 export default function AcountRecords() {
   const {setPageDesc} = useAuth()
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     setPageDesc({
@@ -58,7 +60,7 @@ export default function AcountRecords() {
   ]
 
   return (
-    <div className="p-5">
+    <div className="p-5 relative">
       <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] size-max">
         <div>
           <p className="text-[#212529] text-[18px] font-bold">Academic Records</p>
@@ -67,16 +69,19 @@ export default function AcountRecords() {
 
         <div className='w-full flex justify-between items-center'>
           <p className='text-[#101828] text-[16px] font-semibold'>Your Academic Records</p>
-          <button className='h-[45px] bg-[#004085] rounded-xl text-[white] font-medium text-[14px] w-[200px]'>
+          <button onClick={() => setShowModal(true)} className="h-[45px] bg-[#004085] rounded-xl text-white font-medium text-[14px] w-[200px] hover:bg-[#0056b3] transition-colors duration-300">
             {"Add New Record"}
           </button>
         </div>
 
-        <Card result={result[0]} />
+        <Card setShowModal={setShowModal} result={result[0]} />
 
-        <Card result={result[1]} />
+        <Card setShowModal={setShowModal} result={result[1]} />
 
       </div>
+      {
+        showModal && <ManageRecord setShowModal={setShowModal} />
+      }
     </div>
   );
 }
