@@ -6,8 +6,8 @@ import { SubjectGrade, RequirementListNew } from "../../types/course.types";
 import CustomSelect from "../../components/dashboard/CustomSelect";
 import { RxCross1 } from "react-icons/rx";
 import { toast } from "react-toastify";
-import { FiEdit2 } from "react-icons/fi";
-import { FaRegTrashAlt } from "react-icons/fa";
+// import { FiEdit2 } from "react-icons/fi";
+// import { FaRegTrashAlt } from "react-icons/fa";
 
 interface ManageRecordProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -119,30 +119,30 @@ const ManageRecord = ({setShowModal}: ManageRecordProps) => {
     setSubjectList([]);
     setReqId(null);
     
-    toast.success(reqId ? "Requirement updated successfully!" : "Requirement added successfully!");
+    toast.success(reqId ? "Record updated successfully!" : "Record added successfully!");
   };
 
-    const removeRequirement = (id: number) => {
-    setRequirementList(requirementList.filter((item) => item.id !== id));
-    toast.success("Requirement removed successfully!");
-  };
+  // const removeRequirement = (id: number) => {
+  //   setRequirementList(requirementList.filter((item) => item.id !== id));
+  //   toast.success("Requirement removed successfully!");
+  // };
 
-  const editRequirement = (id: number) => {
-    let tempRequirement = requirementList.find((item) => item.id === id);
+  // const editRequirement = (id: number) => {
+  //   let tempRequirement = requirementList.find((item) => item.id === id);
 
-    if (tempRequirement) {
-      setYear(tempRequirement.year)
-      setExamType(tempRequirement.examType);
-      setSubjectList(tempRequirement.subjects);
-      setReqId(tempRequirement.id);
+  //   if (tempRequirement) {
+  //     setYear(tempRequirement.year)
+  //     setExamType(tempRequirement.examType);
+  //     setSubjectList(tempRequirement.subjects);
+  //     setReqId(tempRequirement.id);
       
-      // Scroll to form
-      window.scrollTo({
-        top: document.getElementById('requirements-form')?.offsetTop || 0,
-        behavior: 'smooth'
-      });
-    }
-  };
+  //     // Scroll to form
+  //     window.scrollTo({
+  //       top: document.getElementById('requirements-form')?.offsetTop || 0,
+  //       behavior: 'smooth'
+  //     });
+  //   }
+  // };
 
 
 
@@ -299,7 +299,7 @@ const ManageRecord = ({setShowModal}: ManageRecordProps) => {
           </button>
         </div>
 
-        <div className="flex flex-col gap-y-[20px] mt-6">
+        {/* <div className="flex flex-col gap-y-[20px] mt-6">
           <div className="flex justify-between items-center">
             <h3 className="text-[16px] font-semibold text-[#1E1E1E]">Subjects</h3>
             <span className="text-gray-500 text-sm">{requirementList.length} {requirementList.length === 1 ? 'subjects' : 'subjectss'}</span>
@@ -356,9 +356,7 @@ const ManageRecord = ({setShowModal}: ManageRecordProps) => {
               </div>
             ))
           )}
-        </div>
-
-
+        </div> */}
       </div>      
     </div>
   )
