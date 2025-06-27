@@ -10,11 +10,18 @@ type ExamResult = {
 
 type ResultProps = {
   result: ExamResult;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+
 };
 
-const Card: React.FC<ResultProps> = ({ result })=> {
+const Card: React.FC<ResultProps> = ({ result, setShowModal })=> {
+
+  const handleEdit = () => {
+    setShowModal(true);
+  }
+  
   return (
-    <div className="border-[1px] border-[#EAECF0] flex flex-col justify-between gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] h-[165px]">
+    <div className="border-[1px] border-[#EAECF0] flex flex-col justify-between gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] h-[165px] hover:shadow-lg hover:border-[#D0D5DD] transition-all duration-300">
       <div className="flex justify-between items-center">
         <div>
           <div className="flex gap-x-[10px] items-center">
@@ -25,7 +32,7 @@ const Card: React.FC<ResultProps> = ({ result })=> {
         </div>
 
         <div className="flex gap-x-[10px]">
-          <button className="bg-[#F4F4F4] border-[1px] border-[#EAECF0] shadow-md rounded-md h-[50px] w-[80px] text-[#000000] text-[14px] font-semibold">
+          <button onClick={handleEdit} className="bg-[#F4F4F4] border-[1px] border-[#EAECF0] shadow-md rounded-md h-[50px] w-[80px] text-[#000000] text-[14px] font-semibold">
             Edit
           </button>
           <button className="bg-[#F4F4F4] border-[1px] border-[#EAECF0] shadow-md rounded-md h-[50px] w-[100px] text-[#D92D20] text-[14px] font-semibold">

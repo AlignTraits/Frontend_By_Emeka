@@ -72,6 +72,14 @@ export interface RequirementList {
   location: string;
   examType: string
 }
+
+export interface RequirementListNew {
+  id: number
+  subjects: SubjectGrade[];
+  year: string;
+  examType: string
+}
+
 export interface SubjectGrade {
   id: number;
   subject: string;
