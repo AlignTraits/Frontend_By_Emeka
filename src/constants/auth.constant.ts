@@ -1,1 +1,1 @@
-export const GOOGLE_AUTH_URL = "https://backend-oo07.onrender.com/api/v1/google-auth/google";
+export const GOOGLE_AUTH_URL = `${import.meta.env.VITE_API_URL}/google-auth/google`;
