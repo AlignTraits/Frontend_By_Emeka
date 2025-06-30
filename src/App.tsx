@@ -55,6 +55,7 @@ const SkillRoadMap = lazy(() => import("./pages/dashboard/SkillRoadMap"))
 const NewAccountSettings = lazy(() => import("./pages/dashboard/AccountSettings"))
 const Profile = lazy(() => import("./pages/dashboard/Profile"))
 const AccountRecords = lazy(() => import("./pages/dashboard/AccountRecords"))
+const SecurityManagement = lazy(() => import("./pages/dashboard/SecurityManagement"))
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -94,6 +95,7 @@ const router = createBrowserRouter([
       { path: "account-settings", element: <NewAccountSettings />},
       { path: "profile", element: <Profile /> },
       { path: "records", element: <AccountRecords /> },
+      { path: "security", element: <SecurityManagement /> },
       {
         path: "settings",
         element: <SettingsLayout />,
