@@ -68,7 +68,7 @@ export default function Login() {
                 id="email"
                 type="email"
                 required
-                className="mt-1 w-[500px] h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
+                className="mt-1 w-[500px] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-2xl bg-white shadow-md focus:outline-none"
                 style={{
                   boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
                 }}
@@ -89,7 +89,7 @@ export default function Login() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   required
-                  className="mt-1 w-[500px] h-14 px-4 py-3 rounded-full bg-white border-[1px] border-[#ccc] shadow-md focus:outline-none"
+                  className="mt-1 w-[500px] h-12 px-4 py-3 rounded-2xl bg-white border-[1px] border-[#ccc] shadow-md focus:outline-none"
                   style={{
                     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
                   }}
@@ -126,7 +126,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading || !isFormValid()}
-              className="w-[500px] h-14 rounded-full flex items-center justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white disabled:opacity-50"
+              className="w-[500px] h-12 rounded-2xl flex items-center justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white disabled:opacity-50"
             >
               {isLoading ? <BeatLoader   /> : "Login"}
             </button>
@@ -151,7 +151,7 @@ export default function Login() {
                   style={{
                     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
                   }}
-                  className="w-full flex justify-center items-center gap-x-[10px] px-2 py-1 rounded-full border border-[#ccc] shadow-sm hover:bg-gray-50"
+                  className="w-full flex justify-center items-center gap-x-[10px] px-2 py-1 rounded-2xl border border-[#ccc] shadow-sm hover:bg-gray-50"
                 >
                   <FcGoogle className="text-4xl" />
                   <p>Log in with Google</p>
@@ -162,7 +162,7 @@ export default function Login() {
         </div>
 
         <div className='w-[50%] flex justify-center'>
-          <div className='w-[100%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
+          <div className='w-[65%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
             <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
 
             <p className='text-[20px] text-[white] font-semibold'>The simplest way to navigate your educational future</p>

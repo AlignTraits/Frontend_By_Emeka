@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [creatingCourseClicked, setCreatingCourseClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [datePickerClicked, setDatePickerClicked] = useState(false);
+  const [searchAllTerm, setSearchAllTerm] = useState("");
   
   const [error, setError] = useState<string | null>(null);
 
@@ -234,7 +235,9 @@ const googleLogin = async () => {
     setDatePickerClicked,
     datePickerClicked,
     googleLogin,
-    setToken
+    setToken,
+    setSearchAllTerm,
+    searchAllTerm
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
