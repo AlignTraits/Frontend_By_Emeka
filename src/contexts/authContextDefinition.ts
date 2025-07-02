@@ -59,6 +59,8 @@ export interface AuthContextType {
   creatingCourseClicked: boolean;
   setEndDate: React.Dispatch<React.SetStateAction<string>>;
   setStartDate: React.Dispatch<React.SetStateAction<string>>;
+  setSearchAllTerm: React.Dispatch<React.SetStateAction<string>>;
+  searchAllTerm: string
   setToken: React.Dispatch<React.SetStateAction<string | undefined>>;
   startDate: string;
   endDate: string;
@@ -92,6 +94,8 @@ export const AuthContext = createContext<AuthContextType>({
   setStartDate: () => {},
   endDate: "",
   startDate: "",
+  setSearchAllTerm: () => {},
+  searchAllTerm: "",
   setDatePickerClicked: () => {},
   datePickerClicked: false,
   pageDesc: null,

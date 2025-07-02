@@ -10,9 +10,9 @@ import { IoSchoolSharp } from "react-icons/io5";
 import { CgGym } from "react-icons/cg";
 import { GiProgression } from "react-icons/gi";
 import { IoSettingsSharp } from "react-icons/io5";
-import { IoPersonOutline } from "react-icons/io5";
-import { MdOutlineSecurity } from "react-icons/md";
-import { HiAcademicCap } from "react-icons/hi";
+// import { IoPersonOutline } from "react-icons/io5";
+// import { MdOutlineSecurity } from "react-icons/md";
+// import { HiAcademicCap } from "react-icons/hi";
 
 
 const NewSidebar = ({
@@ -40,10 +40,10 @@ const NewSidebar = ({
   let schoolPath:boolean = location.pathname.startsWith("/dashboard/school")
   let skillRoadMapPath:boolean = location.pathname.startsWith("/dashboard/skill-roadmap")
   let progressTrackerPath:boolean = location.pathname.startsWith("/dashboard/progres-tracker")
-  let accountPath:boolean = location.pathname.startsWith("/dashboard/account-settings")
-  let profilePath:boolean = location.pathname.startsWith("/dashboard/profile")
-  let recordPath:boolean = location.pathname.startsWith("/dashboard/records")
-  let securityPath:boolean = location.pathname.startsWith("/dashboard/security")
+  let accountPath:boolean = location.pathname.startsWith("/dashboard/settings")
+  // let profilePath:boolean = location.pathname.startsWith("/dashboard/profile")
+  // let recordPath:boolean = location.pathname.startsWith("/dashboard/records")
+  // let securityPath:boolean = location.pathname.startsWith("/dashboard/security")
   // let profilePath:boolean = location.pathname.startsWith("/admin/profile")
 
 
@@ -64,7 +64,7 @@ const NewSidebar = ({
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex flex-col space-y-5 h-[500px] overflow-y-scroll scrollbar-hide">
+      <nav className="flex flex-col space-y-5">
         <NavLink
           to="/dashboard"
           className={({ isActive }) =>
@@ -109,7 +109,7 @@ const NewSidebar = ({
         </NavLink>
 
         <NavLink
-          to="/dashboard/account-settings"
+          to="/dashboard/settings"
           className={({ isActive }) =>
             `flex items-center p-2 font-bold rounded-md transition-colors ${
               isActive || accountPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
@@ -122,53 +122,6 @@ const NewSidebar = ({
             Account Settings
           </span>
         </NavLink>
-
-        <NavLink
-          to="/dashboard/profile"
-          className={({ isActive }) =>
-            `flex items-center p-2 font-bold rounded-md transition-colors ${
-              isActive || profilePath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
-            }`
-          }
-          end
-        >
-          <IoPersonOutline className="w-5 h-5 mr-3"  />
-          <span className={profilePath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
-            Profile
-          </span>
-        </NavLink>
-
-        <NavLink
-          to="/dashboard/records"
-          className={({ isActive }) =>
-            `flex items-center p-2 font-bold rounded-md transition-colors ${
-              isActive || recordPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
-            }`
-          }
-          end
-        >
-          <HiAcademicCap className="w-5 h-5 mr-3"  />
-          <span className={recordPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
-            Academic Records
-          </span>
-        </NavLink>
-
-
-        <NavLink
-          to="/dashboard/security"
-          className={({ isActive }) =>
-            `flex items-center p-2 font-bold rounded-md transition-colors ${
-              isActive || securityPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
-            }`
-          }
-          end
-        >
-          <MdOutlineSecurity className="w-5 h-5 mr-3"  />
-          <span className={securityPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
-            Security Management
-          </span>
-        </NavLink>
-        
         
         
         <NavLink

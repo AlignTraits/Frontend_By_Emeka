@@ -2,22 +2,22 @@
 import { useAuth } from '../../contexts/useAuth';
 import { 
   // FiBell, 
-  // FiSearch, 
+  FiSearch, 
   FiUser,
   FiMenu,
   // FiArrowLeft
 
 } from 'react-icons/fi';
-// import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const Header = ({
   setOpen,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { user, pageDesc } = useAuth();
+  const { user, pageDesc, setSearchAllTerm, searchAllTerm } = useAuth();
 
-  // const navigate = useNavigate()
+  const location = useLocation()
 
   return (
     <div className="relative bg-[white] border-[0.4px] border-y-[#E0E0E0] py-4 px-5 sticky top-0 z-10 w-full overflow-hidden">
@@ -33,6 +33,21 @@ const Header = ({
             </p>
           </div>
         </div>
+
+        {
+          location.pathname.startsWith("/dashboard/school") && 
+          <div className="w-[400px] h-[40px] mx-auto">
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchAllTerm}
+              onChange={(e) => setSearchAllTerm(e.target.value)}
+              className="w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[14px] font-[400] text-[#8F8F8F]"
+            />
+            <FiSearch className="absolute left-2 top-[20px] -translate-y-1/2 text-[#999999] w-5 h-5" />
+          </div>
+        }
+        
 
         <div className="flex items-center lg:space-x-2">
           <div className="text-right">

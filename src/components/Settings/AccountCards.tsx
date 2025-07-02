@@ -6,9 +6,10 @@ interface AccountCardsProps {
   title: string;
   desc: string;
   textTwo: string;
+  handleNavigate: () => void
 }
 
-const AccountCards = ({title, desc,textTwo, children}:AccountCardsProps & { children?: React.ReactNode }) => {
+const AccountCards = ({title, desc,textTwo, handleNavigate, children}:AccountCardsProps & { children?: React.ReactNode }) => {
   return (
     <div className={`h-[240px] w-[33%] bg-white cursor-pointer flex flex-col justify-between rounded-xl shadow-lg shadow-gray-200/50 border border-gray-200 p-6 w-64  hover:shadow-md transition`}>
       <div className='flex justify-between items-center'>
@@ -21,7 +22,7 @@ const AccountCards = ({title, desc,textTwo, children}:AccountCardsProps & { chil
         <p className='text-[12px] text-[#757575] mt-2'>{desc}</p>
       </div>
 
-      <button className="bg-[#EEECEC] w-[200px] h-[50px] text-[#000000] font-semibold text-[16px] flex justify-center items-center rounded-2xl">
+      <button onClick={handleNavigate} className="bg-[#EEECEC] w-[200px] h-[50px] text-[#000000] font-semibold text-[16px] flex justify-center items-center rounded-2xl">
         {textTwo}
       </button>
     </div>

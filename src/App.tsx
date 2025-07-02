@@ -11,8 +11,9 @@ import AdminLayout from "./layouts/admin/AdminLayout";
 import AdminDashboardLayout from './layouts/admin/AdminDashboardLayout'
 import Root from "./layouts/Root"
 
+import SettingsLayout from "./layouts/SettingsLayout";
 // Lazy imports for code splitting
-const SettingsLayout = lazy(() => import("./layouts/SettingsLayout"));
+
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/auth/Login"));
@@ -23,11 +24,6 @@ const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 const Pathfinder = lazy(() => import("./pages/dashboard/Pathfinder"));
 const Community = lazy(() => import("./pages/dashboard/Community"));
-const BasicInformation = lazy(() => import("./pages/dashboard/settings/BasicInformation"));
-const AccountSettings = lazy(() => import("./pages/dashboard/settings/AccountSettings"));
-const CareerRecommendation = lazy(() => import("./pages/dashboard/settings/CareerRecommendation"));
-const Schoolnformation = lazy(() => import("./pages/dashboard/settings/Schoolnformation"));
-const Payment = lazy(() => import("./pages/dashboard/settings/Payment"));
 const Admin = lazy(() => import('./pages/admin/Index'));
 const AdminLogin = lazy(() => import('./pages/admin/Login'));
 const Schools = lazy(() => import('./pages/admin/Schools'));
@@ -52,7 +48,7 @@ const CareerPath = lazy(() => import("./pages/dashboard/CareerPath"))
 const ProgressTracker = lazy(() => import("./pages/dashboard/ProgressTracker"))
 const SchoolPage = lazy(() => import("./pages/dashboard/SchoolPage"))
 const SkillRoadMap = lazy(() => import("./pages/dashboard/SkillRoadMap"))
-const NewAccountSettings = lazy(() => import("./pages/dashboard/AccountSettings"))
+const AccountSettings = lazy(() => import("./pages/dashboard/AccountSettings"))
 const Profile = lazy(() => import("./pages/dashboard/Profile"))
 const AccountRecords = lazy(() => import("./pages/dashboard/AccountRecords"))
 const SecurityManagement = lazy(() => import("./pages/dashboard/SecurityManagement"))
@@ -92,20 +88,19 @@ const router = createBrowserRouter([
       { path: "progres-tracker", element: <ProgressTracker /> },
       { path: "school", element: <SchoolPage />},
       { path: "skill-roadmap", element: <SkillRoadMap />},
-      { path: "account-settings", element: <NewAccountSettings />},
-      { path: "profile", element: <Profile /> },
-      { path: "records", element: <AccountRecords /> },
-      { path: "security", element: <SecurityManagement /> },
+      
+      // { path: "settings", element: <AccountSettings />},
+      // { path: "profile", element: <Profile /> },
+      // { path: "records", element: <AccountRecords /> },
+      // { path: "security", element: <SecurityManagement /> },
       {
         path: "settings",
-        element: <SettingsLayout />,
+        element: <SettingsLayout />, // <-- Add this line
         children: [
-          { index: true, element: <BasicInformation /> },
-          { path: "basic-information", element: <BasicInformation /> },
-          { path: "account-settings", element: <AccountSettings /> },
-          { path: "career-recommendation", element: <CareerRecommendation /> },
-          { path: "school-information", element: <Schoolnformation /> },
-          { path: "payment", element: <Payment /> },
+          { index: true, element: <AccountSettings /> }, // /dashboard/settings
+          { path: "profile", element: <Profile /> },     // /dashboard/settings/profile
+          { path: "records", element: <AccountRecords /> }, // /dashboard/settings/records
+          { path: "security", element: <SecurityManagement /> }, // /dashboard/settings/security
         ],
       },
     ],
