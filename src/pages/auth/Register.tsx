@@ -92,10 +92,10 @@ export default function Register() {
     <div className="relative h-screen w-full bg-[#FCFCFD]">
       <Header />
       {success ? (
-        <div className="flex gap-x-[30px] bg-[white] p-[20px]">
+        <div className="flex bg-[white] p-[20px]">
           <div className="w-[50%] flex flex-col gap-y-[10px] justify-center items-center">
-            <p className="w-[500px] text-[#1F2228] text-[25px] font-semibold">Verify Your Email Address</p>
-            <p className="w-[500px] text-[#4C4E53] text-[14px]">
+            <p className="w-[450px] text-[#1F2228] text-[25px] font-semibold">Verify Your Email Address</p>
+            <p className="w-[450px] text-[#4C4E53] text-[14px]">
               A verification mail has been sent to 
               <span className="text-[#101828] font-semibold"> {credentials.email}</span>. <br />Please click on the link to verify your account.
             </p>
@@ -130,29 +130,29 @@ export default function Register() {
         </div>
       ) : (
         <div className="flex gap-x-[30px] bg-[white] p-[20px]">
-          <div className="w-[50%] space-y-5 p-8 flex flex-col items-center">
-            <div className="flex flex-col justify-center items-center">
-              <h2 className="text-3xl font-bold w-[500px]">
-                Get Started Now
+          <div className="w-[50%] space-y-4 p-8 flex flex-col items-center">
+            <div className="flex flex-col justify-center w-[450px]">
+              <h2 className="text-xl font-bold">
+                Get started now
               </h2>
-              <p className='w-[500px] text-[#757575] text-[12px] font-medium'>Enter your credentials to access your account</p>
+              <p className='text-[#757575] text-[12px] font-medium'>Enter your credentials to access your account</p>
             </div>
 
-            <div className="mt-6 flex gap-3 justift-center">
-              <button
-                type="button"
-                 onClick={() => window.location.href = GOOGLE_AUTH_URL}
-                style={{
-                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
-                }}
-                className="w-[300px] flex justify-center items-center gap-x-[10px] px-2 py-1 rounded-full border border-[#ccc] shadow-sm hover:bg-gray-50"
-              >
-                <FcGoogle className="text-4xl" />
-                <p>Log in with Google</p>
-              </button>
+            <div className="mt-4">
+              <div className="mt-4 flex gap-3 w-[450px]">
+                <button
+                  type="button"
+                  onClick={() => window.location.href = GOOGLE_AUTH_URL}
+                  className="w-full h-12 flex justify-center items-center gap-x-[10px] px-2 py-1 rounded-xl border border-[#ccc] shadow-lg hover:bg-gray-50"
+                >
+                  <FcGoogle className="text-4xl" />
+                  <p>Sign up with Google</p>
+                </button>
+              </div>
             </div>
 
-            <div className="relative w-[500px]">
+
+            <div className="relative w-[450px]">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300"></div>
               </div>
@@ -170,7 +170,7 @@ export default function Register() {
               </p>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6 flex flex-col items-center">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="email" className="block text-[16px] font-[600]">
                   Email
@@ -179,7 +179,7 @@ export default function Register() {
                   id="email"
                   type="email"
                   required
-                  className="mt-1 w-[500px] h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
+                  className="mt-1 w-[450px] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
                   placeholder="Enter your email address"
                   value={credentials.email}
                   onChange={(e) =>
@@ -195,12 +195,12 @@ export default function Register() {
                 >
                   Password
                 </label>
-                <div className="relative w-[500px]">
+                <div className="relative w-[450px]">
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     required
-                    className="mt-1 w-[500px] h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
+                    className="mt-1 w-[450px] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
                     placeholder="Enter your Password"
                     value={credentials.password}
                     onChange={(e) =>
@@ -246,18 +246,18 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={isLoading || !isFormValid()}
-                className="w-[500px] h-14 flex justify-center items-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full disabled:opacity-50"
+                className="w-[450px] h-12 flex justify-center items-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
               >
                 {isLoading ? <BeatLoader /> : "Sign Up"}
               </button>
 
-              <div className="text-center">
+              <div className="text-center w-[450px]">
                 <span className="text-[16px] font-[400] ">
                   Have an account?{" "}
                 </span>
                 <button
                   onClick={() => navigate("/login")}
-                  className="text-[16px] text-[#007AFF] font-[700] underline"
+                  className="text-[16px] text-[#004085] font-[700] underline"
                 >
                   Login
                 </button>
@@ -266,7 +266,7 @@ export default function Register() {
           </div>
 
           <div className='w-[50%] flex justify-center'>
-            <div className='w-[100%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
+            <div className='w-[65%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
               <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
 
               <p className='text-[20px] text-[white] font-semibold'>The simplest way to navigate your educational future</p>
