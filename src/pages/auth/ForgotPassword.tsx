@@ -61,13 +61,13 @@ export default function ForgotPassword() {
             <p className='text-[#4C4E53]'>We’ve sent an email to <span className='text-[#101828]'>{email}</span> with a link to get back into your account.</p>
           </div>
         ) : (
-        <div className='flex gap-x-[30px] bg-[white] p-[20px] pl-[100px] w-full'>
+        <div className='flex bg-[white] p-[20px] pl-[100px] w-full'>
           <div className="w-[50%] h-[500px] flex flex-col justify-center items-center gap-y-[30px]">
-            <div className="space-y-2 w-[450px]">
-              <h2 className="text-2xl font-bold text-[#101828]">
+            <div className="w-[450px]">
+              <h2 className="text-xl font-semibold text-[#101828]">
                 Forget your password?
               </h2>
-              <p className="text-[16px] text-[#101828] font-semibold">
+              <p className="text-[14px] text-[#757575] font-medium">
                 Enter the email you used to register with Aligntraits
               </p>
             </div>
@@ -80,7 +80,7 @@ export default function ForgotPassword() {
                   placeholder='Please enter your email'
                   required
                   // className="mt-1 block w-[450px] rounded-xl border border-[#000000] p-2"
-                  className="mt-1 w-[450px] h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
+                  className="mt-1 w-[450px] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   onFocus={() => setError(null)}
@@ -95,7 +95,7 @@ export default function ForgotPassword() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-[450px] h-[50px] py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-full disabled:opacity-50"
+                className="w-[450px] h-12 py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
               >
                 {isLoading ? <BeatLoader /> : "Reset Password"}
               </button>
@@ -105,7 +105,7 @@ export default function ForgotPassword() {
           </div>
 
           <div className='w-[50%] flex justify-center'>
-            <div className='w-[100%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
+            <div className='w-[65%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
               <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
 
               <p className='text-[20px] text-[white] font-semibold'>The simplest way to navigate your educational future</p>

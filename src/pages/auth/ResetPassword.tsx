@@ -142,7 +142,7 @@ useEffect(()=> {
                     type={showPassword ? "text" : "password"}
                     required
                     // className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
-                    className="mt-1 w-full h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
+                    className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
                     placeholder="Enter your new password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -175,7 +175,7 @@ useEffect(()=> {
                     type={showConfirmPassword ? "text" : "password"}
                     required
                     // className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
-                    className="mt-1 w-full h-14 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
+                    className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
                     placeholder="Re-enter your new password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -199,7 +199,7 @@ useEffect(()=> {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-[40%] mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-[30px] disabled:opacity-50"
+                className="w-full h-12 mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
               >
                 {isLoading ? <BeatLoader /> : "Update Password"}
               </button>

@@ -45,11 +45,11 @@ export default function Login() {
   return (
     <div className="relative h-screen w-full bg-[#FCFCFD]">
       <Header />
-      <div className='flex gap-x-[30px] bg-[white] p-[20px] pl-[100px]'>
-        <div className="w-[50%] space-y-5 p-8">
-          <div className="flex flex-col justify-center">
-            <h2 className="text-3xl font-bold">
-              Welcome back
+      <div className='flex bg-[white] p-[20px]'>
+        <div className="w-[50%] space-y-5 p-8 flex flex-col items-center">
+          <div className="flex flex-col justify-center w-[450px]">
+            <h2 className="text-xl font-bold">
+              Get started now
             </h2>
             <p className='text-[#757575] text-[12px] font-medium'>Log in to your Aligntraits account</p>
           </div>
@@ -59,7 +59,20 @@ export default function Login() {
             </p>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="mt-4">
+            <div className="mt-4 flex gap-3 w-[450px]">
+              <button
+                type="button"
+                onClick={() => window.location.href = GOOGLE_AUTH_URL}
+                className="w-full h-12 flex justify-center items-center gap-x-[10px] px-2 py-1 rounded-xl border border-[#ccc] shadow-lg hover:bg-gray-50"
+              >
+                <FcGoogle className="text-4xl" />
+                <p>Log in with Google</p>
+              </button>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-7">
             <div>
               <label htmlFor="email" className="block text-[16px] font-[600]">
                 Email
@@ -68,7 +81,7 @@ export default function Login() {
                 id="email"
                 type="email"
                 required
-                className="mt-1 w-[500px] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-2xl bg-white shadow-md focus:outline-none"
+                className="mt-1 w-[450px] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
                 style={{
                   boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
                 }}
@@ -80,83 +93,69 @@ export default function Login() {
               />
             </div>
 
-            <div className='w-[500px]'>
-              <label htmlFor="password" className="block text-[16px] font-[600]">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  required
-                  className="mt-1 w-[500px] h-12 px-4 py-3 rounded-2xl bg-white border-[1px] border-[#ccc] shadow-md focus:outline-none"
-                  style={{
-                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
-                  }}
-                  placeholder="Enter your Password"
-                  value={credentials.password}
-                  onChange={(e) =>
-                    setCredentials({ ...credentials, password: e.target.value })
-                  }
-                />
+            <div className='relative w-[450px]'>
+              <div className="absolute right-[0px] flex items-center justify-end w-[450px]">
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 text-[#004085] "
+                  onClick={() => navigate("/forgot-password")}
+                  className="text-sm text-[#004085] hover:underline"
                 >
-                  {showPassword ? (
-                    <AiOutlineEyeInvisible size={20} />
-                  ) : (
-                    <AiOutlineEye size={20} />
-                  )}
+                  Forgot password?
                 </button>
               </div>
-            </div>
 
-            <div className="flex items-center justify-end w-[500px]">
-              <button
-                type="button"
-                onClick={() => navigate("/forgot-password")}
-                className="text-sm text-blue-600 hover:underline"
-              >
-                Forgot password?
-              </button>
+              <div className='w-[450px]'>
+                <label htmlFor="password" className="block text-[16px] font-[600]">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    className="mt-1 w-[450px] h-12 px-4 py-3 rounded-xl bg-white border-[1px] border-[#ccc] shadow-md focus:outline-none"
+                    style={{
+                      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
+                    }}
+                    placeholder="Enter your Password"
+                    value={credentials.password}
+                    onChange={(e) =>
+                      setCredentials({ ...credentials, password: e.target.value })
+                    }
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-6 top-1/2 -translate-y-1/2 text-[#004085] "
+                  >
+                    {showPassword ? (
+                      <AiOutlineEyeInvisible size={20} />
+                    ) : (
+                      <AiOutlineEye size={20} />
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
 
             <button
               type="submit"
               disabled={isLoading || !isFormValid()}
-              className="w-[500px] h-12 rounded-2xl flex items-center justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white disabled:opacity-50"
+              className="w-[450px] h-12 rounded-xl flex items-center justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white disabled:opacity-50"
             >
               {isLoading ? <BeatLoader   /> : "Login"}
             </button>
 
-            <div className="text-center">
+            <div className="text-center w-[450px]">
               <span className="text-[16px] font-[400] ">
-                Have an account?{" "}
+                Don't have an account?{" "}
               </span>
               <button
                 onClick={() => navigate("/signup")}
-                className="text-[16px] text-[#007AFF] font-[700] underline"
+                className="text-[16px] text-[#004085] font-[700]"
               >
-                signup
+                Sign up here
               </button>
-            </div>
-
-            <div className="mt-6">
-              <div className="mt-6 flex gap-3 w-1/2 mx-auto">
-                <button
-                  type="button"
-                  onClick={() => window.location.href = GOOGLE_AUTH_URL}
-                  style={{
-                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
-                  }}
-                  className="w-full flex justify-center items-center gap-x-[10px] px-2 py-1 rounded-2xl border border-[#ccc] shadow-sm hover:bg-gray-50"
-                >
-                  <FcGoogle className="text-4xl" />
-                  <p>Log in with Google</p>
-                </button>
-              </div>
             </div>
           </form>
         </div>
