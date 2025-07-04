@@ -257,12 +257,12 @@ export default function HomeSearch() {
   // console.log("categories: ", categories)
   
   return (
-    <div className="relative h-screen w-full bg-[#FCFCFD]">
-      <div className="sticky top-0 z-[1000] sm:bg-[#FCFCFD] pb-[10px]">
-        <div className="md:bg-[#FCFCFD] md:mx-0 flex justify-between p-5 border-b border-b-[#DDDDDD] bg-white shadow-md mx-4 sm:rounded-md">
+    <div className="relative h-screen w-full bg-[white]">
+      <div className="sticky top-0 z-[1000] sm:bg-[white] pb-[10px]">
+        <div className="md:bg-[#FCFCFD] md:mx-0 flex justify-between p-3 border-b border-b-[#DDDDDD] bg-white shadow-md mx-4 sm:rounded-md">
           <div>
-            <h1 className="text-[16px] font-semibold text-[#101828] md:text-[20px]">Welcome to Aligntraits</h1>
-            <p className="text-[10px] font-normal text-[#999999] md:text-[12px]">Find your career path today!</p>
+            <h1 className="text-[12px] font-semibold text-[#101828] md:text-[20px]">Welcome to Aligntraits</h1>
+            <p className="text-[8px] font-normal text-[#999999] md:text-[12px]">Find your career path today!</p>
           </div>
 
           <div className="flex gap-x-[20px] items-center">
@@ -272,9 +272,9 @@ export default function HomeSearch() {
                 placeholder="Search"
                 value={searchAllTerm}
                 onChange={(e) => setSearchAllTerm(e.target.value)}
-                className="w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[14px] font-[400] text-[#8F8F8F]"
+                className="w-[150px] md:w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[14px] font-[400] text-[#8F8F8F]"
               />
-              <FiSearch className="absolute left-2 top-[20px] -translate-y-1/2 text-[#999999] w-5 h-5" />
+              <FiSearch className="absolute left-2 top-[20px] -translate-y-1/2 text-[#999999] w-3 h-3 md:w-5 md-5" />
             </div>
 
             {/* Desktop buttons */}
@@ -295,7 +295,7 @@ export default function HomeSearch() {
 
             {/* Mobile menu icon */}
             <button
-              className="md:hidden flex items-center justify-center h-10 w-10 ml-2"
+              className="md:hidden flex items-center justify-center h-10 w-10 "
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label="Open menu"
             >
@@ -360,11 +360,11 @@ export default function HomeSearch() {
             </div>
 
             <div className="w-full border-b border-b-[#DDDDDD] pb-[10px]">
-              <div className="flex gap-x-[10px] p-[20px] flex-wrap gap-[10px]">
-                <div className="w-[200px] relative" ref={fieldDropdownRef}>
+              <div className="flex flex-wrap gap-[10px] px-3 py-3">
+                <div className="relative" ref={fieldDropdownRef}>
                   <input
                     type="text"
-                    className="h-[35px] border-[0.8px] border-gray-300 p-2 w-[200px] md:w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+                    className="h-[35px] w-[150px] border-[0.8px] border-gray-300 p-2 rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
                     placeholder="Field Of Study"
                     value={fieldStudy}
                     onFocus={() => setFieldDropdownOpen(true)}
@@ -403,11 +403,11 @@ export default function HomeSearch() {
                 </div>
 
 
-                <div className="w-[200px] relative" ref={dropdownRef}>
+                <div className="relative" ref={dropdownRef}>
                   <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
                   <input
                     type="text"
-                    className="h-[35px] border-[0.8px] border-gray-300 p-2 w-[200px] md:w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+                    className="h-[35px] w-[150px] border-[0.8px] border-gray-300 p-2 rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
                     placeholder="Country"
                     value={searchTerm}
                     onFocus={() => setDropdownOpen(true)} // Open dropdown on focus
@@ -433,11 +433,11 @@ export default function HomeSearch() {
                     )}
                 </div>
 
-                <div className="w-[200px] relative" ref={stateDropdownRef}>
+                <div className="relative" ref={stateDropdownRef}>
                   <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
                   <input
                     type="text"
-                    className="h-[35px] bg-[white] border-[0.8px] border-gray-300 p-2 w-[200px] md:w-full  rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+                    className="h-[35px] w-[100px] bg-[white] border-[0.8px] border-gray-300 p-2  rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
                     placeholder="Region"
                     value={stateSearchTerm}
                     onFocus={() => setStateDropdownOpen(true)} // Open dropdown on focus
@@ -464,7 +464,7 @@ export default function HomeSearch() {
                   )}
                 </div>
 
-                <div className="w-[200px] md:w-[200px] ">
+                <div className="md:w-[200px]">
                   <CustomSelectWithProps
                     placeholder="Scholarship Options"
                     classNameStyle="h-[35px]"
@@ -484,7 +484,7 @@ export default function HomeSearch() {
                 <button 
                   onClick={resetFilter}
                   type="button" 
-                  className="w-[200px] bg-[white] text-[#999999] text-[14px] font-medium py-2 h-[35px] p-2 border border-gray-300 rounded-md
+                  className="bg-[white] text-[#999999] text-[14px] font-medium py-2 h-[35px] p-2 border border-gray-300 rounded-md
                       outline-0 focus:outline-none flex justify-between items-center gap-x-[10px]"
                   >
                   <p className="whitespace-nowrap">Clear Filters</p>
