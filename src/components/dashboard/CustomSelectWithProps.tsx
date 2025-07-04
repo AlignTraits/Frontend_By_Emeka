@@ -101,7 +101,7 @@ const CustomSelectWithProps: React.FC<SelectProps> = ({
         onClick={handleClick}
       >
         {selected?.value  ? <p className="text-[#1E1E1E] text-[14px]">{splitString(selected.label)}</p> : 
-        <p className="text-[#999999] text-[14px]">{placeholder}</p>}
+        <p className="text-[#999999] text-[14px] whitespace-nowrap">{placeholder}</p>}
         <FiChevronDown className="text-[#999999]" />
       </button>
 

@@ -61,7 +61,7 @@ export default function ForgotPassword() {
             <p className='text-[#4C4E53]'>We’ve sent an email to <span className='text-[#101828]'>{email}</span> with a link to get back into your account.</p>
           </div>
         ) : (
-        <div className='flex bg-[white] p-[20px] pl-[100px] w-full'>
+        <div className='flex bg-[white] p-[20px] w-full'>
           <div className="w-[50%] h-[500px] flex flex-col justify-center items-center gap-y-[30px]">
             <div className="w-[450px]">
               <h2 className="text-xl font-semibold text-[#101828]">

@@ -16,8 +16,7 @@ import CourseDetails from "../components/dashboard/CourseDetails";
 // import { toast } from "react-toastify";
 import { courseCategoryList } from "../data/courseCategories";
 // import csvFile from "../assets/csvFile.csv"
-import { FiMenu } from "react-icons/fi";
-import { LiaTimesSolid } from "react-icons/lia";
+
 
 // type CategoryType = {
 //   id: number;
@@ -40,7 +39,6 @@ type Country = {
 
 export default function HomeSearch() {
   const navigate = useNavigate();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("");
   const [searchAllTerm, setSearchAllTerm] = useState("");
@@ -257,95 +255,46 @@ export default function HomeSearch() {
   // console.log("categories: ", categories)
   
   return (
-    <div className="relative h-screen w-full bg-[white]">
-      <div className="sticky top-0 z-[1000] sm:bg-[white] pb-[10px]">
-        <div className="md:bg-[#FCFCFD] md:mx-0 flex justify-between p-3 border-b border-b-[#DDDDDD] bg-white shadow-md mx-4 sm:rounded-md">
-          <div>
-            <h1 className="text-[12px] font-semibold text-[#101828] md:text-[20px]">Welcome to Aligntraits</h1>
-            <p className="text-[8px] font-normal text-[#999999] md:text-[12px]">Find your career path today!</p>
-          </div>
-
-          <div className="flex gap-x-[20px] items-center">
-            <div className="relative h-[40px] lg:w-[500px]">
-              <input
-                type="text"
-                placeholder="Search"
-                value={searchAllTerm}
-                onChange={(e) => setSearchAllTerm(e.target.value)}
-                className="w-[150px] md:w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[14px] font-[400] text-[#8F8F8F]"
-              />
-              <FiSearch className="absolute left-2 top-[20px] -translate-y-1/2 text-[#999999] w-3 h-3 md:w-5 md-5" />
-            </div>
-
-            {/* Desktop buttons */}
-            <div className="hidden md:flex gap-x-[20px]">
-              <button
-                onClick={() => navigate("/career-recommedation")}
-                className="bg-[#004085] h-[40px] w-[180px] font-semibold text-[12px] text-[white] rounded-md"
-              >
-                Career Recommendation
-              </button>
-              <button
-                onClick={goLogin}
-                className="bg-[#F6C648] h-[40px] w-[70px] font-semibold text-[12px] text-[#1E1E1E] rounded-md"
-              >
-                Login
-              </button>
-            </div>
-
-            {/* Mobile menu icon */}
-            <button
-              className="md:hidden flex items-center justify-center h-10 w-10 "
-              onClick={() => setMobileMenuOpen((prev) => !prev)}
-              aria-label="Open menu"
-            >
-              <FiMenu className="w-6 h-6 text-[#004085]" />
-            </button>
-          </div>
+    <div className="relative h-screen w-full bg-[#FCFCFD]">
+      <div className="bg-[#FCFCFD] flex justify-between p-5 border-b border-b-[#DDDDDD] sticky top-0 z-[1000]">
+        <div>
+          <h1 className="text-[20px] font-semibold text-[#101828]">Welcome to Aligntraits</h1>
+          <p className="text-[12px] font-normal text-[#999999]">Find your career path today!</p>
         </div>
-      </div>
 
-      {/* Mobile menu dropdown */}
-      {mobileMenuOpen && (
-      
-      <div 
-        className="fixed inset-0 bg-black bg-opacity-10 z-[1099]"
-        onClick={() => setMobileMenuOpen(false)}>
-        <div className="md:hidden absolute right-5 top-[150px] bg-white shadow-lg rounded-md z-[1100] flex flex-col space-y-5 w-[90%] h-[250px] justify-center items-center">
-          <LiaTimesSolid onClick={() => setMobileMenuOpen(false)} className="absolute right-[20px] top-[20px] h-6 w-6 " />
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              navigate("/career-recommedation");
-            }}
-            className="w-[70%] px-10 py-3 text-[white] rounded-lg bg-[#004085] font-semibold hover:bg-[#f4f8fb]"
-          >
+        <div className="flex gap-x-[20px]">
+          <div className="relative w-[550px] h-[40px]">
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchAllTerm}
+              onChange={(e) => setSearchAllTerm(e.target.value)}
+              className="w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[14px] font-[400] text-[#8F8F8F]"
+            />
+            <FiSearch className="absolute left-2 top-[20px] -translate-y-1/2 text-[#999999] w-5 h-5" />
+          </div>
+
+          <button onClick={() => navigate("/career-recommedation")} className="bg-[#004085] h-[40px] w-[180px] font-semibold text-[12px] text-[white] rounded-md">
             Career Recommendation
           </button>
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              goLogin();
-            }}
-            className="w-[70%] bg-[#F6C648] px-10 py-3 text-[#1E1E1E] rounded-lg font-semibold hover:bg-[#f4f8fb]"
-          >
+
+          <button onClick={goLogin} className="bg-[#F6C648] h-[40px] w-[70px] font-semibold text-[12px] text-[#1E1E1E] rounded-md">
             Login
           </button>
         </div>
       </div>
-      )}
 
       {
         showDetails ? (
           <CourseDetails courseItem={courseDetails} setShowDetails={setShowDetails} />
         ) : (
           <div className="w-full min-h-screen">
-            <div className="flex border-b border-b-[#EAECF0] px-[20px] mt-[20px] overflow-x-auto scrollbar-hide">
+            <div className="flex border-b border-b-[#EAECF0] px-[20px] mt-[20px]">
               {courseCategoryList.map((tab) => {
                 return (
                   <button
                     key={tab.id}
-                    className={`py-2 px-4 text-[12px] whitespace-nowrap font-semibold border-b-2 font-medium transition 
+                    className={`py-2 px-4 text-[12px] font-semibold border-b-2 font-medium transition 
                       ${
                         activeTab === tab.id
                           ? "border-[#003064] text-[#004085] text-[12px] font-semibold"
@@ -359,12 +308,15 @@ export default function HomeSearch() {
               })}
             </div>
 
-            <div className="w-full border-b border-b-[#DDDDDD] pb-[10px]">
-              <div className="flex flex-wrap gap-[10px] px-3 py-3">
-                <div className="relative" ref={fieldDropdownRef}>
+
+            <div className="flex justify-between items-center px-[20px] border-b border-b-[#DDDDDD] pb-[10px]">
+              <div className="flex gap-x-[10px] my-[20px]">
+
+ 
+                <div className="w-[200px] relative" ref={fieldDropdownRef}>
                   <input
                     type="text"
-                    className="h-[35px] w-[150px] border-[0.8px] border-gray-300 p-2 rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+                    className="h-[35px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
                     placeholder="Field Of Study"
                     value={fieldStudy}
                     onFocus={() => setFieldDropdownOpen(true)}
@@ -374,7 +326,7 @@ export default function HomeSearch() {
                     }}
                   />
                   {fieldDropdownOpen && (
-                    <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[250px] overflow-y-auto z-10">
+                    <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
                       {programList
                         .filter(typeValue =>
                           typeValue.toLowerCase().includes(fieldStudy.toLowerCase())
@@ -403,11 +355,11 @@ export default function HomeSearch() {
                 </div>
 
 
-                <div className="relative" ref={dropdownRef}>
+                <div className="w-[200px] relative" ref={dropdownRef}>
                   <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
                   <input
                     type="text"
-                    className="h-[35px] w-[150px] border-[0.8px] border-gray-300 p-2 rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+                    className="h-[35px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
                     placeholder="Country"
                     value={searchTerm}
                     onFocus={() => setDropdownOpen(true)} // Open dropdown on focus
@@ -433,11 +385,11 @@ export default function HomeSearch() {
                     )}
                 </div>
 
-                <div className="relative" ref={stateDropdownRef}>
+                <div className="w-[200px] relative" ref={stateDropdownRef}>
                   <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
                   <input
                     type="text"
-                    className="h-[35px] w-[100px] bg-[white] border-[0.8px] border-gray-300 p-2  rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+                    className="h-[35px] bg-[white] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
                     placeholder="Region"
                     value={stateSearchTerm}
                     onFocus={() => setStateDropdownOpen(true)} // Open dropdown on focus
@@ -464,7 +416,7 @@ export default function HomeSearch() {
                   )}
                 </div>
 
-                <div className="md:w-[200px]">
+                <div className="w-200px">
                   <CustomSelectWithProps
                     placeholder="Scholarship Options"
                     classNameStyle="h-[35px]"
@@ -484,15 +436,18 @@ export default function HomeSearch() {
                 <button 
                   onClick={resetFilter}
                   type="button" 
-                  className="bg-[white] text-[#999999] text-[14px] font-medium py-2 h-[35px] p-2 border border-gray-300 rounded-md
-                      outline-0 focus:outline-none flex justify-between items-center gap-x-[10px]"
+                  className="w-[150px] bg-[white] text-[#999999] text-[14px] font-medium py-2 h-[35px] p-2 border border-gray-300 rounded-md
+                      outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
                   >
-                  <p className="whitespace-nowrap">Clear Filters</p>
+                  <p>Clear Filters</p>
                   <IoIosRefresh className="w-4 h-4"  />
                 </button>
+
               </div>
+
             </div>
             
+
             <div className="p-5 flex justify-center">
               {isLoading && (
                 <div className="mx-auto w-full flex justify-center items-center h-[500px]">
