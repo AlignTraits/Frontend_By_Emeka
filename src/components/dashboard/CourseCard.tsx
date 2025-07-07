@@ -22,24 +22,21 @@ const CourseCard = ({courseItem, setCourseDetails, setShowDetails}: CoursesProps
 
   async function fetchSchool() {
     const response = await getSchool(courseItem?.schoolId as string);
-    console.log("response: ", response)
     setSchool(response);
   }
-
-  console.log("courseItem: ", courseItem)
   
   useEffect(() => {
     fetchSchool()
   }, [])
   // console.log("courseItem: ", courseItem)
   return (
-    <div className="w-[48%] lg:w-[300px] md:h-[400px] rounded-xl border-[2px] border-[#EAECF0] p-[8px] flex flex-col gap-y-[2px] justify-between bg-white">
+    <div className="w-[48%] lg:w-[300px] h-[350px] md:h-[400px] rounded-xl border-[2px] border-[#EAECF0] p-[8px] flex flex-col gap-y-[5px] justify-between bg-white">
       <div className="w-[100%] h-[100px] md:h-[150px] rounded-md">
         <img alt="course Icon" src={courseItem.image} className="h-[100%] w-[100%] rounded-md" />
       </div>
 
-      <div className="flex gap-x-[10px] p-[5px]">
-        <img alt="course Icon two" src={school?.logo} className="h-[35px] w-[35px] mt-[5px] rounded-[50%]" />
+      <div className="flex gap-x-[5px] md:gap-x-[10px]">
+        <img alt="course Icon two" src={school?.logo} className="h-[30px] w-[30px] md:h-[35px] md:w-[35px] mt-[5px] rounded-[50%]" />
 
         <div>
           <p className="text-[#000000] font-semibold text-[12px] md:text-[16px]">{courseItem.title}</p>
@@ -47,7 +44,7 @@ const CourseCard = ({courseItem, setCourseDetails, setShowDetails}: CoursesProps
 
           <div className="flex gap-x-[5px]">
             <img src={locationIcon} alt="Location Icon" className="" />
-            <p className="text-[#007BFF] text-[12px] font-normal">
+            <p className="text-[#007BFF] text-[8px] md:text-[12px] font-normal ">
               {courseItem.university?.region}/{courseItem.university?.country}
             </p>
           </div>
@@ -59,12 +56,12 @@ const CourseCard = ({courseItem, setCourseDetails, setShowDetails}: CoursesProps
       </p>
 
       <div className="flex justify-between">
-        <div className="bg-[#E6F2FF] px-2 rounded-lg h-[35px] size-max md:w-[120px] flex justify-center items-center">
-          <p className="text-[#007BFF] text-[10px] md:text-[14px] font-medium">{courseItem.acceptanceFeeCurrency} {courseItem.acceptanceFee}</p>
+        <div className="bg-[#E6F2FF] px-2 rounded-lg h-[30px] size-max md:w-[120px] flex justify-center items-center">
+          <p className="text-[#007BFF] text-[8px] md:text-[14px] font-medium">{courseItem.acceptanceFeeCurrency} {courseItem.acceptanceFee}</p>
         </div>
 
-        <div className="bg-[#E6F2FF] px-2 rounded-lg h-[35px] size-max md:w-[130px] flex justify-center items-center">
-          <p className="text-[#007BFF] text-[10px] md:text-[14px] font-medium">{courseItem.scholarship}</p>
+        <div className="bg-[#E6F2FF] px-2 rounded-lg h-[30px] size-max md:w-[130px] flex justify-center items-center">
+          <p className="text-[#007BFF] text-[8px] md:text-[14px] font-medium">{courseItem.scholarship}</p>
         </div>
       </div>
 

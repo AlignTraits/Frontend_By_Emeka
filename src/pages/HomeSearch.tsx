@@ -274,7 +274,7 @@ export default function HomeSearch() {
                 onChange={(e) => setSearchAllTerm(e.target.value)}
                 className="w-[120px] md:w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[10px] md:text-[14px] font-[400] text-[#8F8F8F]"
               />
-              <FiSearch className="absolute left-2 top-[20px] -translate-y-1/2 text-[#999999] w-3 h-3 md:w-5 md-5" />
+              <FiSearch className="absolute left-2 top-[15px] md:top-[20px] -translate-y-1/2 text-[#999999] w-3 h-3 md:w-5 md-5" />
             </div>
 
             {/* Desktop buttons */}
@@ -520,7 +520,7 @@ export default function HomeSearch() {
               </div>
             )}
             
-            <div className="flex justify-between items-center px-5 mt-1">
+            <div className="flex justify-between items-center px-5 mt-5">
               <button
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
