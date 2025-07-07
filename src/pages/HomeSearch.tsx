@@ -259,7 +259,7 @@ export default function HomeSearch() {
   return (
     <div className="relative h-screen w-full bg-[white]">
       <div className="sticky top-0 z-[1000] sm:bg-[white] pb-[10px]">
-        <div className="md:bg-[#FCFCFD] md:mx-0 flex justify-between p-3 border-b border-b-[#DDDDDD] bg-white shadow-md mx-4 sm:rounded-md">
+        <div className="md:bg-[#FCFCFD] md:mx-0 flex justify-between p-3 border-b border-b-[#DDDDDD] bg-white shadow-md mx-2 sm:rounded-md">
           <div>
             <h1 className="text-[12px] font-semibold text-[#101828] md:text-[20px]">Welcome to Aligntraits</h1>
             <p className="text-[8px] font-normal text-[#999999] md:text-[12px]">Find your career path today!</p>
@@ -272,7 +272,7 @@ export default function HomeSearch() {
                 placeholder="Search"
                 value={searchAllTerm}
                 onChange={(e) => setSearchAllTerm(e.target.value)}
-                className="w-[150px] md:w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[14px] font-[400] text-[#8F8F8F]"
+                className="w-[120px] md:w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[10px] md:text-[14px] font-[400] text-[#8F8F8F]"
               />
               <FiSearch className="absolute left-2 top-[20px] -translate-y-1/2 text-[#999999] w-3 h-3 md:w-5 md-5" />
             </div>
@@ -503,7 +503,7 @@ export default function HomeSearch() {
 
             {
               !isLoading && (
-                <div className="p-5 flex flex-wrap gap-[30px] w-[100%]">
+                <div className="p-5 flex flex-wrap justify-between gap-[10px] md:justify-start md:gap-[30px] w-[100%]">
                   {
                     paginatedCourses.length > 0 && paginatedCourses.map((elem, i) => (
                       <CourseCard setShowDetails={setShowDetails} courseItem={elem} key={i} setCourseDetails={setCourseDetails} />
