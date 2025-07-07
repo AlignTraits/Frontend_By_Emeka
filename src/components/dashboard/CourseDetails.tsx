@@ -54,7 +54,7 @@ const CourseDetails = ({courseItem, setShowDetails}: CoursesProps) => {
   }, [])
   
   return (
-    <div className="p-10">
+    <div className="p-5">
       <button onClick={() => setShowDetails(false)} className="flex gap-x-[10px] items-center">
         <FaArrowLeftLong className="text-[#004085]" />
         <p className="text-[#004085]">Back to Explore</p>
