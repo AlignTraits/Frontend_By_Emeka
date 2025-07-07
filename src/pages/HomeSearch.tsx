@@ -359,7 +359,7 @@ export default function HomeSearch() {
               })}
             </div>
 
-            <div className="w-full border-b border-b-[#DDDDDD] pb-[10px]">
+            <div className="w-full border-b border-b-[#DDDDDD]">
               <div className="flex flex-wrap gap-[10px] px-3 py-3">
                 <div className="relative" ref={fieldDropdownRef}>
                   <input
@@ -503,7 +503,7 @@ export default function HomeSearch() {
 
             {
               !isLoading && (
-                <div className="p-5 flex flex-wrap justify-between gap-[10px] md:justify-start md:gap-[30px] w-[100%]">
+                <div className="px-5 flex flex-wrap justify-between gap-[10px] md:justify-start md:gap-[30px] w-[100%]">
                   {
                     paginatedCourses.length > 0 && paginatedCourses.map((elem, i) => (
                       <CourseCard setShowDetails={setShowDetails} courseItem={elem} key={i} setCourseDetails={setCourseDetails} />

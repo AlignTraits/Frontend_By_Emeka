@@ -22,16 +22,19 @@ const CourseCard = ({courseItem, setCourseDetails, setShowDetails}: CoursesProps
 
   async function fetchSchool() {
     const response = await getSchool(courseItem?.schoolId as string);
+    console.log("response: ", response)
     setSchool(response);
   }
+
+  console.log("courseItem: ", courseItem)
   
   useEffect(() => {
     fetchSchool()
   }, [])
   // console.log("courseItem: ", courseItem)
   return (
-    <div className="w-[48%] lg:w-[300px] h-[500px] rounded-xl border-[2px] border-[#EAECF0] p-[8px] flex flex-col gap-y-[10px] justify-between bg-white">
-      <div className="w-[100%] h-[180px] rounded-md">
+    <div className="w-[48%] lg:w-[300px] md:h-[400px] rounded-xl border-[2px] border-[#EAECF0] p-[8px] flex flex-col gap-y-[2px] justify-between bg-white">
+      <div className="w-[100%] h-[100px] md:h-[150px] rounded-md">
         <img alt="course Icon" src={courseItem.image} className="h-[100%] w-[100%] rounded-md" />
       </div>
 
@@ -52,8 +55,7 @@ const CourseCard = ({courseItem, setCourseDetails, setShowDetails}: CoursesProps
       </div>
 
       <p className="text-[#667085] text-[12px]">
-        Covenant University’s Computer Science program offers a dynamic and comprehensive 
-        curriculum designed to equip students with cutting-edge ...
+        The program offers {school?.courses?.length ?? 0} {(school?.courses?.length ?? 0) > 1 ? "Courses" : "Course"} .
       </p>
 
       <div className="flex justify-between">
