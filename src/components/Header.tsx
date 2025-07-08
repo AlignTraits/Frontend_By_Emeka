@@ -1,9 +1,11 @@
 const Header = () => {
   return (
-    <div className="bg-[#FCFCFD] flex justify-between py-3 px-5 border-b border-b-[#DDDDDD] sticky top-0 z-[1000]">
-      <div>
-        <h1 className="text-[20px] font-semibold text-[#101828]">Welcome to Aligntraits</h1>
-        <p className="text-[12px] font-normal text-[#999999]">Find your career path today!</p>
+    <div className="sticky top-0 z-[1000] pb-[10px]">
+      <div className="md:bg-[#FCFCFD] md:mx-0 flex justify-between p-3 border-b border-b-[#DDDDDD] bg-white shadow-md mx-2 sm:rounded-md">
+        <div>
+          <h1 className="text-[12px] font-semibold text-[#101828] md:text-[20px]">Welcome to Aligntraits</h1>
+          <p className="text-[8px] font-normal text-[#999999] md:text-[12px]">Find your career path today!</p>
+        </div>
       </div>
     </div>
   )
