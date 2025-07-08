@@ -6,8 +6,8 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 
 export default function Recommendation() {
-  const {error, isLoading} = useAuth()
-  const navigate = useNavigate()
+  const { error, isLoading } = useAuth();
+  const navigate = useNavigate();
 
   const [agreed, setAgreed] = useState(false);
 
@@ -16,7 +16,7 @@ export default function Recommendation() {
     lastName: "",
     email: ""
   });
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
@@ -27,108 +27,111 @@ export default function Recommendation() {
 
     if (agreed) {
       localStorage.setItem("pathway-data", JSON.stringify(data));
-      navigate("/questionaire")
-    }    
+      navigate("/questionaire");
+    }
   };
 
   const handleClick = () => {
     // You can open a modal or do nothing
     console.log('Terms & Privacy clicked');
-  };  
+  };
 
   return (
-    <div className="relative h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white">
+    <div className="relative min-h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white">
       <Header />
 
-      <div className="flex gap-x-[10px] items-center ml-[30px] mt-[20px] cursor-pointer" onClick={() => navigate(-1)}>
-        <FaLongArrowAltLeft className="text-[#004085]" />
-        <p className="text-[#004085]">Back to Explore</p>
+      <div
+        className="flex gap-x-2 items-center ml-4 mt-4 cursor-pointer sm:ml-8 sm:mt-6"
+        onClick={() => navigate(-1)}
+      >
+        <FaLongArrowAltLeft className="text-[#004085] text-lg sm:text-xl" />
+        <p className="text-[#004085] text-sm sm:text-base">Back to Explore</p>
       </div>
 
-      <div className="mt-[20px]">
-        <p className="text-[#101828] text-[20px] font-semibold w-[500px] mx-auto mb-[10px]">Career Pathway</p>
+      <div className="mt-6 mx-[20px]">
+        <p className="text-[#101828] text-lg sm:text-2xl font-semibold w-full max-w-[500px] mx-auto mb-3 text-center">
+          Career Pathway
+        </p>
         <form
-          onSubmit={(e) => handleSubmit(e)}
-          className="mx-auto space-y-4 flex flex-col items-center w-[500px] space-y-5 p-6 bg-white rounded-lg shadow-lg border-[#ccc] border-[1px]"
+          onSubmit={handleSubmit}
+          className="mx-auto flex flex-col items-center w-full max-w-[500px] space-y-4 sm:space-y-5 p-3 sm:p-6
+            sm:bg-white sm:border-[#ccc] sm:rounded-lg sm:shadow-lg
+            bg-transparent border-0 shadow-none"
         >
           {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
+            <div className="bg-red-50 text-red-500 p-3 rounded w-full text-center text-sm">
+              {error}
+            </div>
           )}
-          <div className="w-[400px]">
-            <label htmlFor="first-name" className="block text-[16px] font-[600] text-[#101828]">
+          <div className="w-full max-w-[400px]">
+            <label htmlFor="first-name" className="block text-[15px] sm:text-[16px] font-[600] text-[#101828]">
               First Name
             </label>
             <div className="relative">
               <input
                 id="first-name"
-                type={"text"}
+                type="text"
                 name="firstName"
                 value={data.firstName}
                 onChange={handleChange}
                 required
-                className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
-                placeholder="Enter your new first name"
+                className="mt-1 w-full h-11 sm:h-12 px-4 py-2 border border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none text-sm sm:text-base"
+                placeholder="Enter your first name"
               />
             </div>
           </div>
 
-          <div className="w-[400px]">
+          <div className="w-full max-w-[400px]">
             <label
               htmlFor="last-name"
-              className="block text-[16px] font-[600] text-[#101828]"
+              className="block text-[15px] sm:text-[16px] font-[600] text-[#101828]"
             >
               Last Name
             </label>
             <div className="relative">
               <input
                 id="last-name"
-                type={"text"}
+                type="text"
                 name="lastName"
                 value={data.lastName}
                 onChange={handleChange}
                 required
-                className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
+                className="mt-1 w-full h-11 sm:h-12 px-4 py-2 border border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none text-sm sm:text-base"
                 placeholder="Enter your last name"
-                // value={confirmPassword}
-                // onChange={(e) => setConfirmPassword(e.target.value)}
-                // onFocus={resetInput}
               />
             </div>
           </div>
 
-          <div className="w-[400px]">
+          <div className="w-full max-w-[400px]">
             <label
               htmlFor="email"
-              className="block text-[16px] font-[600] text-[#101828]"
+              className="block text-[15px] sm:text-[16px] font-[600] text-[#101828]"
             >
               Email
             </label>
             <div className="relative">
               <input
                 id="email"
-                type={"email"}
+                type="email"
                 name="email"
-                value={data.email}  
+                value={data.email}
                 onChange={handleChange}
                 required
-                className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-full bg-white shadow-md focus:outline-none"
+                className="mt-1 w-full h-11 sm:h-12 px-4 py-2 border border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none text-sm sm:text-base"
                 placeholder="Enter your email"
-                // value={confirmPassword}
-                // onChange={(e) => setConfirmPassword(e.target.value)}
-                // onFocus={resetInput}
               />
             </div>
           </div>
 
-          <label className="w-[400px] inline-flex items-center space-x-2 cursor-pointer">
+          <label className="w-full max-w-[400px] inline-flex items-center space-x-2 cursor-pointer">
             <input
               type="checkbox"
               checked={agreed}
               onChange={() => setAgreed(!agreed)}
               className="form-checkbox w-4 h-4 text-blue-600 border-gray-300 rounded"
             />
-            <span className="text-sm text-gray-800">
-              I agree to the{' '}
+            <span className="text-xs sm:text-sm text-gray-800">
+              I agree to the{" "}
               <button
                 type="button"
                 onClick={handleClick}
@@ -142,14 +145,14 @@ export default function Recommendation() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-[40%] mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-[30px] disabled:opacity-50"
+            className="w-full max-w-[400px] mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50 text-sm sm:text-base"
           >
             {isLoading ? <BeatLoader /> : "Continue"}
           </button>
         </form>
       </div>
 
-      <div className="h-[20px] w-[40px]"></div>
+      <div className="h-5 w-full" />
     </div>
   );
-} 
+}

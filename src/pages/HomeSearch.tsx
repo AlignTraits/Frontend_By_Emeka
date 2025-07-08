@@ -318,7 +318,7 @@ export default function HomeSearch() {
               setMobileMenuOpen(false);
               navigate("/career-recommedation");
             }}
-            className="w-[70%] px-10 py-3 text-[white] rounded-lg bg-[#004085] font-semibold hover:bg-[#f4f8fb]"
+            className="w-[70%] px-10 py-3 text-[12px] text-[white] rounded-lg bg-[#004085] font-semibold hover:bg-[#f4f8fb]"
           >
             Career Recommendation
           </button>
@@ -327,7 +327,7 @@ export default function HomeSearch() {
               setMobileMenuOpen(false);
               goLogin();
             }}
-            className="w-[70%] bg-[#F6C648] px-10 py-3 text-[#1E1E1E] rounded-lg font-semibold hover:bg-[#f4f8fb]"
+            className="w-[70%] text-[12px] bg-[#F6C648] px-10 py-3 text-[#1E1E1E] rounded-lg font-semibold hover:bg-[#f4f8fb]"
           >
             Login
           </button>
