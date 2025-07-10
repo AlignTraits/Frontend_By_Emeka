@@ -92,29 +92,30 @@ const CustomSelect: React.FC<SelectProps> = ({
 
   return (
     <div ref={selectRef} className={`relative ${className}`}>
-    
       <button
         type="button"
         disabled={disabledState}
-        className="w-full px-4 py-2  bg-white p-2 rounded-md border-[0.8px] border-gray-300 focus:outline-none capitalize flex justify-between items-center gap-x-[10px]"
+        className="w-full px-3 sm:px-4 py-2 bg-white rounded-md border-[0.8px] border-gray-300 focus:outline-none capitalize flex justify-between items-center gap-x-2 sm:gap-x-[10px] text-[13px] sm:text-[14px] min-h-[40px]"
         onClick={handleClick}
       >
-        {selected?.value  ? <p className="text-[#1E1E1E] text-[14px]">{splitString(selected.label)}</p> : 
-        <p className="text-[#999999] text-[14px]">{placeholder}</p>}
-        <FiChevronDown className="text-[#999999]" />
+        {selected?.value ? (
+          <p className="text-[#1E1E1E] truncate">{splitString(selected.label)}</p>
+        ) : (
+          <p className="text-[#999999] truncate">{placeholder}</p>
+        )}
+        <FiChevronDown className="text-[#999999] min-w-[18px] min-h-[18px]" />
       </button>
 
-      
       {isOpen && (
         <ul
-          className={`absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto ${
+          className={`absolute z-20 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto ${
             dropUp ? "bottom-full mb-1" : "top-full mt-1"
-          }`}
+          } text-[13px] sm:text-[14px]`}
         >
           {options.map((option, index) => (
             <li
-              key={option.value +index}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+              key={option.value + index}
+              className="px-3 sm:px-4 py-2 cursor-pointer hover:bg-gray-100 truncate"
               onClick={() => handleOptionClick(option)}
             >
               {splitString(option.label)}

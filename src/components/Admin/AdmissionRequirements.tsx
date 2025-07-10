@@ -252,15 +252,15 @@ const AdmissionRequirements = ({
 
   let filteredExamTypes = adminExamType.length > 0 ? adminExamType : EXAMTYPE;
 
-  return (
-    <div className="w-full bg-[#FAFAFA] border-[1px] border-[#E0E0E0] rounded-lg flex flex-col gap-6 p-5">
-      <p className="text-[18px] font-semibold text-[#000000]">
+return (
+    <div className="w-full bg-[#FAFAFA] border border-[#E0E0E0] rounded-lg flex flex-col gap-6 p-3 sm:p-5">
+      <p className="text-[16px] sm:text-[18px] font-semibold text-[#000000]">
         TERTIARY / SECONDARY / OTHERS SCHOOL EXAMINATION DETAILS
       </p>
 
       <div id="requirements-form" className="w-full flex flex-col gap-y-6">
         {reqId && (
-          <div className="bg-blue-50 text-blue-700 p-3 rounded-md flex justify-between items-center">
+          <div className="bg-blue-50 text-blue-700 p-3 rounded-md flex flex-col sm:flex-row justify-between items-center gap-2">
             <span>Editing requirement</span>
             <button 
               onClick={resetForm}
@@ -272,7 +272,7 @@ const AdmissionRequirements = ({
         )}
         
         <div className="w-full flex flex-col gap-y-[5px]">
-          <p className={`text-[16px] font-medium ${errorObj.programLocation ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>
+          <p className={`text-[15px] sm:text-[16px] font-medium ${errorObj.programLocation ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>
             Program Location*
           </p>
           <CustomSelectWithProps
@@ -291,7 +291,7 @@ const AdmissionRequirements = ({
         </div>
 
         <div className="w-full flex flex-col gap-y-[5px]">
-          <p className={`text-[16px] font-medium ${errorObj.examType ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>
+          <p className={`text-[15px] sm:text-[16px] font-medium ${errorObj.examType ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>
             Exam Type*
           </p>
           <CustomSelectWithProps
@@ -309,27 +309,27 @@ const AdmissionRequirements = ({
           />
         </div>
 
-        <div className="flex justify-between items-center">
-          <p className="text-[16px] font-medium text-[#1E1E1E]">Required Subjects*</p>
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+          <p className="text-[15px] sm:text-[16px] font-medium text-[#1E1E1E]">Required Subjects*</p>
           <button
             onClick={addSubject}
-            className="text-[#1E1E1E] text-[14px] font-semibold border-[#DDDDDD] border-[1px] h-[44px] w-[127px] rounded-md hover:bg-gray-50"
+            className="text-[#1E1E1E] text-[13px] sm:text-[14px] font-semibold border-[#DDDDDD] border h-[40px] sm:h-[44px] w-full sm:w-[127px] rounded-md hover:bg-gray-50"
           >
             Add Subjects
           </button>
         </div>
 
         {subjectList.length === 0 && (
-          <div className="text-center py-4 text-gray-500 bg-gray-50 rounded-md">
+          <div className="text-center py-4 text-gray-500 bg-gray-50 rounded-md text-sm">
             No subjects added. Click "Add Subjects" to add required subjects.
           </div>
         )}
 
         <div className="flex flex-col gap-y-[10px]">
           {subjectList.map((item: SubjectGrade) => (
-            <div key={item.id} className="flex gap-x-[20px] items-end">
-              <div className="w-[50%]">
-                <p className="text-[16px] font-medium text-[#1E1E1E]">Subject*</p>
+            <div key={item.id} className="flex flex-col sm:flex-row gap-y-2 gap-x-[20px] items-end">
+              <div className="w-full sm:w-1/2">
+                <p className="text-[15px] sm:text-[16px] font-medium text-[#1E1E1E]">Subject*</p>
                 <CustomSelect
                   placeholder="Select Subject"
                   options={SUBJECTS.map((typeValue) => ({
@@ -344,57 +344,70 @@ const AdmissionRequirements = ({
                 />
               </div>
 
-              <div className="w-[50%]">
-                <p className="text-[16px] font-medium text-[#1E1E1E]">Grade*</p>
+              <div className="w-full sm:w-1/2">
+                <p className="text-[15px] sm:text-[16px] font-medium text-[#1E1E1E]">Grade*</p>
                 {examType === "JAMB" ? (
-                  <CustomSelect
-                    placeholder="Select Grade"
-                    options={JAMB_SCORE_lLIST.map((typeValue) => ({
-                      value: typeValue,
-                      label: typeValue,
-                    }))}
-                    onChange={(val) => updateSubject(item.id, "grade", val)}
-                    selectedProps={{
-                      value: item.grade,
-                      label: item.grade,
-                    }}
-                  />
+                  <div className="flex gap-x-2 items-center w-[100%]">
+                    <div className="w-full">
+                      <CustomSelect
+                        placeholder="Select Grade"
+                        options={JAMB_SCORE_lLIST.map((typeValue) => ({
+                          value: typeValue,
+                          label: typeValue,
+                        }))}
+                        onChange={(val) => updateSubject(item.id, "grade", val)}
+                        selectedProps={{
+                          value: item.grade,
+                          label: item.grade,
+                        }}
+                      />
+                    </div>
+                    <div
+                      onClick={() => removeSubject(item.id)}
+                      className="cursor-pointer border-[#E9E9E9] border rounded-md w-[36px] h-[36px] flex justify-center items-center hover:bg-red-50 sm:mt-0"
+                    >
+                      <RxCross1 className="text-[#D92D20]" />
+                    </div>
+                  </div>
                 ) : (
-                  <CustomSelect
-                    placeholder="Select Grade"
-                    options={GRADES.map((typeValue) => ({
-                      value: typeValue,
-                      label: typeValue,
-                    }))}
-                    onChange={(val) => updateSubject(item.id, "grade", val)}
-                    selectedProps={{
-                      value: item.grade,
-                      label: item.grade,
-                    }}
-                  />
+                  <div className="flex w-full">
+                    <div className="w-full">
+                      <CustomSelect
+                        placeholder="Select Grade"
+                        options={GRADES.map((typeValue) => ({
+                          value: typeValue,
+                          label: typeValue,
+                        }))}
+                        onChange={(val) => updateSubject(item.id, "grade", val)}
+                        selectedProps={{
+                          value: item.grade,
+                          label: item.grade,
+                        }}
+                      />
+                    </div>
+                  <div
+                    onClick={() => removeSubject(item.id)}
+                    className="cursor-pointer border-[#E9E9E9] border rounded-md w-[36px] h-[36px] flex justify-center items-center hover:bg-red-50 sm:mt-0"
+                  >
+                    <RxCross1 className="text-[#D92D20]" />
+                  </div>
+                  </div>
                 )}
-              </div>
-
-              <div
-                onClick={() => removeSubject(item.id)}
-                className="cursor-pointer border-[#E9E9E9] border-[1px] rounded-md w-[40px] h-[40px] flex justify-center items-center hover:bg-red-50"
-              >
-                <RxCross1 className="text-[#D92D20]" />
               </div>
             </div>
           ))}
         </div>
 
-        <div className="w-full flex justify-end gap-x-[20px] mt-4">
+        <div className="w-full flex flex-col sm:flex-row justify-end gap-2 sm:gap-x-[20px] mt-4">
           <button 
             onClick={resetForm}
-            className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#1E1E1E] text-[14px] font-semibold rounded-md hover:bg-gray-50"
+            className="w-full sm:w-[211px] h-[44px] sm:h-[50px] border-[#DDDDDD] border text-[#1E1E1E] text-[13px] sm:text-[14px] font-semibold rounded-md hover:bg-gray-50"
           >
             Cancel
           </button>
           <button
             onClick={addRequirements}
-            className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#ffffff] text-[14px] font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
+            className="w-full sm:w-[211px] h-[44px] sm:h-[50px] border-[#DDDDDD] border text-white text-[13px] sm:text-[14px] font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
           >
             {reqId ? `Update ${btnTitle}` : `Add ${btnTitle}`}
           </button>
@@ -402,35 +415,35 @@ const AdmissionRequirements = ({
       </div>
 
       <div className="flex flex-col gap-y-[20px] mt-6">
-        <div className="flex justify-between items-center">
-          <h3 className="text-[16px] font-semibold text-[#1E1E1E]">{listTitle}</h3>
-          <span className="text-gray-500 text-sm">{requirementList.length} {requirementList.length === 1 ? 'requirement' : 'requirements'}</span>
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+          <h3 className="text-[15px] sm:text-[16px] font-semibold text-[#1E1E1E]">{listTitle}</h3>
+          <span className="text-gray-500 text-xs sm:text-sm">{requirementList.length} {requirementList.length === 1 ? 'requirement' : 'requirements'}</span>
         </div>
 
         {requirementList.length === 0 ? (
-          <div className="border-[#E9E9E9] border-[1px] w-full p-8 rounded-md flex flex-col items-center justify-center text-gray-500">
+          <div className="border-[#E9E9E9] border w-full p-6 sm:p-8 rounded-md flex flex-col items-center justify-center text-gray-500 text-sm">
             <p>No requirements added yet.</p>
-            <p className="text-sm mt-2">Add requirements using the form above.</p>
+            <p className="text-xs sm:text-sm mt-2">Add requirements using the form above.</p>
           </div>
         ) : (
           requirementList.map((item) => (
             <div
               key={item.id}
-              className="border-[#E9E9E9] border-[1px] w-full p-5 rounded-md flex justify-between items-center hover:bg-gray-50"
+              className="border-[#E9E9E9] border w-full p-3 sm:p-5 rounded-md flex flex-col sm:flex-row justify-between items-center gap-2 hover:bg-gray-50"
             >
-              <div className="flex flex-col gap-y-[5px]">
-                <div className="flex gap-x-[10px] items-center">
-                  <p className="font-semibold text-[16px]">{item.examType}</p>
-                  <p className="w-max px-[10px] h-[30px] flex justify-center items-center text-center text-[12px] font-medium border-[#E9E9E9] border-[1px] rounded-2xl">
+              <div className="flex flex-col gap-y-[5px] w-full">
+                <div className="flex flex-col sm:flex-row gap-2 items-center">
+                  <p className="font-semibold text-[15px] sm:text-[16px]">{item.examType}</p>
+                  <p className="w-max px-[10px] h-[28px] sm:h-[30px] flex justify-center items-center text-center text-[11px] sm:text-[12px] font-medium border-[#E9E9E9] border rounded-2xl">
                     {item.location}
                   </p>
                 </div>
-                <p className="text-[16px] font-medium">Required Subjects:</p>
+                <p className="text-[15px] sm:text-[16px] font-medium">Required Subjects:</p>
                 <div className="flex flex-wrap gap-2">
                   {item.subjects.map((innerItem) => (
                     <p
                       key={innerItem.id}
-                      className="w-max px-[10px] h-[30px] flex justify-center items-center text-center text-[10px] font-normal border-[#E9E9E9] border-[1px] rounded-2xl"
+                      className="w-max px-[10px] h-[26px] sm:h-[30px] flex justify-center items-center text-center text-[10px] sm:text-[12px] font-normal border-[#E9E9E9] border rounded-2xl"
                     >
                       {innerItem.subject}: {innerItem.grade}
                     </p>
@@ -438,21 +451,21 @@ const AdmissionRequirements = ({
                 </div>
               </div>
 
-              <div className="flex gap-x-[20px]">
+              <div className="flex gap-x-[10px] sm:gap-x-[20px] mt-2 sm:mt-0">
                 <button
                   onClick={() => editRequirement(item.id)}
-                  className="flex items-center gap-1 text-[#595959] hover:text-[#353535] p-2 rounded hover:bg-gray-100"
+                  className="flex items-center gap-1 text-[#595959] hover:text-[#353535] p-2 rounded hover:bg-gray-100 text-xs sm:text-sm"
                 >
                   <FiEdit2 className="text-[#595959]" />
-                  <span className="text-sm">Edit</span>
+                  <span>Edit</span>
                 </button>
 
                 <button
                   onClick={() => removeRequirement(item.id)}
-                  className="flex items-center gap-1 text-[#F04438] hover:text-[#D92D20] p-2 rounded hover:bg-red-50"
+                  className="flex items-center gap-1 text-[#F04438] hover:text-[#D92D20] p-2 rounded hover:bg-red-50 text-xs sm:text-sm"
                 >
                   <FaRegTrashAlt className="text-[#F04438]" />
-                  <span className="text-sm">Delete</span>
+                  <span>Delete</span>
                 </button>
               </div>
             </div>
