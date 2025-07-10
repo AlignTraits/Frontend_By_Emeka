@@ -77,7 +77,7 @@ return (
   <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-[#e9eff7] to-[#CCE0F5]">
     <Header />
 
-    <div className="h-[80px] w-[90%] bg-[#004085] rounded-[20px] mx-auto mt-6 flex flex-col sm:flex-row justify-between items-center px-4 sm:px-10 py-4 sm:py-0">
+    <div className="h-[50px] w-[90%] bg-[#004085] rounded-xl mx-auto mt-6 flex justify-between items-center px-4">
       <p className="font-semibold text-[16px] sm:text-[20px] text-white mb-2 sm:mb-0">Result expires in:</p>
       <p className="font-semibold text-[16px] sm:text-[20px] text-white">{formatTime(timeLeft)}</p>
     </div>
@@ -85,7 +85,7 @@ return (
     <div className="mt-8 flex flex-col items-center space-y-6 px-2">
       <p className="text-[#101828] font-bold text-[20px] sm:text-[25px] text-center">Get Instant Access to Your Results!</p>
 
-      <div className="flex flex-col sm:flex-row gap-y-8 sm:gap-y-0 sm:gap-x-[40px] w-full justify-center items-center">
+      <div className="flex flex-col md:flex-row gap-y-8 sm:gap-y-0 sm:gap-x-[40px] w-full justify-center items-center">
         {plans.map((plan, index) => (
           <PricingCard
             key={index}
