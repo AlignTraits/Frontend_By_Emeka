@@ -49,38 +49,37 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="relative h-screen w-full bg-[white]">
+<div className="relative min-h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white md:bg-none md:bg-white">
       <Header />
 
       {
         success ? (
-          <div className='flex flex-col items-center bg-[white] p-[20px] gap-y-[20px] mt-10'>
+          <div className='flex flex-col items-center bg-transparent p-[20px] md:p-[20px] p-[10px] gap-y-[20px] mt-10'>
             <div className=''>
               <img src={resetIcon} />
             </div>
-            <p className='text-[#4C4E53]'>We’ve sent an email to <span className='text-[#101828]'>{email}</span> with a link to get back into your account.</p>
+            <p className='text-[#4C4E53] text-center max-w-[450px] px-4'>We've sent an email to <span className='text-[#101828]'>{email}</span> with a link to get back into your account.</p>
           </div>
         ) : (
-        <div className='flex bg-[white] p-[20px] w-full'>
-          <div className="w-[50%] h-[500px] flex flex-col justify-center items-center gap-y-[30px]">
-            <div className="w-[450px]">
-              <h2 className="text-xl font-semibold text-[#101828]">
+        <div className='flex bg-transparent p-[20px] md:p-[20px] p-[10px] w-full'>
+          <div className="w-full md:w-[50%] min-h-[300px] md:min-h-[500px] flex flex-col justify-center items-center gap-y-[30px] p-4 md:p-0">
+            <div className="w-full max-w-[450px]">
+              <h2 className="text-xl font-semibold text-[#101828] text-center md:text-left">
                 Forget your password?
               </h2>
-              <p className="text-[14px] text-[#757575] font-medium">
+              <p className="text-[14px] text-[#757575] font-medium text-center md:text-left">
                 Enter the email you used to register with Aligntraits
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6 flex flex-col">
+            <form onSubmit={handleSubmit} className="space-y-6 flex flex-col w-full max-w-[450px]">
               <div className="">
                 <input
                   id="email"
                   type="email"
                   placeholder='Please enter your email'
                   required
-                  // className="mt-1 block w-[450px] rounded-xl border border-[#000000] p-2"
-                  className="mt-1 w-[450px] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
+                  className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   onFocus={() => setError(null)}
@@ -95,7 +94,7 @@ export default function ForgotPassword() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-[450px] h-12 py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
+                className="w-full h-12 py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
               >
                 {isLoading ? <BeatLoader /> : "Reset Password"}
               </button>
@@ -104,7 +103,8 @@ export default function ForgotPassword() {
             </form>
           </div>
 
-          <div className='w-[50%] flex justify-center'>
+          {/* Right side component - hidden on mobile */}
+          <div className='hidden md:flex w-[50%] justify-center'>
             <div className='w-[65%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
               <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
 

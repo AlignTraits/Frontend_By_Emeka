@@ -43,11 +43,11 @@ export default function Login() {
   }
 
   return (
-    <div className="relative h-screen w-full bg-[#FCFCFD]">
+<div className="relative min-h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white md:bg-none md:bg-white">
       <Header />
-      <div className='flex bg-[white] p-[20px]'>
-        <div className="w-[50%] space-y-5 p-8 flex flex-col items-center">
-          <div className="flex flex-col justify-center w-[450px]">
+      <div className='flex p-[20px] md:p-[20px] p-[10px]'>
+        <div className="w-full md:w-[50%] space-y-5 p-4 md:p-8 flex flex-col items-center">
+          <div className="flex flex-col justify-center w-full max-w-[450px]">
             <h2 className="text-xl font-bold">
               Get started now
             </h2>
@@ -59,20 +59,20 @@ export default function Login() {
             </p>
           )}
 
-          <div className="mt-4">
-            <div className="mt-4 flex gap-3 w-[450px]">
+          <div className="mt-4 w-full max-w-[450px]">
+            <div className="mt-4 flex gap-3">
               <button
                 type="button"
                 onClick={() => window.location.href = GOOGLE_AUTH_URL}
                 className="w-full h-12 flex justify-center items-center gap-x-[10px] px-2 py-1 rounded-xl border border-[#ccc] shadow-lg hover:bg-gray-50"
               >
                 <FcGoogle className="text-4xl" />
-                <p>Log in with Google</p>
+                <p className="text-sm md:text-base">Log in with Google</p>
               </button>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-7">
+          <form onSubmit={handleSubmit} className="space-y-7 w-full max-w-[450px]">
             <div>
               <label htmlFor="email" className="block text-[16px] font-[600]">
                 Email
@@ -81,7 +81,7 @@ export default function Login() {
                 id="email"
                 type="email"
                 required
-                className="mt-1 w-[450px] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
+                className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
                 style={{
                   boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
                 }}
@@ -93,8 +93,8 @@ export default function Login() {
               />
             </div>
 
-            <div className='relative w-[450px]'>
-              <div className="absolute right-[0px] flex items-center justify-end w-[450px]">
+            <div className='relative w-full'>
+              <div className="absolute right-[0px] flex items-center justify-end w-full">
                 <button
                   type="button"
                   onClick={() => navigate("/forgot-password")}
@@ -104,7 +104,7 @@ export default function Login() {
                 </button>
               </div>
 
-              <div className='w-[450px]'>
+              <div className='w-full'>
                 <label htmlFor="password" className="block text-[16px] font-[600]">
                   Password
                 </label>
@@ -113,7 +113,7 @@ export default function Login() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     required
-                    className="mt-1 w-[450px] h-12 px-4 py-3 rounded-xl bg-white border-[1px] border-[#ccc] shadow-md focus:outline-none"
+                    className="mt-1 w-full h-12 px-4 py-3 rounded-xl bg-white border-[1px] border-[#ccc] shadow-md focus:outline-none"
                     style={{
                       boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)'
                     }}
@@ -141,12 +141,12 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading || !isFormValid()}
-              className="w-[450px] h-12 rounded-xl flex items-center justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white disabled:opacity-50"
+              className="w-full h-12 rounded-xl flex items-center justify-center py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white disabled:opacity-50"
             >
               {isLoading ? <BeatLoader   /> : "Login"}
             </button>
 
-            <div className="text-center w-[450px]">
+            <div className="text-center w-full">
               <span className="text-[16px] font-[400] ">
                 Don't have an account?{" "}
               </span>
@@ -160,7 +160,8 @@ export default function Login() {
           </form>
         </div>
 
-        <div className='w-[50%] flex justify-center'>
+        {/* Right side component - hidden on mobile */}
+        <div className='hidden md:flex w-[50%] justify-center'>
           <div className='w-[65%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
             <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
 
