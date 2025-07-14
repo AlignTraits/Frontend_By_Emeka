@@ -8,7 +8,7 @@ import { ErrorObjType, RequirementList } from "../types/course.types";
 import AdmissionRequirements from "../components/Admin/AdmissionRequirements";
 import { getCourseDetails } from "../services/schools";
 import { toast } from "react-toastify";
-// import { checkEligibility } from "../services/utils";
+import { checkEligibility } from "../services/utils";
 
 export default function CheckEligibility() {
   const {error} = useAuth()
@@ -60,6 +60,9 @@ export default function CheckEligibility() {
       // localStorage.setItem("pathway-data", JSON.stringify(data));
       // navigate("/questionaire")
       setDisplayRequirements(true)
+
+      // store first name, last name, and email in localStorage
+      localStorage.setItem("eligibility-data", JSON.stringify({...data, schoolLocation: responseObj?.university?.region}));
     }    
   };
 
@@ -75,12 +78,13 @@ export default function CheckEligibility() {
   const getCourse = async () => {
     if (courseId && courseId.length > 0) {
       const tempCourse = await getCourseDetails(courseId)
+
       setResponseObj(tempCourse)
 
       let tempArray:any = []
 
       for (let i = 1; i < 11; i++) {
-        if (tempCourse[`ExamType${i}`].length > 0) {
+        if (tempCourse[`ExamType${i}`]?.length > 0) {
           tempArray.push(tempCourse[`ExamType${i}`])
         }
       }
@@ -127,18 +131,19 @@ export default function CheckEligibility() {
 
     try {
       setIsLoading(true)
-      // const response = await checkEligibility(mainPayload);
+      const response = await checkEligibility(mainPayload);
 
-      // console.log("response: ", response);
+      console.log("response: ", response);
       // if (response.ok === true) {
-      //   // setShowSignUpBtn(true)
-      //   // navigate("/select-payment")
+      //   setShowSignUpBtn(true)
+      //   navigate("/select-payment")
       // }
-      navigate("/select-payment")
+      // navigate("/login")
+      toast.success("Please login and check eligibility results in your dashboard");
 
-    } catch (e) {
-      toast.error("An error occurred while submitting your answers. Please try again later.");
-      console.error("Error submitting answers: ", e);
+    } catch (e:any) {
+      navigate("/select-payment")
+      toast.success("Redirecting to payment");
     } finally {
       setIsLoading(false)
     }
