@@ -89,13 +89,13 @@ export default function Register() {
 
 
   return (
-    <div className="relative h-screen w-full bg-[#FCFCFD]">
+<div className="relative min-h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white md:bg-none md:bg-white">
       <Header />
       {success ? (
-        <div className="flex bg-[white] p-[20px]">
-          <div className="w-[50%] flex flex-col gap-y-[10px] justify-center items-center">
-            <p className="w-[450px] text-[#1F2228] text-[25px] font-semibold">Verify Your Email Address</p>
-            <p className="w-[450px] text-[#4C4E53] text-[14px]">
+        <div className="flex p-[20px] md:p-[20px] p-[10px]">
+          <div className="w-full md:w-[50%] flex flex-col gap-y-[10px] justify-center items-center p-4 md:p-0">
+            <p className="w-full max-w-[450px] text-[#1F2228] text-[25px] font-semibold">Verify Your Email Address</p>
+            <p className="w-full max-w-[450px] text-[#4C4E53] text-[14px]">
               A verification mail has been sent to 
               <span className="text-[#101828] font-semibold"> {credentials.email}</span>. <br />Please click on the link to verify your account.
             </p>
@@ -116,7 +116,8 @@ export default function Register() {
             </div>
           </div>
 
-          <div className='w-[50%] flex justify-center'>
+          {/* Right side component - hidden on mobile */}
+          <div className='hidden md:flex w-[50%] justify-center'>
             <div className='w-[100%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
               <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
 
@@ -129,30 +130,29 @@ export default function Register() {
           </div>
         </div>
       ) : (
-        <div className="flex gap-x-[30px] bg-[white] p-[20px]">
-          <div className="w-[50%] space-y-4 p-8 flex flex-col items-center">
-            <div className="flex flex-col justify-center w-[450px]">
+        <div className="flex gap-x-[30px] md:gap-x-[30px] gap-x-0 p-[20px] md:p-[20px] p-[10px]">
+          <div className="w-full md:w-[50%] space-y-4 p-4 md:p-8 flex flex-col items-center">
+            <div className="flex flex-col justify-center w-full max-w-[450px]">
               <h2 className="text-xl font-bold">
                 Get started now
               </h2>
               <p className='text-[#757575] text-[12px] font-medium'>Enter your credentials to access your account</p>
             </div>
 
-            <div className="mt-4">
-              <div className="mt-4 flex gap-3 w-[450px]">
+            <div className="mt-4 w-full max-w-[450px]">
+              <div className="mt-4 flex gap-3">
                 <button
                   type="button"
                   onClick={() => window.location.href = GOOGLE_AUTH_URL}
                   className="w-full h-12 flex justify-center items-center gap-x-[10px] px-2 py-1 rounded-xl border border-[#ccc] shadow-lg hover:bg-gray-50"
                 >
                   <FcGoogle className="text-4xl" />
-                  <p>Sign up with Google</p>
+                  <p className="text-sm md:text-base">Sign up with Google</p>
                 </button>
               </div>
             </div>
 
-
-            <div className="relative w-[450px]">
+            <div className="relative w-full max-w-[450px]">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300"></div>
               </div>
@@ -163,14 +163,13 @@ export default function Register() {
               </div>
             </div>
 
-
             {error && (
               <p className="text-[#E33629] text-[12px] mt-1">
                 {error}
               </p>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-[450px]">
               <div>
                 <label htmlFor="email" className="block text-[16px] font-[600]">
                   Email
@@ -179,7 +178,7 @@ export default function Register() {
                   id="email"
                   type="email"
                   required
-                  className="mt-1 w-[450px] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
+                  className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
                   placeholder="Enter your email address"
                   value={credentials.email}
                   onChange={(e) =>
@@ -195,12 +194,12 @@ export default function Register() {
                 >
                   Password
                 </label>
-                <div className="relative w-[450px]">
+                <div className="relative w-full">
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     required
-                    className="mt-1 w-[450px] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
+                    className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
                     placeholder="Enter your Password"
                     value={credentials.password}
                     onChange={(e) =>
@@ -246,12 +245,12 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={isLoading || !isFormValid()}
-                className="w-[450px] h-12 flex justify-center items-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
+                className="w-full h-12 flex justify-center items-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
               >
                 {isLoading ? <BeatLoader /> : "Sign Up"}
               </button>
 
-              <div className="text-center w-[450px]">
+              <div className="text-center w-full">
                 <span className="text-[16px] font-[400] ">
                   Have an account?{" "}
                 </span>
@@ -265,7 +264,8 @@ export default function Register() {
             </form>
           </div>
 
-          <div className='w-[50%] flex justify-center'>
+          {/* Right side component - hidden on mobile */}
+          <div className='hidden md:flex w-[50%] justify-center'>
             <div className='w-[65%] size-max bg-[#004085] rounded-xl flex flex-col gap-y-[15px] p-[30px] items-start'>
               <img src={traitText} alt='text' className='h-[25px] ml-[-10px]' />
 

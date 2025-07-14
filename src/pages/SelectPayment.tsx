@@ -9,10 +9,11 @@ export default function SelectPayment() {
 
   const [selectedPlan, setSelectedPlan] = useState<number>(1); // Default to Silver plan (index 1)
 
-  const handleSelect = (planIndex: number) => {
+  const handleSelect = (planIndex: number):number => {
     setSelectedPlan(planIndex);
 
     localStorage.setItem("selectedPlan", JSON.stringify(planIndex))
+    return planIndex;
   };
 
   useEffect(() => {
@@ -24,6 +25,9 @@ export default function SelectPayment() {
 
     return () => clearInterval(interval);
   }, [timeLeft]);
+
+
+  // console.log("tempdData: ", tempData);
 
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);

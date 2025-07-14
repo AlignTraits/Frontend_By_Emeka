@@ -101,109 +101,109 @@ useEffect(()=> {
    
 
   return (
-    <div className="relative h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white">
+<div className="relative min-h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white">
       <Header />
       {
         status ? (
-          <div className='flex flex-col items-center p-[20px] gap-y-[20px] mt-10'>
+          <div className='flex flex-col items-center p-[20px] md:p-[20px] p-[10px] gap-y-[20px] mt-10'>
             <div className=''>
               <img src={resetIcon} />
             </div>
-            <p className='text-[#4C4E53]'>
+            <p className='text-[#4C4E53] text-center max-w-[450px] px-4'>
               Your password has been reset successfully, <span className="text-[#004085]">you will be redirected in few seconds...</span>
             </p>
           </div>
         ) : (
-          <div className="mx-auto mt-[80px] w-[600px] space-y-5 p-10 bg-white rounded-lg shadow-lg border-[#ccc] border-[1px]">
-            <div className="mx-auto space-y-2">
-              <h2 className="text-2xl text-[#101828]">
-                Reset password
-              </h2>
-            </div>
-            <form
-              onSubmit={(e) => handleSubmit(e)}
-              className="space-y-6 flex flex-col"
-            >
-              {error && (
-                <div className="bg-red-50 text-red-500 p-3 rounded">{error}</div>
-              )}
-              {status && (
-                <div className="bg-green-50 text-green-500 p-3 rounded">
-                  Password reset successful. Redirecting...
-                </div>
-              )}
-              <div>
-                <label htmlFor="password" className="block text-[16px] font-[600] text-[#101828]">
-                  Enter New password
-                </label>
-                <div className="relative">
-                  <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    // className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
-                    className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
-                    placeholder="Enter your new password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onFocus={resetInput}
-                  />
-                  {passwordError && <p className="mt-1 text-[#E33629] font-normal italic text-[10px]">{passwordError}</p>}
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#004085] "
-                  >
-                    {showPassword ? (
-                      <AiOutlineEyeInvisible size={20} />
-                    ) : (
-                      <AiOutlineEye size={20} />
-                    )}
-                  </button>
-                </div>
+          <div className="mx-auto mt-[40px] md:mt-[80px] w-full max-w-[600px] px-4 md:px-0">
+            <div className="space-y-5 p-6 md:p-10 md:bg-white rounded-lg md:shadow-lg md:border-[#ccc] md:border-[1px]">
+              <div className="mx-auto space-y-2 mb-10 md:mb-0">
+                <h2 className="text-xl md:text-2xl text-[#101828] text-center md:text-left font-semibold">
+                  Reset password
+                </h2>
               </div>
-              <div>
-                <label
-                  htmlFor="confirm-password"
-                  className="block text-[16px] font-[600] text-[#101828]"
-                >
-                  Confirm new password
-                </label>
-                <div className="relative">
-                  <input
-                    id="confirm-password"
-                    type={showConfirmPassword ? "text" : "password"}
-                    required
-                    // className="mt-1 block w-full rounded-xl border border-[#000000] p-3"
-                    className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none"
-                    placeholder="Re-enter your new password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    onFocus={resetInput}
-                  />
-                  {confirmPasswordError && <p className="mt-1 text-[#E33629] font-normal italic text-[10px]">{confirmPasswordError}</p>}
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#004085] "
-                  >
-                    {showConfirmPassword ? (
-                      <AiOutlineEyeInvisible size={20} />
-                    ) : (
-                      <AiOutlineEye size={20} />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full h-12 mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
+              <form
+                onSubmit={(e) => handleSubmit(e)}
+                className="space-y-8 flex flex-col"
               >
-                {isLoading ? <BeatLoader /> : "Update Password"}
-              </button>
-            </form>
+                {error && (
+                  <div className="bg-red-50 text-red-500 p-3 rounded text-sm">{error}</div>
+                )}
+                {status && (
+                  <div className="bg-green-50 text-green-500 p-3 rounded text-sm">
+                    Password reset successful. Redirecting...
+                  </div>
+                )}
+                <div>
+                  <label htmlFor="password" className="block text-[14px] md:text-[16px] font-[600] text-[#101828]">
+                    Enter New password
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      required
+                      className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none text-sm md:text-base"
+                      placeholder="Enter your new password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onFocus={resetInput}
+                    />
+                    {passwordError && <p className="mt-1 text-[#E33629] font-normal italic text-[10px]">{passwordError}</p>}
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#004085] "
+                    >
+                      {showPassword ? (
+                        <AiOutlineEyeInvisible size={20} />
+                      ) : (
+                        <AiOutlineEye size={20} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="confirm-password"
+                    className="block text-[14px] md:text-[16px] font-[600] text-[#101828]"
+                  >
+                    Confirm new password
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="confirm-password"
+                      type={showConfirmPassword ? "text" : "password"}
+                      required
+                      className="mt-1 w-full h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-xl bg-white shadow-md focus:outline-none text-sm md:text-base"
+                      placeholder="Re-enter your new password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      onFocus={resetInput}
+                    />
+                    {confirmPasswordError && <p className="mt-1 text-[#E33629] font-normal italic text-[10px]">{confirmPasswordError}</p>}
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#004085] "
+                    >
+                      {showConfirmPassword ? (
+                        <AiOutlineEyeInvisible size={20} />
+                      ) : (
+                        <AiOutlineEye size={20} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full h-12 mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
+                >
+                  {isLoading ? <BeatLoader /> : "Update Password"}
+                </button>
+              </form>
+            </div>
           </div>
         )
       }

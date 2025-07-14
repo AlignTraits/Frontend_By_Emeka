@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { makePayment } from '../../services/utils';
 
 interface PricingCardProps {
   title: string;
@@ -10,7 +10,7 @@ interface PricingCardProps {
   features: string[];
   type: string;
   isActive?: boolean;
-  onSelect: () => void;
+  onSelect: () => number;
 }
 
 const PricingCard: React.FC<PricingCardProps> = ({
@@ -23,18 +23,34 @@ const PricingCard: React.FC<PricingCardProps> = ({
   onSelect
 }) => {
 
-  const navigate = useNavigate()
+  const temp = localStorage.getItem("eligibility-data")
+  const tempData = temp ? JSON.parse(temp) : null;
 
-  const handleInnerClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+  const handleInnerClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); // 🛑 stops the click from bubbling up
-    console.log('Inner button clicked');
-    onSelect()
+    let selectNumber = onSelect()
+
+    console.log("selectNumber: ", selectNumber)
 
     toast.success(`Redirecting you to payment...`)
 
     setTimeout(() => {
-      navigate("/make-payment")
+      // navigate("/make-payment")
     }, 2000)
+
+    try {
+      let data = await makePayment({
+        paymentPlan: selectNumber === 0 ? "BASIC_ONETIME" : "GLOBAL_MONTHLY",
+        firstname: tempData?.firstName,
+        lastname: tempData?.lastName, 
+        email: tempData?.email,
+      }); 
+
+      console.log("Payment data: ", data);
+    } catch(err:any) {
+      toast.error(err.message)
+    }
 
   };
 
