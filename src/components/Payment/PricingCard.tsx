@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { makePayment } from '../../services/utils';
+import { BeatLoader } from 'react-spinners';
 
 interface PricingCardProps {
   title: string;
@@ -23,6 +24,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
   onSelect
 }) => {
 
+  const [isLoading, setIsLoading] = React.useState(false);
   const temp = localStorage.getItem("eligibility-data")
   const tempData = temp ? JSON.parse(temp) : null;
 
@@ -33,23 +35,27 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
     console.log("selectNumber: ", selectNumber)
 
-    toast.success(`Redirecting you to payment...`)
-
-    setTimeout(() => {
-      // navigate("/make-payment")
-    }, 2000)
-
     try {
+      setIsLoading(true)
       let data = await makePayment({
-        paymentPlan: selectNumber === 0 ? "BASIC_ONETIME" : "GLOBAL_MONTHLY",
-        firstname: tempData?.firstName,
-        lastname: tempData?.lastName, 
-        email: tempData?.email,
+        "paymentPlan": selectNumber === 0 ? "BASIC_ONETIME" : "GLOBAL_MONTHLY",
+        "firstname": tempData?.firstName,
+        "lastname": tempData?.lastName, 
+        "email": tempData?.email,
+        "schoolLocation": tempData?.schoolLocation,
       }); 
 
-      console.log("Payment data: ", data);
+      // console.log("Payment data: ", data);
+      if (data?.ok) {
+        toast.success(`Redirecting you to payment...`)
+        setTimeout(() => {
+          window.open(data.data.authorization_url, '_blank');
+        }, 2000);
+      }
     } catch(err:any) {
       toast.error(err.message)
+    } finally {
+      setIsLoading(false)
     }
 
   };
@@ -89,7 +95,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
           }
         )}
       >
-        Select
+        {isLoading ? <BeatLoader /> : "Select Plan"}
       </button>
     </div>
   );
