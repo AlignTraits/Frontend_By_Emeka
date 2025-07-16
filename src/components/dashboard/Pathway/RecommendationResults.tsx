@@ -7,10 +7,10 @@ const recommendations = new Array(8).fill({
 });
 
 interface RecommendationProps {
-  setShowCourse: React.Dispatch<React.SetStateAction<boolean>>;
+  setViewState: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function RecommendationResults({setShowCourse}: RecommendationProps) {
+export default function RecommendationResults({setViewState}: RecommendationProps) {
   return (
     <div className="w-full max-w-2xl mx-auto mt-[50px] bg-white border-[1px] border-[#ccc] shadow-md rounded-xl p-6">
       <h2 className="text-lg font-semibold text-[#101828] mb-6 flex items-center">
@@ -35,7 +35,7 @@ export default function RecommendationResults({setShowCourse}: RecommendationPro
       </div>
 
       <div className="text-center">
-        <button onClick={() => setShowCourse(true)} className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
+        <button onClick={() => setViewState(1)} className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
           Get course recommendation
         </button>
       </div>

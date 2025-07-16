@@ -38,7 +38,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
     try {
       setIsLoading(true)
       let data = await makePayment({
-        "paymentPlan": selectNumber === 0 ? "BASIC_ONETIME" : "GLOBAL_MONTHLY",
+        "paymentPlan": selectNumber === 0 ? "BASIC_ONETIME" : selectNumber === 1 ? "LOCAL_MONTHLY" : "GLOBAL_MONTHLY",
         "firstname": tempData?.firstName,
         "lastname": tempData?.lastName, 
         "email": tempData?.email,

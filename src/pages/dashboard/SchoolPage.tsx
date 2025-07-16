@@ -242,36 +242,36 @@ export default function SchoolPage() {
     })
   }, [])
   return (
-    <div className="relative">
+    <div className="relative w-full bg-[white]">
       {
         showDetails ? (
           <CourseDetails courseItem={courseDetails} setShowDetails={setShowDetails} />
         ) : (
           <div className="w-full">
-            <div className="flex border-b border-b-[#EAECF0] px-[20px] mt-[20px] flex-wrap">
-              {courseCategoryList.map((tab) => {
-                return (
-                  <button
-                    key={tab.id}
-                    className={`py-2 px-4 text-[12px] font-semibold border-b-2 font-medium transition 
-                      ${
-                        activeTab === tab.id
-                          ? "border-[#003064] text-[#004085] text-[12px] font-semibold"
-                          : "border-transparent hover:text-blue-500 text-[#999999]"
-                      }`}
-                    onClick={() => setActiveTab(tab.id)}
-                  >
-                    {tab.name}
-                  </button>
-                );
-              })}
+            <div className='border-b border-b-[#EAECF0] w-[100%]'>
+              <div className="w-[1000px] flex px-[20px] mt-[20px] overflow-x-auto scrollbar-hide">
+                {courseCategoryList.map((tab) => {
+                  return (
+                    <button
+                      key={tab.id}
+                      className={`py-2 px-4 text-[12px] whitespace-nowrap font-semibold border-b-2 font-medium transition 
+                        ${
+                          activeTab === tab.id
+                            ? "border-[#003064] text-[#004085] text-[12px] font-semibold"
+                            : "border-transparent hover:text-blue-500 text-[#999999]"
+                        }`}
+                      onClick={() => setActiveTab(tab.id)}
+                    >
+                      {tab.name}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
 
             <div className="flex justify-between items-center px-[20px] border-b border-b-[#DDDDDD] pb-[10px]">
               <div className="flex gap-x-[10px] my-[20px]">
-
- 
                 <div className="w-[200px] relative" ref={fieldDropdownRef}>
                   <input
                     type="text"

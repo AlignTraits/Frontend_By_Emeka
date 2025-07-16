@@ -52,10 +52,14 @@ const AccountSettings = lazy(() => import("./pages/dashboard/AccountSettings"))
 const Profile = lazy(() => import("./pages/dashboard/Profile"))
 const AccountRecords = lazy(() => import("./pages/dashboard/AccountRecords"))
 const SecurityManagement = lazy(() => import("./pages/dashboard/SecurityManagement"))
+const PaymentCallback = lazy(() => import("./pages/PaymentCallback")); 
+const SignUpTwo = lazy(() => import("./pages/auth/RegisterTwo"))
+
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp /> },
+  { path: "/signup-two", element: <SignUpTwo /> },
   { path: "/forgot-password", element: <ForgotPassword /> },
   { path: '/email-verify', element: <VerifyEmail /> },
   { path: '/reset-password', element: <ResetPassword /> },
@@ -65,6 +69,7 @@ const router = createBrowserRouter([
   { path: "/questionaire", element: <Questionaire /> },
   { path: "/make-payment", element: <PaymentPage /> },
   { path: "/select-payment", element: <SelectPayment /> },
+  { path: "/payment/callback", element: <PaymentCallback /> }, 
   { path: "/check-eligibility/:courseId", element: <CheckEligibility /> },
   { index: true, element: <Home /> },
 
@@ -89,10 +94,7 @@ const router = createBrowserRouter([
       { path: "school", element: <SchoolPage />},
       { path: "skill-roadmap", element: <SkillRoadMap />},
       
-      // { path: "settings", element: <AccountSettings />},
-      // { path: "profile", element: <Profile /> },
-      // { path: "records", element: <AccountRecords /> },
-      // { path: "security", element: <SecurityManagement /> },
+
       {
         path: "settings",
         element: <SettingsLayout />, // <-- Add this line
