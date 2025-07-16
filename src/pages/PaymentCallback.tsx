@@ -30,7 +30,9 @@ const PaymentCallback = () => {
       }, 5000)
       return response;
     } catch (err:any) {
-      toast.error(err.message);
+      if (tempDataTwo?.ok) {
+        toast.error("Error occurred, please login!")
+      }
       setTimeout(() => {
         if (tempDataTwo?.ok) {
           navigate("/login")
