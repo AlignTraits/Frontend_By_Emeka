@@ -1,15 +1,19 @@
 
 import { useEffect, useState } from 'react';
 // import Construction from '../../assets/dashboard/images/construction.png'
+import { useNavigate } from 'react-router-dom';
+import { FaArrowLeftLong } from "react-icons/fa6";
 import { useAuth } from '../../contexts/useAuth';
 import RecommendationResults from '../../components/dashboard/Pathway/RecommendationResults';
 import CourseList from '../../components/CareerPathway/CourseList';
+import Other from '../../components/CareerPathway/Other';
 
 
 export default function CareerPath() {
   const {setPageDesc} = useAuth()
+  const [viewState, setViewState] = useState(0);
 
-  const [showCourse, setShowCourse] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setPageDesc({
@@ -18,13 +22,38 @@ export default function CareerPath() {
     })
   }, [])
 
+
+  const handleNav = () => {
+    if (viewState === 0) {
+      navigate(-1)
+    } else {
+      setViewState((prev) => prev - 1);
+    }
+  }
+
+  const renderState = () => {
+    switch (viewState) { 
+      case 0:
+        return <RecommendationResults setViewState={setViewState} />;
+      case 1:
+        return <Other />;  
+      case 2:
+        return <CourseList />;  
+      default:
+        return <RecommendationResults setViewState={setViewState} />;  
+    }
+  }
+
   return (
     <div>
-      <div className="flex items-center justify-center w-full h-full p-5">
+      <div className="w-full h-full p-5">
+        <button onClick={handleNav} className="flex gap-x-[10px] items-center">
+          <FaArrowLeftLong className="text-[#004085]" />
+          <p className="text-[#004085]">Back to Explore</p>
+        </button>
         {
-          showCourse ? <CourseList /> : <RecommendationResults setShowCourse={setShowCourse} />
+          renderState()
         }
-
       </div>
 
       <div className='h-[70px] w-[30px]'></div>

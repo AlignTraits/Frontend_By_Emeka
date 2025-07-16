@@ -30,7 +30,7 @@ export const login = async (credentials: LoginCredentials) => {
   } catch(err) {
    throw(err)
   }
- 
+
 }
 
 export const googleLogin = async () => {
@@ -50,10 +50,14 @@ export const signUp = async (credentials: SignUpCredentials): Promise<AuthRespon
   return data
 }
 
+export const signUpTwo = async (credentials: LoginCredentials) => {
+  const response = await api.post('/auth/add-password-after-eligibility', credentials);
+  return response;
+}
+
 export const forgotPasswordRequest = async (email: string): Promise<void> => {
   await api.post('/auth/request-reset', { email })
 }
-
 
 export const resetPassword = async (email:string, token: string, password: string): Promise<void> => {
   await api.post('/auth/reset-password', { email, token, password })

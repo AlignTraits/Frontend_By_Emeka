@@ -8,7 +8,8 @@ import { ErrorObjType, RequirementList } from "../types/course.types";
 import AdmissionRequirements from "../components/Admin/AdmissionRequirements";
 import { getCourseDetails } from "../services/schools";
 import { toast } from "react-toastify";
-import { checkEligibility } from "../services/utils";
+import { checkEligibility, getUser } from "../services/utils";
+
 
 export default function CheckEligibility() {
   const {error} = useAuth()
@@ -25,6 +26,7 @@ export default function CheckEligibility() {
   });
   
   const [responseObj, setResponseObj] = useState({} as any)
+  const [responseObjTwo, setResponseObjTwo] = useState({} as any)
 
   const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
   const [errorObj, setErrorObj] = useState<ErrorObjType>({
@@ -59,10 +61,20 @@ export default function CheckEligibility() {
     if (agreed) {
       // localStorage.setItem("pathway-data", JSON.stringify(data));
       // navigate("/questionaire")
-      setDisplayRequirements(true)
 
       // store first name, last name, and email in localStorage
       localStorage.setItem("eligibility-data", JSON.stringify({...data, schoolLocation: responseObj?.university?.region}));
+      setIsLoading(true)
+      try {
+        const response = await getUser(data.email);
+        setDisplayRequirements(true)
+        setResponseObjTwo(response)
+        localStorage.setItem("userData", JSON.stringify(response))
+      } catch (err) {
+        toast.error("Error in getting user details!")
+      } finally {
+        setIsLoading(false)
+      }
     }    
   };
 
@@ -131,21 +143,26 @@ export default function CheckEligibility() {
 
     try {
       setIsLoading(true)
-      const response = await checkEligibility(mainPayload);
+      console.log("responseObjTwo: ", responseObjTwo)
+      let now = new Date()
+      const expiredate = responseObjTwo?.data?.payment_plan_expires_at ? new Date(responseObjTwo?.data?.payment_plan_expires_at) : now;
 
-      console.log("response: ", response);
-      // if (response.ok === true) {
-      //   setShowSignUpBtn(true)
-      //   navigate("/select-payment")
-      // }
-      // navigate("/login")
-      toast.success("Please login and check eligibility results in your dashboard");
+      if (responseObjTwo?.data?.subscriptionPlanStatus && expiredate > now && responseObjTwo?.ok) {
+        const response = await checkEligibility(mainPayload);
+        console.log("response: ", response);
+        toast.success("Please login and check eligibility results in your dashboard");
+      } else if (!responseObjTwo?.data?.subscriptionPlanStatus || expiredate <= now || !responseObjTwo?.ok) {
+        toast.error("No active subscription, make payment!");
+        localStorage.setItem("eligibilityPayload", JSON.stringify(mainPayload))
+        setTimeout(() => {
+          navigate("/select-payment")
+        }, 1000) 
+      }
 
     } catch (e:any) {
-      navigate("/select-payment")
-      toast.success("Redirecting to payment");
+      toast.error("Error in checking eligibility. Try again later.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -294,7 +311,8 @@ export default function CheckEligibility() {
                   disabled={isLoading}
                   className="w-full max-w-[400px] mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50 text-sm sm:text-base"
                 >
-                  {"Continue"}
+                  {/* {"Continue"} */}
+                  {isLoading ? <BeatLoader /> : "Continue"}
                 </button>
               </form>
             </div>
