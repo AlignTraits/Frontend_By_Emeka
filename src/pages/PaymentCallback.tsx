@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { toast } from "react-toastify";
 import { checkEligibility } from "../services/utils"
 import { useNavigate } from "react-router-dom";
-import resetIcon from "../../assets/resetRediret.svg"
+import resetIcon from "../assets/resetRediret.svg"
 
 const PaymentCallback = () => {
   const navigate = useNavigate()
