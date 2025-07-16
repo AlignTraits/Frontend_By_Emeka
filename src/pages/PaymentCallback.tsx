@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-
+import Header from "../components/Header";
 import { toast } from "react-toastify";
 import { checkEligibility } from "../services/utils"
 import { useNavigate } from "react-router-dom";
@@ -49,6 +49,7 @@ const PaymentCallback = () => {
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white">
+      <Header />
       <div className='flex flex-col items-center p-[20px] md:p-[20px] p-[10px] gap-y-[20px] mt-10'>
         <div className=''>
           <img src={resetIcon} />
