@@ -151,6 +151,9 @@ export default function CheckEligibility() {
         const response = await checkEligibility(mainPayload);
         console.log("response: ", response);
         toast.success("Please login and check eligibility results in your dashboard");
+        setTimeout(() => {
+          navigate("/login")
+        }, 1000) 
       } else if (!responseObjTwo?.data?.subscriptionPlanStatus || expiredate <= now || !responseObjTwo?.ok) {
         toast.error("No active subscription, make payment!");
         localStorage.setItem("eligibilityPayload", JSON.stringify(mainPayload))
