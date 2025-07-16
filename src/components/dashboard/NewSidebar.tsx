@@ -41,10 +41,6 @@ const NewSidebar = ({
   let skillRoadMapPath:boolean = location.pathname.startsWith("/dashboard/skill-roadmap")
   let progressTrackerPath:boolean = location.pathname.startsWith("/dashboard/progres-tracker")
   let accountPath:boolean = location.pathname.startsWith("/dashboard/settings")
-  // let profilePath:boolean = location.pathname.startsWith("/dashboard/profile")
-  // let recordPath:boolean = location.pathname.startsWith("/dashboard/records")
-  // let securityPath:boolean = location.pathname.startsWith("/dashboard/security")
-  // let profilePath:boolean = location.pathname.startsWith("/admin/profile")
 
 
   return (

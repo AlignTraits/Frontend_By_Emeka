@@ -30,17 +30,10 @@ export default function Login() {
       setIsLoading(true)
       const status = await signUpTwo(credentials);
 
-      console.log("status: ", status)
-
       navigate("/login");
 
-      // if (status === 200) {
-      //   navigate("/dashboard");
-      // } else if (status === 800) {
-      //   navigate("/onboarding-form")
-      // } else {
-      //   console.error("Unexpected status:", status);
-      // }
+      return status;
+
     } catch (err:any) {
       console.error("Login failed:", err);
       setError(err?.message);
