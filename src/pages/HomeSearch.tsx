@@ -242,20 +242,6 @@ export default function HomeSearch() {
     }).slice(start, start + itemsPerPage);
   }, [filteredCourses, currentPage]);
 
-  // const handleGetCoursesCategories = async () => {
-  //   try {
-  //     const response = await getCoursesCategories();
-  //     if (response.status !== 200) {
-  //       toast.error("Failed to fetch course categories");
-  //     }
-  //     setCategories(response.data.data)
-  //   } catch (error) {
-  //     toast.error("Failed to fetch course categories");
-  //   }
-  // }
-
-  // console.log("categories: ", categories)
-  
   return (
     <div className="relative h-screen w-full bg-[white]">
       <div className="sticky top-0 z-[1000] sm:bg-[white] pb-[10px]">
