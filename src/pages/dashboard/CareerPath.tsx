@@ -11,7 +11,9 @@ import Other from '../../components/CareerPathway/Other';
 
 export default function CareerPath() {
   const {setPageDesc} = useAuth()
+  const [courseFilter, setCourseFilter] = useState("")
   const [viewState, setViewState] = useState(0);
+  const [showDetails, setShowDetails] = useState(false)
 
   const navigate = useNavigate();
 
@@ -36,9 +38,9 @@ export default function CareerPath() {
       case 0:
         return <RecommendationResults setViewState={setViewState} />;
       case 1:
-        return <Other />;  
+        return <Other setViewState={setViewState} setCourseFilter={setCourseFilter} />;  
       case 2:
-        return <CourseList />;  
+        return <CourseList courseFilter={courseFilter} setShowDetails={setShowDetails} showDetails={showDetails} />;  
       default:
         return <RecommendationResults setViewState={setViewState} />;  
     }
@@ -47,10 +49,13 @@ export default function CareerPath() {
   return (
     <div>
       <div className="w-full h-full p-5">
-        <button onClick={handleNav} className="flex gap-x-[10px] items-center">
-          <FaArrowLeftLong className="text-[#004085]" />
-          <p className="text-[#004085]">Back to Explore</p>
-        </button>
+        {
+          !showDetails &&         
+          <button onClick={handleNav} className="flex gap-x-[10px] items-center">
+            <FaArrowLeftLong className="text-[#004085]" />
+            <p className="text-[#004085]">Back to Explore</p>
+          </button>
+        }
         {
           renderState()
         }
