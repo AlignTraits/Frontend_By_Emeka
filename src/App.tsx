@@ -54,6 +54,7 @@ const AccountRecords = lazy(() => import("./pages/dashboard/AccountRecords"))
 const SecurityManagement = lazy(() => import("./pages/dashboard/SecurityManagement"))
 const PaymentCallback = lazy(() => import("./pages/PaymentCallback")); 
 const SignUpTwo = lazy(() => import("./pages/auth/RegisterTwo"))
+const Subscription = lazy(() => import("./pages/dashboard/Subscription"))
 
 
 const router = createBrowserRouter([
@@ -103,6 +104,7 @@ const router = createBrowserRouter([
           { path: "profile", element: <Profile /> },     // /dashboard/settings/profile
           { path: "records", element: <AccountRecords /> }, // /dashboard/settings/records
           { path: "security", element: <SecurityManagement /> }, // /dashboard/settings/security
+          { path: "subscription", element: <Subscription /> }
         ],
       },
     ],
