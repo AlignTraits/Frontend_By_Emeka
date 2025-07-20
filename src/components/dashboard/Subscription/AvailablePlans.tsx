@@ -90,6 +90,7 @@ const AvailablePlans: React.FC = () => {
       return {...elem, isCurrentPlan: false}
     })
     setStatePlans([...tempState])
+    console.log("clicked!")
   }
 
   return (
