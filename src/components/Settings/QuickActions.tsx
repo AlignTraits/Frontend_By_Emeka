@@ -4,7 +4,7 @@ import { RiGraduationCapFill } from "react-icons/ri";
 
 const QuickActions = () => {
   return (
-    <div className='border-[1px] border-[#EAECF0] shadow-md rounded-xl h-[250px] w-[50%] p-4'>
+    <div className='border-[1px] border-[#EAECF0] shadow-md rounded-xl h-[250px] w-[100%] lg:w-[100%] p-4'>
       <div>
         <p className="text-[#212529] text-[18px] font-bold">Quick Actions</p>
         <p className='text-[12px] text-[#757575] mt-2'>Common tasks you might want to perform</p>

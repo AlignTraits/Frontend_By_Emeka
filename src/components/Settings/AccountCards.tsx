@@ -11,7 +11,7 @@ interface AccountCardsProps {
 
 const AccountCards = ({title, desc,textTwo, handleNavigate, children}:AccountCardsProps & { children?: React.ReactNode }) => {
   return (
-    <div className={`h-[240px] w-[33%] bg-white cursor-pointer flex flex-col justify-between rounded-xl shadow-lg shadow-gray-200/50 border border-gray-200 p-6 w-64  hover:shadow-md transition`}>
+    <div className={`h-[240px] w-[100%] lg:w-[33%] bg-white cursor-pointer flex flex-col justify-between rounded-xl shadow-lg shadow-gray-200/50 border border-gray-200 p-6 w-64  hover:shadow-md transition`}>
       <div className='flex justify-between items-center'>
         <p className='text-[#101828] text-[16px] font-normal'>{title}</p>
         <BsPerson className='text-[#757575] h-5 w-5' />

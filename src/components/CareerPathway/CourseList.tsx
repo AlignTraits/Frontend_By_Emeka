@@ -401,7 +401,7 @@ export default function CourseList({courseFilter, showDetails, setShowDetails}: 
 
             {
               !isLoading && (
-                <div className="px-5 flex flex-wrap justify-between gap-[10px] md:justify-start md:gap-[30px] w-[100%]">
+                <div className="flex flex-col md:flex-row flex-wrap justify-between gap-[10px] md:justify-start md:gap-[30px] w-[100%]">
                   {
                     paginatedCourses.length > 0 && paginatedCourses.map((elem, i) => (
                       <CourseCard setShowDetails={setShowDetails} courseItem={elem} key={i} setCourseDetails={setCourseDetails} />
@@ -418,7 +418,7 @@ export default function CourseList({courseFilter, showDetails, setShowDetails}: 
               </div>
             )}
             
-            <div className="flex justify-between items-center px-5 mt-5">
+            <div className="flex justify-between items-center mt-5">
               <button
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
