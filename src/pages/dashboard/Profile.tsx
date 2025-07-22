@@ -104,14 +104,14 @@ export default function ProgressTracker() {
 
   return (
     <div className="p-5">
-      <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] size-max">
+      <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[15px] lg:gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] size-max">
         <div>
           <p className="text-[#212529] text-[18px] font-bold">Profile Information</p>
           <p className='text-[12px] text-[#757575] mt-2'>Update your personal information and preferences.</p>
         </div>
 
-        <div className='flex gap-x-[20px]'>
-          <div className="flex flex-col gap-y-[5px] w-[50%]">
+        <div className='flex flex-col lg:flex-row gap-x-[20px] space-y-1'>
+          <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
             <p className={`text-[12px] ${errorObj.firstName ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>First Name*</p>
             <input
               type="text"
@@ -124,7 +124,7 @@ export default function ProgressTracker() {
             />
           </div>
 
-          <div className="flex flex-col gap-y-[5px] w-[50%]">
+          <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
             <p className={`text-[12px] ${errorObj.lastName ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Lasts Name*</p>
             <input
               type="text"
@@ -138,8 +138,8 @@ export default function ProgressTracker() {
           </div>
         </div>
 
-        <div className='flex gap-x-[20px]'>
-          <div className="flex flex-col gap-y-[5px] w-[50%]">
+        <div className='flex flex-col lg:flex-row gap-x-[20px] space-y-1'>
+          <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
             <p className={`text-[12px] ${errorObj.email ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Email Address*</p>
             <input
               type="email"
@@ -152,7 +152,7 @@ export default function ProgressTracker() {
             />
           </div>
 
-          <div className="flex flex-col gap-y-[5px] w-[50%]">
+          <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
             <p className={`text-[12px] ${errorObj.country ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Country*</p>
             <SearchSelect
               placeholder="Select Country"
@@ -166,8 +166,8 @@ export default function ProgressTracker() {
           </div>
         </div>
 
-        <div className='flex gap-x-[20px]'>
-          <div className="flex flex-col gap-y-[5px] w-[50%]">
+        <div className='flex flex-col lg:flex-row gap-x-[20px] space-y-1'>
+          <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
             <p className={`text-[12px] ${errorObj.dob ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Date of Birth*</p>
             <div className="h-[40px] w-full relative flex items-center justify-between border rounded-md px-3 bg-white">
               <DatePicker
@@ -184,7 +184,7 @@ export default function ProgressTracker() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-y-[5px] w-[50%]">
+          <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
             <p className={`text-[12px] ${errorObj.gender ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Gender*</p>
             <CustomSelect
               placeholder="Select your gender"
@@ -198,7 +198,7 @@ export default function ProgressTracker() {
           </div>
         </div>
 
-        <div className='w-full flex justify-end'>
+        <div className='w-full flex justify-center lg:justify-end'>
           <button onClick={handleSubmit} className='h-[50px] bg-[#004085] rounded-xl text-[white] font-semibold text-[16px] w-[200px]'>
             {"Save Changes"}
           </button>

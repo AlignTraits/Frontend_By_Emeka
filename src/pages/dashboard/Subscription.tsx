@@ -18,10 +18,10 @@ export default function Subscription() {
   const [activeTab, setActiveTab] = useState<string>('plan-overview');
 
   const navItems: NavItem[] = [
-    { id: 'plan-overview', label: 'Plan Overview' },
-    { id: 'available-plans', label: 'Available Plans' },
-    { id: 'billing-history', label: 'Billing History' },
-    { id: 'payment-method', label: 'Payment Method' }
+    { id: 'plan-overview', label: 'Overview' },
+    { id: 'available-plans', label: 'Plans' },
+    { id: 'billing-history', label: 'Billing' },
+    { id: 'payment-method', label: 'Payment' }
   ];
 
   useEffect(() => {
@@ -64,13 +64,13 @@ export default function Subscription() {
       </div>
 
       <div className="w-full mx-auto mt-5">
-        <nav className="flex bg-gray-100 rounded-lg p-1">
+        <nav className="flex bg-gray-100 rounded-lg p-1 w-[100%] overflow-x-scroll">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`
-                flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all duration-200
+                flex-1 px-1 lg:px-4 py-2 text-sm font-medium rounded-md transition-all duration-200
                 ${
                   activeTab === item.id
                     ? 'bg-white text-gray-900 shadow-sm'

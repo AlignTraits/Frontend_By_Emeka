@@ -1,3 +1,6 @@
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaEdit } from "react-icons/fa";
+
 type Subject = {
   title: string;
   score: string;
@@ -21,7 +24,7 @@ const Card: React.FC<ResultProps> = ({ result, setShowModal })=> {
   }
   
   return (
-    <div className="border-[1px] border-[#EAECF0] flex flex-col justify-between gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] h-[165px] hover:shadow-lg hover:border-[#D0D5DD] transition-all duration-300">
+    <div className="border-[1px] border-[#EAECF0] flex flex-col justify-between gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] size-max lg:h-[165px] hover:shadow-lg hover:border-[#D0D5DD] transition-all duration-300">
       <div className="flex justify-between items-center">
         <div>
           <div className="flex gap-x-[10px] items-center">
@@ -32,16 +35,24 @@ const Card: React.FC<ResultProps> = ({ result, setShowModal })=> {
         </div>
 
         <div className="flex gap-x-[10px]">
-          <button onClick={handleEdit} className="bg-[#F4F4F4] border-[1px] border-[#EAECF0] shadow-md rounded-md h-[50px] w-[80px] text-[#000000] text-[14px] font-semibold">
-            Edit
-          </button>
-          <button className="bg-[#F4F4F4] border-[1px] border-[#EAECF0] shadow-md rounded-md h-[50px] w-[100px] text-[#D92D20] text-[14px] font-semibold">
-            Delete
-          </button>
+
+          <>
+            <FaEdit onClick={handleEdit}  className="lg:hidden h-6 w-6"  />
+            <button onClick={handleEdit} className=" hidden bg-[#F4F4F4] border-[1px] border-[#EAECF0] shadow-md rounded-md h-[50px] w-[80px] text-[#000000] text-[14px] font-semibold">
+              Edit
+            </button>
+          </>
+
+          <>
+            <RiDeleteBin6Line className="lg:hidden h-6 w-6 text-[#F93838]" />
+            <button className="hidden lg:block bg-[#F4F4F4] border-[1px] border-[#EAECF0] shadow-md rounded-md h-[50px] w-[100px] text-[#D92D20] text-[14px] font-semibold">
+              Delete
+            </button>
+          </>
         </div>
       </div>
 
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center flex-wrap gap-x-[10px]">
         {
           result.subjects.map((elem, i) => (
           <div key={i} className="flex gap-x-[10px] items-center">

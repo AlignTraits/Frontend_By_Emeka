@@ -37,14 +37,14 @@ export default function SkillRoadMap() {
 
   return (
     <div className="p-5 relative">
-      <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[15px] shadow-md rounded-xl p-5 w-[100%] size-max">
+      <div className="mt-3 lg:mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[15px] shadow-md rounded-xl p-5 w-[100%] size-max">
         <div>
           <p className="text-[#212529] text-[18px] font-bold">Security & Password</p>
           <p className='text-[12px] text-[#757575] mt-2'>Update your password and manage account security.</p>
         </div>
 
 
-        <form onSubmit={handleSubmit} className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[20px] shadow-md rounded-xl p-5 w-[100%] size-max">
+        <form onSubmit={handleSubmit} className="mt-3 lg:mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[20px] shadow-md rounded-xl p-5 w-[100%] size-max">
           <div>
             <p className="text-[#212529] text-[18px] font-bold">Change Password</p>
             <p className='text-[12px] text-[#757575] mt-2'>Update your password to keep your account secure. You'll be logged out after changing your password.</p>
@@ -63,7 +63,7 @@ export default function SkillRoadMap() {
                 type={showPassword.currentPassword ? "text" : "password"}
                 required
                 className="mt-1 w-[100%] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-2xl bg-white shadow-md focus:outline-none"
-                placeholder="Enter your current password"
+                placeholder="Current password"
                 value={credentials.currentPassword}
                 onChange={(e) =>
                   setCredentials({
@@ -102,7 +102,7 @@ export default function SkillRoadMap() {
                 type={showPassword.newPassword ? "text" : "password"}
                 required
                 className="mt-1 w-[100%] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-2xl bg-white shadow-md focus:outline-none"
-                placeholder="Enter your new password"
+                placeholder="New password"
                 value={credentials.newPassword}
                 onChange={(e) =>
                   setCredentials({
@@ -141,7 +141,7 @@ export default function SkillRoadMap() {
                 type={showPassword.confirmPassword ? "text" : "password"}
                 required
                 className="mt-1 w-[100%] h-12 px-4 py-3 border-[1px] border-[#ccc] rounded-2xl bg-white shadow-md focus:outline-none"
-                placeholder="Enter your current password"
+                placeholder="Current password"
                 value={credentials.confirmPassword}
                 onChange={(e) =>
                   setCredentials({
@@ -167,7 +167,7 @@ export default function SkillRoadMap() {
             </div>
           </div>
 
-          <div className='w-full flex justify-end'>
+          <div className='w-full flex justify-center lg:justify-end'>
             <button type="submit" className='h-[45px] bg-[#004085] rounded-xl text-[white] font-semibold text-[14px] w-[180px] hover:bg-[#0056b3] transition-colors duration-300'>
               {"Change Password"}
             </button>
