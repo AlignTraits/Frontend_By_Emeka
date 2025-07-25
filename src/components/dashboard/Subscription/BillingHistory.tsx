@@ -1,57 +1,39 @@
 import React from 'react';
-import { Download, CheckCircle, XCircle } from 'lucide-react';
+import { useAuth } from '../../../contexts/useAuth';
+import { Download, CheckCircle, XCircle, } from 'lucide-react';
+import { Transaction } from '../../../types/auth.types';
+import { RiProgress2Line } from "react-icons/ri";
 
-interface Transaction {
-  id: string;
-  date: string;
-  plan: string;
-  amount: string;
-  status: 'Successful' | 'Failed';
-}
+
 
 const BillingHistory: React.FC = () => {
-  const transactions: Transaction[] = [
-    {
-      id: '1',
-      date: '8/19/2024',
-      plan: 'Silver Plan',
-      amount: '₦5,500',
-      status: 'Successful'
-    },
-    {
-      id: '2',
-      date: '5/19/2024',
-      plan: 'Silver Plan',
-      amount: '₦5,500',
-      status: 'Successful'
-    },
-    {
-      id: '3',
-      date: '4/15/2024',
-      plan: 'Basic Plan',
-      amount: '₦2,000',
-      status: 'Failed'
-    },
-    {
-      id: '4',
-      date: '4/10/2024',
-      plan: 'Basic Plan',
-      amount: '₦2,000',
-      status: 'Successful'
-    }
-  ];
+  const {user} = useAuth()
+  console.log("user: ", user?.transactions)
 
   const getStatusIcon = (status: string) => {
-    return status === 'Successful' ? (
+    return status === 'SUCCESS' ? (
       <CheckCircle className="w-4 h-4 text-green-500" />
-    ) : (
+    )  : status === 'PENDING' ?  (
+      <RiProgress2Line className="w-4 h-4 text-yellow-500" />
+    ): (
       <XCircle className="w-4 h-4 text-red-500" />
     );
   };
 
+  function formatDateToMMDDYYYY(isoDateString:string) {
+  const date = new Date(isoDateString);
+
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${month}-${day}-${year}`;
+}
+
+
   const getStatusStyle = (status: string) => {
-    return status === 'Successful' 
-      ? 'bg-green-100 text-green-800' 
+    return status === 'SUCCESS' 
+      ? 'bg-green-100 text-green-800' : status === 'PENDING' ? 'bg-yellow-100 text-yellow-800'
       : 'bg-red-100 text-red-800';
   };
 
@@ -86,16 +68,16 @@ const BillingHistory: React.FC = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {transactions.map((transaction) => (
+            {user?.transactions.map((transaction: Transaction) => (
               <tr key={transaction.id} className="hover:bg-gray-50">
                 <td className="hidden lg:block px-3 lg:px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#757575]">
-                  {transaction.date}
+                  {formatDateToMMDDYYYY(transaction.createdAt)}
                 </td>
                 <td className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#757575]">
-                  {transaction.plan}
+                  {transaction.paymentPlan}
                 </td>
                 <td className="hidden lg:block px-3 lg:px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#757575]">
-                  {transaction.amount}
+                  {transaction.currency}{transaction.amount}
                 </td>
                 <td className="px-3 lg:px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center space-x-2">
