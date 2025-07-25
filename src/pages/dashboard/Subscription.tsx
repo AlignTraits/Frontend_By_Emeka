@@ -64,7 +64,7 @@ export default function Subscription() {
       </div>
 
       <div className="w-full mx-auto mt-5">
-        <nav className="flex bg-gray-100 rounded-lg p-1 w-[100%] overflow-x-scroll">
+        <nav className="flex bg-gray-100 rounded-lg p-1 w-[100%]">
           {navItems.map((item) => (
             <button
               key={item.id}

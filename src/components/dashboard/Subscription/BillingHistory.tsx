@@ -106,7 +106,7 @@ const BillingHistory: React.FC = () => {
                   </div>
                 </td>
                 <td className="px-3 lg:px-6 py-4 whitespace-nowrap">
-                  <button className="hidden lg:block inline-flex border-[1px] shadow-sm px-[10px] py-[4px] rounded-md border-[#1018280D] items-center space-x-1 font-semibold text-gray-600 hover:text-gray-800 transition-colors duration-200">
+                  <button className="hidden lg:flex border-[1px] shadow-sm px-[10px] py-[4px] rounded-md border-[#1018280D] items-center space-x-1 font-semibold text-gray-600 hover:text-gray-800 transition-colors duration-200">
                     <Download className="w-4 h-4" />
                     <span className="text-sm">Download</span>
                   </button>
