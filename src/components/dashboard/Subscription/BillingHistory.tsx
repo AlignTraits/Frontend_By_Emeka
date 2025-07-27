@@ -68,7 +68,7 @@ const BillingHistory: React.FC = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {user?.transactions.map((transaction: Transaction) => (
+            {user?.transactions && user?.transactions.map((transaction: Transaction) => (
               <tr key={transaction.id} className="hover:bg-gray-50">
                 <td className="hidden lg:block px-3 lg:px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#757575]">
                   {formatDateToMMDDYYYY(transaction.createdAt)}
