@@ -21,7 +21,7 @@ export default function AccountSettings() {
 
   return (
     <div className='py-10 px-5'>
-      <div className='flex justify-between gap-[10px]'>
+      <div className='flex flex-col lg:flex-row justify-between gap-[10px]'>
         <AccountCards handleNavigate={() => navigate("/dashboard/settings/profile")} textTwo="Update Profile" title='Profile Completion' desc='Complete your profile for better recommendations'>
           <p className='text-[#212529] text-[18px] font-bold'>85%</p>
         </AccountCards>
@@ -35,7 +35,7 @@ export default function AccountSettings() {
         </AccountCards>
       </div>
 
-      <div className='flex justfy-between gap-[20px] mt-10'>
+      <div className='flex flex-col lg:flex-row justfy-between gap-[20px] mt-10'>
         <RecentActivity />
 
         <QuickActions />

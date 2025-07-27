@@ -16,7 +16,17 @@ export interface User {
   bio?: string | null;
   currentSkill?: string | null;
   courseOfInterest? : string | null
+  transactions: Transaction []
   //   provider?: 'email' | 'google' | 'facebook' | 'apple';
+}
+
+export interface Transaction {
+  id: string;
+  amount: number;
+  createdAt: string;
+  status: 'PENDING' | 'SUCCESS' | 'FAILED';
+  paymentPlan: string;
+  currency: string;
 }
 
 export interface AuthResponse {

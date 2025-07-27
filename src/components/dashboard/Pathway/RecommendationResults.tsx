@@ -18,7 +18,7 @@ export default function RecommendationResults({setViewState}: RecommendationProp
         Recommendation Survey Results
       </h2>
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         {recommendations.map((rec, index) => (
           <div
             key={index}

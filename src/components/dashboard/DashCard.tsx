@@ -15,7 +15,7 @@ const DashCard: React.FC<DashCardProps> = ({
   svgImage=null
 }) => {
   return (
-    <div className={` bg-white cursor-pointer flex flex-col justify-between rounded-lg shadow-lg shadow-gray-200/50 border border-gray-200 p-6 w-64 ${className} hover:shadow-md transition`}>
+    <div className={` bg-white cursor-pointer flex flex-col justify-between rounded-lg shadow-lg shadow-gray-200/50 border border-gray-200 p-6 w-[100%] lg:w-60 ${className} hover:shadow-md transition`}>
       {/* Percentage Display */}
 
       {

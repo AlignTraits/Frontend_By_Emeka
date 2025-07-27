@@ -61,15 +61,15 @@ export default function AcountRecords() {
 
   return (
     <div className="p-5 relative">
-      <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] size-max">
+      <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[30px] shadow-md rounded-xl p-2 lg:p-5 w-[100%] size-max">
         <div>
           <p className="text-[#212529] text-[18px] font-bold">Academic Records</p>
-          <p className='text-[12px] text-[#757575] mt-2'>Manage your examination records and academic achievements.</p>
+          <p className='text-[12px] text-[#757575] lg:mt-2'>Manage your examination records.</p>
         </div>
 
         <div className='w-full flex justify-between items-center'>
-          <p className='text-[#101828] text-[16px] font-semibold'>Your Academic Records</p>
-          <button onClick={() => setShowModal(true)} className="h-[45px] bg-[#004085] rounded-xl text-white font-medium text-[14px] w-[200px] hover:bg-[#0056b3] transition-colors duration-300">
+          <p className='text-[#101828] text-[14px] lg:text-[16px] font-semibold whitespace-nowrap'>Academic Records</p>
+          <button onClick={() => setShowModal(true)} className="h-[35px] lg:h-[45px] bg-[#004085] whitespace-nowrap rounded-xl text-white font-medium text-[14px] lg:text-[16px] size-max px-2 lg:w-[200px] hover:bg-[#0056b3] transition-colors duration-300">
             {"Add New Record"}
           </button>
         </div>

@@ -47,9 +47,6 @@ const NewSidebar = ({
   let securityPath:boolean = location.pathname.startsWith("/dashboard/settings/security")
   let subscriptionPath:boolean = location.pathname.startsWith("/dashboard/settings/subscription")
 
-  console.log("location.pathname: ", location.pathname)
-
-
   return (
     <div
       className={`fixed z-20 lg:sticky top-0 left-0 h-screen w-[280px] bg-[#FAFAFA] border-[2px] border-[#E0E0E0] px-4 pt-8 flex flex-col transition-transform duration-300 ${

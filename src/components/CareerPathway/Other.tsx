@@ -1,4 +1,4 @@
-import pathImage from "../../assets/pathWayImage.svg"
+import pathImage from "../../assets/pathWayImage.png"
 import { IoMdArrowForward, IoIosArrowForward } from "react-icons/io";
 import { IoMdBookmarks } from "react-icons/io";
 
@@ -44,21 +44,21 @@ const Other = ({setViewState, setCourseFilter}: OtherProps) => {
     <div className="mt-5">
       <p className="text-[#212121] text-[16px] font-medium">What course are you picking?</p>
 
-      <div className="w-full h-[200px] mt-2 border-[#757575] border-[1px] rounded-xl flex items-center px-5 gap-x-[40px]">
+      <div className="w-full h-[370px] lg:h-max mt-2 p-5 border-[#757575] border-[1px] rounded-md flex flex-col space-y-[10px] lg:flex-row lg:items-center px-5 gap-x-[40px]">
         <img src={pathImage} className="h-[150px]" />
 
         <div className="h-[150px] flex flex-col justify-between">
           <div>
-            <p className="text-[24px] font-semibold">Business Intelligence Specialist</p>
+            <p className="text-[18px] lg:text-[24px] font-semibold">Business Intelligence Specialist</p>
             <p className="text-[#212121] text-[16px]">Convenant University</p>
             <p className="text-[#007BFF] text-[14px] md:text-[16px] font-normal ">
               Ogun / Nigeria
             </p>
           </div>
           <div className="flex gap-x-[20px]">
-            <button className="flex bg-[#F6C648] text-[#1C1C1C] text-[14px] p-2 flex items-center rounded-xl">View Details</button>
+            <button className="flex bg-[#F6C648] text-[#1C1C1C] text-[12px] lg:text-[14px] text-[14px] p-2 flex items-center rounded-xl">View Details</button>
             <button className="flex bg-[#004085] p-2 flex items-center gap-x-[20px] rounded-xl">
-              <p className="text-[white] text-[14px]">Other Schools With Similar Courses</p>
+              <p className="text-[white] text-[12px] lg:text-[14px]">Other Schools With Similar Courses</p>
               <IoMdArrowForward className="text-[white]" />
             </button>
           </div>

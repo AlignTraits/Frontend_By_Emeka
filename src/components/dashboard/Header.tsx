@@ -20,10 +20,9 @@ const Header = ({
   const location = useLocation()
 
   return (
-    <div className="relative bg-[white] border-[0.4px] border-y-[#E0E0E0] py-4 px-5 sticky top-0 z-10 w-full overflow-hidden">
-      <FiMenu className="absolute left-0 top-0 translate-x-1/2 translate-y-full my-auto xl:hidden" onClick={()=>setOpen(true)} />
+    <div className="relative bg-[white] border-[0.4px] border-y-[#E0E0E0] py-4 px-5 sticky top-0 z-10 w-full overflow-hidden border-b border-b-[#DDDDDD] bg-white shadow-md sm:rounded-md">
       <div className="flex items-center justify-between lg:gap-3 relative">
-        <div className="flex items-center xl:justify-between lg:gap-3 xl:gap-5">
+        <div className="hidden lg:flex items-center xl:justify-between lg:gap-3 xl:gap-5">
           <div className="space-y-2">
             <h1 className="text-xl font-medium text-[#004085]">
               {pageDesc?.title}
@@ -34,9 +33,29 @@ const Header = ({
           </div>
         </div>
 
+        <div className="items-center gap-x-[10px] flex lg:hidden lg:space-x-2">
+          <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+            {user?.image ? (
+              <img
+                src={user.image as string}
+                alt="Profile"
+                className="h-full w-full rounded-full object-cover"
+              />
+            ) : (
+              <FiUser className="w-6 h-6 text-gray-600" />
+            )}
+          </div>
+          <div className="">
+            <p className="text-sm font-medium text-gray-900">
+              {user?.firstname} {user?.lastname}
+            </p>
+            <p className="text-xs text-gray-500">{user?.email}</p>
+          </div>
+        </div>
+
         {
           location.pathname.startsWith("/dashboard/school") && 
-          <div className="w-[400px] h-[40px] mx-auto">
+          <div className="w-[400px] h-[40px] mx-auto hidden lg:block">
             <input
               type="text"
               placeholder="Search"
@@ -49,7 +68,7 @@ const Header = ({
         }
         
 
-        <div className="flex items-center lg:space-x-2">
+        <div className="items-center hidden lg:flex lg:space-x-2">
           <div className="text-right">
             <p className="text-sm font-medium text-gray-900">
               {user?.firstname} {user?.lastname}
@@ -68,6 +87,8 @@ const Header = ({
             )}
           </div>
         </div>
+
+        <FiMenu className="lg:hidden" onClick={()=>setOpen(true)} />
       </div>
     </div>
   );
