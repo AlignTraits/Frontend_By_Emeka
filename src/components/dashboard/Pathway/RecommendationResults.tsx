@@ -1,10 +1,10 @@
 import React from "react"
 import { SlGraph } from "react-icons/sl";
 
-const recommendations = new Array(8).fill({
-  title: "Business Intelligence Specialist",
-  description: "Explore path",
-});
+// const recommendations = new Array(8).fill({
+//   title: "Business Intelligence Specialist",
+//   description: "Explore path",
+// });
 
 interface RecommendationProps {
   setViewState: React.Dispatch<React.SetStateAction<number>>;
@@ -18,7 +18,7 @@ export default function RecommendationResults({setViewState}: RecommendationProp
         Recommendation Survey Results
       </h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         {recommendations.map((rec, index) => (
           <div
             key={index}
@@ -32,7 +32,7 @@ export default function RecommendationResults({setViewState}: RecommendationProp
             </p>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <div className="text-center">
         <button onClick={() => setViewState(1)} className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">

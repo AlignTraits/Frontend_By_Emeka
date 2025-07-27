@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/useAuth';
+import { BeatLoader } from 'react-spinners';
 import SearchSelect from '../../components/dashboard/SearchSelect';
 import countriesData from "../../data/countries_states.json"
 import CustomSelect from '../../components/dashboard/CustomSelect';
@@ -7,6 +8,7 @@ import DatePicker from "react-datepicker";
 import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 import { MdOutlineCalendarToday } from "react-icons/md";
+import { upDateUserProfile } from '../../services/auth.service';
 
 const countryStateData: Record<string, string[]> = {
 };
@@ -15,7 +17,7 @@ countriesData.map((elem:any) => {
   countryStateData[elem.name] = elem.states
 })
 export default function ProgressTracker() {
-  const {setPageDesc} = useAuth()
+  const {setPageDesc, user, token} = useAuth()
 
   const [errorObj, setErrorObj] = useState({
     firstName: false,
@@ -36,6 +38,7 @@ export default function ProgressTracker() {
   const handleStartDateChange = (date: Date | null) => {
     setStartDate(date);
   };
+  const [isLoading, setIsLoading] = useState(false)
 
 
   const handleGenderError = () => {
@@ -84,6 +87,17 @@ export default function ProgressTracker() {
     })
   }, [])
 
+  useEffect(() => {
+    if (user) {
+      user.firstname && setFirstName(user.firstname);
+      user.lastname && setLastName(user.lastname);
+      user.email && setEmail(user.email);
+      user.region && setSelectedCountry(user.region);
+      user.gender && setGender(user.gender);
+      user.dob && setStartDate(new Date(user.dob));
+    }
+   }, [])
+
   const isFormValid = () => {
     if (firstName.length > 0 && lastName.length > 0  && selectedCountry.length) {
       return true
@@ -93,12 +107,33 @@ export default function ProgressTracker() {
   }
 
   const handleSubmit = async () => {
+    setIsLoading(true)
     checkAllFields()
 
     if (!isFormValid()) {
       toast.error("Please fill all input fields!");
-      return 
-    }    
+    }   
+    const updateData = {
+      firstname: firstName,
+      lastname: lastName,
+      region: selectedCountry,
+      dob: startDate?.toISOString(),
+      gender: gender
+    }
+
+    try {
+      let response = await upDateUserProfile(updateData, token as string, null);
+      console.log("response: ", response)
+      
+    } catch (err) {
+      console.log("error: ", err);
+    } finally {
+      setIsLoading(false);
+    }
+    setTimeout(() => {
+      setIsLoading(false);
+      toast.success("Profile updated successfully!")
+    }, 2000)
   }
 
 
@@ -146,6 +181,7 @@ export default function ProgressTracker() {
               placeholder="johndoe@gmail.com"
               onFocus={() => setErrorObj((prev) => ({...prev, email: false}))}
               name="email"
+              disabled
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
@@ -162,6 +198,11 @@ export default function ProgressTracker() {
               }))}
               onChange={(value) => setSelectedCountry(value)}
               handleError={handleCountryError}
+              selectedProps={{
+                value: selectedCountry,
+                label: selectedCountry
+              }}
+              
             />
           </div>
         </div>
@@ -194,13 +235,17 @@ export default function ProgressTracker() {
               }))}
               onChange={(value: string) => setGender(value)}
               handleError={handleGenderError}
+              selectedProps={{
+                value: gender,
+                label: gender
+              }}
             />
           </div>
         </div>
 
         <div className='w-full flex justify-center lg:justify-end'>
-          <button onClick={handleSubmit} className='h-[50px] bg-[#004085] rounded-xl text-[white] font-semibold text-[16px] w-[200px]'>
-            {"Save Changes"}
+          <button disabled={isLoading} onClick={handleSubmit} className='h-[50px] bg-[#004085] rounded-xl text-[white] font-semibold text-[16px] w-[200px]'>
+            {isLoading ? <BeatLoader /> : "Save Changes"}
           </button>
         </div>
       </div>
