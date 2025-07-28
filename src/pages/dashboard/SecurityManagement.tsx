@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/useAuth';
 import { AiOutlineEye, AiOutlineEyeInvisible, } from "react-icons/ai";
+import { toast } from 'react-toastify';
+import { changePassword } from '../../services/auth.service';
+import { BeatLoader } from 'react-spinners';
 
 export interface Credentials {
   currentPassword: string;
@@ -10,13 +13,14 @@ export interface Credentials {
 
 
 export default function SkillRoadMap() {
-  const {setPageDesc} = useAuth()
+  const {setPageDesc, token, logout} = useAuth()
 
   const [credentials, setCredentials] = useState<Credentials>({
     currentPassword: "",
     newPassword: "",
     confirmPassword: ""
   });
+  const [isLoading, setIsLoading] = useState(false)
 
   const [showPassword, setShowPassword] = useState({
     currentPassword: false,
@@ -33,7 +37,46 @@ export default function SkillRoadMap() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (credentials.currentPassword.length <= 8 || credentials.confirmPassword.length <= 8
+      || credentials.newPassword.length <= 8 ) {
+        return toast("Password should be at least 8 characters", {autoClose: 2000})
+    } 
+
+    if (credentials.confirmPassword !== credentials.newPassword) {
+      return toast("New password and confirm password must match!", {autoClose: 2000});
+    }
+
+    handleChangePassword()
+
   };
+
+    const handleChangePassword = async () => {
+      const payload = {
+        currentPassword: credentials.currentPassword,
+        newPassword: credentials.newPassword,
+        confirmPassword: credentials.confirmPassword
+      }
+      try {
+        setIsLoading(true);
+        const response = await changePassword(token as string, payload)
+
+        console.log("response: ", response)
+
+        if (response.status === 200) {
+          toast("Password changed successfully. Please login again!")
+          setTimeout(async() => {
+            await logout();
+            window.location.href = '/login'
+          }, 1500)
+        }
+      } catch (err) {
+        // setError(err instanceof Error ? err.message : 'An error occurred');
+        toast.error("An error occured!")
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
   return (
     <div className="p-5 relative">
@@ -169,7 +212,7 @@ export default function SkillRoadMap() {
 
           <div className='w-full flex justify-center lg:justify-end'>
             <button type="submit" className='h-[45px] bg-[#004085] rounded-xl text-[white] font-semibold text-[14px] w-[180px] hover:bg-[#0056b3] transition-colors duration-300'>
-              {"Change Password"}
+              {isLoading ? <BeatLoader /> : "Change Password"}
             </button>
           </div>
 

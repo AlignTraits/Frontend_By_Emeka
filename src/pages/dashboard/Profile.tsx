@@ -17,7 +17,7 @@ countriesData.map((elem:any) => {
   countryStateData[elem.name] = elem.states
 })
 export default function ProgressTracker() {
-  const {setPageDesc, user, token} = useAuth()
+  const {setPageDesc, user, token, setUser} = useAuth()
 
   const [errorObj, setErrorObj] = useState({
     firstName: false,
@@ -106,6 +106,17 @@ export default function ProgressTracker() {
     }
   }
 
+  function formatDateToYYYYMMDD(date: Date|null) {
+    if (!date) {
+      return "1970-01-01";
+    }
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() is zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
   const handleSubmit = async () => {
     setIsLoading(true)
     checkAllFields()
@@ -117,23 +128,27 @@ export default function ProgressTracker() {
       firstname: firstName,
       lastname: lastName,
       region: selectedCountry,
-      dob: startDate?.toISOString(),
+      dob: formatDateToYYYYMMDD(startDate),
       gender: gender
     }
 
     try {
       let response = await upDateUserProfile(updateData, token as string, null);
       console.log("response: ", response)
-      
+      if (response[0].status === 200) {
+        toast.success("Profile updated successfully!")
+        let tempUser = {...user, firstname: firstName, 
+          lastname: lastName, dob: startDate?.toDateString(), gender: gender, region: selectedCountry}
+        console.log("Testm: ", tempUser)  
+       
+        localStorage.setItem("user", JSON.stringify(tempUser))
+        setUser(tempUser)
+      } 
     } catch (err) {
       console.log("error: ", err);
     } finally {
       setIsLoading(false);
     }
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success("Profile updated successfully!")
-    }, 2000)
   }
 
 

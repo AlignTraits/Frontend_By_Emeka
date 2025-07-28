@@ -120,9 +120,15 @@ export const getAdminDetails = async (token: string) => {
   
 }
 
-export const changePassword = async (token: string, newPassword: string) => {
+interface ChangePasswordPaylod {
+  currentPassword: string
+  newPassword: string
+  confirmPassword: string
+}
+
+export const changePassword = async (token: string, newPassword: ChangePasswordPaylod) => {
   try {
-     const response = await api.patch("users/password", {newPassword}, {
+     const response = await api.patch("users/password", newPassword, {
       headers: {
         "Authorization": `Bearer ${token}`,
       },
@@ -132,7 +138,8 @@ export const changePassword = async (token: string, newPassword: string) => {
      
   } catch (err) {
      if (err) {
-       await logout();
+      //  await logout();
+        throw err
       //  window.location.href = "/login";
      }
   }
