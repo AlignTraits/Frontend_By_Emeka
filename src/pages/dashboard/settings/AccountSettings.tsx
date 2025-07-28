@@ -3,13 +3,13 @@ import Header from "../../../components/Settings/Header";
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { FiToggleLeft, FiToggleRight } from "react-icons/fi";
 import { toast } from 'react-toastify';
-import { useAuth } from "../../../contexts/useAuth";
-import { changePassword } from "../../../services/auth.service";
+// import { useAuth } from "../../../contexts/useAuth";
+// import { changePassword } from "../../../services/auth.service";
 
 
 export default function AccountSettings() {
   // const navigate = useNavigate()
-  const {token, logout} = useAuth()
+  // const {token, logout} = useAuth()
   const [accountSettings, setAccountSetting] = useState({
     currentPassword: "",
     newPassword: "",
@@ -21,7 +21,7 @@ export default function AccountSettings() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, ] = useState(false)
 
 
   const handleChange = (
@@ -65,18 +65,18 @@ export default function AccountSettings() {
   };
 
   const handleChangePassword = async () => {
-    try {
-      setIsLoading(true);
-      await changePassword(token as string, accountSettings.newPassword)
+    // try {
+    //   await changePassword(token as string, accountSettings.newPassword)
 
-      await logout();
-      window.location.href = '/login'
-    } catch (err) {
-      // setError(err instanceof Error ? err.message : 'An error occurred');
-      toast.error("An error occured!")
-    } finally {
-      setIsLoading(false);
-    }
+    //   await logout();
+    //   window.location.href = '/login'
+    // } catch (err) {
+    //   // setError(err instanceof Error ? err.message : 'An error occurred');
+    //   toast.error("An error occured!")
+    // } finally {
+    //   setIsLoading(false);
+    // }    setIsLoading(true);
+  
   };
   
 
