@@ -143,6 +143,13 @@ const AvailablePlans: React.FC = () => {
       : latestTx;
   });
 
+    const splitString = (text: any) => {
+    if (typeof text === 'string') {
+      return text.replace(/_/g, ' ');
+    } 
+    return text
+  }
+
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
@@ -193,7 +200,7 @@ const AvailablePlans: React.FC = () => {
               disabled={plan.isCurrentPlan}
               onClick={() => handleClick(plan.id)}
             >
-              {plan.loading ? <BeatLoader /> : plan.buttonText}
+              {plan.loading ? <BeatLoader /> : splitString(plan.buttonText)}
             </button>
           </div>
         ))}
