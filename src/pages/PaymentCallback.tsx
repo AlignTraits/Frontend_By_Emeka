@@ -14,15 +14,18 @@ const PaymentCallback = () => {
   let tempDataThree = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") as string) : null;
 
   const handleEligibilityCheck = async () => {
+    if (Object.keys(tempDataThree).length > 0) {
+      toast.success("Redirecting to dashboard...")
+      return setTimeout(() => {
+        navigate("/dashboard")
+      }, 2000)
+    }
+
     if (!localStorage.getItem("eligibilityPayload")) {
       toast.success("Please login...")
       return setTimeout(() => {
         navigate("/login")
       }, 2000)
-    }
-
-    if (Object.keys(tempDataThree).length > 0) {
-      return navigate("/dashboard")
     }
 
     if (!tempDataTwo) {
