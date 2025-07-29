@@ -130,7 +130,11 @@ const AvailablePlans: React.FC = () => {
     } catch(err:any) {
       toast.error(err.message)
     } finally {
-    }
+      let tempState = statePlans.map((elem: Plan) => {
+        return {...elem, isCurrentPlan: false, loading: false}
+      })
+      setStatePlans([...tempState])
+      }
   }
 
   const latest = user?.transactions &&  user?.transactions.reduce((latestTx, currentTx) => {
@@ -150,9 +154,9 @@ const AvailablePlans: React.FC = () => {
       {/* Plans Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {statePlans.map((plan) => (
-          <div key={plan.id} className={`relative bg-white rounded-xl border ${plan.isCurrentPlan ? "border-green-400 border-2" : "border-gray-200"} p-6 shadow-sm`}>
+          <div key={plan.id} className={`relative bg-white rounded-xl border ${user?.payment_plan === plan.buttonText ? "border-green-400 border-2" : "border-gray-200"} p-6 shadow-sm`}>
             {/* Current Plan Badge */}
-            {plan.isCurrentPlan && (
+            {user?.payment_plan === plan.buttonText && (
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                   Current Plan

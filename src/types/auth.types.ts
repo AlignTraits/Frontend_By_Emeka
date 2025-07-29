@@ -16,7 +16,8 @@ export interface User {
   bio?: string | null;
   currentSkill?: string | null;
   courseOfInterest? : string | null
-  transactions?: Transaction []
+  transactions?: Transaction [];
+  payment_plan?: string;
   //   provider?: 'email' | 'google' | 'facebook' | 'apple';
 }
 
