@@ -16,7 +16,8 @@ export interface User {
   bio?: string | null;
   currentSkill?: string | null;
   courseOfInterest? : string | null
-  transactions?: Transaction []
+  transactions?: Transaction [];
+  payment_plan?: string;
   //   provider?: 'email' | 'google' | 'facebook' | 'apple';
 }
 
@@ -24,9 +25,11 @@ export interface Transaction {
   id: string;
   amount: number;
   createdAt: string;
+  updatedAt: string;
   status: 'PENDING' | 'SUCCESS' | 'FAILED';
   paymentPlan: string;
   currency: string;
+  schoolLocation: string
 }
 
 export interface AuthResponse {

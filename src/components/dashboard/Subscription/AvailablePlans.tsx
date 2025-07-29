@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { Crown } from 'lucide-react';
 import { FaRegStar } from "react-icons/fa";
 import { FaRegCheckCircle } from "react-icons/fa";
+import { useAuth } from '../../../contexts/useAuth';
+import { BeatLoader } from 'react-spinners';
+import { makePayment } from '../../../services/utils';
+import { toast } from 'react-toastify';
 
 interface PlanFeature {
   text: string;
@@ -20,6 +24,7 @@ interface Plan {
   buttonStyle: string;
   isCurrentPlan: boolean;
   cardStyle: string;
+  loading: boolean,
 }
 
   const plans: Plan[] = [
@@ -35,10 +40,11 @@ interface Plan {
         { text: 'No future updates', included: true },
         { text: 'No access to scholarships/loans information', included: true }
       ],
-      buttonText: 'Get Basic',
+      buttonText: 'BASIC_ONETIME',
       buttonStyle: 'bg-gray-800 text-white hover:bg-gray-700',
       isCurrentPlan: true,
-      cardStyle: 'border-gray-200'
+      cardStyle: 'border-gray-200',
+      loading: false,
     },
     {
       id: 'silver',
@@ -52,10 +58,11 @@ interface Plan {
         { text: 'Loan information and course access', included: true },
         { text: 'Editable exam records', included: true }
       ],
-      buttonText: 'Current Plan',
+      buttonText: 'LOCAL_MONTHLY',
       buttonStyle: 'bg-blue-400 text-white cursor-default',
       isCurrentPlan: false,
-      cardStyle: 'border-green-400 border-2'
+      cardStyle: 'border-green-400 border-2',
+      loading: false,
     },
     {
       id: 'gold',
@@ -71,27 +78,70 @@ interface Plan {
         { text: 'Scholarships & global support', included: true },
         { text: 'New school priority access', included: true }
       ],
-      buttonText: 'Upgrade',
+      buttonText: 'GLOBAL_MONTHLY',
       buttonStyle: 'bg-gray-800 text-white hover:bg-gray-700',
       isCurrentPlan: false,
-      cardStyle: 'border-gray-200'
+      cardStyle: 'border-gray-200',
+      loading: false,
     }
   ];
+
+  // "BASIC_ONETIME" : selectNumber === 1 ? "LOCAL_MONTHLY" : "GLOBAL_MONTHLY",
+
+
+const plansKey:any = {
+  'basic': 'BASIC_ONETIME',
+  'silver': 'LOCAL_MONTHLY',
+  'gold': 'GLOBAL_MONTHLY'
+}
 
 const AvailablePlans: React.FC = () => {
 
   const [statePlans, setStatePlans] = useState<Plan[]>([...plans])
 
-  const handleClick = (id:string) => {
+  const {user} = useAuth()
+
+  const handleClick = async (id:string) => {
     let tempState = statePlans.map((elem: Plan) => {
       if (elem.id === id) {
-        return {...elem, isCurrentPlan: true}
+        return {...elem, isCurrentPlan: true, loading: true}
       }
-      return {...elem, isCurrentPlan: false}
+      return {...elem, isCurrentPlan: false, loading: false}
     })
     setStatePlans([...tempState])
-    console.log("clicked!")
+
+    try {
+      // setIsLoading(true)
+      let data = await makePayment({
+        "paymentPlan": plansKey[id],
+        "firstname": user?.firstname,
+        "lastname": user?.lastname, 
+        "email": user?.email,
+        "schoolLocation":  latest?.schoolLocation,
+      }); 
+
+      // console.log("Payment data: ", data);
+      if (data?.ok) {
+        toast.success(`Redirecting you to payment...`)
+        setTimeout(() => {
+          window.open(data.data.authorization_url, '_blank');
+        }, 2000);
+      }
+    } catch(err:any) {
+      toast.error(err.message)
+    } finally {
+      let tempState = statePlans.map((elem: Plan) => {
+        return {...elem, isCurrentPlan: false, loading: false}
+      })
+      setStatePlans([...tempState])
+      }
   }
+
+  const latest = user?.transactions &&  user?.transactions.reduce((latestTx, currentTx) => {
+    return new Date(currentTx.updatedAt) > new Date(latestTx.updatedAt)
+      ? currentTx
+      : latestTx;
+  });
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8">
@@ -104,9 +154,9 @@ const AvailablePlans: React.FC = () => {
       {/* Plans Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {statePlans.map((plan) => (
-          <div key={plan.id} className={`relative bg-white rounded-xl border ${plan.isCurrentPlan ? "border-green-400 border-2" : "border-gray-200"} p-6 shadow-sm`}>
+          <div key={plan.id} className={`relative bg-white rounded-xl border ${user?.payment_plan === plan.buttonText ? "border-green-400 border-2" : "border-gray-200"} p-6 shadow-sm`}>
             {/* Current Plan Badge */}
-            {plan.isCurrentPlan && (
+            {user?.payment_plan === plan.buttonText && (
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                   Current Plan
@@ -143,7 +193,7 @@ const AvailablePlans: React.FC = () => {
               disabled={plan.isCurrentPlan}
               onClick={() => handleClick(plan.id)}
             >
-              {plan.buttonText}
+              {plan.loading ? <BeatLoader /> : plan.buttonText}
             </button>
           </div>
         ))}
