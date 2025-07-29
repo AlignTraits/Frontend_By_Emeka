@@ -24,9 +24,11 @@ export interface Transaction {
   id: string;
   amount: number;
   createdAt: string;
+  updatedAt: string;
   status: 'PENDING' | 'SUCCESS' | 'FAILED';
   paymentPlan: string;
   currency: string;
+  schoolLocation: string
 }
 
 export interface AuthResponse {

@@ -11,10 +11,25 @@ const PaymentCallback = () => {
 
   let tempData = localStorage.getItem("eligibilityPayload") ? JSON.parse(localStorage.getItem("eligibilityPayload") as string) : null;
   let tempDataTwo = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData") as string) : null;
+  let tempDataThree = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") as string) : null;
 
   const handleEligibilityCheck = async () => {
     if (!localStorage.getItem("eligibilityPayload")) {
-      return;
+      toast.success("Please login...")
+      return setTimeout(() => {
+        navigate("/login")
+      }, 2000)
+    }
+
+    if (Object.keys(tempDataThree).length > 0) {
+      return navigate("/dashboard")
+    }
+
+    if (!tempDataTwo) {
+      toast.success("Please login...")
+      return setTimeout(() => {
+        navigate("/login")
+      }, 2000)
     }
     
     try {
