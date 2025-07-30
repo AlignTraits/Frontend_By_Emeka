@@ -38,7 +38,7 @@ export default function Subscription() {
   const renderTab = () => {
     switch (activeTab) {
       case "plan-overview":
-        return <PlanOverview />;
+        return <PlanOverview setActiveTab={setActiveTab} />;
       case "available-plans":
         return <AvailablePlans />;
       case "billing-history":
@@ -46,7 +46,7 @@ export default function Subscription() {
       case "payment-method":
         return <PaymentMethod />;
       default:
-        return <PlanOverview />;  
+        return <PlanOverview setActiveTab={setActiveTab} />;  
     }
   }
 

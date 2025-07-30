@@ -18,7 +18,26 @@ export interface User {
   courseOfInterest? : string | null
   transactions?: Transaction [];
   payment_plan?: string;
+  userCards?: PaymentMethod []; 
+  payment_plan_expires_at?: string;
   //   provider?: 'email' | 'google' | 'facebook' | 'apple';
+}
+
+export interface PaymentMethod {
+  id: string;
+  authorization_code: string;
+  brand: string;
+  createdAt: string;
+  email_token: string | null;
+  exp_month: string;
+  exp_year: string;
+  last4: string;
+  next_payment_date: string | null;
+  reusable: boolean;
+  subscription_code: string | null;
+  subscription_status: string | null;
+  updatedAt: string;
+  userId: string;
 }
 
 export interface Transaction {
