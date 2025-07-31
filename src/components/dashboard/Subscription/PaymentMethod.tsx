@@ -5,10 +5,13 @@ import { useAuth } from '../../../contexts/useAuth';
 import { getUserDetails } from "../../../services/auth.service";
 import { deleteCard } from '../../../services/utils';
 import { toast } from 'react-toastify';
+import { IoCloseOutline } from "react-icons/io5";
+import CreditCardForm from '../../Payment/CardForm';
 
 const ResponsivePaymentMethods: React.FC = () => {
   const { user, token, setUser } = useAuth();
   const [isLoading, setIsloading] = useState(false)
+  const [addCardModal, setAddCardModal] = useState(false)
   const navigate = useNavigate()
 
   async function handleDeleteCard(authId: string) {
@@ -58,7 +61,7 @@ const ResponsivePaymentMethods: React.FC = () => {
             <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Payment Methods</h2>
             <p className="text-gray-600 text-sm mt-1">Manage your payment methods and billing information</p>
           </div>
-          <button className="inline-flex items-center justify-center space-x-2 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto">
+          <button onClick={() => setAddCardModal((prev) => !prev)} className="inline-flex items-center justify-center space-x-2 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto">
             <Plus className="w-4 h-4" />
             <span className="text-sm font-medium">Add Cards</span>
           </button>
@@ -135,6 +138,30 @@ const ResponsivePaymentMethods: React.FC = () => {
                   Please wait while we remove your payment method...
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {addCardModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+          
+          {/* Modal Content */}
+          <div className="relative bg-white rounded-xl shadow-2xl p-8 max-w-sm mx-4 text-center">
+            <div className="flex flex-col items-center space-y-4">
+
+              <div className='w-[100%] flex justify-between items-center'>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Add Card
+                </h3>
+
+                <IoCloseOutline className='h-6 w-6 cursor-pointer' onClick={() => setAddCardModal(false)} />
+
+              </div>
+
+              <CreditCardForm />
             </div>
           </div>
         </div>

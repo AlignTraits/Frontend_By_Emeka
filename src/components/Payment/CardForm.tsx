@@ -181,7 +181,7 @@ const CreditCardForm: React.FC = () => {
           onClick={handleSubmit}
           className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
-          Pay $16.9
+          Add Card
         </button>
       </div>
     </div>

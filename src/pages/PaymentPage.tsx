@@ -9,15 +9,15 @@ import alightTraitText from "../assets/AlignTraitsFlaire.svg"
 import atmIcon from "../assets/atmCard.svg"
 import { useState } from "react";
 import SelectPaymentType from "../components/Payment/SelectPaymentType";
-import CardForm from "../components/Payment/CardForm";
-import BankTransferComponent from "../components/Payment/BankTransferComponent";
+// import CardForm from "../components/Payment/CardForm";
+// import BankTransferComponent from "../components/Payment/BankTransferComponent";
 
 export default function PaymentPage() {
 
   const [paymentType, setPaymentType] = useState("card")
 
-  const selectedPlanRaw = localStorage.getItem("selectedPlan");
-  const selectedPlan = selectedPlanRaw ? JSON.parse(selectedPlanRaw) : 0;
+  // const selectedPlanRaw = localStorage.getItem("selectedPlan");
+  // const selectedPlan = selectedPlanRaw ? JSON.parse(selectedPlanRaw) : 0;
 
   return (
     <div className="relative overflow-hidden h-screen w-full bg-gradient-to-b from-white via-[#e9eff7] to-[#CCE0F5]">
@@ -36,9 +36,9 @@ export default function PaymentPage() {
           <div className="w-[50%] h-full bg-[#fff] rounded-r-2xl px-4 py-2">
             <SelectPaymentType setPaymentType={setPaymentType} paymentType={paymentType} />
 
-            {
+            {/* {
               selectedPlan === 0 ? (<CardForm />) : (<BankTransferComponent />)
-            }
+            } */}
           </div>
         </div>
       </div>
