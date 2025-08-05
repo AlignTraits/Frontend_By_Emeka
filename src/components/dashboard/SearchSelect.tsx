@@ -76,10 +76,11 @@ const SearchSelect: React.FC<SelectProps> = ({
 
   // This is applied when a default value is provided
   useEffect(() => {
-    if (selectedProps?.label) {
-      setSelected(selectedProps);
+    if (selectedProps) {
+      setSelected(selectedProps)
     }
-  }, [selectedProps]);
+
+  }, [selectedProps])
 
   const splitString = (text: any) => {
     if (typeof text === "string") {

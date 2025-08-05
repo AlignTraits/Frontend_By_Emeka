@@ -2,62 +2,32 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/useAuth';
 import Card from '../../components/AccountRecords/Card';
 import ManageRecord from '../../components/AccountRecords/ManageRecord';
+import { getAcademicRecords } from "../../services/utils";
 
 export default function AcountRecords() {
   const {setPageDesc} = useAuth()
   const [showModal, setShowModal] = useState(false)
+  const [recordList, setRecordList] = useState<any[]>([])
+  const [editRecord, setEditRecord] = useState<any>(null)
 
   useEffect(() => {
     setPageDesc({
       desc: "Check your records",
       title: "Records"
     })
+
+    getRecords();
   }, [])
 
-  const result = [
-    {
-      title: "WAEC",
-      subjects: [
-        {
-          title: "Physics",
-          score: "A1"
-        },
-        {
-          title: "Chemistry",
-          score: "C1"
-        },
-                {
-          title: "Mathematcis",
-          score: "C6"
-        },
-                {
-          title: "English Language",
-          score: "B3"
-        }
-      ]
-    },
-    {
-      title: "JAMB",
-      subjects: [
-        {
-          title: "Physics",
-          score: "88"
-        },
-        {
-          title: "Chemistry",
-          score: "55"
-        },
-                {
-          title: "Mathematcis",
-          score: "90"
-        },
-                {
-          title: "English Language",
-          score: "60"
-        }
-      ]
+
+    const getRecords = async () => {
+      try {
+        const response = await getAcademicRecords();
+        setRecordList(response.data)
+      } catch (err: any) {
+        console.log("error: ", err)
+      }
     }
-  ]
 
   return (
     <div className="p-5 relative">
@@ -74,13 +44,17 @@ export default function AcountRecords() {
           </button>
         </div>
 
-        <Card setShowModal={setShowModal} result={result[0]} />
-
-        <Card setShowModal={setShowModal} result={result[1]} />
+        {
+          recordList.length > 0 ? recordList.map((record, index) => (
+            <Card key={index} setShowModal={setShowModal} result={record} setEditRecord={setEditRecord} />
+          )) : ( 
+            <p className='text-[#757575] text-[14px]'>No records found.</p>
+          )
+        }
 
       </div>
       {
-        showModal && <ManageRecord setShowModal={setShowModal} />
+        showModal && <ManageRecord setShowModal={setShowModal} editRecord={editRecord} getRecords={getRecords} />
       }
     </div>
   );
