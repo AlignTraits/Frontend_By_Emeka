@@ -37,14 +37,13 @@ const login = async (email: string, password: string): Promise<number> => {
   try {
     setIsLoading(true);
     setError(null);
-    if (!token) {
-      const response = await authService.login({ email, password });
-      setToken(response?.data.data.token);
 
-      authService.setToken(response.data.data.token);
-      return response.data.status; // Ensure status is always returned
-    }
-    return 200; 
+    const response = await authService.login({ email, password });
+    setToken(response?.data.data.token);
+
+    authService.setToken(response.data.data.token);
+    return response.data.status; // Ensure status is always returned
+
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
       const errors = err.response.data.errors;

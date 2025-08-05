@@ -67,16 +67,16 @@ export interface ErrorObjType {
 }
 
 export interface RequirementList {
-  id: number
+  id: string
   subjects: SubjectGrade[];
   location: string;
   examType: string
 }
 
 export interface RequirementListNew {
-  id: number
+  id: string
   subjects: SubjectGrade[];
-  year: string;
+  country: string;
   examType: string
 }
 

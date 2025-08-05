@@ -1,25 +1,20 @@
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
-
-type Subject = {
-  title: string;
-  score: string;
-};
-
-type ExamResult = {
-  title: string;
-  subjects: Subject[];
-};
+import React from "react";
 
 type ResultProps = {
-  result: ExamResult;
+  result: any;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditRecord: React.Dispatch<React.SetStateAction<any>>;
 
 };
 
-const Card: React.FC<ResultProps> = ({ result, setShowModal })=> {
+const Card: React.FC<ResultProps> = ({ result, setShowModal, setEditRecord })=> {
+
+  console.log("result: ", result);
 
   const handleEdit = () => {
+    setEditRecord(result);
     setShowModal(true);
   }
   
@@ -28,17 +23,17 @@ const Card: React.FC<ResultProps> = ({ result, setShowModal })=> {
       <div className="flex justify-between items-center">
         <div>
           <div className="flex gap-x-[10px] items-center">
-            <p className="text-[#101828] text-[16px] font-semibold">{result.title}</p>
-            <p className="text-[#000000] text-[10px] bg-[#E3E3E3] size-max px-[5px] py-[2px] rounded-xl">2020</p>
+            <p className="text-[#101828] text-[16px] font-semibold">{result?.ExamType1}</p>
+            {/* <p className="text-[#000000] text-[10px] bg-[#E3E3E3] size-max px-[5px] py-[2px] rounded-xl">2020</p> */}
           </div>
-          <p className="text-[#757575] text-[14px] font-medium">4 subjects recorded</p>
+          <p className="text-[#757575] text-[14px] font-medium">{result?.ExamType1Subjects.length} subjects recorded</p>
         </div>
 
         <div className="flex gap-x-[10px]">
 
           <>
             <FaEdit onClick={handleEdit}  className="lg:hidden h-6 w-6"  />
-            <button onClick={handleEdit} className=" hidden bg-[#F4F4F4] border-[1px] border-[#EAECF0] shadow-md rounded-md h-[50px] w-[80px] text-[#000000] text-[14px] font-semibold">
+            <button onClick={handleEdit} className=" hidden lg:block bg-[#F4F4F4] border-[1px] border-[#EAECF0] shadow-md rounded-md h-[50px] w-[80px] text-[#000000] text-[14px] font-semibold">
               Edit
             </button>
           </>
@@ -52,12 +47,12 @@ const Card: React.FC<ResultProps> = ({ result, setShowModal })=> {
         </div>
       </div>
 
-      <div className="flex justify-between items-center flex-wrap gap-x-[10px]">
+      <div className="flex items-center flex-wrap gap-x-[10px]">
         {
-          result.subjects.map((elem, i) => (
+          result.ExamType1Subjects.map((elem:string, i:number) => (
           <div key={i} className="flex gap-x-[10px] items-center">
-            <p className="text-[#101828] text-[16px] font-semibold">{elem.title}</p>
-            <p className="text-[#000000] text-[10px] bg-[#E3E3E3] size-max px-[5px] py-[2px] rounded-xl">{elem.score}</p>
+            <p className="text-[#101828] text-[16px] font-semibold">{elem}</p>
+            <p className="text-[#000000] text-[10px] bg-[#E3E3E3] size-max px-[5px] py-[2px] rounded-xl">{result?.ExamType1SubGrades[i]}</p>
           </div>
           ))
         }
