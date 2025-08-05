@@ -7,12 +7,15 @@ import { deleteCard } from '../../../services/utils';
 import { toast } from 'react-toastify';
 import { IoCloseOutline } from "react-icons/io5";
 import CreditCardForm from '../../Payment/CardForm';
+import { addDebitCard } from '../../../services/utils';
+import { BeatLoader } from 'react-spinners';
 
 const ResponsivePaymentMethods: React.FC = () => {
   const { user, token, setUser } = useAuth();
   const [isLoading, setIsloading] = useState(false)
   const [addCardModal, setAddCardModal] = useState(false)
   const navigate = useNavigate()
+  const [addcardLoading, setAddCardLoading] = useState(false)
 
   async function handleDeleteCard(authId: string) {
     if (token) {
@@ -52,6 +55,17 @@ const ResponsivePaymentMethods: React.FC = () => {
 
   console.log("user: ", user);
 
+  const handleAddcard = async () => {
+    try {
+      setAddCardLoading(true)
+    await addDebitCard({email: user?.email})
+    } catch (e:any) {
+      console.log("err: ", e)
+    } finally {
+      setAddCardLoading(false)
+    }
+  }
+
   return (
     <>
       <div className="w-full mx-auto bg-white rounded-xl border border-gray-200 overflow-hidden">
@@ -61,9 +75,17 @@ const ResponsivePaymentMethods: React.FC = () => {
             <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Payment Methods</h2>
             <p className="text-gray-600 text-sm mt-1">Manage your payment methods and billing information</p>
           </div>
-          <button onClick={() => setAddCardModal((prev) => !prev)} className="inline-flex items-center justify-center space-x-2 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto">
+          <button 
+            // onClick={() => setAddCardModal((prev) => !prev)}
+            onClick={handleAddcard}
+            className="inline-flex items-center justify-center space-x-2 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto">
+              {
+                addcardLoading ? <BeatLoader /> :
+                            <>
             <Plus className="w-4 h-4" />
             <span className="text-sm font-medium">Add Cards</span>
+            </>
+              }
           </button>
         </div>
 
