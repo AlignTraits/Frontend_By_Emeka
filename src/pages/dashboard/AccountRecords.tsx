@@ -3,12 +3,14 @@ import { useAuth } from '../../contexts/useAuth';
 import Card from '../../components/AccountRecords/Card';
 import ManageRecord from '../../components/AccountRecords/ManageRecord';
 import { getAcademicRecords } from "../../services/utils";
+import { ClipLoader } from "react-spinners";
 
 export default function AcountRecords() {
   const {setPageDesc} = useAuth()
   const [showModal, setShowModal] = useState(false)
   const [recordList, setRecordList] = useState<any[]>([])
   const [editRecord, setEditRecord] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setPageDesc({
@@ -22,10 +24,13 @@ export default function AcountRecords() {
 
     const getRecords = async () => {
       try {
+        setIsLoading(true)
         const response = await getAcademicRecords();
         setRecordList(response.data)
       } catch (err: any) {
         console.log("error: ", err)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -45,8 +50,11 @@ export default function AcountRecords() {
         </div>
 
         {
-          recordList.length > 0 ? recordList.map((record, index) => (
-            <Card key={index} setShowModal={setShowModal} result={record} setEditRecord={setEditRecord} />
+          isLoading ? 
+          <div className='w-full h-[100px] flex justify-center items-center'>
+            <ClipLoader /> 
+          </div> : recordList.length > 0 ? recordList.map((record, index) => (
+            <Card getRecords={getRecords} key={index} setShowModal={setShowModal} result={record} setEditRecord={setEditRecord} />
           )) : ( 
             <p className='text-[#757575] text-[14px]'>No records found.</p>
           )

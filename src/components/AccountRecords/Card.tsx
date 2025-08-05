@@ -1,21 +1,40 @@
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
-import React from "react";
+import React, { useState } from "react";
+import { deleteAcademicRecords } from "../../services/utils";
+import { toast } from "react-toastify";
+import { BeatLoader } from "react-spinners";
 
 type ResultProps = {
   result: any;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setEditRecord: React.Dispatch<React.SetStateAction<any>>;
+  getRecords: () => void;
 
 };
 
-const Card: React.FC<ResultProps> = ({ result, setShowModal, setEditRecord })=> {
+const Card: React.FC<ResultProps> = ({ result, setShowModal, setEditRecord, getRecords })=> {
 
-  console.log("result: ", result);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleEdit = () => {
     setEditRecord(result);
     setShowModal(true);
+  }
+
+  const handleDelete = async () => {
+    try {
+      setIsLoading(true);
+      const response = await deleteAcademicRecords(result.id);
+      console.log("response: ", response)
+      toast.success("Record deleted successfully");
+    } catch (error) {
+      console.error("Error deleting record:", error);
+      toast.error("Failed to delete record");
+    } finally {
+      setIsLoading(false);
+      getRecords();
+    }
   }
   
   return (
@@ -39,9 +58,9 @@ const Card: React.FC<ResultProps> = ({ result, setShowModal, setEditRecord })=> 
           </>
 
           <>
-            <RiDeleteBin6Line className="lg:hidden h-6 w-6 text-[#F93838]" />
-            <button className="hidden lg:block bg-[#F4F4F4] border-[1px] border-[#EAECF0] shadow-md rounded-md h-[50px] w-[100px] text-[#D92D20] text-[14px] font-semibold">
-              Delete
+            <RiDeleteBin6Line onClick={handleDelete} className="lg:hidden h-6 w-6 text-[#F93838]" />
+            <button disabled={isLoading} onClick={handleDelete} className="hidden lg:block bg-[#F4F4F4] border-[1px] border-[#EAECF0] shadow-md rounded-md h-[50px] w-[100px] text-[#D92D20] text-[14px] font-semibold">
+              {isLoading ? <BeatLoader /> : "Delete" }
             </button>
           </>
         </div>
