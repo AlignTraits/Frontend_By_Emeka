@@ -67,7 +67,7 @@ export interface ErrorObjType {
 }
 
 export interface RequirementList {
-  id: string
+  id: number
   subjects: SubjectGrade[];
   location: string;
   examType: string
@@ -81,10 +81,16 @@ export interface RequirementListNew {
 }
 
 export interface SubjectGrade {
+  id: string;
+  subject: string;
+  grade: string;
+}
+export interface SubjectGradeNew {
   id: number;
   subject: string;
   grade: string;
 }
+
 
 export interface Condition {
   examType: string;

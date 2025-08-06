@@ -81,11 +81,11 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
   }
 
   const addSubject = () => {
-    setSubjectList([...subjectList, { id: Date.now(), subject: "", grade: "" }]);
+    setSubjectList([...subjectList, { id: JSON.stringify(Date.now()), subject: "", grade: "" }]);
   };
 
     // Update subject or grade value
-  const updateSubject = (id: number, field: keyof SubjectGrade, value: string) => {
+  const updateSubject = (id: string, field: keyof SubjectGrade, value: string) => {
     setSubjectList(
       subjectList.map((item) =>
         item.id === id ? { ...item, [field]: value } : item
@@ -94,7 +94,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
   };
 
     // Remove subject row
-  const removeSubject = (id: number) => {
+  const removeSubject = (id: string) => {
     setSubjectList(subjectList.filter((item) => item.id !== id));
   };
 
