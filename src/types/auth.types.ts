@@ -20,6 +20,7 @@ export interface User {
   payment_plan?: string;
   userCards?: PaymentMethod []; 
   payment_plan_expires_at?: string;
+  careerResults?: any
   //   provider?: 'email' | 'google' | 'facebook' | 'apple';
 }
 
