@@ -1,6 +1,11 @@
-import pathImage from "../../assets/pathWayImage.png"
+
 import { IoMdArrowForward, IoIosArrowForward } from "react-icons/io";
 import { IoMdBookmarks } from "react-icons/io";
+import { useEffect, useState } from "react";
+import { getCoursesWithoutToken } from "../../services/schools";
+import { ClipLoader } from "react-spinners";
+import Details from "./Details";
+import { Course } from "../../types/course.types";
 
 interface ItemProps {
   color: string;
@@ -32,38 +37,84 @@ const Items = ({ color, text, handleClick }: ItemProps) => {
 interface OtherProps {
   setViewState: React.Dispatch<React.SetStateAction<number>>;
   setCourseFilter: React.Dispatch<React.SetStateAction<string>>;
+  setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  showDetails: boolean;
 }
-const Other = ({setViewState, setCourseFilter}: OtherProps) => {
+const Other = ({setViewState, setCourseFilter, setShowDetails, showDetails}: OtherProps) => {
 
   const handlePageChange = (filter: string) => {
     setCourseFilter(filter);
     setViewState(2);
   }
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  // const [courseDetails, setCourseDetails] = useState<Course|null>(null);
+
+    useEffect(() => {
+      const fetchCourses = async () => {
+        try {
+          setIsLoading(true);
+          const response = await getCoursesWithoutToken()
+  
+          setCourses(response);
+        } catch (err) {
+          // setError(err instanceof Error ? err.message : 'An error occurred');
+          console.log("error: ", err)
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      fetchCourses();
+  
+      // handleGetCoursesCategories();
+    }, []);
+
+    console.log("courses: ", courses)
+
+    const handleViewDetails = (course: Course) => {
+      setShowDetails(true);
+      setCourseFilter(course.title);
+    }
+
   return (
-    <div className="mt-5">
+    <>
+      {
+        showDetails ? <Details courseItem={courses[0]} setShowDetails={setShowDetails}  /> :
+            <div className="mt-5">
       <p className="text-[#212121] text-[16px] font-medium">What course are you picking?</p>
 
-      <div className="w-full h-[370px] lg:h-max mt-2 p-5 border-[#757575] border-[1px] rounded-md flex flex-col space-y-[10px] lg:flex-row lg:items-center px-5 gap-x-[40px]">
-        <img src={pathImage} className="h-[150px]" />
+      {
+        isLoading ? <div className="flex justify-center items-center h-[200px] border-[#757575] border-[1px] rounded-md">
+          <ClipLoader />
+        </div>: 
+        courses.length === 0 ? 
+        <div className="flex justify-center items-center h-[200px] text-[#212121] border-[#757575] border-[1px] rounded-md">No courses available</div> :
+              <div className="w-full h-[370px] lg:h-max mt-2 p-5 border-[#757575] border-[1px] rounded-md flex flex-col space-y-[10px] lg:flex-row lg:items-center px-5 gap-x-[40px]">
+                <img src={courses[0]?.image} className="h-[150px]" />
 
-        <div className="h-[150px] flex flex-col justify-between">
-          <div>
-            <p className="text-[18px] lg:text-[24px] font-semibold">Business Intelligence Specialist</p>
-            <p className="text-[#212121] text-[16px]">Convenant University</p>
-            <p className="text-[#007BFF] text-[14px] md:text-[16px] font-normal ">
-              Ogun / Nigeria
-            </p>
-          </div>
-          <div className="flex gap-x-[20px]">
-            <button className="flex bg-[#F6C648] text-[#1C1C1C] text-[12px] lg:text-[14px] text-[14px] p-2 flex items-center rounded-xl">View Details</button>
-            <button className="flex bg-[#004085] p-2 flex items-center gap-x-[20px] rounded-xl">
-              <p className="text-[white] text-[12px] lg:text-[14px]">Other Schools With Similar Courses</p>
-              <IoMdArrowForward className="text-[white]" />
-            </button>
-          </div>
-        </div>
-      </div>
+                <div className="h-[150px] flex flex-col justify-between">
+                  <div>
+                    <p className="text-[18px] lg:text-[24px] font-semibold">{courses[0].title}</p>
+                    <p className="text-[#212121] text-[16px]">{courses[0].university?.name}</p>
+                    <p className="text-[#007BFF] text-[14px] md:text-[16px] font-normal ">
+                      {courses[0].university?.region} / {courses[0].university?.country}
+                    </p>
+                  </div>
+                  <div className="flex gap-x-[20px]">
+                    <button onClick={() => handleViewDetails(courses[0])} className="flex bg-[#F6C648] text-[#1C1C1C] text-[12px] lg:text-[14px] text-[14px] p-2 flex items-center rounded-xl">View Details</button>
+                    <button onClick={() => handlePageChange(courses[0].title)} className="flex bg-[#004085] p-2 flex items-center gap-x-[20px] rounded-xl">
+                      <p className="text-[white] text-[12px] lg:text-[14px]">Other Schools With Similar Courses</p>
+                      <IoMdArrowForward className="text-[white]" />
+                    </button>
+                  </div>
+                </div>
+            </div>
+      }
+
 
       <div className="mt-5">
         <p className="text-[#212121] text-[16px] font-medium">Other courses from recomended career path:</p>
@@ -75,6 +126,9 @@ const Other = ({setViewState, setCourseFilter}: OtherProps) => {
         </div>
       </div>
     </div>
+      }
+    </>
+
   )
 }
 
