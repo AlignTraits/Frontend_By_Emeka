@@ -58,7 +58,14 @@ const ResponsivePaymentMethods: React.FC = () => {
   const handleAddcard = async () => {
     try {
       setAddCardLoading(true)
-    await addDebitCard({email: user?.email})
+      const data = await addDebitCard({email: user?.email})
+      // console.log("Payment data: ", data);
+      if (data?.ok) {
+        toast.success(`Redirecting you to card form...`)
+        setTimeout(() => {
+          window.open(data.data.direct_debit_redirect_url, '_blank');
+        }, 2000);
+      }
     } catch (e:any) {
       console.log("err: ", e)
     } finally {

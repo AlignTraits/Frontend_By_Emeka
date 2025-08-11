@@ -38,7 +38,7 @@ export default function CareerPath() {
       case 0:
         return <RecommendationResults setViewState={setViewState} />;
       case 1:
-        return <Other setViewState={setViewState} setCourseFilter={setCourseFilter} />;  
+        return <Other setViewState={setViewState} setCourseFilter={setCourseFilter} showDetails={showDetails} setShowDetails={setShowDetails} />;  
       case 2:
         return <CourseList courseFilter={courseFilter} setShowDetails={setShowDetails} showDetails={showDetails} />;  
       default:
