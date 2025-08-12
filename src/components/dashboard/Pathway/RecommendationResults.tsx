@@ -24,7 +24,7 @@ export default function RecommendationResults({setViewState}: RecommendationProp
       </h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-        {user?.careerResults.recommendedCareers && user.careerResults.recommendedCareers.map((rec: string, index:number) => (
+        {user?.careerResults?.recommendedCareers && user.careerResults.recommendedCareers.map((rec: string, index:number) => (
           <div
             key={index}
             className="bg-white cursor-pointer border border-gray-100 shadow-sm rounded-lg p-4 hover:shadow-md transition"
