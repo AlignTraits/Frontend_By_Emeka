@@ -4,10 +4,12 @@ import Header from "../components/Header";
 import { useAuth } from "../contexts/useAuth";
 import BeatLoader from "react-spinners/BeatLoader";
 import { FaLongArrowAltLeft } from "react-icons/fa";
+import { getUser } from "../services/utils";
 
 export default function Recommendation() {
-  const { error, isLoading } = useAuth();
+  const { error } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [agreed, setAgreed] = useState(false);
 
@@ -27,7 +29,16 @@ export default function Recommendation() {
 
     if (agreed) {
       localStorage.setItem("pathway-data", JSON.stringify(data));
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await getUser(data.email);
+      localStorage.setItem("userData", JSON.stringify(response))
       navigate("/questionaire");
+    } catch (err) {
+    } finally {
+      setIsLoading(false)
     }
   };
 

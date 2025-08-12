@@ -7,6 +7,7 @@ import { useAuth } from '../../contexts/useAuth';
 import RecommendationResults from '../../components/dashboard/Pathway/RecommendationResults';
 import CourseList from '../../components/CareerPathway/CourseList';
 import Other from '../../components/CareerPathway/Other';
+// import { upDateUserProfile } from '../../services/auth.service';
 
 
 export default function CareerPath() {
@@ -22,6 +23,7 @@ export default function CareerPath() {
       desc: "Here’s a list of career pathway for you.",
       title: "Career Pathway"
     })
+    // updateUser();
   }, [])
 
 
@@ -32,6 +34,23 @@ export default function CareerPath() {
       setViewState((prev) => prev - 1);
     }
   }
+
+  // const updateUser = async () => {
+  //   const updateData = {
+  //     isCareerPathChecked: true
+  //   }
+  //   try {
+  //     const response = await upDateUserProfile(
+  //       updateData,
+  //       token as string,
+  //     );
+  //     console.log("response: ", response)
+
+  //   } catch (error) {
+      
+  //     console.error("Error updating user profile", error);
+  //   } 
+  // }
 
   const renderState = () => {
     switch (viewState) { 
