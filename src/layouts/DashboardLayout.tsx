@@ -33,7 +33,7 @@ export default function DashboardLayout() {
           setIsloading(false)
 
           if (response.data.firstname === "" || !response.data.gender) {
-            navigate("/onboarding-form")
+            return navigate("/onboarding-form")
           }
 
           let tempDataTwo = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData") as string) : null;
@@ -41,7 +41,7 @@ export default function DashboardLayout() {
           // If this is a first time user, redirect to the career pathway
           // During the career pathway flow, I set userData in localStorage;
 
-          if (tempDataTwo && !tempDataTwo.ok) {
+          if (tempDataTwo && !tempDataTwo?.ok) {
             toast.success("Welcome back to your Career Pathway");
 
             return setTimeout(() => {
