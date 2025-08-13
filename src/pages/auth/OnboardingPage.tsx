@@ -7,14 +7,15 @@ import companyLogo from "../../assets/AlignTraitsFlaire.svg"
 import { BeatLoader } from 'react-spinners';
 import { toast } from "react-toastify";
 import PhoneInput from 'react-phone-input-2';
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { MdOutlineCalendarToday } from "react-icons/md";
+// import { MdOutlineCalendarToday } from "react-icons/md";
 import 'react-phone-input-2/lib/style.css';
 import countriesData from "../../data/countries_states.json"
 
 import { upDateUserProfile } from '../../services/auth.service';
 import { useAuth } from '../../contexts/useAuth';
+import EnhancedDatePicker from '../../components/dashboard/EnhancedDatePicker';
 
 const countryStateData: Record<string, string[]> = {
 };
@@ -42,6 +43,7 @@ const OnboardingPage = () => {
   })
 
   const [isLoading, setIsLoading] = useState(false)
+  
 
   const [errorObj, setErrorObj] = useState({
     firstName: false,
@@ -369,8 +371,8 @@ return (
 
           <div className="flex flex-col gap-y-[5px] w-full sm:w-1/2">
             <p className={`text-[12px] ${errorObj.dob ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Date of Birth*</p>
-            <div className="h-[40px] w-full relative flex items-center justify-between border rounded-md px-3 bg-white">
-              <DatePicker
+            <div className="h-[40px] w-full relative flex items-center justify-between border rounded-md bg-white">
+              {/* <DatePicker
                 selected={startDate}
                 onChange={handleStartDateChange}
                 selectsStart
@@ -379,8 +381,16 @@ return (
                 dateFormat="dd/MM/yyyy"
                 placeholderText="dd/mm/yyyy"
                 className="outline-none w-full text-[14px] text-[#595959] font-semibold"
+              /> */}
+
+              <EnhancedDatePicker
+                selected={startDate}
+                onChange={handleStartDateChange}
+                placeholder="dd/mm/yyyy"
+                onFocus={handleDobError}
+                className={errorObj.dob ? 'border-red-500 outline-none w-full text-[14px] text-[#595959] font-semibold' : 'border-gray-300 outline-none w-full text-[14px] text-[#595959] font-semibold'}
               />
-              <MdOutlineCalendarToday className="h-5 w-5 text-gray-400" />
+              {/* <MdOutlineCalendarToday className="h-5 w-5 text-gray-400" /> */}
             </div>
           </div>
         </div>

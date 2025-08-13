@@ -138,111 +138,113 @@ const EnhancedDatePicker: React.FC<EnhancedDatePickerProps> = ({
     return days;
   };
 
-  return (
-    <div className="relative w-[100%]" ref={dropdownRef}>
-      <div
-        onClick={() => {
-          setIsOpen(!isOpen);
-          onFocus && onFocus();
-        }}
-        className={`h-10 w-full flex items-center justify-between border rounded-md px-3 bg-white cursor-pointer hover:border-gray-400 transition-colors ${className}`}
-      >
-        <span className={`text-sm ${selected ? 'text-gray-900' : 'text-gray-500'}`}>
-          {selected ? formatDate(selected) : placeholder}
-        </span>
-        <Calendar className="h-5 w-5 text-gray-400" />
-      </div>
+// ...existing code...
 
-      {isOpen && (
-        <div className="absolute bottom-full left-0 mt-1 w-80 bg-white border rounded-lg shadow-lg z-50 p-4">
-          {/* Header with month/year navigation */}
-          <div className="flex items-center justify-between mb-4">
-            <button
-              onClick={handlePrevMonth}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
-            >
-              <ChevronLeft className="h-5 w-5 text-gray-600" />
-            </button>
-            
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-semibold text-gray-900">
-                {months[currentMonth]}
-              </span>
-              <div className="relative">
-                <button
-                  onClick={() => setShowYearSelector(!showYearSelector)}
-                  className="flex items-center gap-1 px-2 py-1 text-lg font-semibold text-gray-900 hover:bg-gray-100 rounded transition-colors"
-                >
-                  {currentYear}
-                  <ChevronDown className="h-4 w-4" />
-                </button>
-                
-                {showYearSelector && (
-                  <div className="absolute top-full right-0 mt-1 w-24 max-h-48 bg-white border rounded-md shadow-lg overflow-y-auto z-10">
-                    {yearOptions.map((year) => (
-                      <button
-                        key={year}
-                        onClick={() => handleYearSelect(year)}
-                        className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-100 transition-colors
-                          ${year === currentYear ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700'}
-                        `}
-                      >
-                        {year}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-            
-            <button
-              onClick={handleNextMonth}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
-            >
-              <ChevronRight className="h-5 w-5 text-gray-600" />
-            </button>
-          </div>
-
-          {/* Days of week header */}
-          <div className="grid grid-cols-7 gap-1 mb-2">
-            {daysOfWeek.map((day) => (
-              <div key={day} className="text-center text-xs font-medium text-gray-500 py-2">
-                {day}
-              </div>
-            ))}
-          </div>
-
-          {/* Calendar days */}
-          <div className="grid grid-cols-7 gap-1">
-            {renderDays()}
-          </div>
-
-          {/* Quick year selection buttons */}
-          <div className="flex justify-center gap-2 mt-4 pt-3 border-t">
-            <button
-              onClick={() => {
-                const today = new Date();
-                setCurrentMonth(today.getMonth());
-                setCurrentYear(today.getFullYear());
-              }}
-              className="px-3 py-1 text-xs text-blue-600 hover:bg-blue-50 rounded transition-colors"
-            >
-              Today
-            </button>
-            <button
-              onClick={() => {
-                onChange(null);
-                setIsOpen(false);
-              }}
-              className="px-3 py-1 text-xs text-gray-600 hover:bg-gray-50 rounded transition-colors"
-            >
-              Clear
-            </button>
-          </div>
-        </div>
-      )}
+return (
+  <div className="relative w-full" ref={dropdownRef}>
+    <div
+      onClick={() => {
+        setIsOpen(!isOpen);
+        onFocus && onFocus();
+      }}
+      className={`h-10 w-full flex items-center justify-between border rounded-md px-3 bg-white cursor-pointer hover:border-gray-400 transition-colors ${className}`}
+    >
+      <span className={`text-sm ${selected ? 'text-gray-900' : 'text-gray-500'}`}>
+        {selected ? formatDate(selected) : placeholder}
+      </span>
+      <Calendar className="h-5 w-5 text-gray-400" />
     </div>
-  );
+
+    {isOpen && (
+      <div className="absolute bottom-full left-0 mt-1 w-[80vw] max-w-xs sm:w-80 sm:max-w-none bg-white border rounded-lg shadow-lg z-50 p-3 sm:p-4">
+        {/* Header with month/year navigation */}
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={handlePrevMonth}
+            className="p-1 hover:bg-gray-100 rounded transition-colors"
+          >
+            <ChevronLeft className="h-5 w-5 text-gray-600" />
+          </button>
+          
+          <div className="flex items-center gap-2">
+            <span className="text-base sm:text-lg font-semibold text-gray-900">
+              {months[currentMonth]}
+            </span>
+            <div className="relative">
+              <button
+                onClick={() => setShowYearSelector(!showYearSelector)}
+                className="flex items-center gap-1 px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 hover:bg-gray-100 rounded transition-colors"
+              >
+                {currentYear}
+                <ChevronDown className="h-4 w-4" />
+              </button>
+              
+              {showYearSelector && (
+                <div className="absolute top-full right-0 mt-1 w-20 sm:w-24 max-h-40 sm:max-h-48 bg-white border rounded-md shadow-lg overflow-y-auto z-10">
+                  {yearOptions.map((year) => (
+                    <button
+                      key={year}
+                      onClick={() => handleYearSelect(year)}
+                      className={`w-full px-3 py-2 text-xs sm:text-sm text-left hover:bg-gray-100 transition-colors
+                        ${year === currentYear ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700'}
+                      `}
+                    >
+                      {year}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <button
+            onClick={handleNextMonth}
+            className="p-1 hover:bg-gray-100 rounded transition-colors"
+          >
+            <ChevronRight className="h-5 w-5 text-gray-600" />
+          </button>
+        </div>
+
+        {/* Days of week header */}
+        <div className="grid grid-cols-7 gap-1 mb-2">
+          {daysOfWeek.map((day) => (
+            <div key={day} className="text-center text-[11px] sm:text-xs font-medium text-gray-500 py-2">
+              {day}
+            </div>
+          ))}
+        </div>
+
+        {/* Calendar days */}
+        <div className="grid grid-cols-7 gap-1">
+          {renderDays()}
+        </div>
+
+        {/* Quick year selection buttons */}
+        <div className="flex justify-center gap-2 mt-4 pt-3 border-t">
+          <button
+            onClick={() => {
+              const today = new Date();
+              setCurrentMonth(today.getMonth());
+              setCurrentYear(today.getFullYear());
+            }}
+            className="px-2 sm:px-3 py-1 text-xs text-blue-600 hover:bg-blue-50 rounded transition-colors"
+          >
+            Today
+          </button>
+          <button
+            onClick={() => {
+              onChange(null);
+              setIsOpen(false);
+            }}
+            className="px-2 sm:px-3 py-1 text-xs text-gray-600 hover:bg-gray-50 rounded transition-colors"
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default EnhancedDatePicker;

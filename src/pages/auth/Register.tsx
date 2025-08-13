@@ -11,6 +11,7 @@ import traitText from "../../assets/traitstext.svg"
 import BeatLoader from "react-spinners/BeatLoader";
 import Header from '../../components/Header';
 import { GOOGLE_AUTH_URL } from '../../constants/auth.constant'
+import { removeToken } from "../../services/auth.service";
 
 
 export default function Register() {
@@ -86,6 +87,10 @@ export default function Register() {
     // You can open a modal or do nothing
     console.log('Terms & Privacy clicked');
   };
+
+  useEffect(() => {
+removeToken()
+  }, [])
 
 
   return (

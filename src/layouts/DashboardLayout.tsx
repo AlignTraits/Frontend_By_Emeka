@@ -36,6 +36,12 @@ export default function DashboardLayout() {
             return navigate("/onboarding-form")
           }
 
+          // for testing
+
+          // if (true) {
+          //   return navigate("/onboarding-form")
+          // }
+
           let tempDataTwo = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData") as string) : null;
 
           // If this is a first time user, redirect to the career pathway

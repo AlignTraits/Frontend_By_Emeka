@@ -2,17 +2,15 @@ import {useEffect, useState, useMemo} from "react";
 import { FiSearch } from "react-icons/fi";
 import { CiFilter } from "react-icons/ci";
 import { AiOutlineDownload } from "react-icons/ai";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 // import CustomSelect from "../../components/dashboard/CustomSelect";
 import CustomSelectWithProps from "../../components/dashboard/CustomSelectWithProps";
-import { 
-  FiCalendar,
-} from 'react-icons/fi';
 import BulkCenterTable from "../../components/Admin/BulCenterTable";
 import { getBulkHistory } from "../../services/schools";
 import { useAuth } from "../../contexts/useAuth";
 import { ApiResponseItem  } from "../../types/school.types";
+import EnhancedDatePicker from "../../components/dashboard/EnhancedDatePicker";
 
 const STATUS = ["All Status", "Completed", "Failed"];
 const ACTIONS = ["All Actions", "Bulk Create", "Bulk Update", "Bulk Delete"];
@@ -253,8 +251,8 @@ export default function BulkCenter () {
             />
           </div>
 
-          <div className="relative w-[150px] h-[40px] flex gap-x-[10px] items-center border rounded-md px-3 py-2 bg-white cursor-pointer">
-            <FiCalendar className="w-6 h-6 text-[#595959]"  />
+          <div className="relative w-[150px] h-[40px] flex gap-x-[10px] items-center border rounded-md  py-2 bg-white cursor-pointer">
+            {/* <FiCalendar className="w-6 h-6 text-[#595959]"  />
             <DatePicker
               selected={startDate}
               onChange={handleStartDateChange}
@@ -263,6 +261,13 @@ export default function BulkCenter () {
               // endDate={endDate}
               placeholderText="Date Range"
               className="outline-none w-full text-[14px] text-[#999999] cursor-pointer"
+            /> */}
+            <EnhancedDatePicker
+              selected={startDate}
+              onChange={handleStartDateChange}
+              placeholder="Date Range"
+              // onFocus={handleDobError}
+              className={'border-gray-300 outline-none w-full text-[14px] text-[#595959] font-semibold'}
             />
           </div>
         </div>

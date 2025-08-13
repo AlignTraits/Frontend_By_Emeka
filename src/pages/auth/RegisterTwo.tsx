@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import { useAuth } from '../../contexts/useAuth'
 import { LoginCredentials, } from '../../types/auth.types'
@@ -10,7 +10,7 @@ import traitText from "../../assets/traitstext.svg"
 // import {setToken} from '../../services/auth.service'
 import BeatLoader from 'react-spinners/BeatLoader'
 import { GOOGLE_AUTH_URL } from '../../constants/auth.constant'
-import { signUpTwo } from '../../services/auth.service'
+import { signUpTwo, removeToken } from '../../services/auth.service'
 // import { AxiosError } from 'axios'
 
 export default function Login() {
@@ -41,6 +41,10 @@ export default function Login() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    removeToken()
+  }, [])
 
   const isFormValid = () => {
     return credentials.email.trim() !== '' && credentials.password.trim() !== ''
