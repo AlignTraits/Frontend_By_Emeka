@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { FiX } from "react-icons/fi";
 import CustomSelect from "../dashboard/CustomSelect";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { MdOutlineCalendarToday } from "react-icons/md";
+// import { MdOutlineCalendarToday } from "react-icons/md";
 import { useAuth } from "../../contexts/useAuth";
 import { HiOutlineDownload } from "react-icons/hi";
 import { BeatLoader } from "react-spinners";
 import api from "../../api/axios";
 import {toast} from 'react-toastify'
 import axios from "axios";
+import EnhancedDatePicker from "../dashboard/EnhancedDatePicker";
 interface ModalProps {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   categoryType: string
@@ -138,9 +139,9 @@ export default function DataManagementModal({setModal, categoryType }: ModalProp
           <p className="text-[#1E1E1E] text-[12px] font-medium">Date Range</p>
 
           <div className="flex gap-2 relative">
-            <div className="relative flex items-center border rounded-md px-3 py-2 shadow-sm bg-white">
-              <MdOutlineCalendarToday className="h-5 w-5 text-gray-400 mr-2" />
-              <DatePicker
+            <div className="relative flex items-center border rounded-md py-2 shadow-sm bg-white">
+              {/* <MdOutlineCalendarToday className="h-5 w-5 text-gray-400 mr-2" /> */}
+              {/* <DatePicker
                 selected={startDate}
                 onChange={handleStartDateChange}
                 selectsStart
@@ -148,12 +149,20 @@ export default function DataManagementModal({setModal, categoryType }: ModalProp
                 endDate={endDate}
                 placeholderText="Start Date"
                 className="outline-none w-full text-[14px] text-[#595959] font-semibold"
-              />
+              /> */}
+
+            <EnhancedDatePicker
+              selected={startDate}
+              onChange={handleStartDateChange}
+              placeholder="Start Date"
+              // onFocus={handleDobError}
+              className={'border-gray-300 outline-none w-full text-[14px] text-[#595959] font-semibold'}
+            />
             </div>
 
-            <div className="relative flex items-center border rounded-md px-3 py-2 shadow-sm bg-white">
-              <MdOutlineCalendarToday className="h-5 w-5 text-gray-400 mr-2" />
-              <DatePicker
+            <div className="relative flex items-center border rounded-md py-2 shadow-sm bg-white">
+              {/* <MdOutlineCalendarToday className="h-5 w-5 text-gray-400 mr-2" /> */}
+              {/* <DatePicker
                 selected={endDate}
                 onChange={handleEndDateChange}
                 selectsEnd
@@ -161,7 +170,15 @@ export default function DataManagementModal({setModal, categoryType }: ModalProp
                 endDate={endDate}
                 placeholderText="End Date"
                 className="outline-none w-full text-[14px] text-[#595959] font-semibold"
-              />
+              /> */}
+
+            <EnhancedDatePicker
+              selected={endDate}
+              onChange={handleEndDateChange}
+              placeholder="End Date"
+              // onFocus={handleDobError}
+              className={'border-gray-300 outline-none w-full text-[14px] text-[#595959] font-semibold'}
+            />
             </div>
 
             {error && <p className="absolute top-[-25px] left-[80px] text-red-400 text-sm">{error}</p>}

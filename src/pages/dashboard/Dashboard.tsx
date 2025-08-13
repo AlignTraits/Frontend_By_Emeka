@@ -7,7 +7,7 @@ import roadSign from "../../assets/roadSign.svg"
 import historyIcon from "../../assets/dashHistoryIcon.svg"
 
 export default function Dashboard() {
-  const { setPageDesc} = useAuth()
+  const { setPageDesc, user} = useAuth()
   const navigate = useNavigate()
   
   useEffect(() => {
@@ -17,13 +17,15 @@ export default function Dashboard() {
     })
   }, [])
 
+  // console.log("user: ", user);
+
   // if(isLoading) return <div className="flex w-full h-[90dvh] justify-center items-center"><ClipLoader /></div>
 
   return (
 
     <div className="bg-[white] px-5 py-10 xl:px-[1rem] xl:pr-[2rem]">
       <div className="container mx-auto flex flex-col gap-y-[20px] items-center lg:flex-row justify-between w-[90%]">
-        <DashCard percentage={0} />
+        <DashCard percentage={user?.careerResults ? 100 : 0} />
         <DashCard percentage={0} title="Recommended pathway" svgImage={<img src={roadSign} alt="Pathway" />} />
         <DashCard percentage={10} title="Activity History" svgImage={<img src={historyIcon} alt="Pathway" />}  />
       </div>
