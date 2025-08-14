@@ -29,7 +29,7 @@ export default function RecommendationResults({setViewState}: RecommendationProp
             key={index}
             className="bg-white cursor-pointer border border-gray-100 shadow-sm rounded-lg p-4 hover:shadow-md transition"
           >
-            <h3 className="text-[16px] font-bold text-[#212529] mb-1">
+            <h3 className="text-[12px] font-bold text-[#212529] mb-1">
               {rec}
             </h3>
           </div>
