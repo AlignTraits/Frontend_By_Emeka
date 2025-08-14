@@ -7,11 +7,11 @@ import { useAuth } from '../../contexts/useAuth';
 import RecommendationResults from '../../components/dashboard/Pathway/RecommendationResults';
 import CourseList from '../../components/CareerPathway/CourseList';
 import Other from '../../components/CareerPathway/Other';
-// import { upDateUserProfile } from '../../services/auth.service';
+import { upDateUserProfile } from '../../services/auth.service';
 
 
 export default function CareerPath() {
-  const {setPageDesc} = useAuth()
+  const {setPageDesc, token} = useAuth()
   const [courseFilter, setCourseFilter] = useState("")
   const [viewState, setViewState] = useState(0);
   const [showDetails, setShowDetails] = useState(false)
@@ -23,7 +23,7 @@ export default function CareerPath() {
       desc: "Here’s a list of career pathway for you.",
       title: "Career Pathway"
     })
-    // updateUser();
+    updateUser();
   }, [])
 
 
@@ -35,22 +35,22 @@ export default function CareerPath() {
     }
   }
 
-  // const updateUser = async () => {
-  //   const updateData = {
-  //     isCareerPathChecked: true
-  //   }
-  //   try {
-  //     const response = await upDateUserProfile(
-  //       updateData,
-  //       token as string,
-  //     );
-  //     console.log("response: ", response)
+  const updateUser = async () => {
+    const updateData = {
+      isCareerPathChecked: true
+    }
+    try {
+      const response = await upDateUserProfile(
+        updateData,
+        token as string,
+      );
+      console.log("response: ", response)
 
-  //   } catch (error) {
+    } catch (error) {
       
-  //     console.error("Error updating user profile", error);
-  //   } 
-  // }
+      console.error("Error updating user profile", error);
+    } 
+  }
 
   const renderState = () => {
     switch (viewState) { 

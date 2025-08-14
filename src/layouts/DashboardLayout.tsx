@@ -65,12 +65,12 @@ export default function DashboardLayout() {
           // For new users, that filled their career pathway outside of login can they have a pop up on 
           // their first login to redirect them to career path?
 
-          // if (response.data?.isCareerPathChecked) {
-          //   toast.success("Welcome back to your Career Pathway");
-          //   return setTimeout(() => {
-          //     navigate("/dashboard/career-pathway")
-          //   }, 1500);
-          // }
+          if (!response.data?.isCareerPathChecked) {
+            toast.success("Welcome back to your Career Pathway");
+            return setTimeout(() => {
+              navigate("/dashboard/career-pathway")
+            }, 1500);
+          }
 
         }
       }
