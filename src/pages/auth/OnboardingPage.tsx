@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header';
 import CustomSelect from '../../components/dashboard/CustomSelect';
 import SearchSelect from '../../components/dashboard/SearchSelect';
@@ -27,7 +27,7 @@ countriesData.map((elem:any) => {
 const OnboardingPage = () => {
   const {token} = useAuth()
   // const [token, setTokenNew] = useState("")
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [firstName, setFirstName] = useState("")
 
   const [lastName, setLastName] = useState("")
@@ -220,7 +220,8 @@ const OnboardingPage = () => {
       if(response[0].ok) {
         toast.success("Profile updated successfully");
         setTimeout(() => {
-          navigate("/dashboard")
+          // navigate("/dashboard")
+          window.location.href = "/dashboard";
         }, 3000)
       }
 
