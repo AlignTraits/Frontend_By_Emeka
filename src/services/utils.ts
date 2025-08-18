@@ -17,7 +17,7 @@ class ResponseError extends Error {
 
 export const sendCareerPath = async (data: any) => {
   try {
-    const response = await api.post("/career/answers", data)
+    const response = await api.post("/career/answers/server", data)
 
     console.log("response: response", response) 
 
