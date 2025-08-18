@@ -8,7 +8,10 @@ import { useAuth } from "../../contexts/useAuth";
 import { BeatLoader } from "react-spinners";
 // import { verifyEmail } from "../../services/auth.service";
 
-  const ResetPassword: React.FC = () => {
+interface ResetPasswordProps {
+  title: string
+}
+  const ResetPassword = ({title}: ResetPasswordProps) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [status, setStatus] = useState<boolean>(false);
@@ -72,7 +75,7 @@ useEffect(()=> {
       );
       if(response.status === 200) {
         setStatus(true)
-        setTimeout(() => navigate('/login'), 8000)
+        setTimeout(() => navigate('/login'), 5000)
       }
     } catch(err) {
         console.log(err)
@@ -118,7 +121,7 @@ useEffect(()=> {
             <div className="space-y-5 p-6 md:p-10 md:bg-white rounded-lg md:shadow-lg md:border-[#ccc] md:border-[1px]">
               <div className="mx-auto space-y-2 mb-10 md:mb-0">
                 <h2 className="text-xl md:text-2xl text-[#101828] text-center md:text-left font-semibold">
-                  Reset password
+                  {title}
                 </h2>
               </div>
               <form

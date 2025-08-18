@@ -11,7 +11,7 @@ import { upDateUserProfile } from '../../services/auth.service';
 
 
 export default function CareerPath() {
-  const {setPageDesc, token} = useAuth()
+  const {setPageDesc, token, user} = useAuth()
   const [courseFilter, setCourseFilter] = useState("")
   const [viewState, setViewState] = useState(0);
   const [showDetails, setShowDetails] = useState(false)
@@ -23,7 +23,10 @@ export default function CareerPath() {
       desc: "Here’s a list of career pathway for you.",
       title: "Career Pathway"
     })
-    updateUser();
+
+    if (!user?.isCareerPathChecked) {
+      updateUser();
+    }
   }, [])
 
 

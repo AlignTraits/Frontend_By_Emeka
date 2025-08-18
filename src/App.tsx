@@ -55,6 +55,7 @@ const SecurityManagement = lazy(() => import("./pages/dashboard/SecurityManageme
 const PaymentCallback = lazy(() => import("./pages/PaymentCallback")); 
 const SignUpTwo = lazy(() => import("./pages/auth/RegisterTwo"))
 const Subscription = lazy(() => import("./pages/dashboard/Subscription"))
+const Page404 = lazy(() => import("./pages/404"));
 
 
 const router = createBrowserRouter([
@@ -63,7 +64,8 @@ const router = createBrowserRouter([
   { path: "/signup-two", element: <SignUpTwo /> },
   { path: "/forgot-password", element: <ForgotPassword /> },
   { path: '/email-verify', element: <VerifyEmail /> },
-  { path: '/reset-password', element: <ResetPassword /> },
+  { path: '/reset-password', element: <ResetPassword title="Reset password" /> },
+  { path: '/setup-password', element: <ResetPassword title="Setup password" /> },
   { path: '/auth/success', element: <GoogleAuthSuccess /> },
   { path: "/search", element: <HomeSearch /> },
   { path: "/career-recommedation", element: <Recommendation /> },
@@ -72,6 +74,7 @@ const router = createBrowserRouter([
   { path: "/select-payment", element: <SelectPayment /> },
   { path: "/payment/callback", element: <PaymentCallback /> }, 
   { path: "/check-eligibility/:courseId", element: <CheckEligibility /> },
+  { path: "/not-found", element: <Page404 /> },
   { index: true, element: <Home /> },
 
   {
