@@ -9,7 +9,7 @@ import NewSidebar from "../components/dashboard/NewSidebar";
 import { toast } from "react-toastify";
 
 export default function DashboardLayout() {
-  const { token, isAuthenticated, user, setUser } = useAuth();
+  const { token, isAuthenticated, setUser } = useAuth();
 
   const [open, setOpen] = useState(false); 
   const location = useLocation(); 
@@ -19,7 +19,7 @@ export default function DashboardLayout() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (user == null && token) {
+    if (token) {
       async function getData() {
         let response;
         setIsloading(true)
@@ -37,20 +37,26 @@ export default function DashboardLayout() {
             return navigate("/onboarding-form")
           }
 
-          let tempDataTwo = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData") as string) : {ok: true};
+          // For new users, that filled their career pathway outside of login can they have a pop up on 
+          // their first login to redirect them to career path?
+
+          if (!response.data?.isCareerPathChecked) {
+            return setShowModal(true);
+          }
+
+          // let tempDataTwo = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData") as string) : {ok: true};
 
           // If this is a first time user, redirect to the career pathway
           // During the career pathway flow, I set userData in localStorage;
 
-          if (tempDataTwo && !tempDataTwo?.ok) {
-            // toast.success("Welcome back to your Career Pathway");
+          // if (tempDataTwo && !tempDataTwo?.ok) {
 
-            toast.success("Welcome back to your Career Pathway");
+          //   toast.success("Welcome back to your Career Pathway");
 
-            return setTimeout(() => {
-              navigate("/dashboard/career-pathway")
-            }, 1500);
-          }
+          //   return setTimeout(() => {
+          //     navigate("/dashboard/career-pathway")
+          //   }, 1500);
+          // }
  
           if (!response.data?.careerResults) {
             toast.success("Take our quiz and check your career path");
@@ -59,20 +65,13 @@ export default function DashboardLayout() {
             }, 1500);
           }
 
-          // For new users, that filled their career pathway outside of login can they have a pop up on 
-          // their first login to redirect them to career path?
-
-          if (!response.data?.isCareerPathChecked) {
-            return setShowModal(true);
-          }
-
         }
       }
       
       getData();
     }
     
-  }, [token, setUser, user]);
+  }, [token]);
 
   if (isAuthenticated && token) {
     return (
