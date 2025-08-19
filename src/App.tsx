@@ -56,6 +56,7 @@ const PaymentCallback = lazy(() => import("./pages/PaymentCallback"));
 const SignUpTwo = lazy(() => import("./pages/auth/RegisterTwo"))
 const Subscription = lazy(() => import("./pages/dashboard/Subscription"))
 const Page404 = lazy(() => import("./pages/404"));
+const SetupPassword = lazy(() => import("./pages/auth/SetupPassword"));
 
 
 const router = createBrowserRouter([
@@ -65,7 +66,7 @@ const router = createBrowserRouter([
   { path: "/forgot-password", element: <ForgotPassword /> },
   { path: '/email-verify', element: <VerifyEmail /> },
   { path: '/reset-password', element: <ResetPassword title="Reset password" /> },
-  { path: '/setup-password', element: <SignUpTwo /> },
+  { path: '/setup-password', element: <SetupPassword title="Setup password" /> },
   { path: '/auth/success', element: <GoogleAuthSuccess /> },
   { path: "/search", element: <HomeSearch /> },
   { path: "/career-recommedation", element: <Recommendation /> },

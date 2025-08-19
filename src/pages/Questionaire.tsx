@@ -120,7 +120,7 @@ export default function Questionaire() {
     if (data.ok) {
       navigate("/login");
     } else {
-      navigate("/signup-two?email=" + dataTwo.email);
+      navigate("/setup-password?email=" + dataTwo.email);
     }
 
     localStorage.removeItem("questionnaire-answers");
