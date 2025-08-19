@@ -65,7 +65,7 @@ const router = createBrowserRouter([
   { path: "/forgot-password", element: <ForgotPassword /> },
   { path: '/email-verify', element: <VerifyEmail /> },
   { path: '/reset-password', element: <ResetPassword title="Reset password" /> },
-  { path: '/setup-password', element: <ResetPassword title="Setup password" /> },
+  { path: '/setup-password', element: <SignUpTwo /> },
   { path: '/auth/success', element: <GoogleAuthSuccess /> },
   { path: "/search", element: <HomeSearch /> },
   { path: "/career-recommedation", element: <Recommendation /> },
@@ -74,7 +74,7 @@ const router = createBrowserRouter([
   { path: "/select-payment", element: <SelectPayment /> },
   { path: "/payment/callback", element: <PaymentCallback /> }, 
   { path: "/check-eligibility/:courseId", element: <CheckEligibility /> },
-  { path: "/not-found", element: <Page404 /> },
+  // { path: "/not-found", element: <Page404 /> },
   { index: true, element: <Home /> },
 
   {
@@ -137,7 +137,12 @@ const router = createBrowserRouter([
       },
       { path: 'login', element: <AdminLogin /> }
     ]
-  }
+  },
+  {
+    path: "*",
+    element: <Page404 />,
+  },
+
 ]);
 
 function App() {
