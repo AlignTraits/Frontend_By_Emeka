@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 // import { useAuth } from '../../contexts/useAuth'
 import { LoginCredentials, } from '../../types/auth.types'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
@@ -11,10 +11,12 @@ import traitText from "../../assets/traitstext.svg"
 import BeatLoader from 'react-spinners/BeatLoader'
 import { GOOGLE_AUTH_URL } from '../../constants/auth.constant'
 import { signUpTwo, removeToken } from '../../services/auth.service'
+import { toast } from 'react-toastify'
 // import { AxiosError } from 'axios'
 
 export default function Login() {
   // const { isLoading, error } = useAuth()
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate()
   const [credentials, setCredentials] = useState<LoginCredentials>({
     email: '',
@@ -23,6 +25,16 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+
+  useEffect(()=> {
+    const email = searchParams.get("email") || "";
+  
+    if(!email) {
+      navigate('/login')
+    } 
+    setCredentials((prev) => ({ ...prev, email }))
+      
+  }, [searchParams, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +48,10 @@ export default function Login() {
 
     } catch (err:any) {
       console.error("Login failed:", err);
+      if (err?.response?.status === 403) {
+        // setError(err?.response?.data?.message || "Verify your email to continue");
+        return toast.success("Check your email to verify your account")
+      }
       setError(err?.message);
     } finally {
       setIsLoading(false);

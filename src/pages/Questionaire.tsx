@@ -110,10 +110,22 @@ export default function Questionaire() {
 
   function resetAnswers() {
     setAnswers({});
+
+    const foundUser = localStorage.getItem("userData");
+    const data = foundUser ? JSON.parse(foundUser) : {ok: false};
+    const storedUserDetailsRaw = localStorage.getItem("pathway-data");
+    const dataTwo = storedUserDetailsRaw ? JSON.parse(storedUserDetailsRaw) : {email: ""};
+    
+
+    if (data.ok) {
+      navigate("/login");
+    } else {
+      navigate("/signup-two?email=" + dataTwo.email);
+    }
+
     localStorage.removeItem("questionnaire-answers");
     localStorage.removeItem("pathway-data");
 
-    navigate("/signup");
   }
 
   useEffect(() => {
@@ -138,7 +150,7 @@ export default function Questionaire() {
             onClick={resetAnswers}
             className="w-full max-w-xs h-12 mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-lg disabled:opacity-50 text-base sm:text-lg"
           >
-            Sign up
+            Continue
           </button>
         </div>
       ) : (
