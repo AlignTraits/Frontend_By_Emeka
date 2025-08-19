@@ -9,7 +9,7 @@ import NewSidebar from "../components/dashboard/NewSidebar";
 import { toast } from "react-toastify";
 
 export default function DashboardLayout() {
-  const { token, isAuthenticated, user, setUser } = useAuth();
+  const { token, isAuthenticated, setUser } = useAuth();
 
   const [open, setOpen] = useState(false); 
   const location = useLocation(); 
@@ -19,7 +19,7 @@ export default function DashboardLayout() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (user == null && token) {
+    if (token) {
       async function getData() {
         let response;
         setIsloading(true)
@@ -71,7 +71,7 @@ export default function DashboardLayout() {
       getData();
     }
     
-  }, [token, setUser, user]);
+  }, [token]);
 
   if (isAuthenticated && token) {
     return (
