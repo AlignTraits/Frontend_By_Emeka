@@ -8,6 +8,7 @@ import { useAuth } from "../../contexts/useAuth";
 import { BeatLoader } from "react-spinners";
 import { signUpTwo } from '../../services/auth.service'
 // import { verifyEmail } from "../../services/auth.service";
+import EmailProvidersPopup from "../../components/EmailProvidersPopup";
 
 interface SetupPasswordProps {
   title: string
@@ -19,14 +20,14 @@ interface SetupPasswordProps {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const {error, setError} = useAuth()
+  const { setError} = useAuth()
   const [email, setEmail] = useState<string>('')
 
   const [passwordError, setPasswordError] = useState("")
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-
+  const [open, setOpen] = useState(false);
 
 useEffect(()=> {
   const email = searchParams.get("email") || "";
@@ -76,7 +77,8 @@ useEffect(()=> {
       if (err?.response?.status === 403) {
         // setError(err?.response?.data?.message || "Verify your email to continue");
         toast.success("Check your email to verify your account")
-        return navigate("/login");
+        setOpen(true);
+        // return navigate("/login");
       }
       setError(err?.message);
     } finally {
@@ -107,9 +109,9 @@ useEffect(()=> {
             onSubmit={(e) => handleSubmit(e)}
             className="space-y-8 flex flex-col"
           >
-            {error && (
+            {/* {error && (
               <div className="bg-red-50 text-red-500 p-3 rounded text-sm">{error}</div>
-            )}
+            )} */}
             <div>
               <label htmlFor="password" className="block text-[14px] md:text-[16px] font-[600] text-[#101828]">
                 Enter New password
@@ -177,12 +179,20 @@ useEffect(()=> {
               disabled={isLoading}
               className="w-full h-12 mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
             >
-              {isLoading ? <BeatLoader /> : "Update Password"}
+              {isLoading ? <BeatLoader /> : "Create Password"}
             </button>
           </form>
         </div>
       </div>
 
+      <div className="mt-[200px]">
+        <EmailProvidersPopup
+          isOpen={open}
+          onClose={() => setOpen(false)}
+          userEmail={email}
+          // resendVerification={resendVerification}
+        />
+      </div>
     </div>
   );
 };
