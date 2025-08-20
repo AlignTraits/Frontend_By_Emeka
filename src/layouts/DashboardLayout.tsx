@@ -125,7 +125,7 @@ export default function DashboardLayout() {
                 }}
                 className="w-full h-12 bg-[#004085] text-white rounded-lg hover:bg-blue-700"
               >
-                View
+                View Results
               </button>
             </div>
           </div>

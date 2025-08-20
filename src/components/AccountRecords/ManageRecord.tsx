@@ -249,6 +249,23 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
 
         <div className="mt-3 flex gap-x-[20px]">
           <div className="w-[50%] flex flex-col gap-y-[5px]">
+            <p className={`text-[16px] font-medium ${errorObj.country ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Country</p>
+            <SearchSelect
+              placeholder="Select Country"
+              options={Object.keys(countryStateData).map((country) => ({
+                value: country,
+                label: country,
+              }))}
+              onChange={(value) => setSelectedCountry(value)}
+              handleError={handleCountryError}
+              selectedProps={{
+                value: selectedCountry,
+                label: selectedCountry
+              }}
+              
+            />
+          </div>
+          <div className="w-[50%] flex flex-col gap-y-[5px]">
             <p className={`text-[16px] font-medium ${errorObj.examType ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>
               Exam Type*
             </p>
@@ -264,24 +281,6 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
                 label: examType,
               }}
               handleError={handleExamTypeError}
-            />
-          </div>
-
-          <div className="w-[50%] flex flex-col gap-y-[5px]">
-            <p className={`text-[16px] font-medium ${errorObj.country ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Country</p>
-            <SearchSelect
-              placeholder="Select Country"
-              options={Object.keys(countryStateData).map((country) => ({
-                value: country,
-                label: country,
-              }))}
-              onChange={(value) => setSelectedCountry(value)}
-              handleError={handleCountryError}
-              selectedProps={{
-                value: selectedCountry,
-                label: selectedCountry
-              }}
-              
             />
           </div>
         </div>
