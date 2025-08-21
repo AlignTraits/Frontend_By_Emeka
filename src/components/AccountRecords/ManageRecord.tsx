@@ -42,7 +42,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
   const [requirementList, setRequirementList] = useState<RequirementListNew[]>([]);
   const [isLoading, setIsLoading] = useState(false)
 
-  console.log("editRecord: ", editRecord)
+  // console.log("editRecord: ", editRecord)
 
   useEffect(() => {
     if (editRecord) {

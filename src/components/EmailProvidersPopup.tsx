@@ -42,14 +42,14 @@ const IcloudSVG = () => (
   </svg>
 );
 
-const ZohoSVG = () => (
-  <svg viewBox="0 0 48 48" className="h-8 w-8" aria-hidden>
-    <rect x="8" y="12" width="8" height="8" rx="1" fill="#E11D48"/>
-    <rect x="20" y="12" width="8" height="8" rx="1" fill="#F59E0B"/>
-    <rect x="32" y="12" width="8" height="8" rx="1" fill="#10B981"/>
-    <rect x="14" y="24" width="20" height="10" rx="2" fill="#2563EB"/>
-  </svg>
-);
+// const ZohoSVG = () => (
+//   <svg viewBox="0 0 48 48" className="h-8 w-8" aria-hidden>
+//     <rect x="8" y="12" width="8" height="8" rx="1" fill="#E11D48"/>
+//     <rect x="20" y="12" width="8" height="8" rx="1" fill="#F59E0B"/>
+//     <rect x="32" y="12" width="8" height="8" rx="1" fill="#10B981"/>
+//     <rect x="14" y="24" width="20" height="10" rx="2" fill="#2563EB"/>
+//   </svg>
+// );
 
 // const AOLSVG = () => (
 //   <svg viewBox="0 0 48 48" className="h-8 w-8" aria-hidden>
@@ -109,7 +109,7 @@ const PROVIDERS: EmailProvider[] = [
   { key: "yahoo", name: "Yahoo Mail", url: "https://mail.yahoo.com/", Icon: YahooSVG, domains: ["yahoo.com"] },
   { key: "icloud", name: "iCloud Mail", url: "https://www.icloud.com/mail", Icon: IcloudSVG, domains: ["icloud.com", "me.com", "mac.com"] },
   // { key: "proton", name: "Proton Mail", url: "https://mail.proton.me/", Icon: ProtonSVG, domains: ["proton.me", "protonmail.com"] },
-  { key: "zoho", name: "Zoho Mail", url: "https://mail.zoho.com/", Icon: ZohoSVG, domains: ["zoho.com"] },
+  // { key: "zoho", name: "Zoho Mail", url: "https://mail.zoho.com/", Icon: ZohoSVG, domains: ["zoho.com"] },
   // { key: "aol", name: "AOL Mail", url: "https://mail.aol.com/", Icon: AOLSVG, domains: ["aol.com"] },
   // { key: "yandex", name: "Yandex Mail", url: "https://mail.yandex.com/", Icon: YandexSVG, domains: ["yandex.com", "yandex.ru"] },
   { key: "custom", name: "Other Provider", url: "about:blank", Icon: GenericMailSVG },
@@ -150,7 +150,7 @@ const ModalCard: React.FC<React.PropsWithChildren> = ({ children }) => (
     transition={{ type: "spring", stiffness: 260, damping: 22 }}
     role="dialog"
     aria-modal="true"
-    className="fixed inset-x-0 top-20 z-50 mx-auto w-[min(680px,92vw)] rounded-2xl bg-white p-5 shadow-2xl outline outline-1 -outline-offset-1 outline-gray-100 dark:bg-neutral-900 dark:outline-neutral-800"
+    className="fixed inset-x-0 top-[20vh] z-50 mx-auto w-[min(680px,92vw)] rounded-2xl bg-white p-5 shadow-2xl outline outline-1 -outline-offset-1 outline-gray-100 dark:bg-neutral-900 dark:outline-neutral-800"
   >
     {children}
   </motion.div>
@@ -170,7 +170,7 @@ const ProviderButton: React.FC<{
     </div>
     <div className="flex flex-col text-left">
       <span className="text-sm font-semibold leading-5">{provider.name}</span>
-      <span className="text-xs text-gray-500 group-hover:underline">Open in new tab</span>
+      {/* <span className="text-xs text-gray-500 group-hover:underline">Open in new tab</span> */}
     </div>
     {suggested && (
       <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">

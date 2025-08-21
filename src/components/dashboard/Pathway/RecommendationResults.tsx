@@ -1,6 +1,10 @@
-import React from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { SlGraph } from "react-icons/sl";
 import { useAuth } from '../../../contexts/useAuth';
+import { getAcademicRecords } from "../../../services/utils";
+import { BeatLoader } from "react-spinners";
+import ManageRecord from "../../AccountRecords/ManageRecord";
+import { toast } from "react-toastify";
 
 // const recommendations = new Array(8).fill({
 //   title: "Business Intelligence Specialist",
@@ -14,7 +18,45 @@ interface RecommendationProps {
 export default function RecommendationResults({setViewState}: RecommendationProps) {
   const { user } = useAuth();
 
-  console.log("user: ", user);
+  const [isLoading, setIsLoading] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+
+  const [showModalFromBtnClick, setShowModalFromBtnClick] = useState(false)
+
+  console.log("user: ", user);  
+  const hasFetched = useRef(false);
+
+  useEffect(() => {
+       if (!hasFetched.current) {
+      getRecords();
+      hasFetched.current = true;
+    }
+  }, [])
+
+  const handleBtnClick = () => {
+    if (showModal) {
+      setShowModalFromBtnClick(true);
+    } else {
+      setViewState(1)
+    }
+  }
+
+  const getRecords = async () => {
+    try {
+      setIsLoading(true)
+      const response = await getAcademicRecords();
+      // setRecordList(response.data)
+      if (response.status === 404) {
+        toast.error("No records found. Please add your academic records.");
+        setShowModal(true)
+      }
+
+    } catch (err: any) {
+      console.log("error: ", err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className="w-full max-w-2xl mx-auto mt-[50px] bg-white border-[1px] border-[#ccc] shadow-md rounded-xl p-6">
@@ -37,10 +79,14 @@ export default function RecommendationResults({setViewState}: RecommendationProp
       </div>
 
       <div className="text-center">
-        <button onClick={() => setViewState(1)} className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
-          Get course recommendation
+        <button disabled={isLoading} onClick={handleBtnClick} className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
+          {isLoading ? <BeatLoader /> : "Get course recommendation"}
         </button>
       </div>
+
+      {
+        showModalFromBtnClick && <ManageRecord setShowModal={setShowModalFromBtnClick} editRecord={null} getRecords={getRecords} />
+      }
     </div>
   );
 }
