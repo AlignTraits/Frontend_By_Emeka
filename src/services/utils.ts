@@ -214,30 +214,28 @@ export const getAcademicRecords = async () => {
     if(response.data.status == 500) throw new ResponseError(response)  
     return response.data;
   } catch (err: any) {
-    if (err.response && err.response.data && err.response.data.errors) {
+    // if (err.response && err.response.data && err.response.data.errors) {
       
-      const errors = err.response.data.errors;
+    //   const errors = err.response.data.errors;
 
-      errors.forEach((error: { message: string }) => {
-        if (error.message) {
-          toast.error(error.message);
-        }
-      });
-    }
-    if(err.response && err.response.data) {
+    //   errors.forEach((error: { message: string }) => {
+    //     if (error.message) {
+    //       toast.error(error.message);
+    //     }
+    //   });
+    // }
 
-      toast.error(err.response.data.error)
-    }
 
     if (
       err.response &&
       err.response.data.message &&
       !err.response.data.errors
     ) {
-      toast.error(err.response.data.message);
+      // toast.error(err.response.data.message);
+      return err
     }
 
-    throw err;
+    // throw err;
   }
 }
 
