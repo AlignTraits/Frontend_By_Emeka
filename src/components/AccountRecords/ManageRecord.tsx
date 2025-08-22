@@ -31,10 +31,12 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
 
   const [errorObj, setErrorObj] = useState({
     examType: false,
-    country: false
+    country: false,
+    year: false
   });
 
   const [examType, setExamType] = useState("");
+  const [examYear, setExamYear] = useState("");
 
   const [subjectList, setSubjectList] = useState<SubjectGrade[]>([]);
   const [reqId, setReqId] = useState<string | null>(null);
@@ -74,6 +76,10 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
 
   const handleCountryError = () => {
     setErrorObj((prev) => ({...prev, country: false}))
+  }
+
+    const handleYearError = () => {
+    setErrorObj((prev) => ({...prev, year: false}))
   }
 
   const handleClose = () => {
@@ -247,20 +253,39 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
           </div>
         )}
 
+        <div className="w-[100%] flex flex-col gap-y-[5px]">
+          <p className={`text-[16px] font-medium ${errorObj.country ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Country</p>
+          <SearchSelect
+            placeholder="Select Country"
+            options={Object.keys(countryStateData).map((country) => ({
+              value: country,
+              label: country,
+            }))}
+            onChange={(value) => setSelectedCountry(value)}
+            handleError={handleCountryError}
+            selectedProps={{
+              value: selectedCountry,
+              label: selectedCountry
+            }}
+            
+          />
+        </div>
+
         <div className="mt-3 flex gap-x-[20px]">
           <div className="w-[50%] flex flex-col gap-y-[5px]">
-            <p className={`text-[16px] font-medium ${errorObj.country ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Country</p>
+            <p className={`text-[16px] font-medium ${errorObj.year ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Year</p>
             <SearchSelect
-              placeholder="Select Country"
-              options={Object.keys(countryStateData).map((country) => ({
-                value: country,
-                label: country,
-              }))}
-              onChange={(value) => setSelectedCountry(value)}
-              handleError={handleCountryError}
+              placeholder="Select Year"
+              // generate years dynamically from 1970 to current year
+              options={Array.from({ length: new Date().getFullYear() - 1970 + 1 }, (_, i) => ({
+                value: (1970 + i).toString(),
+                label: (1970 + i).toString(),
+              }))}  
+              onChange={(value) => setExamYear(value)}
+              handleError={handleYearError}
               selectedProps={{
-                value: selectedCountry,
-                label: selectedCountry
+                value: examYear,
+                label: examYear
               }}
               
             />

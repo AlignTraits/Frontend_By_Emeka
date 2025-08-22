@@ -53,7 +53,7 @@ export default function AcountRecords() {
           isLoading ? 
           <div className='w-full h-[100px] flex justify-center items-center'>
             <ClipLoader /> 
-          </div> : recordList.length > 0 ? recordList.map((record, index) => (
+          </div> : recordList?.length > 0 ? recordList.map((record, index) => (
             <Card getRecords={getRecords} key={index} setShowModal={setShowModal} result={record} setEditRecord={setEditRecord} />
           )) : ( 
             <p className='text-[#757575] text-[14px]'>No records found.</p>
