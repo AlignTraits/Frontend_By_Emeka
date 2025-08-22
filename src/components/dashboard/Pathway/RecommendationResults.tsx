@@ -4,7 +4,7 @@ import { useAuth } from '../../../contexts/useAuth';
 import { getAcademicRecords } from "../../../services/utils";
 import { BeatLoader } from "react-spinners";
 import ManageRecord from "../../AccountRecords/ManageRecord";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 // const recommendations = new Array(8).fill({
 //   title: "Business Intelligence Specialist",
@@ -20,10 +20,11 @@ export default function RecommendationResults({setViewState}: RecommendationProp
 
   const [isLoading, setIsLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [dataLenth, setDataLength] = useState(0)
 
   const [showModalFromBtnClick, setShowModalFromBtnClick] = useState(false)
 
-  console.log("user: ", user);  
+  // console.log("user: ", user);  
   const hasFetched = useRef(false);
 
   useEffect(() => {
@@ -31,10 +32,10 @@ export default function RecommendationResults({setViewState}: RecommendationProp
       getRecords();
       hasFetched.current = true;
     }
-  }, [])
+  }, [showModalFromBtnClick])
 
   const handleBtnClick = () => {
-    if (showModal) {
+    if (dataLenth < 2) {
       setShowModalFromBtnClick(true);
     } else {
       setViewState(1)
@@ -45,14 +46,16 @@ export default function RecommendationResults({setViewState}: RecommendationProp
     try {
       setIsLoading(true)
       const response = await getAcademicRecords();
-      // setRecordList(response.data)
-      if (response.status === 404) {
-        toast.error("No records found. Please add your academic records.");
+      setDataLength(response.data.length)
+      if (response.data.length < 2) {
         setShowModal(true)
       }
 
     } catch (err: any) {
       console.log("error: ", err)
+      if (err?.status === 404) {  
+        setShowModal(true)
+      }
     } finally {
       setIsLoading(false)
     }
@@ -87,6 +90,24 @@ export default function RecommendationResults({setViewState}: RecommendationProp
       {
         showModalFromBtnClick && <ManageRecord setShowModal={setShowModalFromBtnClick} editRecord={null} getRecords={getRecords} />
       }
+
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 className="text-xl font-bold mb-4">Add academic record</h2>
+            <p className="mb-4">Click here to add your academic record</p>
+            <button
+              onClick={() => {
+                setShowModal(false);
+                setShowModalFromBtnClick(true);
+              }}
+              className="w-full h-12 bg-[#004085] text-white rounded-lg hover:bg-blue-700"
+            >
+              Add Record
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

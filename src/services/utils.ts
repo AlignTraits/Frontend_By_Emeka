@@ -231,11 +231,10 @@ export const getAcademicRecords = async () => {
       err.response.data.message &&
       !err.response.data.errors
     ) {
-      // toast.error(err.response.data.message);
-      return err
+      toast.error(err.response.data.message);
     }
 
-    // throw err;
+    throw err;
   }
 }
 
