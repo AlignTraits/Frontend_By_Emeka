@@ -12,6 +12,7 @@ import BeatLoader from 'react-spinners/BeatLoader'
 import { GOOGLE_AUTH_URL } from '../../constants/auth.constant'
 import { signUpTwo, removeToken } from '../../services/auth.service'
 import { toast } from 'react-toastify'
+import PasswordChecker from '../../components/PasswordChecker'
 // import { AxiosError } from 'axios'
 
 export default function Login() {
@@ -25,6 +26,26 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+
+    const [rules, setRules] = useState({
+    length: false,
+    lower: false,
+    upper: false,
+    number: false,
+    special: false,
+  })
+
+  useEffect(() => {
+    setRules({
+      length: credentials.password.length >= 8,
+      lower: /[a-z]/.test(credentials.password),
+      upper: /[A-Z]/.test(credentials.password),
+      number: /[0-9]/.test(credentials.password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(credentials.password),
+    })
+  }, [credentials.password])
+
+  const validCount = [rules.lower, rules.upper, rules.number, rules.special].filter(Boolean).length
 
   useEffect(()=> {
     const email = searchParams.get("email") || "";
@@ -63,7 +84,7 @@ export default function Login() {
   }, [])
 
   const isFormValid = () => {
-    return credentials.email.trim() !== '' && credentials.password.trim() !== ''
+    return credentials.email.trim() !== '' && credentials.password.trim() !== '' && validCount >= 3 && rules.length
   }
 
   return (
@@ -159,6 +180,7 @@ export default function Login() {
                     )}
                   </button>
                 </div>
+                {credentials.password.length > 0  && <PasswordChecker password={credentials.password} />}
               </div>
             </div>
 

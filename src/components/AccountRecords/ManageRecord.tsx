@@ -110,6 +110,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
     setSubjectList([]);
     setReqId(null);
     setSelectedCountry("")
+    setExamYear("")
     setErrorObj((prev) => ({ ...prev, examType: false, country: false }));
   };
 
@@ -390,7 +391,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
             onClick={resetForm}
             className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#1E1E1E] text-[14px] font-semibold rounded-md hover:bg-gray-50"
           >
-            Cancel
+            Clear Form
           </button>
           <button
             onClick={addRequirements}

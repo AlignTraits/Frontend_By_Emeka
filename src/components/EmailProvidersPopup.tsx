@@ -108,10 +108,6 @@ const PROVIDERS: EmailProvider[] = [
   },
   { key: "yahoo", name: "Yahoo Mail", url: "https://mail.yahoo.com/", Icon: YahooSVG, domains: ["yahoo.com"] },
   { key: "icloud", name: "iCloud Mail", url: "https://www.icloud.com/mail", Icon: IcloudSVG, domains: ["icloud.com", "me.com", "mac.com"] },
-  // { key: "proton", name: "Proton Mail", url: "https://mail.proton.me/", Icon: ProtonSVG, domains: ["proton.me", "protonmail.com"] },
-  // { key: "zoho", name: "Zoho Mail", url: "https://mail.zoho.com/", Icon: ZohoSVG, domains: ["zoho.com"] },
-  // { key: "aol", name: "AOL Mail", url: "https://mail.aol.com/", Icon: AOLSVG, domains: ["aol.com"] },
-  // { key: "yandex", name: "Yandex Mail", url: "https://mail.yandex.com/", Icon: YandexSVG, domains: ["yandex.com", "yandex.ru"] },
   { key: "custom", name: "Other Provider", url: "about:blank", Icon: GenericMailSVG },
 ];
 
@@ -159,32 +155,46 @@ const ModalCard: React.FC<React.PropsWithChildren> = ({ children }) => (
 const ProviderButton: React.FC<{
   provider: EmailProvider;
   suggested?: boolean;
-}> = ({ provider, suggested }) => (
-  <button
-    onClick={() => openInNewTab(provider.url)}
-    className="group flex items-center gap-3 rounded-2xl border border-gray-200 p-3 transition hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 dark:border-neutral-800"
-    aria-label={`Open ${provider.name}`}
-  >
-    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white ring-1 ring-gray-200 dark:bg-neutral-900 dark:ring-neutral-700">
-      <provider.Icon />
-    </div>
-    <div className="flex flex-col text-left">
-      <span className="text-sm font-semibold leading-5">{provider.name}</span>
-      {/* <span className="text-xs text-gray-500 group-hover:underline">Open in new tab</span> */}
-    </div>
-    {suggested && (
-      <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
-        Suggested
-      </span>
-    )}
-  </button>
-);
+}> = ({ provider, suggested }) => {
+  return (
+    <button
+      onClick={() => openInNewTab(provider.url)}
+      className="group flex items-center gap-3 rounded-2xl border border-gray-200 p-3 transition hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 dark:border-neutral-800"
+      aria-label={`Open ${provider.name}`}
+    >
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white ring-1 ring-gray-200 dark:bg-neutral-900 dark:ring-neutral-700">
+        <provider.Icon />
+      </div>
+
+      {/* Text that adapts to light/dark */}
+      <div className="flex flex-col text-left">
+        <span className="text-sm font-semibold leading-5 text-gray-900 dark:text-gray-100">
+          {provider.name}
+        </span>
+        {/* <span className="text-xs text-gray-500 dark:text-gray-400">
+          {provider.description ?? "Connect your account"}
+        </span> */}
+      </div>
+
+      {suggested && (
+        <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+          Suggested
+        </span>
+      )}
+    </button>
+  );
+};
 
 const Divider: React.FC = () => (
   <div className="my-4 h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent dark:via-neutral-800" />
 );
 
-export default function EmailProvidersPopup({ isOpen, onClose, userEmail, resendVerification }: EmailProvidersPopupProps) {
+export default function EmailProvidersPopup({
+  isOpen,
+  onClose,
+  userEmail,
+  resendVerification,
+}: EmailProvidersPopupProps) {
   const suggested = inferProviderByEmail(userEmail || undefined)?.key;
 
   return (
@@ -194,22 +204,36 @@ export default function EmailProvidersPopup({ isOpen, onClose, userEmail, resend
           <Backdrop onClick={onClose} />
           <ModalCard>
             <div className="flex flex-col max-h-[90vh] sm:max-h-none overflow-y-auto items-start justify-between gap-1">
+              {/* Header */}
               <div className="flex w-full items-start justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-bold tracking-tight">Verify your email</h2>
+                  <h2 className="text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                    Verify your email
+                  </h2>
                   <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    We sent a verification link to
-                    {" "}
-                    <span className="font-medium text-gray-900 dark:text-gray-100">{userEmail || "your address"}</span>.
-                    {" "}Choose your provider to open your inbox.
+                    We sent a verification link to{" "}
+                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                      {userEmail || "your address"}
+                    </span>
+                    . Choose your provider to open your inbox.
                   </p>
                 </div>
+
                 <button
                   onClick={onClose}
-                  className="rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:hover:bg-neutral-800"
+                  className="rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-neutral-800 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   aria-label="Close"
                 >
-                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <svg
+                    className="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
                     <path d="M18 6 6 18M6 6l12 12" />
                   </svg>
                 </button>
@@ -217,29 +241,37 @@ export default function EmailProvidersPopup({ isOpen, onClose, userEmail, resend
 
               <Divider />
 
+              {/* Providers */}
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 w-full">
-                {PROVIDERS.filter(p => p.key !== "custom").map((p) => (
-                  <ProviderButton key={p.key} provider={p} suggested={suggested === p.key} />
+                {PROVIDERS.filter((p) => p.key !== "custom").map((p) => (
+                  <ProviderButton
+                    key={p.key}
+                    provider={p}
+                    suggested={suggested === p.key}
+                  />
                 ))}
               </div>
 
+              {/* Helper text */}
               <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
                 Don’t see your provider? Try the button below.
               </div>
 
+              {/* Buttons */}
               <div className="mt-2 flex flex-wrap items-center gap-2 w-full">
                 <button
                   onClick={() => openInNewTab("https://mail.google.com/")}
-                  className="rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium hover:bg-gray-50 dark:border-neutral-800 dark:hover:bg-neutral-800"
+                  className="rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-neutral-800 dark:text-gray-200 dark:hover:bg-neutral-800"
                 >
                   Open webmail
                 </button>
                 <button
                   onClick={() => openInNewTab("mailto:")}
-                  className="rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium hover:bg-gray-50 dark:border-neutral-800 dark:hover:bg-neutral-800"
+                  className="rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-neutral-800 dark:text-gray-200 dark:hover:bg-neutral-800"
                 >
                   Open default mail app
                 </button>
+
                 {resendVerification && (
                   <button
                     onClick={() => void resendVerification()}
@@ -250,8 +282,10 @@ export default function EmailProvidersPopup({ isOpen, onClose, userEmail, resend
                 )}
               </div>
 
+              {/* Footer tip */}
               <p className="mt-4 text-xs text-gray-500 dark:text-gray-400">
-                Tip: If it’s not in your inbox, check Promotions/Spam. You can safely close this and come back after verifying.
+                Tip: If it’s not in your inbox, check Promotions/Spam. You can
+                safely close this and come back after verifying.
               </p>
             </div>
           </ModalCard>

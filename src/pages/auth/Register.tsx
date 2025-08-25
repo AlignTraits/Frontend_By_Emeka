@@ -12,7 +12,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 import Header from '../../components/Header';
 import { GOOGLE_AUTH_URL } from '../../constants/auth.constant'
 import { removeToken } from "../../services/auth.service";
-
+import PasswordChecker from '../../components/PasswordChecker'
 
 export default function Register() {
   const { register, isLoading, error } = useAuth();
@@ -29,6 +29,26 @@ export default function Register() {
 
   const [counter, setCounter] = useState(119); // 1:59 = 119 seconds
   const [disabled, setDisabled] = useState(false);
+
+  const [rules, setRules] = useState({
+    length: false,
+    lower: false,
+    upper: false,
+    number: false,
+    special: false,
+  })
+
+  useEffect(() => {
+    setRules({
+      length: credentials.password.length >= 8,
+      lower: /[a-z]/.test(credentials.password),
+      upper: /[A-Z]/.test(credentials.password),
+      number: /[0-9]/.test(credentials.password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(credentials.password),
+    })
+  }, [credentials.password])
+
+  const validCount = [rules.lower, rules.upper, rules.number, rules.special].filter(Boolean).length
 
 
   // const openMail = ()=> {
@@ -79,7 +99,8 @@ export default function Register() {
     return (
       credentials.email.trim() !== "" &&
       credentials.password.trim() !== "" &&
-      agreed
+      agreed &&
+      validCount >= 3 && rules.length
     );
   };
 
@@ -226,6 +247,7 @@ removeToken()
                     )}
                   </button>
                 </div>
+                {credentials.password.length > 0  && <PasswordChecker password={credentials.password} />}
               </div>
 
               <label className="w-full inline-flex items-center space-x-2 cursor-pointer">
