@@ -27,7 +27,7 @@ interface SetupPasswordProps {
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
 useEffect(()=> {
   const email = searchParams.get("email") || "";
