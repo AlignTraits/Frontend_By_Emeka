@@ -88,7 +88,7 @@ export default function RecommendationResults({setViewState}: RecommendationProp
       </div>
 
       {
-        showModalFromBtnClick && <ManageRecord setShowModal={setShowModalFromBtnClick} editRecord={null} getRecords={getRecords} />
+        showModalFromBtnClick && <ManageRecord setEditRecord={() => {}} setShowModal={setShowModalFromBtnClick} editRecord={null} getRecords={getRecords} />
       }
 
       {showModal && (
