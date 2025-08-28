@@ -62,7 +62,7 @@ export default function AcountRecords() {
 
       </div>
       {
-        showModal && <ManageRecord setEditRecord={setEditRecord} setShowModal={setShowModal} editRecord={editRecord} getRecords={getRecords} />
+        showModal && <ManageRecord setShowModal={setShowModal} editRecord={editRecord} getRecords={getRecords} setEditRecord={setEditRecord} />
       }
     </div>
   );
