@@ -13,6 +13,7 @@ import { GOOGLE_AUTH_URL } from '../../constants/auth.constant'
 import { signUpTwo, removeToken } from '../../services/auth.service'
 import { toast } from 'react-toastify'
 import PasswordChecker from '../../components/PasswordChecker'
+
 // import { AxiosError } from 'axios'
 
 export default function Login() {
@@ -26,6 +27,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+  const [showPasswordRules, setShowPasswordRules] = useState(false)
 
     const [rules, setRules] = useState({
     length: false,
@@ -167,6 +169,11 @@ export default function Login() {
                     onChange={(e) =>
                       setCredentials({ ...credentials, password: e.target.value })
                     }
+                    onFocus={() => {
+                    setShowPasswordRules(true)
+                  }}
+                  onBlur={() => setShowPasswordRules(false)}
+
                   />
                   <button
                     type="button"
@@ -180,7 +187,7 @@ export default function Login() {
                     )}
                   </button>
                 </div>
-                {credentials.password.length > 0  && <PasswordChecker password={credentials.password} />}
+                {showPasswordRules && <PasswordChecker password={credentials.password} />}
               </div>
             </div>
 

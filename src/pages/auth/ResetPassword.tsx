@@ -7,6 +7,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useAuth } from "../../contexts/useAuth";
 import { BeatLoader } from "react-spinners";
 // import { verifyEmail } from "../../services/auth.service";
+import PasswordChecker from "../../components/PasswordChecker"
 
 interface ResetPasswordProps {
   title: string
@@ -22,11 +23,36 @@ interface ResetPasswordProps {
   const {error, isLoading, verifyEmailToken, setError} = useAuth()
   const [token, setToken]  = useState<string>('')
   const [email, setEmail] = useState<string>('')
+  const [showPasswordRules, setShowPasswordRules] = useState(false)
 
   const [passwordError, setPasswordError] = useState("")
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
 
+      const [rules, setRules] = useState({
+      length: false,
+      lower: false,
+      upper: false,
+      number: false,
+      special: false,
+    })
+  
+    useEffect(() => {
+      setRules({
+        length: password.length >= 8,
+        lower: /[a-z]/.test(password),
+        upper: /[A-Z]/.test(password),
+        number: /[0-9]/.test(password),
+        special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+      })
+    }, [password])
 
+    const validCount = [rules.lower, rules.upper, rules.number, rules.special].filter(Boolean).length
+
+      const isFormValid = (): boolean => {
+    return validCount >= 3 && rules.length && password === confirmPassword && password !== '' 
+    && confirmPassword !== ''
+
+  }
 
 useEffect(()=> {
   const token  = searchParams.get("token") || "";
@@ -52,19 +78,8 @@ useEffect(()=> {
     e.preventDefault();
     
     if (!isValidPassword(password)) {
-      setPasswordError("at least 8 characters, include uppercase and lowercase letters, numbers, and special characters.")
-    }
-
-    if (!isValidPassword(confirmPassword)) {
-      setConfirmPasswordError("at least 8 characters, include uppercase and lowercase letters, numbers, and special characters.")
-    }
-
-    if (password !== confirmPassword) {
-      setError("New password and confirm password should be the same!")
-    }
-
-    if (!isValidPassword(confirmPassword) || !isValidPassword(password) || password !== confirmPassword) {
-      return
+      setPasswordError("Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.");
+      return;
     }
 
     try {
@@ -149,7 +164,11 @@ useEffect(()=> {
                       placeholder="Enter your new password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      onFocus={resetInput}
+                      onFocus={() => {
+                        resetInput()
+                        setShowPasswordRules(true)
+                      }}
+                      onBlur={() => setShowPasswordRules(false)}
                     />
                     {passwordError && <p className="mt-1 text-[#E33629] font-normal italic text-[10px]">{passwordError}</p>}
                     <button
@@ -164,6 +183,7 @@ useEffect(()=> {
                       )}
                     </button>
                   </div>
+                   { showPasswordRules && <PasswordChecker password={password} /> }
                 </div>
                 <div>
                   <label
@@ -181,7 +201,9 @@ useEffect(()=> {
                       placeholder="Re-enter your new password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      onFocus={resetInput}
+                      onFocus={() => {
+                        resetInput()
+                      }}
                     />
                     {confirmPasswordError && <p className="mt-1 text-[#E33629] font-normal italic text-[10px]">{confirmPasswordError}</p>}
                     <button
@@ -196,11 +218,12 @@ useEffect(()=> {
                       )}
                     </button>
                   </div>
+                
                 </div>
 
                 <button
                   type="submit"
-                  disabled={isLoading}
+                   disabled={isLoading || !isFormValid()}
                   className="w-full h-12 mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
                 >
                   {isLoading ? <BeatLoader /> : "Update Password"}

@@ -397,17 +397,17 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
                 ))}
               </div>
 
-              <div className="w-full flex justify-end gap-x-[20px] mt-4">
-                <button 
+              <div className="w-full flex flex-wrap md:flex-nowrap justify-between gap-4 mt-4">
+                <button
                   onClick={resetForm}
-                  className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#1E1E1E] text-[14px] font-semibold rounded-md hover:bg-gray-50"
+                  className="w-full md:w-[211px] h-[50px] border-[#DDDDDD] border text-[#1E1E1E] text-sm font-semibold rounded-md hover:bg-gray-50"
                 >
                   Clear Form
                 </button>
 
                 <button
                   onClick={addSubject}
-                  className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#ffffff] text-[14px] font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
+                  className="w-full md:w-[211px] h-[50px] border-[#DDDDDD] border text-white text-sm font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
                 >
                   Add Subjects
                 </button>
@@ -415,15 +415,15 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
                 <button
                   onClick={addRequirements}
                   disabled={isLoading}
-                  className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#ffffff] text-[14px] font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
+                  className="w-full md:w-[211px] h-[50px] border-[#DDDDDD] border text-white text-sm font-semibold rounded-md bg-[#004085] hover:bg-[#003366] disabled:opacity-50"
                 >
-                  {`Add Record`}
+                  {`Add Exam Record`}
                 </button>
 
                 <button
                   onClick={() => setShowPreview(true)}
                   disabled={isLoading}
-                  className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#ffffff] text-[14px] font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
+                  className="w-full md:w-[211px] h-[50px] border-[#DDDDDD] border text-white text-sm font-semibold rounded-md bg-[#004085] hover:bg-[#003366] disabled:opacity-50"
                 >
                   {`Show Preview`}
                 </button>
@@ -500,7 +500,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
                   onClick={() => setShowPreview(false)}
                   className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#ffffff] text-[14px] font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
                 >
-                  Close Preview
+                  Back
                 </button>
 
                 <button
