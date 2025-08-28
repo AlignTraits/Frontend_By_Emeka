@@ -203,7 +203,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
         subjects: subjectList,
         country: selectedCountry,
         examType: examType,
-        examYear
+        examYear: examYear
       }]);
     }
 
