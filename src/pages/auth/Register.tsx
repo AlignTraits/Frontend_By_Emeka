@@ -29,6 +29,7 @@ export default function Register() {
 
   const [counter, setCounter] = useState(119); // 1:59 = 119 seconds
   const [disabled, setDisabled] = useState(false);
+  const [showPasswordRules, setShowPasswordRules] = useState(false)
 
   const [rules, setRules] = useState({
     length: false,
@@ -234,6 +235,10 @@ removeToken()
                         password: e.target.value,
                       })
                     }
+                    onFocus={() => {
+                    setShowPasswordRules(true)
+                  }}
+                  onBlur={() => setShowPasswordRules(false)}
                   />
                   <button
                     type="button"
@@ -247,7 +252,7 @@ removeToken()
                     )}
                   </button>
                 </div>
-                {credentials.password.length > 0  && <PasswordChecker password={credentials.password} />}
+                {showPasswordRules  && <PasswordChecker password={credentials.password} />}
               </div>
 
               <label className="w-full inline-flex items-center space-x-2 cursor-pointer">

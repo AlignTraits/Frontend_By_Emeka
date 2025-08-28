@@ -9,6 +9,7 @@ import { BeatLoader } from "react-spinners";
 import { signUpTwo } from '../../services/auth.service'
 // import { verifyEmail } from "../../services/auth.service";
 import EmailProvidersPopup from "../../components/EmailProvidersPopup";
+import PasswordChecker from "../../components/PasswordChecker"
 
 interface SetupPasswordProps {
   title: string
@@ -26,8 +27,29 @@ interface SetupPasswordProps {
   const [passwordError, setPasswordError] = useState("")
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [showPasswordRules, setShowPasswordRules] = useState(false)
 
   const [open, setOpen] = useState(false);
+
+    const [rules, setRules] = useState({
+    length: false,
+    lower: false,
+    upper: false,
+    number: false,
+    special: false,
+  })
+
+  useEffect(() => {
+    setRules({
+      length: password.length >= 8,
+      lower: /[a-z]/.test(password),
+      upper: /[A-Z]/.test(password),
+      number: /[0-9]/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    })
+  }, [password])
+
+  const validCount = [rules.lower, rules.upper, rules.number, rules.special].filter(Boolean).length
 
 useEffect(()=> {
   const email = searchParams.get("email") || "";
@@ -46,25 +68,20 @@ useEffect(()=> {
   }
 
    
+  const isFormValid = (): boolean => {
+    return validCount >= 3 && rules.length && password === confirmPassword && password !== '' 
+    && confirmPassword !== ''
+
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!isValidPassword(password)) {
-      return setPasswordError("at least 8 characters, include uppercase and lowercase letters, numbers, and special characters.")
+      setPasswordError("Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.");
+      return;
     }
-
-    if (!isValidPassword(confirmPassword)) {
-      return setConfirmPasswordError("at least 8 characters, include uppercase and lowercase letters, numbers, and special characters.")
-    }
-
-    if (password !== confirmPassword) {
-      return setError("New password and confirm password should be the same!")
-    }
-
-    if (!isValidPassword(confirmPassword) || !isValidPassword(password) || password !== confirmPassword) {
-      return
-    }
+    
 
     try {
       setIsLoading(true)
@@ -99,7 +116,7 @@ useEffect(()=> {
       <Header />
 
       <div className="mx-auto mt-[40px] md:mt-[80px] w-full max-w-[600px] px-4 md:px-0">
-        <div className="space-y-5 p-6 md:p-10 md:bg-white rounded-lg md:shadow-lg md:border-[#ccc] md:border-[1px]">
+        <div className="space-y-5 h-[400px] overflow-y-auto p-6 md:p-10 md:bg-white rounded-lg md:shadow-lg md:border-[#ccc] md:border-[1px]">
           <div className="mx-auto space-y-2 mb-10 md:mb-0">
             <h2 className="text-xl md:text-2xl text-[#101828] text-center md:text-left font-semibold">
               {title}
@@ -125,7 +142,12 @@ useEffect(()=> {
                   placeholder="Enter your new password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  onFocus={resetInput}
+                  onFocus={() => {
+                    resetInput()
+                    setShowPasswordRules(true)
+                  }}
+                  onBlur={() => setShowPasswordRules(false)}
+
                 />
                 {passwordError && <p className="mt-1 text-[#E33629] font-normal italic text-[10px]">{passwordError}</p>}
                 <button
@@ -140,6 +162,7 @@ useEffect(()=> {
                   )}
                 </button>
               </div>
+              { showPasswordRules && <PasswordChecker password={password} /> }
             </div>
             <div>
               <label
@@ -176,7 +199,7 @@ useEffect(()=> {
 
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !isFormValid()}
               className="w-full h-12 mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50"
             >
               {isLoading ? <BeatLoader /> : "Create Password"}
