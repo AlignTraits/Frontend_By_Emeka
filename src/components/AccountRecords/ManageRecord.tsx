@@ -23,11 +23,12 @@ interface ManageRecordProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   editRecord: any;
   getRecords: () => void;
+  setEditRecord: React.Dispatch<React.SetStateAction<any>>;
 }
 
 
 
-const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps) => {
+const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: ManageRecordProps) => {
 
   const [errorObj, setErrorObj] = useState({
     examType: false,
@@ -58,6 +59,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
           grade: editRecord.ExamType1SubGrades[index] || ""
         }))
       );
+      setExamYear(editRecord.ExamYear1 || "1970")
 
       setReqId(editRecord.id)
       
@@ -85,6 +87,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
 
   const handleClose = () => {
     setShowModal(false)
+    resetForm();
   }
 
   const addSubject = () => {
@@ -113,6 +116,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
     setSelectedCountry("")
     setExamYear("")
     setErrorObj((prev) => ({ ...prev, examType: false, country: false }));
+    setEditRecord(null)
   };
 
     const checkAllFields = () => {
@@ -155,6 +159,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
       setExamType(tempRequirement.examType);
       setSubjectList(tempRequirement.subjects);
       setReqId(tempRequirement.id);
+      setExamYear(tempRequirement.examYear);
       
       // Scroll to form
       window.scrollTo({
@@ -168,8 +173,18 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
   const addRequirements = () => {
     checkAllFields();
 
+    if (subjectList.length < 4) {
+      toast.error("Please add at least four subjects");
+      return;
+    }
+
     if (!isFormValid()) {
       toast.error("Please fill all input fields!");
+      return;
+    }
+
+    if (subjectList.length < 4) {
+      toast.error("Please add at least four subjects");
       return;
     }
 
@@ -179,14 +194,16 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
         id: reqId,
         subjects: subjectList,
         country: selectedCountry,
-        examType: examType
+        examType: examType,
+        examYear: examYear
       }]);
     } else {
       setRequirementList((prev) => [...prev, {
         id: JSON.stringify(Date.now()),
         subjects: subjectList,
         country: selectedCountry,
-        examType: examType
+        examType: examType,
+        examYear
       }]);
     }
 
@@ -195,6 +212,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
     setSelectedCountry("")
     setSubjectList([]);
     setExamYear("");
+    setReqId(null)
   };
 
   // useEffect(() => {
@@ -205,7 +223,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
 
   const handleSubmit = async () => {
     if (requirementList.length === 0) {
-      toast.error("Please add at least one record to proceed");
+      toast.error("Please add record to proceed");
       return
     }
 
@@ -234,6 +252,13 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
       setShowModal(false);
       getRecords();
     }
+  }
+
+  const disabledBtn = () => {
+    if (isLoading) return true;
+    if (reqId) return false;
+    if (requirementList.length === 1) return true;
+    return false;
   }
 
   return (
@@ -407,14 +432,15 @@ const ManageRecord = ({setShowModal, editRecord, getRecords}: ManageRecordProps)
 
                 <button
                   onClick={addSubject}
-                  className="w-full md:w-[211px] h-[50px] border-[#DDDDDD] border text-white text-sm font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
+                  disabled={disabledBtn()}
+                  className="w-full md:w-[211px] h-[50px] border-[#DDDDDD] border text-white text-sm font-semibold rounded-md bg-[#004085] hover:bg-[#003366] disabled:opacity-50"
                 >
                   Add Subjects
                 </button>
 
                 <button
                   onClick={addRequirements}
-                  disabled={isLoading}
+                  disabled={disabledBtn()}
                   className="w-full md:w-[211px] h-[50px] border-[#DDDDDD] border text-white text-sm font-semibold rounded-md bg-[#004085] hover:bg-[#003366] disabled:opacity-50"
                 >
                   {`Add Exam Record`}
