@@ -2,8 +2,9 @@ import React, { useEffect, useState, useRef } from "react"
 import { SlGraph } from "react-icons/sl";
 import { useAuth } from '../../../contexts/useAuth';
 import { getAcademicRecords } from "../../../services/utils";
-import { BeatLoader } from "react-spinners";
-import ManageRecord from "../../AccountRecords/ManageRecord";
+// import { BeatLoader } from "react-spinners";
+// import ManageRecord from "../../AccountRecords/ManageRecord";
+import { useNavigate } from "react-router-dom";
 // import { toast } from "react-toastify";
 
 // const recommendations = new Array(8).fill({
@@ -21,22 +22,21 @@ export default function RecommendationResults({setViewState}: RecommendationProp
   const [isLoading, setIsLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [dataLenth, setDataLength] = useState(0)
-
-  const [showModalFromBtnClick, setShowModalFromBtnClick] = useState(false)
+  const navigate = useNavigate()
 
   // console.log("user: ", user);  
   const hasFetched = useRef(false);
 
   useEffect(() => {
-       if (!hasFetched.current) {
+    if (!hasFetched.current) {
       getRecords();
       hasFetched.current = true;
     }
-  }, [showModalFromBtnClick])
+  }, [])
 
   const handleBtnClick = () => {
     if (dataLenth < 2) {
-      setShowModalFromBtnClick(true);
+      setShowModal(true);
     } else {
       setViewState(1)
     }
@@ -83,31 +83,37 @@ export default function RecommendationResults({setViewState}: RecommendationProp
 
       <div className="text-center">
         <button disabled={isLoading} onClick={handleBtnClick} className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
-          {isLoading ? <BeatLoader /> : "Get course recommendation"}
+          {"Get course recommendation"}
         </button>
       </div>
 
-      {
-        showModalFromBtnClick && <ManageRecord setEditRecord={() => {}} setShowModal={setShowModalFromBtnClick} editRecord={null} getRecords={getRecords} />
-      }
-
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+          onClick={() => setShowModal(false)} // click on background closes modal
+        >
+          <div
+            className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full"
+            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside modal
+          >
             <h2 className="text-xl font-bold mb-4">Add academic record</h2>
-            <p className="mb-4">Click here to add your academic record</p>
+            <p className="mb-4">
+              To provide you with accurate course recommendations, we require at least
+              two exam records.
+            </p>
             <button
               onClick={() => {
                 setShowModal(false);
-                setShowModalFromBtnClick(true);
+                navigate("/dashboard/settings/records");
               }}
               className="w-full h-12 bg-[#004085] text-white rounded-lg hover:bg-blue-700"
             >
-              Add Record
+              Add Exam Record
             </button>
           </div>
         </div>
       )}
+
     </div>
   );
 }

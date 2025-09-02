@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../../contexts/useAuth';
 import Card from '../../components/AccountRecords/Card';
 import ManageRecord from '../../components/AccountRecords/ManageRecord';
@@ -12,14 +12,20 @@ export default function AcountRecords() {
   const [editRecord, setEditRecord] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setPageDesc({
-      desc: "Check your records",
-      title: "Records"
-    })
+  const hasFetched = useRef(false);
 
-    getRecords();
-  }, [])
+
+    useEffect(() => {
+      setPageDesc({
+        desc: "Check your records",
+        title: "Records"
+      });
+
+      if (!hasFetched.current) {
+        getRecords();
+        hasFetched.current = true;
+      }
+    }, [])
 
 
     const getRecords = async () => {
@@ -29,6 +35,7 @@ export default function AcountRecords() {
         setRecordList(response.data)
       } catch (err: any) {
         console.log("error: ", err)
+        setRecordList([]);
       } finally {
         setIsLoading(false)
       }
@@ -36,6 +43,10 @@ export default function AcountRecords() {
 
   return (
     <div className="p-5 relative">
+      {
+        recordList.length < 2 && 
+        <p className='text-red-500'>Create at least two Exam Records</p>
+      }
       <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[30px] shadow-md rounded-xl p-2 lg:p-5 w-[100%] size-max">
         <div>
           <p className="text-[#212529] text-[18px] font-bold">Academic Records</p>

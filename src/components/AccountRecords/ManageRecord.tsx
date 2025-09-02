@@ -117,6 +117,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
     setExamYear("")
     setErrorObj((prev) => ({ ...prev, examType: false, country: false }));
     setEditRecord(null)
+    setRequirementList([])
   };
 
     const checkAllFields = () => {
@@ -188,6 +189,8 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
       return;
     }
 
+    setShowPreview(true)
+
     if (reqId) {
       let tempList = requirementList.filter((item) => item.id !== reqId);
       setRequirementList([...tempList, {
@@ -257,18 +260,18 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
   const disabledBtn = () => {
     if (isLoading) return true;
     if (reqId) return false;
-    if (requirementList.length === 1) return true;
+    // if (requirementList.length === 1) return true;
     return false;
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={() => setShowModal(false)}>
 
   {/* Backdrop */}
-          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+    <div className="absolute inset-0 bg-black bg-opacity-50"></div>
           
 
-      <div className="bg-white rounded-lg w-[80%] lg:w-[50%] relative h-[500px] overflow-y-auto scrollbar-hide p-[20px] flex flex-col gap-y-[20px]">
+      <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-lg w-[80%] lg:w-[50%] relative h-[500px] overflow-y-auto scrollbar-hide p-[20px] flex flex-col gap-y-[20px]">
         <FiX onClick={handleClose} className="cursor-pointer absolute right-6 top-[30px] -translate-y-1/2 text-[#595959] w-5 h-5"  />
 
         <div>
@@ -278,7 +281,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
         {
           !showPreview && (
             <>
-              {reqId && (
+              {/* {reqId && (
                 <div className="bg-blue-50 text-blue-700 p-3 rounded-md flex justify-between items-center">
                   <span>Editing Record </span>
                   <button 
@@ -288,7 +291,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
                     Cancel Editing
                   </button>
                 </div>
-              )}
+              )} */}
 
               <div className="w-[100%] flex flex-col gap-y-[5px]">
                 <p className={`text-[16px] font-medium ${errorObj.country ? "text-[#F04438]" : "text-[#1E1E1E]"}`}>Country</p>
@@ -439,20 +442,25 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
                 </button>
 
                 <button
-                  onClick={addRequirements}
+                  onClick={() => {
+                    addRequirements()
+                    // if (requirementList.length > 0) {
+                    //   setShowPreview(true)
+                    // }
+                  }}
                   disabled={disabledBtn()}
                   className="w-full md:w-[211px] h-[50px] border-[#DDDDDD] border text-white text-sm font-semibold rounded-md bg-[#004085] hover:bg-[#003366] disabled:opacity-50"
                 >
                   {`Add Exam Record`}
                 </button>
 
-                <button
+                {/* <button
                   onClick={() => setShowPreview(true)}
                   disabled={isLoading}
                   className="w-full md:w-[211px] h-[50px] border-[#DDDDDD] border text-white text-sm font-semibold rounded-md bg-[#004085] hover:bg-[#003366] disabled:opacity-50"
                 >
                   {`Show Preview`}
-                </button>
+                </button> */}
               </div>
             </>
           )
@@ -523,7 +531,10 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
               <div className="w-full flex justify-center gap-x-[20px] mt-4">
                 <button
                   disabled={isLoading}
-                  onClick={() => setShowPreview(false)}
+                  onClick={() => {
+                    setShowPreview(false)
+                    editRequirement(requirementList[0].id)
+                  }}
                   className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#ffffff] text-[14px] font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
                 >
                   Back

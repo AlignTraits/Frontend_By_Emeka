@@ -10,7 +10,7 @@ export const generateYearStrings = (startYear = 1970): string[] => {
 }
 
 export const YEARS = generateYearStrings();
-export const JAMB_SCORE_lLIST = Array.from({ length: 101 }, (_, i) => i.toString());
+export const JAMB_SCORE_lLIST = Array.from({ length: 101 }, (_, i) => i.toString()).reverse();
 
 export const SUBJECTS = [
   "English",
@@ -40,7 +40,7 @@ export const SUBJECTS = [
   "Further Mathematics",
   "Technical Drawing",
   "French",
-  "Yourba",
+  "Yoruba",
   "Igbo",
   "Hausa",
   "Food and Nutrition",
