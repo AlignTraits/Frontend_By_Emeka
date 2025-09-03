@@ -2,22 +2,22 @@
 import { useAuth } from '../../contexts/useAuth';
 import { 
   // FiBell, 
-  FiSearch, 
   FiUser,
   FiMenu,
   // FiArrowLeft
 
 } from 'react-icons/fi';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Header = ({
   setOpen,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { user, pageDesc, setSearchAllTerm, searchAllTerm } = useAuth();
+  const { user, pageDesc } = useAuth();
 
-  const location = useLocation()
+  const location = useLocation();
+  const navigate = useNavigate()
 
   return (
     <div className="relative bg-[white] border-[0.4px] border-y-[#E0E0E0] py-4 px-5 sticky top-0 z-10 w-full overflow-hidden border-b border-b-[#DDDDDD] bg-white shadow-md sm:rounded-md">
@@ -53,22 +53,17 @@ const Header = ({
           </div>
         </div>
 
-        {
-          location.pathname.startsWith("/dashboard/school") && 
-          <div className="w-[400px] h-[40px] mx-auto hidden lg:block">
-            <input
-              type="text"
-              placeholder="Search"
-              value={searchAllTerm}
-              onChange={(e) => setSearchAllTerm(e.target.value)}
-              className="w-full py-2 px-10 rounded-md font-semibold border-[1px] border-[#DDDDDD] focus:outline-none focus:border-[#757575] text-[14px] font-[400] text-[#8F8F8F]"
-            />
-            <FiSearch className="absolute left-2 top-[20px] -translate-y-1/2 text-[#999999] w-5 h-5" />
-          </div>
-        }
         
 
-        <div className="items-center hidden lg:flex lg:space-x-2">
+        <div className="items-center hidden lg:flex  lg:space-x-2">
+          {
+            location.pathname.startsWith("/dashboard/") && 
+            <div className="w-[400px] h-[40px] hidden lg:flex justify-end w-[350px] bg-red lg:px-20">
+              <button onClick={() => navigate("/career-recommedation")} className="bg-[#004085] h-[40px] w-[90%] lg:w-[180px] font-semibold text-[12px] text-[white] rounded-md">
+                Career Recommendation
+              </button>
+            </div>
+          }
           <div className="text-right">
             <p className="text-sm font-medium text-gray-900">
               {user?.firstname} {user?.lastname}

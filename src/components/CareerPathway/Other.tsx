@@ -80,6 +80,7 @@ const Other = ({setViewState, setCourseFilter, setShowDetails, showDetails}: Oth
         }
 
         const courseResponse = await getCourseRecommendation(tempPayload);
+        console.log("courseResponse: ", courseResponse)
         setFilterItem(courseResponse.data[0]?.title || "")
 
       } catch (err: any) {
@@ -128,7 +129,7 @@ const Other = ({setViewState, setCourseFilter, setShowDetails, showDetails}: Oth
           <ClipLoader />
         </div>: 
         courses.length === 0 || !selectedCourse ? 
-        <div className="flex justify-center items-center h-[200px] text-[#212121] border-[#757575] border-[1px] rounded-md">No courses available</div> :
+        <div className="flex justify-center items-center h-[200px] text-[#212121] border-[#757575] border-[1px] rounded-md">No Recommended course available</div> :
         <div className="w-full h-[370px] lg:h-max mt-2 p-5 border-[#757575] border-[1px] rounded-md flex flex-col space-y-[10px] lg:flex-row lg:items-center px-5 gap-x-[40px]">
           <img src={selectedCourse?.image} className="h-[150px]" />
 

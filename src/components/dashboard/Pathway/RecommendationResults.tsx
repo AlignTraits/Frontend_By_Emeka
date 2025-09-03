@@ -47,9 +47,9 @@ export default function RecommendationResults({setViewState}: RecommendationProp
       setIsLoading(true)
       const response = await getAcademicRecords();
       setDataLength(response.data.length)
-      if (response.data.length < 2) {
-        setShowModal(true)
-      }
+      // if (response.data.length < 2) {
+      //   setShowModal(true)
+      // }
 
     } catch (err: any) {
       console.log("error: ", err)
