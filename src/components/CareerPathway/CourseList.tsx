@@ -5,6 +5,7 @@ import CourseCard from "../dashboard/CourseCard";
 import fileIcon from "../../assets/IconWrap.svg"
 import { getCoursesWithoutToken } from "../../services/schools";
 import Details from "./Details";
+import { CiSearch } from "react-icons/ci";
 
 import Papa from 'papaparse';
 import CustomSelectWithProps from "../../components/dashboard/CustomSelectWithProps";
@@ -238,32 +239,15 @@ export default function CourseList({courseFilter, showDetails, setShowDetails}: 
         showDetails ? <Details courseItem={courseDetails} setShowDetails={setShowDetails}  /> :
 
           <div className="w-full min-h-screen">
-            {/* <div className="flex w-[1000px] border-b border-b-[#EAECF0] px-[20px] mt-[20px] overflow-x-auto scrollbar-hide">
-              {courseCategoryList.map((tab) => {
-                return (
-                  <button
-                    key={tab.id}
-                    className={`py-2 px-4 text-[12px] whitespace-nowrap font-semibold border-b-2 font-medium transition 
-                      ${
-                        activeTab === tab.id
-                          ? "border-[#003064] text-[#004085] text-[12px] font-semibold"
-                          : "border-transparent hover:text-blue-500 text-[#999999]"
-                      }`}
-                    onClick={() => setActiveTab(tab.id)}
-                  >
-                    {tab.name}
-                  </button>
-                );
-              })}
-            </div> */}
-
             <div className="w-full border-b border-b-[#DDDDDD]">
               <div className="flex flex-wrap gap-[10px] px-3 py-3">
-                <div className="relative" ref={fieldDropdownRef}>
+                
+                <div className="relative flex-1" ref={fieldDropdownRef}>
+                  <CiSearch className="absolute top-[25%] left-[10px] text-[#999999]" />
                   <input
                     type="text"
-                    className="h-[35px] w-[150px] border-[0.8px] border-gray-300 p-2 rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
-                    placeholder="Field Of Study"
+                    className="h-[35px] pl-8 border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+                    placeholder="Search"
                     value={fieldStudy}
                     onFocus={() => setFieldDropdownOpen(true)}
                     onChange={e => {
@@ -301,7 +285,7 @@ export default function CourseList({courseFilter, showDetails, setShowDetails}: 
                 </div>
 
 
-                <div className="relative" ref={dropdownRef}>
+                <div className="relative w-[150px]" ref={dropdownRef}>
                   <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
                   <input
                     type="text"
@@ -362,7 +346,7 @@ export default function CourseList({courseFilter, showDetails, setShowDetails}: 
                   )}
                 </div>
 
-                <div className="md:w-[200px]">
+                <div className="md:w-[150px]">
                   <CustomSelectWithProps
                     placeholder="Scholarship Options"
                     classNameStyle="h-[35px]"

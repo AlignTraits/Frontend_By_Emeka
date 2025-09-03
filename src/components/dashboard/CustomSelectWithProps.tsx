@@ -90,13 +90,14 @@ const CustomSelectWithProps: React.FC<SelectProps> = ({
     setIsOpen((prev) => !prev)
   }
   
+  console.log("classNameStyle: ", classNameStyle)
 
   return (
     <div ref={selectRef} className={`relative z-9 ${classNameStyle}`}>
       <button
         type="button"
         disabled={disabledState}
-        className={`w-full px-3 sm:px-4 py-2 bg-white rounded-md border-[0.8px] border-gray-300 focus:outline-none capitalize flex justify-between items-center gap-x-2 sm:gap-x-[10px] text-[13px] sm:text-[14px] min-h-[40px] ${classNameStyle}`}
+        className={`w-full px-3 sm:px-4 py-2 bg-white rounded-md border-[0.8px] border-gray-300 focus:outline-none capitalize flex justify-between items-center gap-x-2 sm:gap-x-[10px] text-[13px] sm:text-[14px] ${classNameStyle}`}
         onClick={handleClick}
       >
         {selected?.value ? (

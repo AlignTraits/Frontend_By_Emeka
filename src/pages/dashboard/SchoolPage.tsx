@@ -18,6 +18,7 @@ import CourseDetails from "../../components/dashboard/CourseDetails";
 // import { toast } from "react-toastify";
 import { courseCategoryList } from "../../data/courseCategories";
 // import csvFile from "../assets/csvFile.csv"
+import { CiSearch } from "react-icons/ci";
 
 const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
 
@@ -272,11 +273,13 @@ export default function SchoolPage() {
 
             <div className="flex justify-between items-center px-[20px] border-b border-b-[#DDDDDD] pb-[10px]">
               <div className="flex gap-x-[10px] my-[20px]">
-                <div className="w-[200px] relative" ref={fieldDropdownRef}>
+                <div className="flex-1 relative" ref={fieldDropdownRef}>
+                  
+                  <CiSearch className="absolute top-[25%] left-[10px] text-[#999999]" />
                   <input
                     type="text"
-                    className="h-[35px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
-                    placeholder="Field Of Study"
+                    className="h-[35px] pl-8 border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+                    placeholder="Search"
                     value={fieldStudy}
                     onFocus={() => setFieldDropdownOpen(true)}
                     onChange={e => {
@@ -314,7 +317,7 @@ export default function SchoolPage() {
                 </div>
 
 
-                <div className="w-[200px] relative" ref={dropdownRef}>
+                <div className="w-[150px] relative" ref={dropdownRef}>
                   <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
                   <input
                     type="text"
@@ -344,7 +347,7 @@ export default function SchoolPage() {
                     )}
                 </div>
 
-                <div className="w-[200px] relative" ref={stateDropdownRef}>
+                <div className="w-[150px] relative" ref={stateDropdownRef}>
                   <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
                   <input
                     type="text"
@@ -375,7 +378,7 @@ export default function SchoolPage() {
                   )}
                 </div>
 
-                <div className="w-200px">
+                <div className="w-150px">
                   <CustomSelectWithProps
                     placeholder="Scholarship Options"
                     classNameStyle="h-[35px]"
