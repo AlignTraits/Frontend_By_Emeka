@@ -51,7 +51,7 @@ export default function BulkLogoModal({
 
     if (files.length !== selectedList.length) {
       toast.error(
-        `You must upload ${selectedList.length} file(s).`
+        `You must upload ${selectedList.length} file(s) for the selected items.`
       );
       return;
     }
@@ -62,9 +62,20 @@ export default function BulkLogoModal({
     // append school IDs
     formData.append(payloadType, JSON.stringify(selectedList));
 
-    // append all selected files
-    files.forEach((file) => {
-      formData.append("images", file);
+    // append all selected files with renamed filenames
+    files.forEach((file, index) => {
+      const schoolId = selectedList[index];
+
+      // extract original extension (default to .png if missing)
+      const ext = file.name.includes(".")
+        ? file.name.split(".").pop()
+        : "png";
+
+      const renamedFile = new File([file], `${schoolId}.${ext}`, {
+        type: file.type,
+      });
+
+      formData.append("images", renamedFile);
     });
 
     try {
@@ -80,7 +91,7 @@ export default function BulkLogoModal({
       );
 
       if (response.status === 201) {
-        toast.success("Files Uploaded Successfully");
+        toast.success("Schools Uploaded Successfully");
       } else {
         toast.error(response.data.message);
       }
