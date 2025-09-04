@@ -16,9 +16,10 @@ import BulkUpdateSchoolModal from "../../components/Admin/BulkUpdateSchools";
 // import { RiUploadCloud2Line } from "react-icons/ri";
 import CustomSelectWithProps from "../../components/dashboard/CustomSelectWithProps";
 import BulkUploadModal from "../../components/Admin/BulkUploadModal";
+import BulkLogoModal from "../../components/Admin/BulkLogoModal";
 import { deleteSchools } from "../../services/schools";
 
-const UPLOAD_LIST = ["Bulk Upload New", "Bulk Upload Update"]
+const UPLOAD_LIST = ["Bulk Upload New", "Bulk Upload Update", "Bulk Upload Logo"]
 
 export default function Schools() {
   const [showModal, setShowModal] = useState(false);
@@ -35,6 +36,7 @@ export default function Schools() {
 
   const [showBulkModal, setShowBulkModal] = useState(false)
   const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const [showLogoModal, setShowLogoModal] = useState(false)
 
   // const temSelectedScool = schools.filter((elem) => selectedSchoolList.includes(elem.id))
 
@@ -69,6 +71,11 @@ export default function Schools() {
       setShowBulkModal(true) 
     } else if (bulkUploadType === "Bulk Upload Update") {
       setShowUpdateModal(true)
+    } else if (bulkUploadType === "Bulk Upload Logo") {
+      if (selectedSchoolList.length === 0) {
+        toast.error("Select at least one school");
+      }
+      setShowLogoModal(true)
     }
   }, [bulkUploadType])
 
@@ -160,17 +167,6 @@ export default function Schools() {
               </div> : <></>
             }
 
-
-            {/* <button 
-              type="button" 
-              onClick={() => setShowBulkModal(true)}
-              className="w-[150px] text-[#1E1E1E] text-[14px] font-medium py-2 h-[40px] bg-[#F6C648] p-2 rounded-md 
-                  outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
-              >
-              <p>Bulk Uploads</p>
-              <FaAngleDown className="text-[#1E1E1E]"  />
-            </button> */}
-
             <CustomSelectWithProps
               placeholder="Bulk Uploads"
               options={UPLOAD_LIST.map((typeValue) => ({
@@ -183,6 +179,7 @@ export default function Schools() {
                 label: bulkUploadType,
               }}
               handleError={() => {}}
+              classNameStyle="w-[180px]"
             />
 
             <button 
@@ -237,6 +234,17 @@ export default function Schools() {
         {showModal && <CreateSchoolModal setShowModal={setShowModal} setSchools={setSchools} />}
       </div>
       {showBulkModal && <BulkUploadModal setBulkUploadType={setBulkUploadType} setShowModal={setShowBulkModal} getSchools={getSchoolNow} />}
+
+      { showLogoModal && selectedSchoolList.length > 0 && 
+        <BulkLogoModal 
+          apiUrl="/images/bulk-upload-school-images" 
+          payloadType="knownSchoolIds" 
+          setBulkUploadType={setBulkUploadType} 
+          setShowModal={setShowLogoModal} 
+          getSchools={getSchoolNow} 
+          selectedList={selectedSchoolList}  
+        />
+      }
 
       {showUpdateModal && <BulkUpdateSchoolModal setBulkUploadType={setBulkUploadType} setShowModal={setShowUpdateModal} getSchools={getSchoolNow} schoolList={schools}  />}
     </div>

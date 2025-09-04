@@ -18,8 +18,9 @@ import { deleteCourses } from "../../services/schools";
 import BulkUpdateCourseModal from "../../components/Admin/BulkUpdateCourses";
 import AdmissionLogicBulkUpdate from "../../components/Admin/AdmissionLogicBulkUpdate";
 import { toast } from "react-toastify";
+import BulkLogoModal from "../../components/Admin/BulkLogoModal";
 
-const UPLOAD_LIST = ["Bulk Upload New", "Bulk Upload Update", "Update Admission Logic"]
+const UPLOAD_LIST = ["Bulk Upload New", "Bulk Upload Update", "Update Admission Logic", "Bulk Upload Logo"]
 interface SchoolWithCourses extends School {
   courses: Course[];
 }
@@ -37,6 +38,7 @@ export default function SchoolCourses() {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showUpdateModalAdmissionLogic, setShowUpdateModalAdmissionLogic] = useState(false);
+  const [showLogoModal, setShowLogoModal] = useState(false)
   // const temSelectedCourses = courses.filter((elem) => selectedCourseList.includes(elem.id));
 
   const [bulkUploadType, setBulkUploadType] = useState("")
@@ -70,6 +72,11 @@ export default function SchoolCourses() {
       setShowUpdateModal(true)
     } else if (bulkUploadType === "Update Admission Logic") {
       setShowUpdateModalAdmissionLogic(true)
+    } else if (bulkUploadType === "Bulk Upload Logo") {
+      if (selectedCourseList.length === 0) {
+        toast.error("Select at least one course");
+      }
+      setShowLogoModal(true)
     }
   }, [bulkUploadType])
 
@@ -168,6 +175,7 @@ export default function SchoolCourses() {
                 label: bulkUploadType,
               }}
               handleError={() => {}}
+              classNameStyle="w-[200px]"
             />
 
             <button
@@ -235,6 +243,17 @@ export default function SchoolCourses() {
           setShowModal={setShowUpdateModalAdmissionLogic} 
           getSchools={fetchSchool} 
           courseList={courses} 
+        />
+      }
+
+      { showLogoModal && selectedCourseList.length > 0 && 
+        <BulkLogoModal 
+          apiUrl="/images/bulk-upload-course-images" 
+          payloadType="knownCourseIds" 
+          setBulkUploadType={setBulkUploadType} 
+          setShowModal={setShowLogoModal} 
+          getSchools={fetchSchool} 
+          selectedList={selectedCourseList}  
         />
       }
     </div>
