@@ -176,7 +176,7 @@ export default function SchoolsTable({
               </p>
             </div>
           )}
-          <div className="absolute bottom-0 left-0 right-0 p-[20px]">
+          <div>
             {children}
           </div>
         </div>

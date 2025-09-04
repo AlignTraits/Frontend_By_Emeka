@@ -89,8 +89,7 @@ const CustomSelectWithProps: React.FC<SelectProps> = ({
     handleError()
     setIsOpen((prev) => !prev)
   }
-  
-  console.log("classNameStyle: ", classNameStyle)
+
 
   return (
     <div ref={selectRef} className={`relative z-9 ${classNameStyle}`}>
