@@ -20,7 +20,6 @@ export default function BulkLogoModal({
   setShowModal,
   getSchools,
   setBulkUploadType,
-  selectedList,
   payloadType,
   apiUrl
 }: ModalProps) {
@@ -49,46 +48,35 @@ export default function BulkLogoModal({
       return;
     }
 
-    if (files.length !== selectedList.length) {
-      toast.error(
-        `You must upload ${selectedList.length} file(s) for the selected items.`
-      );
-      return;
-    }
-
     setUploading(true);
     const formData = new FormData();
 
-    // append school IDs
-    formData.append(payloadType, JSON.stringify(selectedList));
+    // use the file names as IDs instead of selectedList
+    const fileIds = files.map((file) => {
+      // strip extension if needed, else keep full name
+      const nameWithoutExt = file.name.includes(".")
+        ? file.name.substring(0, file.name.lastIndexOf("."))
+        : file.name;
+      return nameWithoutExt;
+    });
 
-    // append all selected files with renamed filenames
-    files.forEach((file, index) => {
-      const schoolId = selectedList[index];
+    console.log("fileIds: ", fileIds)
 
-      // extract original extension (default to .png if missing)
-      const ext = file.name.includes(".")
-        ? file.name.split(".").pop()
-        : "png";
+    // append fileIds array as payloadType
+    formData.append(payloadType, JSON.stringify(fileIds));
 
-      const renamedFile = new File([file], `${schoolId}.${ext}`, {
-        type: file.type,
-      });
-
-      formData.append("images", renamedFile);
+    // append all selected files with original names
+    files.forEach((file) => {
+      formData.append("images", file);
     });
 
     try {
-      const response = await api.post(
-        apiUrl,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await api.post(apiUrl, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status === 201) {
         toast.success("Schools Uploaded Successfully");
@@ -123,19 +111,6 @@ export default function BulkLogoModal({
           <p className="text-[#1E1E1E] text-[20px] font-semibold">
             Upload Logos
           </p>
-          <p className="text-[#737373] text-[16px] font-normal">
-            Upload logos for the following schools:
-          </p>
-          <div className="flex gap-1 flex-wrap">
-            {selectedList.map((elem) => (
-              <p
-                key={elem}
-                className="text-[black] text-[12px] font-normal"
-              >
-                {elem},
-              </p>
-            ))}
-          </div>
         </div>
 
         <div className="p-4 bg-[#F9FAFB] m-[15px] mx-[20px] 

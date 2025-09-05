@@ -57,6 +57,7 @@ const SignUpTwo = lazy(() => import("./pages/auth/RegisterTwo"))
 const Subscription = lazy(() => import("./pages/dashboard/Subscription"))
 const Page404 = lazy(() => import("./pages/404"));
 const SetupPassword = lazy(() => import("./pages/auth/SetupPassword"));
+const UsersList = lazy(() => import("./pages/admin/Users"))
 
 
 const router = createBrowserRouter([
@@ -128,6 +129,7 @@ const router = createBrowserRouter([
           { path: 'bulk-center', element: <BulkCenter /> },
           { path: 'loans', element: <Loans /> },
           { path: 'data-management', element: <DataManagement /> },
+          { path: 'users', element: <UsersList /> },
           { path: 'schools', element: <Schools /> },
           { path: 'schools/:schoolId/courses', element: <SchoolCourses /> },
           { path: 'schools/:schoolId/add-course', element: <AddCourse /> },
