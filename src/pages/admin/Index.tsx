@@ -10,7 +10,7 @@ import { FiChevronDown, FiSearch } from "react-icons/fi";
 
 import countriesData from "../../data/countries_states.json"
 
-import { getSchoolsByLocation, getSchools, getCourses } from "../../services/schools";
+import { getSchoolsByLocation, getSchools, getCourses, getWaitList, getUserList } from "../../services/schools";
 import { useAuth } from "../../contexts/useAuth";
 
 
@@ -31,6 +31,8 @@ export default function Index() {
   const [selectedSchool, setSelectedSchool] = useState<string>("")
   const [schoolLength, setSchoolLength] = useState<number>(0)
   const [courseLength, setCourseLength] = useState<number>(0)
+  const [waitListLength, setWaitListLength] = useState<number>(0)
+  const [userLength, setuserLength] = useState<number>(0)
 
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
@@ -114,12 +116,15 @@ export default function Index() {
     setCountries(countriesData);
     getAllSchools()
     getAllCourses()
+    getAllWaitist()
+    getAllUsers()
   }, []);
 
   useEffect(() => {
     if (datePickerClicked) {
       getAllSchools()
       getAllCourses()
+
     }
   }, [datePickerClicked])
 
@@ -218,6 +223,26 @@ export default function Index() {
       console.error("Error fetching courses:", error);
     } 
   }
+
+  const getAllWaitist = async () => {
+    try {
+      const response = await getWaitList(token || "");
+      console.log("user list: ", response)
+      setWaitListLength(response?.data?.length || 0)
+    } catch (e) {
+      console.log("error: ", e)
+    }
+  }
+
+  const getAllUsers = async () => {
+    try {
+      const response = await getUserList(token || "");
+      console.log("user list: ", response)
+      setuserLength(response?.data?.length || 0)
+    } catch (e) {
+      console.log("error: ", e)
+    }
+  }
   
   return (
     <div className="flex h-screen flex-col gap-y-[20px] p-5">
@@ -244,17 +269,17 @@ export default function Index() {
           percentType={false} 
           bgColor="#FFEBEB" 
           percentValue={0} 
-          title="Total Students" 
+          title="Total Users" 
           Icon={IoMdStats} 
-          value={0}
+          value={userLength}
         />
         <DashboardCard 
           percentType={false} 
           bgColor="#EFECFF" 
           percentValue={0} 
-          title="Total Loans" 
+          title="Total WaitList Users" 
           Icon={MdOutlineReceiptLong} 
-          value={0}
+          value={waitListLength}
         />
       </div>
 

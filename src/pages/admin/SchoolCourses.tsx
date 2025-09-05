@@ -73,9 +73,6 @@ export default function SchoolCourses() {
     } else if (bulkUploadType === "Update Admission Logic") {
       setShowUpdateModalAdmissionLogic(true)
     } else if (bulkUploadType === "Bulk Upload Logo") {
-      if (selectedCourseList.length === 0) {
-        toast.error("Select at least one course");
-      }
       setShowLogoModal(true)
     }
   }, [bulkUploadType])
@@ -246,7 +243,7 @@ export default function SchoolCourses() {
         />
       }
 
-      { showLogoModal && selectedCourseList.length > 0 && 
+      { showLogoModal && 
         <BulkLogoModal 
           apiUrl="/images/bulk-upload-course-images" 
           payloadType="knownCourseIds" 

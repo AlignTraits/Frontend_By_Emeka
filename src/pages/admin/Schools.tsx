@@ -72,9 +72,6 @@ export default function Schools() {
     } else if (bulkUploadType === "Bulk Upload Update") {
       setShowUpdateModal(true)
     } else if (bulkUploadType === "Bulk Upload Logo") {
-      if (selectedSchoolList.length === 0) {
-        toast.error("Select at least one school");
-      }
       setShowLogoModal(true)
     }
   }, [bulkUploadType])
@@ -235,7 +232,7 @@ export default function Schools() {
       </div>
       {showBulkModal && <BulkUploadModal setBulkUploadType={setBulkUploadType} setShowModal={setShowBulkModal} getSchools={getSchoolNow} />}
 
-      { showLogoModal && selectedSchoolList.length > 0 && 
+      { showLogoModal && 
         <BulkLogoModal 
           apiUrl="/images/bulk-upload-school-images" 
           payloadType="knownSchoolIds" 

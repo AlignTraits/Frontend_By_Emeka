@@ -11,7 +11,7 @@ import { TiGroupOutline } from "react-icons/ti";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { FaDatabase } from "react-icons/fa";
-
+import { FaUser } from "react-icons/fa";
 
 
 const SideBar = ({
@@ -40,6 +40,7 @@ const SideBar = ({
   let accountPath:boolean = location.pathname.startsWith("/admin/accounts")
   let dataManagementPath:boolean = location.pathname.startsWith("/admin/data-management")
   let dataLoansPath:boolean = location.pathname.startsWith("/admin/loans")
+  let userPath:boolean = location.pathname.startsWith("/admin/users")
   // let profilePath:boolean = location.pathname.startsWith("/admin/profile")
 
 
@@ -90,6 +91,21 @@ const SideBar = ({
         </NavLink>
 
         <NavLink
+          to="/admin/users"
+          className={({ isActive }) =>
+            `flex items-center p-2 font-bold rounded-md transition-colors ${
+              isActive || userPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
+            }`
+          }
+          end
+        >
+          <FaUser className="w-5 h-5 mr-3" />
+          <span className={userPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
+            Users
+          </span>
+        </NavLink>
+
+        <NavLink
           to="/admin/bulk-center"
           className={({ isActive }) =>
             `flex items-center p-2 font-bold rounded-md transition-colors ${
@@ -103,21 +119,6 @@ const SideBar = ({
             Bulk Center
           </span>
         </NavLink>
-
-        {/* <NavLink
-          to="/admin/profile"
-          className={({ isActive }) =>
-            `flex items-center p-2 font-bold rounded-md transition-colors ${
-              isActive || profilePath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
-            }`
-          }
-          end
-        >
-          <CgProfile className="w-5 h-5 mr-3"  />
-          <span className={profilePath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
-            Profile Management
-          </span>
-        </NavLink> */}
 
         <NavLink
           to="/admin/data-management"
