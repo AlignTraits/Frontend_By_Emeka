@@ -8,6 +8,7 @@ interface EnhancedDatePickerProps {
   className?: string;
   onFocus?: () => void;
   dateFormat?: string;
+  disabled?: boolean
 }
 
 const EnhancedDatePicker: React.FC<EnhancedDatePickerProps> = ({
@@ -16,7 +17,8 @@ const EnhancedDatePicker: React.FC<EnhancedDatePickerProps> = ({
   placeholder = "Select date",
   className = "",
   onFocus,
-  dateFormat = "dd/MM/yyyy"
+  dateFormat = "dd/MM/yyyy",
+  disabled = false
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(selected ? selected.getMonth() : new Date().getMonth());
@@ -155,7 +157,7 @@ return (
       <Calendar className="h-5 w-5 text-gray-400" />
     </div>
 
-    {isOpen && (
+    {isOpen && !disabled && (
       <div className="absolute bottom-full left-0 mt-1 w-[80vw] max-w-xs sm:w-80 sm:max-w-none bg-white border rounded-lg shadow-lg z-50 p-3 sm:p-4">
         {/* Header with month/year navigation */}
         <div className="flex items-center justify-between mb-4">

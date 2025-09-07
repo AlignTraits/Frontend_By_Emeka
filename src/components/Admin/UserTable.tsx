@@ -1,6 +1,8 @@
 import { FiArrowDown } from "react-icons/fi";
 import { ClipLoader } from "react-spinners";
 import fileIcon from "../../assets/IconWrap.svg"
+import UserDetails from "./UserDetails";
+import { useState } from "react";
 interface User {
   id: string;
   firstname:string;
@@ -27,9 +29,14 @@ export default function UserTable({
   children, // Accept children
 }: Props & { children?: React.ReactNode }) {
 
+  const [viewModal, setViewModal] = useState(false)
+  const [selectedId, setSelectedId] = useState("") 
+
 
   
-  const handleTestClick = () => {
+  const handleTestClick = (id: string) => {
+    setSelectedId(id)
+    setViewModal(true)
   }
 
   // const handleSelect = (event: React.MouseEvent, id: string) => {
@@ -86,32 +93,32 @@ export default function UserTable({
 
             {users.length > 0 && (
               <tbody className="">
-                {users.map((course, index) => (
+                {users.map((user, index) => (
                   <tr
-                    className="[&>td]:py-5 hover:bg-[#007BFF33] border-b border-gray-300"
-                    key={index + course.id}
-                    onClick={() => handleTestClick()}
+                    className="[&>td]:py-5 hover:bg-[#007BFF33] border-b border-gray-300 cursor-pointer"
+                    key={index + user.id}
+                    onClick={() => handleTestClick(user.id)}
                   >
                     <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-2 items-center">
-                      {/* <div onClick={(e) => handleSelect(e, course.id)} className="cursor-pointer border-[#D0D5DD] border-[1px] h-[25px] w-[25px] rounded-md flex justify-center items-center">
+                      {/* <div onClick={(e) => handleSelect(e, user.id)} className="cursor-pointer border-[#D0D5DD] border-[1px] h-[25px] w-[25px] rounded-md flex justify-center items-center">
                         {
-                          selectedCourseList.includes(course.id) && 
+                          selecteduserList.includes(user.id) && 
                           <div className="h-[15px] w-[15px] bg-[#004085] rounded-[50%]"></div>
                         }
                       </div> */}
-                      <p>{course.firstname}</p>
+                      <p>{user.firstname}</p>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {course.lastname}
+                      {user.lastname}
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {course.email}
+                      {user.email}
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {course.gender ? course.gender : "-"} 
+                      {user.gender ? user.gender : "-"} 
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {course.region ? course.region : "-"}
+                      {user.region ? user.region : "-"}
                     </td>
                   </tr>
                 ))}
@@ -130,6 +137,14 @@ export default function UserTable({
           </div>
         </div>
       )}
+
+      {
+        viewModal && 
+        <UserDetails 
+          setShowModal={setViewModal}
+          userId={selectedId}
+        />
+      }
     </>
   );
 }

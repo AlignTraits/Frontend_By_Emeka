@@ -227,17 +227,7 @@ export default function ProgressTracker() {
           <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
             <p className={`text-[12px] ${errorObj.dob ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Date of Birth*</p>
             <div className="h-[40px] w-full relative flex items-center justify-between border rounded-md bg-white">
-              {/* <DatePicker
-                selected={startDate}
-                onChange={handleStartDateChange}
-                selectsStart
-                startDate={startDate}
-                onFocus={handleDobError}
-                dateFormat="dd/MM/yyyy"
-                placeholderText="dd/mm/yyyy"
-                className="outline-none w-full text-[14px] text-[#595959] font-semibold"
-              /> */}
-
+              
               <EnhancedDatePicker
                 selected={startDate}
                 onChange={handleStartDateChange}
