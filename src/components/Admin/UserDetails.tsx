@@ -115,135 +115,135 @@ const UserDetails = ({setShowModal, userId}:ModalProps) => {
 
 
   return (
-      <div className="absolute inset-0 bg-white p-10 z-10">
-        <div className="relative">
-          <div className="flex gap-x-[10px] items-center">
-            <button  onClick={()=> setShowModal(false)} className="w-[120px] flex gap-x-[5px] justify-center items-center py-2 rounded-lg border-[1px] border-[#DDDDDD]">
-              <MdKeyboardBackspace /> <p className="font-semibold text-[14px] text-[#1E1E1E]">Go Back</p>
-            </button>
-          </div>
-
-          {isLoading ? (
-            <div className="mx-auto rounded-xl w-full flex justify-center items-center h-[500px] border-[1px] border-[#EAECF0] mt-10">
-              <ClipLoader />
-            </div>
-          ) : user ?
-          <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[15px] lg:gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] size-max">
-            <div>
-              <p className="text-[#212529] text-[18px] font-bold">Profile Information</p>
-              <p className='text-[12px] text-[#757575] mt-2'>Update your personal information and preferences.</p>
-            </div>
-
-            <div className='flex flex-col lg:flex-row gap-x-[20px] space-y-1'>
-              <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
-                <p className={`text-[12px] ${errorObj.firstName ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>First Name*</p>
-                <input
-                  type="text"
-                  placeholder="Enter First Name"
-                  onFocus={() => setErrorObj((prev) => ({...prev, firstName: false}))}
-                  name="firstName"
-                  value={firstName}
-                  disabled
-                  onChange={(e) => setFirstName(e.target.value)}
-                  className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
-                />
-              </div>
-
-              <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
-                <p className={`text-[12px] ${errorObj.lastName ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Lasts Name*</p>
-                <input
-                  type="text"
-                  placeholder="Enter Last Name"
-                  onFocus={() => setErrorObj((prev) => ({...prev, lastName: false}))}
-                  name="lastName"
-                  value={lastName}
-                  disabled
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
-                />
-              </div>
-            </div>
-
-            <div className='flex flex-col lg:flex-row gap-x-[20px] space-y-1'>
-              <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
-                <p className={`text-[12px] ${errorObj.email ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Email Address*</p>
-                <input
-                  type="email"
-                  placeholder="johndoe@gmail.com"
-                  onFocus={() => setErrorObj((prev) => ({...prev, email: false}))}
-                  name="email"
-                  disabled
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
-                />
-              </div>
-
-              <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
-                <p className={`text-[12px] ${errorObj.country ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Country*</p>
-                <SearchSelect
-                  placeholder="Select Country"
-                  options={Object.keys(countryStateData).map((country) => ({
-                    value: country,
-                    label: country,
-                  }))}
-                  onChange={(value) => setSelectedCountry(value)}
-                  handleError={handleCountryError}
-                  selectedProps={{
-                    value: selectedCountry,
-                    label: selectedCountry
-                  }}
-                  disabledState={true}
-                  
-                />
-              </div>
-            </div>
-
-            <div className='flex flex-col lg:flex-row gap-x-[20px] space-y-1'>
-              <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
-                <p className={`text-[12px] ${errorObj.dob ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Date of Birth*</p>
-                <div className="h-[40px] w-full relative flex items-center justify-between border rounded-md bg-white">
-                  
-                  <EnhancedDatePicker
-                    selected={startDate}
-                    onChange={handleStartDateChange}
-                    placeholder="dd/mm/yyyy"
-                    onFocus={handleDobError}
-                    disabled={true}
-                    className={errorObj.dob ? 'border-red-500 outline-none w-full text-[14px] text-[#595959] font-semibold' : 'border-gray-300 outline-none w-full text-[14px] text-[#595959] font-semibold'}
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
-                <p className={`text-[12px] ${errorObj.gender ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Gender*</p>
-                <CustomSelect
-                  placeholder="Select your gender"
-                  options={["MALE", "FEMALE"].map((schtype) => ({
-                    value: schtype,
-                    label: schtype,
-                  }))}
-                  onChange={(value: string) => setGender(value)}
-                  handleError={handleGenderError}
-                  selectedProps={{
-                    value: gender,
-                    label: gender
-                  }}
-                  disabledState={true}
-                />
-              </div>
-            </div>
-          </div> :
-          <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[15px] lg:gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] size-max">
-            <h1>No Data</h1>
-          </div>
-        }
-
-
-
+    <div className="absolute inset-0 bg-white p-10 z-10">
+      <div className="relative">
+        <div className="flex gap-x-[10px] items-center">
+          <button  onClick={()=> setShowModal(false)} className="w-[120px] flex gap-x-[5px] justify-center items-center py-2 rounded-lg border-[1px] border-[#DDDDDD]">
+            <MdKeyboardBackspace /> <p className="font-semibold text-[14px] text-[#1E1E1E]">Go Back</p>
+          </button>
         </div>
-  
+
+        {isLoading ? (
+          <div className="mx-auto rounded-xl w-full flex justify-center items-center h-[500px] border-[1px] border-[#EAECF0] mt-10">
+            <ClipLoader />
+          </div>
+        ) : user ?
+        <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[15px] lg:gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] size-max">
+          <div>
+            <p className="text-[#212529] text-[18px] font-bold">Profile Information</p>
+            <p className='text-[12px] text-[#757575] mt-2'>Update your personal information and preferences.</p>
+          </div>
+
+          <div className='flex flex-col lg:flex-row gap-x-[20px] space-y-1'>
+            <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
+              <p className={`text-[12px] ${errorObj.firstName ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>First Name*</p>
+              <input
+                type="text"
+                placeholder="Enter First Name"
+                onFocus={() => setErrorObj((prev) => ({...prev, firstName: false}))}
+                name="firstName"
+                value={firstName}
+                disabled
+                onChange={(e) => setFirstName(e.target.value)}
+                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+              />
+            </div>
+
+            <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
+              <p className={`text-[12px] ${errorObj.lastName ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Lasts Name*</p>
+              <input
+                type="text"
+                placeholder="Enter Last Name"
+                onFocus={() => setErrorObj((prev) => ({...prev, lastName: false}))}
+                name="lastName"
+                value={lastName}
+                disabled
+                onChange={(e) => setLastName(e.target.value)}
+                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+              />
+            </div>
+          </div>
+
+          <div className='flex flex-col lg:flex-row gap-x-[20px] space-y-1'>
+            <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
+              <p className={`text-[12px] ${errorObj.email ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Email Address*</p>
+              <input
+                type="email"
+                placeholder="johndoe@gmail.com"
+                onFocus={() => setErrorObj((prev) => ({...prev, email: false}))}
+                name="email"
+                disabled
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+              />
+            </div>
+
+            <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
+              <p className={`text-[12px] ${errorObj.country ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Country*</p>
+              <SearchSelect
+                placeholder="Select Country"
+                options={Object.keys(countryStateData).map((country) => ({
+                  value: country,
+                  label: country,
+                }))}
+                onChange={(value) => setSelectedCountry(value)}
+                handleError={handleCountryError}
+                selectedProps={{
+                  value: selectedCountry,
+                  label: selectedCountry
+                }}
+                disabledState={true}
+                
+              />
+            </div>
+          </div>
+
+          <div className='flex flex-col lg:flex-row gap-x-[20px] space-y-1'>
+            <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
+              <p className={`text-[12px] ${errorObj.dob ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Date of Birth*</p>
+              <div className="h-[40px] w-full relative flex items-center justify-between border rounded-md bg-white">
+                
+                <EnhancedDatePicker
+                  selected={startDate}
+                  onChange={handleStartDateChange}
+                  placeholder="dd/mm/yyyy"
+                  onFocus={handleDobError}
+                  disabled={true}
+                  className={errorObj.dob ? 'border-red-500 outline-none w-full text-[14px] text-[#595959] font-semibold' : 'border-gray-300 outline-none w-full text-[14px] text-[#595959] font-semibold'}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-y-[5px] w-[100%] lg:w-[50%]">
+              <p className={`text-[12px] ${errorObj.gender ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>Gender*</p>
+              <CustomSelect
+                placeholder="Select your gender"
+                options={["MALE", "FEMALE"].map((schtype) => ({
+                  value: schtype,
+                  label: schtype,
+                }))}
+                onChange={(value: string) => setGender(value)}
+                handleError={handleGenderError}
+                selectedProps={{
+                  value: gender,
+                  label: gender
+                }}
+                disabledState={true}
+              />
+            </div>
+          </div>
+        </div> :
+        <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[15px] lg:gap-y-[30px] shadow-md rounded-xl p-5 w-[100%] size-max">
+          <h1>No Data</h1>
+        </div>
+      }
+
+
+
       </div>
+
+    </div>
   )
 }
 

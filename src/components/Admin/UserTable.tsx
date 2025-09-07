@@ -39,17 +39,6 @@ export default function UserTable({
     setViewModal(true)
   }
 
-  // const handleSelect = (event: React.MouseEvent, id: string) => {
-  //   event.stopPropagation();
-
-  //   if (selectedCourseList.includes(id)) {
-  //     setSelectedCourseList(() => selectedCourseList.filter((elem) => id !== elem))
-  //   } else {
-  //     let tempList = [...selectedCourseList, id]
-  //     setSelectedCourseList(tempList)
-  //   }
-  // }
-
   return (
     <>
       {isLoading && (

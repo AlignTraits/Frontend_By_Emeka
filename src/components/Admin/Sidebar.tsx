@@ -12,6 +12,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { FaDatabase } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
+import { CiNoWaitingSign } from "react-icons/ci";
 
 
 const SideBar = ({
@@ -41,6 +42,7 @@ const SideBar = ({
   let dataManagementPath:boolean = location.pathname.startsWith("/admin/data-management")
   let dataLoansPath:boolean = location.pathname.startsWith("/admin/loans")
   let userPath:boolean = location.pathname.startsWith("/admin/users")
+  let waitlistPath:boolean = location.pathname.startsWith("/admin/waitlist")
   // let profilePath:boolean = location.pathname.startsWith("/admin/profile")
 
 
@@ -102,6 +104,22 @@ const SideBar = ({
           <FaUser className="w-5 h-5 mr-3" />
           <span className={userPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
             Users
+          </span>
+        </NavLink>
+
+
+        <NavLink
+          to="/admin/waitlist"
+          className={({ isActive }) =>
+            `flex items-center p-2 font-bold rounded-md transition-colors ${
+              isActive || waitlistPath ? "text-white bg-[#004085]" : "text-[#5D5D5B] hover:bg-gray-100"
+            }`
+          }
+          end
+        >
+          <CiNoWaitingSign className="w-5 h-5 mr-3" />
+          <span className={waitlistPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"}>
+            Waitlist
           </span>
         </NavLink>
 
