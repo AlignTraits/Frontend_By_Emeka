@@ -15,13 +15,13 @@ export interface User {
   region?: string | null;
   bio?: string | null;
   currentSkill?: string | null;
-  courseOfInterest? : string | null
-  transactions?: Transaction [];
+  courseOfInterest?: string | null;
+  transactions?: Transaction[];
   payment_plan?: string;
-  userCards?: PaymentMethod []; 
+  userCards?: PaymentMethod[];
   payment_plan_expires_at?: string;
   careerResults?: any;
-  isCareerPathChecked?: boolean; 
+  isCareerPathChecked?: boolean;
   //   provider?: 'email' | 'google' | 'facebook' | 'apple';
 }
 
@@ -47,10 +47,10 @@ export interface Transaction {
   amount: number;
   createdAt: string;
   updatedAt: string;
-  status: 'PENDING' | 'SUCCESS' | 'FAILED';
+  status: "PENDING" | "SUCCESS" | "FAILED";
   paymentPlan: string;
   currency: string;
-  schoolLocation: string
+  schoolLocation: string;
 }
 
 export interface AuthResponse {

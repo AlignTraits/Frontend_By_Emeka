@@ -77,6 +77,11 @@ export default function SchoolsTable({
     }).format(dateTemp);
     return formattedDate;
   }
+
+  function shortenString(str:string, maxLength = 15) {
+  if (!str) return "";
+  return str.length > maxLength ? str.slice(0, maxLength) + "..." : str;
+}
   
   return (
     <>
@@ -146,7 +151,7 @@ export default function SchoolsTable({
                       /> : <div className="w-[40px] h-[40px] rounded-[50%] bg-[grey]"></div>
                       }
                       <span className="text-[#000000] text-[400] text-[14px] capitalize size-max">
-                        {school.name}
+                        {/* {school.name} */ shortenString(school.name)}
                       </span>
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">{school.country}, {school.region}</td>
