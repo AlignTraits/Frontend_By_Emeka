@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 // import { MdOutlineCalendarToday } from "react-icons/md";
 import EnhancedDatePicker from '../../components/dashboard/EnhancedDatePicker';
 import countriesData from "../../data/countries_states.json"
+import ImageUploadWithPreview from "./ImageUpload";
 
 const countryStateData: Record<string, string[]> = {
 };
@@ -30,7 +31,6 @@ interface User {
   dob: string
 }
 
-
 interface ModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   userId: string;
@@ -39,6 +39,10 @@ interface ModalProps {
 const UserDetails = ({setShowModal, userId}:ModalProps) => {
   const { token } = useAuth();
   const [user, setUser] = useState<User | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null | ArrayBuffer>(
+    null
+  );
 
   const [errorObj, setErrorObj] = useState({
     firstName: false,
@@ -51,12 +55,10 @@ const UserDetails = ({setShowModal, userId}:ModalProps) => {
     dob: false
   })
 
-
   async function fetchUsers() {
     setIsLoading(true);
     try {
       const response = await getUserListDetails(token || "");
-      console.log("response: ", response)
       if (response.status === 200) {
         let tempData = response.data.find((elem: User) => elem.id === userId);
         console.log("tempData: ", tempData)
@@ -69,50 +71,45 @@ const UserDetails = ({setShowModal, userId}:ModalProps) => {
     }
   }
 
-
   useEffect(() => {
     fetchUsers()
   }, [])
 
-    const [lastName, setLastName] = useState("")
-    const [firstName, setFirstName] = useState("")
-    const [email, setEmail] = useState("")
-    const [gender, setGender] = useState('');
-    const [selectedCountry, setSelectedCountry] = useState<string>("");
-    const [startDate, setStartDate] = useState<Date | null>(null);
-    const handleStartDateChange = (date: Date | null) => {
-      setStartDate(date);
-    };
-    const [isLoading, setIsLoading] = useState(false)
-  
-  
-    const handleGenderError = () => {
-      setErrorObj((prev) => ({...prev, gender: false}))
-    }
-  
-    const handleDobError = () => {
-      setErrorObj((prev) => ({...prev, dob: false}))
-    }
-  
-    const handleCountryError = () => {
-      setErrorObj((prev) => ({...prev, country: false}))
-    }
-  
+  const [lastName, setLastName] = useState("")
+  const [firstName, setFirstName] = useState("")
+  const [email, setEmail] = useState("")
+  const [gender, setGender] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const handleStartDateChange = (date: Date | null) => {
+    setStartDate(date);
+  };
+  const [isLoading, setIsLoading] = useState(false)
 
+
+  const handleGenderError = () => {
+    setErrorObj((prev) => ({...prev, gender: false}))
+  }
+
+  const handleDobError = () => {
+    setErrorObj((prev) => ({...prev, dob: false}))
+  }
+
+  const handleCountryError = () => {
+    setErrorObj((prev) => ({...prev, country: false}))
+  }
   
-    useEffect(() => {
-      if (user) {
-        user.firstname && setFirstName(user.firstname);
-        user.lastname && setLastName(user.lastname);
-        user.email && setEmail(user.email);
-        user.region && setSelectedCountry(user.region);
-        user.gender && setGender(user.gender);
-        user.dob && setStartDate(new Date(user.dob));
-      }
-     }, [user])
-
-     console.log("gender: ", gender)
-
+  useEffect(() => {
+    if (user) {
+      user.firstname && setFirstName(user.firstname);
+      user.lastname && setLastName(user.lastname);
+      user.email && setEmail(user.email);
+      user.region && setSelectedCountry(user.region);
+      user.gender && setGender(user.gender);
+      user.dob && setStartDate(new Date(user.dob));
+      user.image && setPreviewUrl(user.image);
+    }
+    }, [user])
 
   return (
     <div className="absolute inset-0 bg-white p-10 z-10">
@@ -132,6 +129,18 @@ const UserDetails = ({setShowModal, userId}:ModalProps) => {
           <div>
             <p className="text-[#212529] text-[18px] font-bold">Profile Information</p>
             <p className='text-[12px] text-[#757575] mt-2'>Update your personal information and preferences.</p>
+          </div>
+
+          <div className="w-[300px] flex flex-col gap-y-[5px]">
+            <p className="text-[16px] text-[#1E1E1E] font-medium">User Image*</p>
+            <ImageUploadWithPreview
+              setImageFile={setImageFile}
+              imageFile={imageFile}
+              previewUrl={previewUrl}
+              setPreviewUrl={setPreviewUrl}
+              disableButton={true}
+              
+            />
           </div>
 
           <div className='flex flex-col lg:flex-row gap-x-[20px] space-y-1'>

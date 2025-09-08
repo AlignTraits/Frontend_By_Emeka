@@ -10,6 +10,7 @@ interface ImageUploadWithPreviewProps {
   previewUrl: string | null | ArrayBuffer;
   errorState?: boolean
   handleFileError?: () => void
+  disableButton?: boolean
 }
 
 const ImageUploadWithPreview = ({
@@ -18,7 +19,8 @@ const ImageUploadWithPreview = ({
   setPreviewUrl,
   previewUrl,
   errorState=false,
-  handleFileError=()=> {}
+  handleFileError=()=> {},
+  disableButton = false
 }: ImageUploadWithPreviewProps) => {
   const [isDragOver, setIsDragOver] = useState(false);
 
@@ -107,9 +109,10 @@ const ImageUploadWithPreview = ({
             alt=""
             className="w-[200px] h-[200px] rounded-full mx-auto"
           />
-          <div className="absolute top-0 flex h-full w-full   ">
+          <div className="absolute top-0 flex h-full w-full  ">
             <button
               onClick={handleRemoveImage}
+              disabled={disableButton}
               className="flex flex-col items-center justify-center mx-auto space-x-2   h-full w-[200px] h-full bg-[#00000080] rounded-full transition duration-500 opacity-0 hover:opacity-100 cursor-pointer text-[#ffffff] text-[30px]"
             >
               <FiX />
@@ -117,7 +120,13 @@ const ImageUploadWithPreview = ({
             </button>
           </div>
         </div>
-      ) : (
+      ) : disableButton ? 
+        <div className={`flex flex-col justify-center items-center space-y-4 border-[3px] ${errorState ? "border-[#F04438]" : "border-[#B9B9B9]"} p-5 px-10 border-dotted rounded-md w-full ${
+            isDragOver ? "bg-[#e0f7fa]" : ""
+          }`}>
+          <p>No Image for user</p>
+        </div> 
+          : (
         <div
           className={`flex flex-col justify-center items-center space-y-4 border-[3px] ${errorState ? "border-[#F04438]" : "border-[#B9B9B9]"} p-5 px-10 border-dotted rounded-md w-full ${
             isDragOver ? "bg-[#e0f7fa]" : ""
@@ -150,6 +159,7 @@ const ImageUploadWithPreview = ({
                   e.preventDefault();
                   document.getElementById("image-upload")?.click();
                 }}
+                disabled={disableButton}
                 className="px-4 py-2 bg-[#004085] text-white rounded hover:bg-indigo-600 mx-auto"
               >
                 Select File

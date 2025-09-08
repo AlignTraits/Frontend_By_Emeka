@@ -545,6 +545,7 @@ export default function AddCourse () {
                 setPreviewUrl={setPreviewUrl}
                 errorState={errorObj.previewUrl}
                 handleFileError={handleFileError}
+                disableButton={true}
                 
               />
             </div>
