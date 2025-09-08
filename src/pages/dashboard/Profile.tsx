@@ -10,7 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 // import { MdOutlineCalendarToday } from "react-icons/md";
 import { upDateUserProfile } from '../../services/auth.service';
 import EnhancedDatePicker from '../../components/dashboard/EnhancedDatePicker';
-// import ImageUploadWithPreview from '../../components/Admin/ImageUpload';
+import ImageUploadWithPreview from '../../components/Admin/ImageUpload';
 
 const countryStateData: Record<string, string[]> = {
 };
@@ -18,6 +18,7 @@ const countryStateData: Record<string, string[]> = {
 countriesData.map((elem:any) => {
   countryStateData[elem.name] = elem.states
 })
+
 export default function ProgressTracker() {
   const {setPageDesc, user, token, setUser} = useAuth()
 
@@ -42,10 +43,10 @@ export default function ProgressTracker() {
   };
   const [isLoading, setIsLoading] = useState(false)
 
-  // const [imageFile, setImageFile] = useState<File | null>(null);
-  // const [previewUrl, setPreviewUrl] = useState<string | null | File>(
-  //   null
-  // );
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null | ArrayBuffer>(
+    null
+  );
 
 
   const handleGenderError = () => {
@@ -102,11 +103,9 @@ export default function ProgressTracker() {
       user.region && setSelectedCountry(user.region);
       user.gender && setGender(user.gender);
       user.dob && setStartDate(new Date(user.dob));
-      // user.image && setPreviewUrl(user.image);
+      user.image && setPreviewUrl(user.image as string);
     }
    }, [])
-
-   console.log("user: ", user)
 
   const isFormValid = () => {
     if (firstName.length > 0 && lastName.length > 0  && selectedCountry.length) {
@@ -173,13 +172,13 @@ export default function ProgressTracker() {
 
           <div className="w-[300px] flex flex-col gap-y-[5px]">
             <p className="text-[16px] text-[#1E1E1E] font-medium">User Image*</p>
-            {/* <ImageUploadWithPreview
+            <ImageUploadWithPreview
               setImageFile={setImageFile}
               imageFile={imageFile}
               previewUrl={previewUrl}
               setPreviewUrl={setPreviewUrl}
               
-            /> */}
+            />
           </div>
 
         <div className='flex flex-col lg:flex-row gap-x-[20px] space-y-1'>
