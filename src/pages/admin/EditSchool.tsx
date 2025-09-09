@@ -175,6 +175,7 @@ export default function EditSchool() {
                 setShowModal={setEditModal}
                 schooTypeDefault={school?.schoolType as string}
                 defaultImgUrl={school?.logo as string}
+                websiteUrl={school?.websiteUrl as string}
                 selectedProps={
                   {
                     value: school?.location as string,

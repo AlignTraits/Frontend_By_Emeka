@@ -32,13 +32,16 @@ export default function SchoolsTable({
     schoolType: "",
     logo: "",
     region: "",
-    country: ""
+    country: "",
+    websiteUrl: ""
   })
 
   const handleViewClick = (event: React.MouseEvent, schoolParam: any) => {
     event.stopPropagation();
     setItemForView(schoolParam)
     setViewModal(true)
+
+    console.log("schoolParam: ", schoolParam)
   };
 
   const renderType = (schoolType:string) => {
@@ -197,6 +200,7 @@ export default function SchoolsTable({
             defaultImgUrl={itemForView?.logo as string}
             country={itemForView.country}
             region={itemForView.region}
+            websiteUrl={itemForView.websiteUrl}
             getSchools={getSchools}
           />
         )

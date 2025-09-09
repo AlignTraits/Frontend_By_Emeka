@@ -27,7 +27,8 @@ interface ModalProps {
     label: string
   };
   schoolId: string;
-  fetchSchool: Function
+  fetchSchool: Function;
+  websiteUrl: string
 }
 
 const countryStateData: Record<string, string[]> = {
@@ -40,7 +41,7 @@ countriesData.map((elem:any) => {
 
 export default function EditSchoolModal({
   setShowModal, schooTypeDefault, 
-  defaultImgUrl, defaultName, selectedProps, schoolId, fetchSchool}: ModalProps) {
+  defaultImgUrl, defaultName, selectedProps, schoolId, fetchSchool, websiteUrl}: ModalProps) {
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   //   {
@@ -68,6 +69,7 @@ export default function EditSchoolModal({
     null
   );
   const [nameText, setNameText] = useState("")
+  const [url, setUrl] = useState("")
 
   const [data, setData] = useState<Data>({
     logo: imageFile,
@@ -94,7 +96,8 @@ export default function EditSchoolModal({
     name: false,
     schoolType: false,
     country: false,
-    state: false
+    state: false,
+    websiteUrl: false
 
   })
 
@@ -112,6 +115,10 @@ export default function EditSchoolModal({
       setErrorObj((prev) => ({...prev, schoolType: true}))
     }
 
+    if (url.length === 0) {
+      setErrorObj((prev) => ({...prev, websiteUrl: true}))
+    }
+
     if (!previewUrl) {
       setErrorObj((prev) => ({...prev, previewUrl: true}))
     }
@@ -124,14 +131,16 @@ export default function EditSchoolModal({
 
 
   useEffect(() => {
-  setPreviewUrl(defaultImgUrl)
-  setNameText(defaultName);
+    setPreviewUrl(defaultImgUrl)
+    setNameText(defaultName);
+    setUrl(websiteUrl)
 
-  setData((prevData) => ({ 
-    ...prevData, 
-    location: selectedProps.label,
-    schoolType: schooTypeDefault
-  }));
+    setData((prevData) => ({ 
+      ...prevData, 
+      location: selectedProps.label,
+      schoolType: schooTypeDefault,
+      websiteUrl: websiteUrl
+    }));
 
   }, [])
 
@@ -170,6 +179,12 @@ export default function EditSchoolModal({
     setData({ ...data, name: e.currentTarget.value })
   };
 
+  const handleUrlChange = (e: React.FormEvent<HTMLInputElement>): void => {
+    setUrl(e.currentTarget.value);
+  };
+
+
+
   const isFormValid = () => {
     if (previewUrl && nameText.length > 0 && data.schoolType && selectedCountry.length > 0 && 
       selectedState.length > 0) {
@@ -197,6 +212,7 @@ export default function EditSchoolModal({
     // formData.append("location", `${selectedCountry}/${selectedState}` || "");
     formData.append("region", selectedState)
     formData.append("country", selectedCountry)
+    formData.append("websiteUrl", url)
     // formData.append("websiteUrl", "www.schoolxyz.com")
 
     try {
@@ -277,6 +293,19 @@ export default function EditSchoolModal({
               onFocus={() => setErrorObj((prev) => ({...prev, name: false}))}
               value={nameText}
               onChange={handleNameChange}
+              className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+            />
+          </div>
+
+          <div>
+            <p className={`text-[12px] ${errorObj.websiteUrl ? 'text-[#F04438]' : 'text-[#1E1E1E]'} font-medium`}>School URL*</p>
+            <input
+              type="text"
+              placeholder="School URL"
+              name="schoolURL"
+              onFocus={() => setErrorObj((prev) => ({...prev, websiteUrl: false}))}
+              value={url}
+              onChange={handleUrlChange}
               className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
             />
           </div>
