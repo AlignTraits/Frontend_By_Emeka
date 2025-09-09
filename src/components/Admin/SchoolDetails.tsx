@@ -15,12 +15,13 @@ interface ModalProps {
   country: string;
   region: string;
   schoolId: string;
-  getSchools: Function
+  getSchools: Function;
+  websiteUrl: string
 }
 
 export default function SchoolDetails({
   setShowModal, schooTypeDefault, 
-  defaultImgUrl, defaultName, country, region, schoolId, getSchools}: ModalProps) {
+  defaultImgUrl, defaultName, country, region, schoolId, getSchools, websiteUrl}: ModalProps) {
 
   const [deletModal, setDeleteModal] = useState(false)
   const [editModal, setEditModal] = useState(false)
@@ -59,7 +60,7 @@ export default function SchoolDetails({
           </h2>
         </div>
 
-        <div className="bg-[#FAFAFA] w-[100%] h-[300px] rounded-md border-[1px] border-[#E0E0E0] mt-[20px] flex justify-between p-5">
+        <div className="bg-[#FAFAFA] w-[100%] h-[350px] rounded-md border-[1px] border-[#E0E0E0] mt-[20px] flex justify-between p-5">
 
           <div className="flex flex-col gap-y-[10px]">
             <p className="text-[20px] text-[#101828] font-semibold">School Details</p>
@@ -93,6 +94,23 @@ export default function SchoolDetails({
                   <p className="text-[#737373] font-normal text[12px]">Region</p>
                   <p className="text-[#1E1E1E] text-[16px] font-medium">{region}</p>
                 </div>
+
+                <div className="flex flex-col gap-1">
+                  <p className="text-[#737373] font-normal text[12px]">
+                    Website
+                  </p>
+                  <p className="text-[#1E1E1E] text-[16px] font-medium truncate">
+                    <a
+                      href={websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline hover:text-blue-600 transition-colors"
+                    >
+                      {websiteUrl}
+                    </a>
+                  </p>
+                </div>
+
                 </div>
             </div>
           </div>
@@ -131,6 +149,7 @@ export default function SchoolDetails({
             setShowModal={setEditModal}
             schooTypeDefault={schooTypeDefault as string}
             defaultImgUrl={defaultImgUrl as string}
+            websiteUrl={websiteUrl}
             selectedProps={
               {
                 value: `${country}/${region}` as string,
