@@ -6,7 +6,7 @@ import Header from "../components/dashboard/Header";
 import { getUserDetails } from "../services/auth.service";
 // import { ClipLoader } from "react-spinners";
 import NewSidebar from "../components/dashboard/NewSidebar";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 export default function DashboardLayout() {
   const { token, isAuthenticated, setUser } = useAuth();
@@ -15,6 +15,7 @@ export default function DashboardLayout() {
   const location = useLocation(); 
   const [isLoading, setIsloading] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [showFirstTimeUser, setShowFirstTimeUser] = useState(false)
 
   const navigate = useNavigate()
 
@@ -37,6 +38,12 @@ export default function DashboardLayout() {
             return navigate("/onboarding-form")
           }
 
+          // For firsttime users
+          if (!response.data?.careerResults) {
+            console.log("here")
+            return setShowFirstTimeUser(true)
+          }
+
           // For new users, that filled their career pathway outside of login can they have a pop up on 
           // their first login to redirect them to career path?
 
@@ -57,13 +64,15 @@ export default function DashboardLayout() {
           //     navigate("/dashboard/career-pathway")
           //   }, 1500);
           // }
- 
-          if (!response.data?.careerResults) {
-            toast.success("Take our quiz and check your career path");
-            return setTimeout(() => {
-              navigate("/career-recommedation");
-            }, 1500);
-          }
+
+
+          // if (!response.data?.careerResults) {
+          //   toast.success("Take our quiz and check your career path");
+          //   return setTimeout(() => {
+          //     navigate("/career-recommedation");
+          //   }, 1500);
+          // }
+
 
         }
       }
@@ -114,18 +123,37 @@ export default function DashboardLayout() {
           </div>
         )}
         {showModal && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" onClick={() => setShowModal(false)}>
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
               <h2 className="text-xl font-bold mb-4">Career Pathway</h2>
               <p className="mb-4">Your career path result is ready. Click here to view</p>
               <button
                 onClick={() => {
-                  setShowModal(false);
+                  (false);
                   navigate("/dashboard/career-pathway");
                 }}
                 className="w-full h-12 bg-[#004085] text-white rounded-lg hover:bg-blue-700"
               >
                 View Results
+              </button>
+            </div>
+          </div>
+        )}
+
+        {showFirstTimeUser && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" onClick={() => setShowFirstTimeUser(false)}>
+            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-[90%]">
+              <h2 className="text-xl font-bold mb-4">Welcome to AlignTraits 🎉</h2>
+              <p className="mb-4">Find the career path that’s truly right for you.
+	              Take our quick assessment to get your personalized career recommendation.</p>
+              <button
+                onClick={() => {
+                  setShowFirstTimeUser(false);
+                  navigate("/career-recommedation");
+                }}
+                className="w-full h-12 bg-[#004085] text-white rounded-lg hover:bg-blue-700"
+              >
+                Start My Career Recommendation
               </button>
             </div>
           </div>

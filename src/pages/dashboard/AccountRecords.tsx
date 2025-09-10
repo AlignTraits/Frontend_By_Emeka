@@ -4,6 +4,7 @@ import Card from '../../components/AccountRecords/Card';
 import ManageRecord from '../../components/AccountRecords/ManageRecord';
 import { getAcademicRecords } from "../../services/utils";
 import { ClipLoader } from "react-spinners";
+import ActionRequiredAlert from '../../components/AccountRecords/ActionRequiredAlert';
 
 export default function AcountRecords() {
   const {setPageDesc} = useAuth()
@@ -41,11 +42,25 @@ export default function AcountRecords() {
       }
     }
 
+    const checkExamType = () => {
+      if (recordList.length < 2) {
+        return true
+      }
+      let firstExamType = recordList[0].ExamType1
+      let NoDiffExamType = true
+      recordList.map((elem: any) => {
+        if (elem.ExamType1 !== firstExamType) {
+          NoDiffExamType = false;
+        }
+      })
+      return NoDiffExamType;
+    }
+
   return (
     <div className="p-5 relative">
       {
-        recordList.length < 2 && 
-        <p className='text-red-500'>Create at least two Exam Records</p>
+        checkExamType() && 
+        <ActionRequiredAlert />
       }
       <div className="mt-10 border-[1px] border-[#EAECF0] flex flex-col gap-y-[30px] shadow-md rounded-xl p-2 lg:p-5 w-[100%] size-max">
         <div>
