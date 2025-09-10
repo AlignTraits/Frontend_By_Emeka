@@ -9,6 +9,7 @@ import { questions } from "../data/questions";
 import { BeatLoader } from "react-spinners";
 import {toast} from 'react-toastify'
 import { sendCareerPath } from "../services/utils";
+import { useAuth } from "../contexts/useAuth";
 
 type Answers = {
   [questionId: string]: string; // e.g., { q1: "blue", q2: "laptop" }
@@ -16,25 +17,23 @@ type Answers = {
 
 export default function Questionaire() {
   const navigate = useNavigate()
-
-  // const questions = [
-  //   { id: 1, text: "What’s your name?" },
-  //   { id: 2, text: "What’s your favorite color?" },
-  //   { id: 3, text: "What’s your favorite food?" },
-  // ];
+  const { token } = useAuth();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const question = questions[currentIndex];
   const [showSignUpBtn, setShowSignUpBtn] = useState(false)
+
   const [answers, setAnswers] = useState<Answers>(() => {
     const stored = localStorage.getItem("questionnaire-answers");
-    return stored ? JSON.parse(stored) : {};
+      return stored ? JSON.parse(stored) : {};
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  // console.log("questions: ", questions)
+  const foundUser = localStorage.getItem("userData");
+  const data = foundUser ? JSON.parse(foundUser) : {ok: false};
 
-  // console.log("answers: ", answers)
+  console.log("token: ", token)
+
 
   function handleSelectAnswer(questionId: string, value: string) {
     setAnswers((prev) => ({
@@ -111,14 +110,17 @@ export default function Questionaire() {
   function resetAnswers() {
     setAnswers({});
 
-    const foundUser = localStorage.getItem("userData");
-    const data = foundUser ? JSON.parse(foundUser) : {ok: false};
     const storedUserDetailsRaw = localStorage.getItem("pathway-data");
     const dataTwo = storedUserDetailsRaw ? JSON.parse(storedUserDetailsRaw) : {email: ""};
     
 
     if (data.ok) {
-      navigate("/login");
+      console.log("token: ", token)
+      if (token) {
+        navigate("/dashboard")
+      } else {
+        navigate("/login");
+      }
     } else {
       navigate("/setup-password?email=" + dataTwo.email);
     }
@@ -134,7 +136,7 @@ export default function Questionaire() {
 
 
   return (
-        <div className="relative min-h-screen w-full bg-white">
+    <div className="relative min-h-screen w-full bg-white">
       <Header />
 
       {showSignUpBtn ? (
@@ -143,7 +145,7 @@ export default function Questionaire() {
             <img src={resetIcon} alt="reset" className="w-16 sm:w-24" />
           </div>
           <p className="text-[#4C4E53] text-center text-base sm:text-lg">
-            Great! we’ve matched you with a career path. Please sign up to view your result.
+            Great! we’ve matched you with a career path. Please {!data.ok ? "sign up" : token ? "click here" : "login"} to view your result.
           </p>
           <button
             type="submit"

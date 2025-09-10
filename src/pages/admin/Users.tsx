@@ -77,6 +77,35 @@ export default function UsersList() {
   }, [filteredUsers, currentPage]);
 
 
+  const generateCSV = () => {
+    const csvData = [
+      ["Firstname", "Lastname", "Email", "Gender", "Region"],
+    ];
+
+    userList.map((elem:User) => {
+      csvData.push([elem.firstname ? elem.firstname : "-", 
+        elem.lastname ? elem.lastname : "-", elem.email ? elem.email : "-", elem.gender ? elem.gender : "-", 
+        elem.region ? elem.region : "-"])
+    })
+  
+    // Convert to CSV format
+    const csvContent = csvData.map(row => row.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+  
+    // Create download link
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "users.csv";
+    document.body.appendChild(a);
+    a.click();
+  
+    // Cleanup
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+
   return (
     <div className="relative">
       <div className="flex flex-col w-full gap-5 p-5 xl:p-6">
@@ -101,6 +130,16 @@ export default function UsersList() {
               />
               <FiSearch className="absolute left-2 top-1/2 -translate-y-1/2 text-[#999999] w-5 h-5" />
             </div>
+
+            <button 
+              type="button" 
+              disabled={isLoading}
+              onClick={generateCSV}
+              className="w-[150px] text-white text-[14px] font-medium py-2 h-[40px] bg-[#004085] p-2 rounded-md 
+                  outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
+              >
+              <p>Download</p>
+            </button>
 
           </div>
         </div>
