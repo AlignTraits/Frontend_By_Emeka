@@ -180,7 +180,7 @@ const {token} = useAuth()
             >
               {isLoading ? <BeatLoader /> : "LOGIN"}
             </button>
-            <p className="text-[#999999] text-[14px] text-center">Forgot password?</p>
+            <p onClick={() => navigate("/admin/forgot-password")} className="text-[#999999] text-[14px] text-center cursor-pointer hover:underline hover:text-blue-600 transition-colors">Forgot password?</p>
           </form>
 
           <div className="flex justify-between absolute bottom-[20px] xl:w-[90%]">
