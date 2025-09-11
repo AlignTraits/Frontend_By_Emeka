@@ -9,7 +9,11 @@ import Header from '../../components/Header';
 import traitText from "../../assets/traitstext.svg"
 import imgReset from "../../assets/imgReset.png"
 
-export default function ForgotPassword() {
+interface ForgotPasswordProps {
+  fromAdmin?: boolean
+}
+
+export default function ForgotPassword({fromAdmin = false}: ForgotPasswordProps) {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -22,7 +26,9 @@ export default function ForgotPassword() {
     setIsLoading(true)
 
     try {
+      fromAdmin ? await authService.adminForgotPasswordRequest(email) :
       await authService.forgotPasswordRequest(email);
+      
       setSuccess(true);
     } catch (err: unknown) {
       setError(
@@ -34,15 +40,6 @@ export default function ForgotPassword() {
       setIsLoading(false);
     }
   }
-
-  // const handletest = (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   setIsLoading(true)
-  //   setTimeout(() => {
-  //     setIsLoading(false)
-  //     setSuccess(true)
-  //   }, 3000)
-  // }
 
   const gotToLogin = () => {
     navigate("/login")

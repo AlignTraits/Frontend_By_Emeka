@@ -140,7 +140,8 @@ const router = createBrowserRouter([
           { path: 'schools/edit-school', element: <EditSchool /> },
         ]
       },
-      { path: 'login', element: <AdminLogin /> }
+      { path: 'login', element: <AdminLogin /> },
+      { path: "forgot-password", element: <ForgotPassword fromAdmin={true} /> },
     ]
   },
   {

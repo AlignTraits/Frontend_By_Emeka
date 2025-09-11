@@ -59,6 +59,10 @@ export const forgotPasswordRequest = async (email: string): Promise<void> => {
   await api.post('/auth/request-reset', { email })
 }
 
+export const adminForgotPasswordRequest = async (email: string): Promise<void> => {
+  await api.post('/admin-reset/request-reset', { email })
+}
+
 export const resetPassword = async (email:string, token: string, password: string): Promise<void> => {
   await api.post('/auth/reset-password', { email, token, password })
 }
