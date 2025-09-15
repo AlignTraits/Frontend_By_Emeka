@@ -81,7 +81,10 @@ interface RequirementProps {
   schoolData?: any;
   adminExamType?: string[];
   btnTitle?: string;
-  listTitle?: string
+  listTitle?: string;
+  getJambCutOff?: boolean;
+  jambCutOff?: string;
+  setJambCutOff?: React.Dispatch<React.SetStateAction<string>>;
 } 
 
 const AdmissionRequirements = ({
@@ -92,12 +95,16 @@ const AdmissionRequirements = ({
   schoolData,
   adminExamType = [],
   btnTitle = "Requirement",
-  listTitle = "Requirements List"
+  listTitle = "Requirements List",
+  getJambCutOff = false,
+  jambCutOff = "160",
+  setJambCutOff = () => {}
 }: RequirementProps) => {
   const [subjectList, setSubjectList] = useState<SubjectGrade[]>([]);
   const [programLocation, setProgramLocation] = useState("");
   const [examType, setExamType] = useState("");
   const [reqId, setReqId] = useState<number | null>(null);
+
 
   // Parse and load requirements from school data on component mount
   useEffect(() => {
@@ -251,6 +258,25 @@ const AdmissionRequirements = ({
   };
 
   let filteredExamTypes = adminExamType.length > 0 ? adminExamType : EXAMTYPE;
+  let newFiltered = filteredExamTypes.filter(item => {
+    let found = false;
+    requirementList.map(itemTwo => {
+      if (itemTwo.examType === item) {
+        found = true;
+      }
+    })
+    return !found
+  })
+
+  let filterSubjects = SUBJECTS.filter((elem) => {
+    let found = false
+    subjectList.map((itemTwo) => {
+      if (itemTwo.subject === elem) {
+        found = true
+      }
+    })
+    return !found
+  })
 
 return (
     <div className="w-full bg-[#FAFAFA] border border-[#E0E0E0] rounded-lg flex flex-col gap-6 p-3 sm:p-5">
@@ -296,7 +322,7 @@ return (
           </p>
           <CustomSelectWithProps
             placeholder="e.g Neco, Wassce etc"
-            options={filteredExamTypes.map((typeValue) => ({
+            options={newFiltered.map((typeValue) => ({
               value: typeValue,
               label: typeValue,
             }))}
@@ -326,13 +352,27 @@ return (
         )}
 
         <div className="flex flex-col gap-y-[10px]">
+          {examType === "JAMB" && getJambCutOff ? 
+            <div className="w-full">
+              <p className="text-[15px] sm:text-[16px] font-medium text-[#1E1E1E]">Jamb Cut Off Mark*</p>
+              <input
+                type="number"
+                placeholder=""
+                name="jambCutOff"
+                value={jambCutOff}
+                onChange={(e) => setJambCutOff(e.target.value)}
+                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+              />
+            </div> :
+            <></>
+          }
           {subjectList.map((item: SubjectGrade) => (
             <div key={item.id} className="flex flex-col sm:flex-row gap-y-2 gap-x-[20px] items-end">
               <div className="w-full sm:w-1/2">
                 <p className="text-[15px] sm:text-[16px] font-medium text-[#1E1E1E]">Subject*</p>
                 <CustomSelect
                   placeholder="Select Subject"
-                  options={SUBJECTS.map((typeValue) => ({
+                  options={filterSubjects.map((typeValue) => ({
                     value: typeValue,
                     label: typeValue,
                   }))}

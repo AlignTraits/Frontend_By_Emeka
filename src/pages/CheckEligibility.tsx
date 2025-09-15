@@ -4,15 +4,16 @@ import Header from "../components/Header";
 import { useAuth } from "../contexts/useAuth";
 import BeatLoader from "react-spinners/BeatLoader";
 import { FaLongArrowAltLeft } from "react-icons/fa";
-import { ErrorObjType, RequirementList } from "../types/course.types";
+import { ErrorObjType, RequirementList, SubjectGrade } from "../types/course.types";
 import AdmissionRequirements from "../components/Admin/AdmissionRequirements";
 import { getCourseDetails } from "../services/schools";
 import { toast } from "react-toastify";
 import { checkEligibility, getUser } from "../services/utils";
+import { createAcademicRecords, getAcademicRecords, updateAcademicRecords } from "../services/utils";
 
 
 export default function CheckEligibility() {
-  const {error} = useAuth()
+  const {error, token, user} = useAuth()
   const { courseId } = useParams<{ courseId: string}>();
   const navigate = useNavigate()
 
@@ -29,6 +30,8 @@ export default function CheckEligibility() {
   const [responseObjTwo, setResponseObjTwo] = useState({} as any)
 
   const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
+  const [recordList, setRecordList] = useState<RequirementList[]>([])
+  const [recordId, setRecordId] = useState<string>("")
   const [errorObj, setErrorObj] = useState<ErrorObjType>({
     title: false,
     courseDescription: false,
@@ -85,6 +88,13 @@ export default function CheckEligibility() {
 
   useEffect(() => {
     getCourse()
+
+    getData()
+
+    if (token && token.length > 0) {
+      setDisplayRequirements(true)
+    }
+    
   }, [])
 
   const getCourse = async () => {
@@ -105,11 +115,85 @@ export default function CheckEligibility() {
     }
   }
 
+  const getData = async () => {
+    if (token && token.length > 0) {
+      const response = await getAcademicRecords();
+
+      if (response?.ok) {
+        populateList(response.data[0])
+        setRecordId(response.data[0].id)
+      }
+    }
+  }
+
+  const populateList = (dataParam: any) => {
+    const parsedRequirements: RequirementList[] = [];
+    
+    // Process up to 10 exam types from school data
+    for (let i = 1; i <= 10; i++) {
+      const countryKey = `ExamCountry${i}`;
+      const typeKey = `ExamType${i}`;
+      const subjectsKey = `ExamType${i}Subjects`;
+      const gradesKey = `ExamType${i}SubGrades`;
+      
+      if (dataParam[countryKey] && dataParam[typeKey] && 
+          dataParam[subjectsKey] && dataParam[gradesKey]) {
+        
+        const subjects: SubjectGrade[] = [];
+        
+        // Create subject-grade pairs
+        for (let j = 0; j < dataParam[subjectsKey].length; j++) {
+          subjects.push({
+            id: JSON.stringify(Date.now() + j),
+            subject: dataParam[subjectsKey][j],
+            grade: dataParam[gradesKey][j]
+          });
+        }
+        
+        // Add to requirements list
+        parsedRequirements.push({
+          id: Date.now() + i,
+          location: dataParam[countryKey],
+          examType: dataParam[typeKey],
+          subjects: subjects
+        });
+      }
+    }
+
+    setRecordList(parsedRequirements)
+  }
+
   const handleEligibilityCheck = async () => {
     if (requirementList.length === 0) {
       toast.error("Please select at least one exam type to proceed.");
       return
     }
+
+  // const foundUser = localStorage.getItem("userData");
+  // const foundUserData = foundUser ? JSON.parse(foundUser) : {ok: false};
+
+  const newList = [...requirementList, ...recordList]
+
+  const maxEntries = 10;
+
+  let temPayloadTwo:any = {}
+
+  for (let i = 0; i < maxEntries; i++) {
+    if (i < newList.length) {
+      const elem = newList[i];
+      temPayloadTwo[`ExamCountry${i + 1}`] = elem.location;
+      temPayloadTwo[`ExamType${i + 1}`] = elem.examType;
+      temPayloadTwo[`ExamType${i + 1}Subjects`] = elem.subjects.map(sub => sub.subject);
+      temPayloadTwo[`ExamType${i + 1}SubGrades`] = elem.subjects.map(sub => sub.grade);
+    } else {
+      // Pad with nulls
+      temPayloadTwo[`ExamCountry${i + 1}`] = "";
+      temPayloadTwo[`ExamType${i + 1}`] = "";
+      temPayloadTwo[`ExamType${i + 1}Subjects`] = null;
+      temPayloadTwo[`ExamType${i + 1}SubGrades`] = null;
+    }
+  }
+
 
     let tempPayload:any = []
 
@@ -134,12 +218,24 @@ export default function CheckEligibility() {
       })
     })
 
-    mainPayload["email"] = data.email;
+    mainPayload["email"] = token ? user?.email : data.email;
     mainPayload["courseId"] = courseId;
     mainPayload["exams"] = tempPayload;
     mainPayload["preferences"] = {
       "university": responseObj?.university?.name
     }
+
+    // console.log("foundUserData: ", foundUserData)
+
+    console.log("requirementList: ", requirementList)
+
+    console.log("temPayloadTwo: ", temPayloadTwo)
+
+    console.log("recordList: ", recordList)
+
+    console.log("recordId: ", recordId)
+
+    // console.log("mainPayload: ", mainPayload)
 
     try {
       setIsLoading(true)
@@ -147,13 +243,30 @@ export default function CheckEligibility() {
       let now = new Date()
       const expiredate = responseObjTwo?.data?.payment_plan_expires_at ? new Date(responseObjTwo?.data?.payment_plan_expires_at) : now;
 
+      // Update academic records if user is logged-in
+
+      if (token && token.length > 0) {
+        if (recordId.length > 0) {
+          await updateAcademicRecords(temPayloadTwo, recordId)
+        } else {
+          await createAcademicRecords(temPayloadTwo);
+        }
+      }
+
       if (responseObjTwo?.data?.subscriptionPlanStatus && expiredate > now && responseObjTwo?.ok) {
         const response = await checkEligibility(mainPayload);
         console.log("response: ", response);
-        toast.success("Please login and check eligibility results in your dashboard");
-        setTimeout(() => {
-          navigate("/login")
-        }, 1000) 
+        if (token && token.length > 0) {
+          toast.success("Check eligibility results in your dashboard");
+          setTimeout(() => {
+            navigate("/dashboard")
+          }, 1000) 
+        } else {
+          toast.success("Please login and check eligibility results in your dashboard");
+          setTimeout(() => {
+            navigate("/login")
+          }, 1000) 
+        }
       } else if (!responseObjTwo?.data?.subscriptionPlanStatus || expiredate <= now || !responseObjTwo?.ok) {
         toast.error("No active subscription, make payment!");
         localStorage.setItem("eligibilityPayload", JSON.stringify(mainPayload))
