@@ -5,6 +5,7 @@ import AccountCards from '../../components/Settings/AccountCards';
 import RecentActivity from '../../components/Settings/RecentActivity';
 import QuickActions from '../../components/Settings/QuickActions';
 import { getAcademicRecords } from "../../services/utils";
+import { SubjectGrade, RequirementListNew } from "../../types/course.types";
 
 export default function AccountSettings() {
   const {setPageDesc, user} = useAuth()
@@ -59,14 +60,52 @@ const [dataLenth, setDataLength] = useState(0)
   const getRecords = async () => {
     try {
       const response = await getAcademicRecords();
-      setDataLength(response.data.length)
+      if (response?.ok) {
+        populateList(response.data[0])
+      }
 
     } catch (err: any) {
       console.log("error: ", err)
     } 
   }
 
-  console.log("user: ", user)
+    const populateList = (dataParam: any) => {
+      const parsedRequirements: RequirementListNew[] = [];
+      
+      // Process up to 10 exam types from school data
+      for (let i = 1; i <= 10; i++) {
+        const countryKey = `ExamCountry${i}`;
+        const typeKey = `ExamType${i}`;
+        const subjectsKey = `ExamType${i}Subjects`;
+        const gradesKey = `ExamType${i}SubGrades`;
+        
+        if (dataParam[countryKey] && dataParam[typeKey] && 
+            dataParam[subjectsKey] && dataParam[gradesKey]) {
+          
+          const subjects: SubjectGrade[] = [];
+          
+          // Create subject-grade pairs
+          for (let j = 0; j < dataParam[subjectsKey].length; j++) {
+            subjects.push({
+              id: JSON.stringify(Date.now() + j),
+              subject: dataParam[subjectsKey][j],
+              grade: dataParam[gradesKey][j]
+            });
+          }
+          
+          // Add to requirements list
+          parsedRequirements.push({
+            id: JSON.stringify(Date.now() + i),
+            country: dataParam[countryKey],
+            examType: dataParam[typeKey],
+            examYear: "1970",
+            subjects: subjects
+          });
+        }
+      }
+
+      setDataLength(parsedRequirements.length)
+    }
 
   return (
     <div className='py-10 px-5'>

@@ -1,19 +1,22 @@
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
 import React, { useState } from "react";
-import { deleteAcademicRecords } from "../../services/utils";
+import { updateAcademicRecords } from "../../services/utils";
 import { toast } from "react-toastify";
 import { BeatLoader } from "react-spinners";
+import { RequirementListNew, SubjectGrade } from "../../types/course.types";
 
 type ResultProps = {
-  result: any;
+  result: RequirementListNew;
+  recordList: RequirementListNew[];
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setEditRecord: React.Dispatch<React.SetStateAction<any>>;
   getRecords: () => void;
+  recordId: string | null;
 
 };
 
-const Card: React.FC<ResultProps> = ({ result, setShowModal, setEditRecord, getRecords })=> {
+const Card: React.FC<ResultProps> = ({ result, setShowModal, setEditRecord, getRecords, recordList, recordId })=> {
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,8 +28,29 @@ const Card: React.FC<ResultProps> = ({ result, setShowModal, setEditRecord, getR
   const handleDelete = async () => {
     try {
       setIsLoading(true);
-      const response = await deleteAcademicRecords(result.id);
-      console.log("response: ", response)
+      let tempList = recordList.filter((elem) => elem.id !== result.id)
+
+      const maxEntries = 10;
+
+      let temPayload:any = {}
+
+      for (let i = 0; i < maxEntries; i++) {
+        if (i < tempList.length) {
+          const elem = tempList[i];
+          temPayload[`ExamCountry${i + 1}`] = elem.country;
+          temPayload[`ExamType${i + 1}`] = elem.examType;
+          temPayload[`ExamType${i + 1}Subjects`] = elem.subjects.map(sub => sub.subject);
+          temPayload[`ExamType${i + 1}SubGrades`] = elem.subjects.map(sub => sub.grade);
+        } else {
+          // Pad with nulls
+          temPayload[`ExamCountry${i + 1}`] = "";
+          temPayload[`ExamType${i + 1}`] = "";
+          temPayload[`ExamType${i + 1}Subjects`] = null;
+          temPayload[`ExamType${i + 1}SubGrades`] = null;
+        }
+      }
+
+      await updateAcademicRecords(temPayload, recordId as string);
       toast.success("Record deleted successfully");
     } catch (error) {
       console.error("Error deleting record:", error);
@@ -42,10 +66,10 @@ const Card: React.FC<ResultProps> = ({ result, setShowModal, setEditRecord, getR
       <div className="flex justify-between items-center">
         <div>
           <div className="flex gap-x-[10px] items-center">
-            <p className="text-[#101828] text-[16px] font-semibold">{result?.ExamType1}</p>
+            <p className="text-[#101828] text-[16px] font-semibold">{result.examType}</p>
             {/* <p className="text-[#000000] text-[10px] bg-[#E3E3E3] size-max px-[5px] py-[2px] rounded-xl">2020</p> */}
           </div>
-          <p className="text-[#757575] text-[14px] font-medium">{result?.ExamType1Subjects.length} subjects recorded</p>
+          <p className="text-[#757575] text-[14px] font-medium">{result.subjects.length} subjects recorded</p>
         </div>
 
         <div className="flex gap-x-[10px]">
@@ -68,10 +92,10 @@ const Card: React.FC<ResultProps> = ({ result, setShowModal, setEditRecord, getR
 
       <div className="flex items-center flex-wrap gap-x-[10px]">
         {
-          result.ExamType1Subjects.map((elem:string, i:number) => (
+          result.subjects.map((elem: SubjectGrade, i:number) => (
           <div key={i} className="flex gap-x-[10px] items-center">
-            <p className="text-[#101828] text-[16px] font-semibold">{elem}</p>
-            <p className="text-[#000000] text-[10px] bg-[#E3E3E3] size-max px-[5px] py-[2px] rounded-xl">{result?.ExamType1SubGrades[i]}</p>
+            <p className="text-[#101828] text-[16px] font-semibold">{elem.subject}</p>
+            <p className="text-[#000000] text-[10px] bg-[#E3E3E3] size-max px-[5px] py-[2px] rounded-xl">{elem.grade}</p>
           </div>
           ))
         }

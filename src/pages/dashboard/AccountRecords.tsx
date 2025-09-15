@@ -5,13 +5,15 @@ import ManageRecord from '../../components/AccountRecords/ManageRecord';
 import { getAcademicRecords } from "../../services/utils";
 import { ClipLoader } from "react-spinners";
 import ActionRequiredAlert from '../../components/AccountRecords/ActionRequiredAlert';
+import { SubjectGrade, RequirementListNew } from "../../types/course.types";
 
 export default function AcountRecords() {
   const {setPageDesc} = useAuth()
   const [showModal, setShowModal] = useState(false)
-  const [recordList, setRecordList] = useState<any[]>([])
-  const [editRecord, setEditRecord] = useState<any>(null)
+  const [recordList, setRecordList] = useState<RequirementListNew[]>([])
+  const [editRecord, setEditRecord] = useState<RequirementListNew | null>(null)
   const [isLoading, setIsLoading] = useState(false);
+  const [recordId, setRecordId] = useState<string | null>(null)
 
   const hasFetched = useRef(false);
 
@@ -33,7 +35,12 @@ export default function AcountRecords() {
       try {
         setIsLoading(true)
         const response = await getAcademicRecords();
-        setRecordList(response.data)
+        // setRecordList(response.data)
+        console.log("response: ", response)
+        if (response?.ok) {
+          populateList(response.data[0])
+          setRecordId(response.data[0].id)
+        }
       } catch (err: any) {
         console.log("error: ", err)
         setRecordList([]);
@@ -46,14 +53,52 @@ export default function AcountRecords() {
       if (recordList.length < 2) {
         return true
       }
-      let firstExamType = recordList[0].ExamType1
+      let firstExamType = recordList[0].examType
       let NoDiffExamType = true
       recordList.map((elem: any) => {
-        if (elem.ExamType1 !== firstExamType) {
+        if (elem.examType !== firstExamType) {
           NoDiffExamType = false;
         }
       })
       return NoDiffExamType;
+    }
+
+    const populateList = (dataParam: any) => {
+      const parsedRequirements: RequirementListNew[] = [];
+      
+      // Process up to 10 exam types from school data
+      for (let i = 1; i <= 10; i++) {
+        const countryKey = `ExamCountry${i}`;
+        const typeKey = `ExamType${i}`;
+        const subjectsKey = `ExamType${i}Subjects`;
+        const gradesKey = `ExamType${i}SubGrades`;
+        
+        if (dataParam[countryKey] && dataParam[typeKey] && 
+            dataParam[subjectsKey] && dataParam[gradesKey]) {
+          
+          const subjects: SubjectGrade[] = [];
+          
+          // Create subject-grade pairs
+          for (let j = 0; j < dataParam[subjectsKey].length; j++) {
+            subjects.push({
+              id: JSON.stringify(Date.now() + j),
+              subject: dataParam[subjectsKey][j],
+              grade: dataParam[gradesKey][j]
+            });
+          }
+          
+          // Add to requirements list
+          parsedRequirements.push({
+            id: JSON.stringify(Date.now() + i),
+            country: dataParam[countryKey],
+            examType: dataParam[typeKey],
+            examYear: "1970",
+            subjects: subjects
+          });
+        }
+      }
+
+      setRecordList(parsedRequirements)
     }
 
   return (
@@ -80,7 +125,7 @@ export default function AcountRecords() {
           <div className='w-full h-[100px] flex justify-center items-center'>
             <ClipLoader /> 
           </div> : recordList?.length > 0 ? recordList.map((record, index) => (
-            <Card getRecords={getRecords} key={index} setShowModal={setShowModal} result={record} setEditRecord={setEditRecord} />
+            <Card recordId={recordId} recordList={recordList} getRecords={getRecords} key={index} setShowModal={setShowModal} result={record} setEditRecord={setEditRecord} />
           )) : ( 
             <p className='text-[#757575] text-[14px]'>No records found.</p>
           )
@@ -88,7 +133,7 @@ export default function AcountRecords() {
 
       </div>
       {
-        showModal && <ManageRecord setShowModal={setShowModal} editRecord={editRecord} getRecords={getRecords} setEditRecord={setEditRecord} />
+        showModal && <ManageRecord recordId={recordId} recordList={recordList} setShowModal={setShowModal} editRecord={editRecord} getRecords={getRecords} setEditRecord={setEditRecord} />
       }
     </div>
   );

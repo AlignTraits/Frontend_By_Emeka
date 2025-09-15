@@ -21,14 +21,16 @@ countriesData.map((elem:any) => {
 })
 interface ManageRecordProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  editRecord: any;
+  editRecord: RequirementListNew | null;
+  recordList: RequirementListNew[];
   getRecords: () => void;
   setEditRecord: React.Dispatch<React.SetStateAction<any>>;
+  recordId: string | null;
 }
 
 
 
-const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: ManageRecordProps) => {
+const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord, recordList, recordId}: ManageRecordProps) => {
 
   const [errorObj, setErrorObj] = useState({
     examType: false,
@@ -50,16 +52,16 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
 
   useEffect(() => {
     if (editRecord) {
-      setSelectedCountry(editRecord.ExamCountry1);
-      setExamType(editRecord.ExamType1);
+      setSelectedCountry(editRecord.country);
+      setExamType(editRecord.examType);
       setSubjectList(
-        editRecord.ExamType1Subjects.map((subject: string, index: number) => ({
-          id: Date.now() + index, // Unique ID for each subject
-          subject: subject,
-          grade: editRecord.ExamType1SubGrades[index] || ""
+        editRecord.subjects.map((subject: SubjectGrade, index: number) => ({
+          id: JSON.stringify(Date.now() + index), // Unique ID for each subject
+          subject: subject.subject,
+          grade: subject.grade
         }))
       );
-      setExamYear(editRecord.ExamYear1 || "1970")
+      setExamYear(editRecord.examYear || "1970")
 
       setReqId(editRecord.id)
       
@@ -71,6 +73,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
     } else {
       resetForm();
     }
+    setRequirementList(recordList);
   }, [])
 
   const handleExamTypeError = () => {
@@ -117,7 +120,6 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
     setExamYear("")
     setErrorObj((prev) => ({ ...prev, examType: false, country: false }));
     setEditRecord(null)
-    setRequirementList([])
   };
 
     const checkAllFields = () => {
@@ -170,7 +172,6 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
     }
   };
 
-
   const addRequirements = () => {
     checkAllFields();
 
@@ -183,13 +184,6 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
       toast.error("Please fill all input fields!");
       return;
     }
-
-    if (subjectList.length < 4) {
-      toast.error("Please add at least four subjects");
-      return;
-    }
-
-    setShowPreview(true)
 
     if (reqId) {
       let tempList = requirementList.filter((item) => item.id !== reqId);
@@ -210,6 +204,8 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
       }]);
     }
 
+    toast.success("Requirement added successfully!");
+
     // Reset form
     setExamType("");
     setSelectedCountry("")
@@ -218,35 +214,37 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
     setReqId(null)
   };
 
-  // useEffect(() => {
-  //   if (requirementList.length > 0) {
-  //     handleSubmit()
-  //   }
-  // }, [requirementList])
-
   const handleSubmit = async () => {
     if (requirementList.length === 0) {
       toast.error("Please add record to proceed");
       return
     }
 
+    const maxEntries = 10;
+
     let temPayload:any = {}
 
-    for (let i = 0; i < requirementList.length; i++) {
+    for (let i = 0; i < maxEntries; i++) {
       if (i < requirementList.length) {
         const elem = requirementList[i];
         temPayload[`ExamCountry${i + 1}`] = elem.country;
         temPayload[`ExamType${i + 1}`] = elem.examType;
         temPayload[`ExamType${i + 1}Subjects`] = elem.subjects.map(sub => sub.subject);
         temPayload[`ExamType${i + 1}SubGrades`] = elem.subjects.map(sub => sub.grade);
+      } else {
+        // Pad with nulls
+        temPayload[`ExamCountry${i + 1}`] = "";
+        temPayload[`ExamType${i + 1}`] = "";
+        temPayload[`ExamType${i + 1}Subjects`] = null;
+        temPayload[`ExamType${i + 1}SubGrades`] = null;
       }
     }
 
     try {
       setIsLoading(true);
-      const response = reqId ? await updateAcademicRecords(temPayload, reqId) : await createAcademicRecords(temPayload);
+      const response = recordId ? await updateAcademicRecords(temPayload, recordId) : await createAcademicRecords(temPayload);
       console.log("response: ", response)
-      toast.success(reqId ? "Record updated successfully!" : "Record added successfully!");
+      toast.success(recordId ? "Record updated successfully!" : "Record added successfully!");
     } catch (err:any) {
       toast.error("An error occurred when creating record");
     } finally {
@@ -454,13 +452,13 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
                   {`Add Exam Record`}
                 </button>
 
-                {/* <button
+                <button
                   onClick={() => setShowPreview(true)}
                   disabled={isLoading}
                   className="w-full md:w-[211px] h-[50px] border-[#DDDDDD] border text-white text-sm font-semibold rounded-md bg-[#004085] hover:bg-[#003366] disabled:opacity-50"
                 >
                   {`Show Preview`}
-                </button> */}
+                </button>
               </div>
             </>
           )
@@ -533,7 +531,6 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord}: Man
                   disabled={isLoading}
                   onClick={() => {
                     setShowPreview(false)
-                    editRequirement(requirementList[0].id)
                   }}
                   className="w-[211px] h-[50px] border-[#DDDDDD] border-[1px] text-[#ffffff] text-[14px] font-semibold rounded-md bg-[#004085] hover:bg-[#003366]"
                 >
