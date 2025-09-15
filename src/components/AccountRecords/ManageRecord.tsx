@@ -262,6 +262,26 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord, reco
     return false;
   }
 
+  let newFiltered = EXAMTYPE.filter(item => {
+    let found = false;
+    requirementList.map(itemTwo => {
+      if (itemTwo.examType === item) {
+        found = true;
+      }
+    })
+    return !found
+  })
+
+  let filterSubjects = SUBJECTS.filter((elem) => {
+    let found = false
+    subjectList.map((itemTwo) => {
+      if (itemTwo.subject === elem) {
+        found = true
+      }
+    })
+    return !found
+  })
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={() => setShowModal(false)}>
 
@@ -334,7 +354,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord, reco
                   </p>
                   <CustomSelectWithProps
                     placeholder="e.g Neco, Wassce etc"
-                    options={EXAMTYPE.map((typeValue) => ({
+                    options={newFiltered.map((typeValue) => ({
                       value: typeValue,
                       label: typeValue,
                     }))}
@@ -370,7 +390,7 @@ const ManageRecord = ({setShowModal, editRecord, getRecords, setEditRecord, reco
                       <p className="text-[16px] font-medium text-[#1E1E1E]">Subject*</p>
                       <CustomSelect
                         placeholder="Select Subject"
-                        options={SUBJECTS.map((typeValue) => ({
+                        options={filterSubjects.map((typeValue) => ({
                           value: typeValue,
                           label: typeValue,
                         }))}

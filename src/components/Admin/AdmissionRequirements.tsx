@@ -99,6 +99,7 @@ const AdmissionRequirements = ({
   const [examType, setExamType] = useState("");
   const [reqId, setReqId] = useState<number | null>(null);
 
+
   // Parse and load requirements from school data on component mount
   useEffect(() => {
     if (schoolData) {
@@ -251,6 +252,25 @@ const AdmissionRequirements = ({
   };
 
   let filteredExamTypes = adminExamType.length > 0 ? adminExamType : EXAMTYPE;
+  let newFiltered = filteredExamTypes.filter(item => {
+    let found = false;
+    requirementList.map(itemTwo => {
+      if (itemTwo.examType === item) {
+        found = true;
+      }
+    })
+    return !found
+  })
+
+  let filterSubjects = SUBJECTS.filter((elem) => {
+    let found = false
+    subjectList.map((itemTwo) => {
+      if (itemTwo.subject === elem) {
+        found = true
+      }
+    })
+    return !found
+  })
 
 return (
     <div className="w-full bg-[#FAFAFA] border border-[#E0E0E0] rounded-lg flex flex-col gap-6 p-3 sm:p-5">
@@ -296,7 +316,7 @@ return (
           </p>
           <CustomSelectWithProps
             placeholder="e.g Neco, Wassce etc"
-            options={filteredExamTypes.map((typeValue) => ({
+            options={newFiltered.map((typeValue) => ({
               value: typeValue,
               label: typeValue,
             }))}
@@ -332,7 +352,7 @@ return (
                 <p className="text-[15px] sm:text-[16px] font-medium text-[#1E1E1E]">Subject*</p>
                 <CustomSelect
                   placeholder="Select Subject"
-                  options={SUBJECTS.map((typeValue) => ({
+                  options={filterSubjects.map((typeValue) => ({
                     value: typeValue,
                     label: typeValue,
                   }))}
