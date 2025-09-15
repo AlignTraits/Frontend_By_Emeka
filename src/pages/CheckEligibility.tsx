@@ -90,12 +90,20 @@ export default function CheckEligibility() {
     getCourse()
 
     getData()
-
-    if (token && token.length > 0) {
-      setDisplayRequirements(true)
-    }
     
   }, [])
+
+  useEffect(() => {
+    if (token && token.length > 0) {
+      setDisplayRequirements(true)
+
+    localStorage.setItem("eligibility-data", JSON.stringify({
+      firstName: user?.firstname, email: user?.email,
+      lastName: user?.lastname, schoolLocation: responseObj?.university?.region}));
+    }
+
+
+  }, [responseObj])
 
   const getCourse = async () => {
     if (courseId && courseId.length > 0) {
