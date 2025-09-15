@@ -81,7 +81,10 @@ interface RequirementProps {
   schoolData?: any;
   adminExamType?: string[];
   btnTitle?: string;
-  listTitle?: string
+  listTitle?: string;
+  getJambCutOff?: boolean;
+  jambCutOff?: string;
+  setJambCutOff?: React.Dispatch<React.SetStateAction<string>>;
 } 
 
 const AdmissionRequirements = ({
@@ -92,7 +95,10 @@ const AdmissionRequirements = ({
   schoolData,
   adminExamType = [],
   btnTitle = "Requirement",
-  listTitle = "Requirements List"
+  listTitle = "Requirements List",
+  getJambCutOff = false,
+  jambCutOff = "160",
+  setJambCutOff = () => {}
 }: RequirementProps) => {
   const [subjectList, setSubjectList] = useState<SubjectGrade[]>([]);
   const [programLocation, setProgramLocation] = useState("");
@@ -346,6 +352,20 @@ return (
         )}
 
         <div className="flex flex-col gap-y-[10px]">
+          {examType === "JAMB" && getJambCutOff ? 
+            <div className="w-full">
+              <p className="text-[15px] sm:text-[16px] font-medium text-[#1E1E1E]">Jamb Cut Off Mark*</p>
+              <input
+                type="number"
+                placeholder=""
+                name="jambCutOff"
+                value={jambCutOff}
+                onChange={(e) => setJambCutOff(e.target.value)}
+                className="border-[1px] px-[10px] rounded-md border-[#E9E9E9] py-2 focus:outline-none w-full text-[16px] font-[400] text-[black]"
+              />
+            </div> :
+            <></>
+          }
           {subjectList.map((item: SubjectGrade) => (
             <div key={item.id} className="flex flex-col sm:flex-row gap-y-2 gap-x-[20px] items-end">
               <div className="w-full sm:w-1/2">

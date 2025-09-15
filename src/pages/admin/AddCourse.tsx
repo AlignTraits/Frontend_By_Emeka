@@ -108,6 +108,7 @@ export default function AddCourse () {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const [calledCreatedCourseAPI, setCalledCreatedCourseAPI] = useState(false)
+  const [jambCutOff, setJambCutOff] = useState("160")
 
   const handleFileError = () => {
     setErrorObj((prev) => ({...prev, previewUrl: false}))
@@ -315,6 +316,7 @@ export default function AddCourse () {
       const tempCourse = await getCourseDetails(currentCourseID)
 
       console.log("tempCourse: ", tempCourse)
+
       setResponseObj(tempCourse)
 
       setPreviewUrl(tempCourse.image)
@@ -331,6 +333,7 @@ export default function AddCourse () {
       setCurrency(tempCourse.acceptanceFeeCurrency)
       setScholarshipDescription(tempCourse.scholarshipInformation)
       setCoursePriceCurrency(tempCourse.currency)
+      setJambCutOff(JSON.stringify(tempCourse.jambCutOffMark))
 
       let tempRules = {} as any
       Object.keys(tempCourse).forEach((key) => {
@@ -378,7 +381,6 @@ export default function AddCourse () {
 
 
   const handleUpdateLogic = async () => {
-    setIsLoadingTwo(true)
 
     let temPayload:any = {}
 
@@ -400,6 +402,14 @@ export default function AddCourse () {
       }
     }
 
+    temPayload['jambCutOffMark'] = jambCutOff
+
+    requirementList.map((elem) => {
+      if (elem.examType === "JAMB") {
+        temPayload['jambCutOffMark'] = Number(jambCutOff)
+      }
+    })
+
     const maxRules = 5;
 
     for (let i = 0; i < maxRules; i++) {
@@ -411,7 +421,10 @@ export default function AddCourse () {
     }
     temPayload = { ...temPayload, id: currentCourseID }
 
+    console.log("temPayload: ", temPayload)
+
     try {
+      setIsLoadingTwo(true)
       let response = await updateAdmissionLogic(temPayload, token as string, currentCourseID as string)
       console.log("response of updateAdmissionLogic: ", response)
       toast.success("Admission Logic Created Successfully")
@@ -826,6 +839,9 @@ export default function AddCourse () {
               requirementList={requirementList}
               setRequirementList={setRequirementList}
               schoolData={responseObj}
+              getJambCutOff={true}
+              setJambCutOff={setJambCutOff}
+              jambCutOff={jambCutOff}
             />
 
             <AdmissionRules 
