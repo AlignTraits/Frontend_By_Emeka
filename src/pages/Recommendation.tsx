@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { useAuth } from "../contexts/useAuth";
@@ -7,7 +7,7 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import { getUser } from "../services/utils";
 
 export default function Recommendation() {
-  const { error } = useAuth();
+  const { error, user, token } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,6 +23,8 @@ export default function Recommendation() {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const isFormValid = data.firstName.length > 0 && data.lastName.length > 0 && data.email.length > 0 && agreed;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,6 +48,16 @@ export default function Recommendation() {
     // You can open a modal or do nothing
     console.log('Terms & Privacy clicked');
   };
+
+  useEffect(() => {
+    if (token && token.length > 0 ) {
+      setData({
+        firstName: user?.firstname || "",
+        lastName: user?.lastname || "",
+        email: user?.email || ""
+      })
+    }
+  }, [])
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white">
@@ -155,7 +167,7 @@ export default function Recommendation() {
 
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || !isFormValid}
             className="w-full max-w-[400px] mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50 text-sm sm:text-base"
           >
             {isLoading ? <BeatLoader /> : "Continue"}

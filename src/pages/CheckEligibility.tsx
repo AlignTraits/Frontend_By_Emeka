@@ -58,6 +58,8 @@ export default function CheckEligibility() {
 
   const [displayRequirements, setDisplayRequirements] = useState(false);
 
+  const isFormValid = data.firstName.length > 0 && data.lastName.length > 0 && data.email.length > 0 && agreed;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -95,15 +97,14 @@ export default function CheckEligibility() {
 
   useEffect(() => {
     if (token && token.length > 0) {
-      setDisplayRequirements(true)
-
-    localStorage.setItem("eligibility-data", JSON.stringify({
-      firstName: user?.firstname, email: user?.email,
-      lastName: user?.lastname, schoolLocation: responseObj?.university?.region}));
+      setData({
+        firstName: user?.firstname || "",
+        lastName: user?.lastname || "",
+        email: user?.email || ""
+      })
     }
 
-
-  }, [responseObj])
+  }, [])
 
   const getCourse = async () => {
     if (courseId && courseId.length > 0) {
@@ -232,18 +233,6 @@ export default function CheckEligibility() {
     mainPayload["preferences"] = {
       "university": responseObj?.university?.name
     }
-
-    // console.log("foundUserData: ", foundUserData)
-
-    console.log("requirementList: ", requirementList)
-
-    console.log("temPayloadTwo: ", temPayloadTwo)
-
-    console.log("recordList: ", recordList)
-
-    console.log("recordId: ", recordId)
-
-    // console.log("mainPayload: ", mainPayload)
 
     try {
       setIsLoading(true)
@@ -432,7 +421,7 @@ export default function CheckEligibility() {
 
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || !isFormValid}
                   className="w-full max-w-[400px] mx-auto py-2 px-4 bg-[#004085] hover:bg-blue-700 text-white rounded-xl disabled:opacity-50 text-sm sm:text-base"
                 >
                   {/* {"Continue"} */}
