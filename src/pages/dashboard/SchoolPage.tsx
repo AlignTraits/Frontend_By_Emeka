@@ -31,7 +31,9 @@ type Country = {
 
 
 export default function SchoolPage() {
-  const {setPageDesc, setSearchAllTerm, searchAllTerm} = useAuth()
+  const {setPageDesc, setSearchAllTerm, searchAllTerm, user} = useAuth()
+
+  console.log("user: ", user)
 
   // const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false)

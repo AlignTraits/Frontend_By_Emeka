@@ -6,6 +6,7 @@ import { getAcademicRecords } from "../../../services/utils";
 // import ManageRecord from "../../AccountRecords/ManageRecord";
 import { useNavigate } from "react-router-dom";
 // import { toast } from "react-toastify";
+import { SubjectGrade, RequirementListNew } from "../../../types/course.types";
 
 // const recommendations = new Array(8).fill({
 //   title: "Business Intelligence Specialist",
@@ -21,7 +22,7 @@ export default function RecommendationResults({setViewState}: RecommendationProp
 
   const [isLoading, setIsLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const [dataLenth, setDataLength] = useState(0)
+  const [recordList, setRecordList] = useState<RequirementListNew[]>([])
   const navigate = useNavigate()
 
   // console.log("user: ", user);  
@@ -35,22 +36,72 @@ export default function RecommendationResults({setViewState}: RecommendationProp
   }, [])
 
   const handleBtnClick = () => {
-    if (dataLenth < 2) {
+    if (checkExamType()) {
       setShowModal(true);
     } else {
       setViewState(1)
     }
   }
 
+  const checkExamType = () => {
+    if (recordList.length < 2) {
+      return true
+    }
+    let firstExamType = recordList[0].examType
+    let NoDiffExamType = true
+    recordList.map((elem: any) => {
+      if (elem.examType !== firstExamType) {
+        NoDiffExamType = false;
+      }
+    })
+    return NoDiffExamType;
+  }
+
+  const populateList = (dataParam: any) => {
+    const parsedRequirements: RequirementListNew[] = [];
+    
+    // Process up to 10 exam types from school data
+    for (let i = 1; i <= 10; i++) {
+      const countryKey = `ExamCountry${i}`;
+      const typeKey = `ExamType${i}`;
+      const subjectsKey = `ExamType${i}Subjects`;
+      const gradesKey = `ExamType${i}SubGrades`;
+      
+      if (dataParam[countryKey] && dataParam[typeKey] && 
+          dataParam[subjectsKey] && dataParam[gradesKey]) {
+        
+        const subjects: SubjectGrade[] = [];
+        
+        // Create subject-grade pairs
+        for (let j = 0; j < dataParam[subjectsKey].length; j++) {
+          subjects.push({
+            id: JSON.stringify(Date.now() + j),
+            subject: dataParam[subjectsKey][j],
+            grade: dataParam[gradesKey][j]
+          });
+        }
+        
+        // Add to requirements list
+        parsedRequirements.push({
+          id: JSON.stringify(Date.now() + i),
+          country: dataParam[countryKey],
+          examType: dataParam[typeKey],
+          examYear: "1970",
+          subjects: subjects
+        });
+      }
+    }
+
+    setRecordList(parsedRequirements)
+  }
+
   const getRecords = async () => {
     try {
       setIsLoading(true)
       const response = await getAcademicRecords();
-      setDataLength(response.data.length)
-      // if (response.data.length < 2) {
-      //   setShowModal(true)
-      // }
-
+        if (response?.ok) {
+          populateList(response.data[0])
+        }
     } catch (err: any) {
       console.log("error: ", err)
       if (err?.status === 404) {  
@@ -82,7 +133,7 @@ export default function RecommendationResults({setViewState}: RecommendationProp
       </div>
 
       <div className="text-center">
-        <button disabled={isLoading} onClick={handleBtnClick} className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
+        <button disabled={isLoading} onClick={handleBtnClick} className="bg-[#004085] disabled:opacity-50 hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
           {"Get course recommendation"}
         </button>
       </div>
