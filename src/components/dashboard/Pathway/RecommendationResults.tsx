@@ -1,17 +1,11 @@
 import React, { useEffect, useState, useRef } from "react"
-import { SlGraph } from "react-icons/sl";
+// import { SlGraph } from "react-icons/sl";
 import { useAuth } from '../../../contexts/useAuth';
 import { getAcademicRecords } from "../../../services/utils";
-// import { BeatLoader } from "react-spinners";
-// import ManageRecord from "../../AccountRecords/ManageRecord";
 import { useNavigate } from "react-router-dom";
 // import { toast } from "react-toastify";
 import { SubjectGrade, RequirementListNew } from "../../../types/course.types";
-
-// const recommendations = new Array(8).fill({
-//   title: "Business Intelligence Specialist",
-//   description: "Explore path",
-// });
+import AddCourse from "../../../pages/AddCourse";
 
 interface RecommendationProps {
   setViewState: React.Dispatch<React.SetStateAction<number>>;
@@ -24,6 +18,9 @@ export default function RecommendationResults({setViewState}: RecommendationProp
   const [showModal, setShowModal] = useState(false)
   const [recordList, setRecordList] = useState<RequirementListNew[]>([])
   const navigate = useNavigate()
+  const [showFirstTimeUser, setShowFirstTimeUser] = useState(false)
+
+  const [showAddCourse, setShowAddCourse] = useState(false);
 
   // console.log("user: ", user);  
   const hasFetched = useRef(false);
@@ -36,6 +33,9 @@ export default function RecommendationResults({setViewState}: RecommendationProp
   }, [])
 
   const handleBtnClick = () => {
+    if (!user?.careerResults) {
+      return setShowFirstTimeUser(true)
+    }
     if (checkExamType()) {
       setShowModal(true);
     } else {
@@ -104,9 +104,6 @@ export default function RecommendationResults({setViewState}: RecommendationProp
         }
     } catch (err: any) {
       console.log("error: ", err)
-      if (err?.status === 404) {  
-        setShowModal(true)
-      }
     } finally {
       setIsLoading(false)
     }
@@ -114,30 +111,45 @@ export default function RecommendationResults({setViewState}: RecommendationProp
 
   return (
     <div className="w-full max-w-2xl mx-auto mt-[50px] bg-white border-[1px] border-[#ccc] shadow-md rounded-xl p-6">
-      <h2 className="text-lg font-semibold text-[#101828] mb-6 flex items-center">
-        <SlGraph className="mr-[10px] font-bold h-8 w-8" />
-        Recommendation Survey Results
-      </h2>
+      {
+        showAddCourse ?
+        <AddCourse getRecords={getRecords} setShowAddCourse={setShowAddCourse} /> :
+        <>
+          <h2 className="text-lg font-semibold text-[#101828] mb-6 flex items-center">
+            {/* <SlGraph className="mr-[10px] font-bold h-8 w-8" /> */}
+            Welcome to Your Career Journey 🌟
+          </h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-        {user?.careerResults?.recommendedCareers && user.careerResults.recommendedCareers.map((rec: string, index:number) => (
-          <div
-            key={index}
-            className="bg-white cursor-pointer border border-gray-100 shadow-sm rounded-lg p-4 hover:shadow-md transition"
-          >
-            <h3 className="text-[12px] font-bold text-[#212529] mb-1">
-              {rec}
-            </h3>
+          <p className="mb-4 text-[#475467] text-sm">
+            This is where it begins! Take a quick step to discover the best career pathways 
+            tailored to your strengths, interests, and goals.
+          </p>
+
+          <p className="mb-4 text-[#475467] text-sm">
+            👉 Start your personalized career recommendation now and see where your future can take you.
+          </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+            {user?.careerResults?.recommendedCareers && user.careerResults.recommendedCareers.map((rec: string, index:number) => (
+              <div
+                key={index}
+                className="bg-white cursor-pointer border border-gray-100 shadow-sm rounded-lg p-4 hover:shadow-md transition"
+              >
+                <h3 className="text-[12px] font-bold text-[#212529] mb-1">
+                  {rec}
+                </h3>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      <div className="text-center">
-        <button disabled={isLoading} onClick={handleBtnClick} className="bg-[#004085] disabled:opacity-50 hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
-          {"Get course recommendation"}
-        </button>
-      </div>
+          <div className="text-center">
+            <button disabled={isLoading} onClick={handleBtnClick} className="bg-[#004085] disabled:opacity-50 hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
+              {"Get Your Career Recommendation"}
+            </button>
+          </div>
+        </>
 
+      }
       {showModal && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
@@ -155,11 +167,30 @@ export default function RecommendationResults({setViewState}: RecommendationProp
             <button
               onClick={() => {
                 setShowModal(false);
-                navigate("/dashboard/settings/records");
+                setShowAddCourse(true)
               }}
               className="w-full h-12 bg-[#004085] text-white rounded-lg hover:bg-blue-700"
             >
               Add Exam Record
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showFirstTimeUser && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" onClick={() => setShowFirstTimeUser(false)}>
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-[90%]">
+            <h2 className="text-xl font-bold mb-4">Welcome to AlignTraits 🎉</h2>
+            <p className="mb-4">Find the career path that’s truly right for you.
+              Take our quick assessment to get your personalized career recommendation.</p>
+            <button
+              onClick={() => {
+                setShowFirstTimeUser(false);
+                navigate("/career-recommedation");
+              }}
+              className="w-full h-12 bg-[#004085] text-white rounded-lg hover:bg-blue-700"
+            >
+              Start My Career Recommendation
             </button>
           </div>
         </div>

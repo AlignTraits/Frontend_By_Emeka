@@ -36,6 +36,7 @@ export default function Recommendation() {
     try {
       setIsLoading(true);
       const response = await getUser(data.email);
+      console.log("response: ", response)
       localStorage.setItem("userData", JSON.stringify(response))
       navigate("/questionaire");
     } catch (err) {
@@ -51,11 +52,17 @@ export default function Recommendation() {
 
   useEffect(() => {
     if (token && token.length > 0 ) {
-      setData({
+      localStorage.setItem("pathway-data", JSON.stringify({
         firstName: user?.firstname || "",
         lastName: user?.lastname || "",
         email: user?.email || ""
-      })
+      }));
+      localStorage.setItem("userData", JSON.stringify({
+        data: user,
+        message: "User found",
+        ok: true
+      }))
+      navigate("/questionaire");
     }
   }, [])
 

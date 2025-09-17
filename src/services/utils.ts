@@ -17,16 +17,15 @@ class ResponseError extends Error {
 
 export const sendCareerPath = async (data: any) => {
   try {
-    const response = await api.post("/career/answers/server", data)
+    const response = await api.post("/career/answers/server", data);
 
-    console.log("response: response", response) 
+    console.log("response: response", response);
 
-    if(response.data.status == 403) throw new ResponseError(response)
-    if(response.data.status == 500) throw new ResponseError(response)  
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      
       const errors = err.response.data.errors;
 
       errors.forEach((error: { message: string }) => {
@@ -35,9 +34,8 @@ export const sendCareerPath = async (data: any) => {
         }
       });
     }
-    if(err.response && err.response.data) {
-
-      toast.error(err.response.data.error)
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error);
     }
 
     if (
@@ -50,32 +48,51 @@ export const sendCareerPath = async (data: any) => {
 
     throw err;
   }
-}
+};
 
 export const checkEligibility = async (data: any) => {
   try {
-    const response = await api.post("/server/eligible/answers", data)
+    const response = await api.post("/server/eligible/answers", data);
 
-    console.log("response: from API", response) 
+    console.log("response: from API", response);
 
-    if(response.data.status == 403) throw new ResponseError(response)
-    if(response.data.status == 500) throw new ResponseError(response)  
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
     return response.data;
   } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.errors) {
+      const errors = err.response.data.errors;
+
+      errors.forEach((error: { message: string }) => {
+        if (error.message) {
+          toast.error(error.message);
+        }
+      });
+    }
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error);
+    }
+
+    if (
+      err.response &&
+      err.response.data.message &&
+      !err.response.data.errors
+    ) {
+      toast.error(err.response.data.message);
+    }
     throw err;
   }
-}
+};
 
 export const createAcademicRecords = async (data: any) => {
   try {
-    const response = await api.post("/admission-logic/academic-records", data)
+    const response = await api.post("/admission-logic/academic-records", data);
 
-    if(response.data.status == 403) throw new ResponseError(response)
-    if(response.data.status == 500) throw new ResponseError(response)  
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      
       const errors = err.response.data.errors;
 
       errors.forEach((error: { message: string }) => {
@@ -84,9 +101,8 @@ export const createAcademicRecords = async (data: any) => {
         }
       });
     }
-    if(err.response && err.response.data) {
-
-      toast.error(err.response.data.error)
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error);
     }
 
     if (
@@ -99,18 +115,20 @@ export const createAcademicRecords = async (data: any) => {
 
     throw err;
   }
-}
+};
 
 export const updateAcademicRecords = async (data: any, id: string) => {
   try {
-    const response = await api.put(`/admission-logic/academic-records/${id}`, data)
+    const response = await api.put(
+      `/admission-logic/academic-records/${id}`,
+      data
+    );
 
-    if(response.data.status == 403) throw new ResponseError(response)
-    if(response.data.status == 500) throw new ResponseError(response)  
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      
       const errors = err.response.data.errors;
 
       errors.forEach((error: { message: string }) => {
@@ -119,9 +137,8 @@ export const updateAcademicRecords = async (data: any, id: string) => {
         }
       });
     }
-    if(err.response && err.response.data) {
-
-      toast.error(err.response.data.error)
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error);
     }
 
     if (
@@ -134,18 +151,19 @@ export const updateAcademicRecords = async (data: any, id: string) => {
 
     throw err;
   }
-}
+};
 
 export const deleteAcademicRecords = async (id: string) => {
   try {
-    const response = await api.delete(`/admission-logic/academic-records/${id}`)
+    const response = await api.delete(
+      `/admission-logic/academic-records/${id}`
+    );
 
-    if(response.data.status == 403) throw new ResponseError(response)
-    if(response.data.status == 500) throw new ResponseError(response)  
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      
       const errors = err.response.data.errors;
 
       errors.forEach((error: { message: string }) => {
@@ -154,9 +172,8 @@ export const deleteAcademicRecords = async (id: string) => {
         }
       });
     }
-    if(err.response && err.response.data) {
-
-      toast.error(err.response.data.error)
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error);
     }
 
     if (
@@ -169,18 +186,17 @@ export const deleteAcademicRecords = async (id: string) => {
 
     throw err;
   }
-}
+};
 
 export const addDebitCard = async (data: any) => {
   try {
-    const response = await api.post("/monthly/payment/add-direct-debit", data)
+    const response = await api.post("/monthly/payment/add-direct-debit", data);
 
-    if(response.data.status == 403) throw new ResponseError(response)
-    if(response.data.status == 500) throw new ResponseError(response)  
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      
       const errors = err.response.data.errors;
 
       errors.forEach((error: { message: string }) => {
@@ -189,9 +205,8 @@ export const addDebitCard = async (data: any) => {
         }
       });
     }
-    if(err.response && err.response.data) {
-
-      toast.error(err.response.data.error)
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error);
     }
 
     if (
@@ -204,18 +219,18 @@ export const addDebitCard = async (data: any) => {
 
     throw err;
   }
-}
+};
 
 export const getAcademicRecords = async () => {
   try {
-    const response = await api.get("/admission-logic/academic-records")
+    const response = await api.get("/admission-logic/academic-records");
 
-    if(response.data.status == 403) throw new ResponseError(response)
-    if(response.data.status == 500) throw new ResponseError(response)  
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
     return response.data;
   } catch (err: any) {
     // if (err.response && err.response.data && err.response.data.errors) {
-      
+
     //   const errors = err.response.data.errors;
 
     //   errors.forEach((error: { message: string }) => {
@@ -225,7 +240,6 @@ export const getAcademicRecords = async () => {
     //   });
     // }
 
-
     if (
       err.response &&
       err.response.data.message &&
@@ -236,21 +250,23 @@ export const getAcademicRecords = async () => {
 
     throw err;
   }
-}
+};
 
 export const makePayment = async (data: any) => {
   try {
-    let url = data.paymentPlan === 'BASIC_ONETIME' ? '/monthly/payment/paystack/basic' : '/monthly/payment/paystack/subscription'
+    let url =
+      data.paymentPlan === "BASIC_ONETIME"
+        ? "/monthly/payment/paystack/basic"
+        : "/monthly/payment/paystack/subscription";
     const response = await api.post(url, data);
 
-    console.log("response: response", response) 
+    console.log("response: response", response);
 
-    if(response.data.status == 403) throw new ResponseError(response)
-    if(response.data.status == 500) throw new ResponseError(response)  
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      
       const errors = err.response.data.errors;
 
       errors.forEach((error: { message: string }) => {
@@ -259,9 +275,8 @@ export const makePayment = async (data: any) => {
         }
       });
     }
-    if(err.response && err.response.data) {
-
-      toast.error(err.response.data.error)
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error);
     }
 
     if (
@@ -274,18 +289,17 @@ export const makePayment = async (data: any) => {
 
     throw err;
   }
-}
+};
 
 export const getUser = async (email: string) => {
   try {
-    const response = await api.get(`/users/email/${email}`)
+    const response = await api.get(`/users/email/${email}`);
 
-    if(response.data.status == 403) throw new ResponseError(response)
-    if(response.data.status == 500) throw new ResponseError(response)  
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
     return response.data;
   } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      
       const errors = err.response.data.errors;
 
       errors.forEach((error: { message: string }) => {
@@ -294,9 +308,8 @@ export const getUser = async (email: string) => {
         }
       });
     }
-    if(err.response && err.response.data) {
-
-      toast.error(err.response.data.error)
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error);
     }
 
     if (
@@ -309,58 +322,18 @@ export const getUser = async (email: string) => {
 
     throw err;
   }
-}
+};
 
 export const deleteCard = async (authId: string, token: string) => {
   try {
-    const response = await api.delete(`/monthly/payment/cards/${authId}`,{
+    const response = await api.delete(`/monthly/payment/cards/${authId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
   } catch (err: any) {
-        if (err.response && err.response.data && err.response.data.errors) {
-       
-          const errors = err.response.data.errors;
-  
-          errors.forEach((error: { message: string }) => {
-            if (error.message) {
-              toast.error(error.message);
-            }
-          });
-        }
-        if(err.response && err.response.data) {
-  
-          toast.error(err.response.data.error)
-        }
-  
-        if (
-          err.response &&
-          err.response.data.message &&
-          !err.response.data.errors
-        ) {
-          toast.error(err.response.data.message);
-        }
-        throw err;
-      } 
-};
-
-
-export const getCourseRecommendation = async (data: any) => {
-  try {
-    console.log("data from util: ", data)
-    let url = '/career/recommended-courses'
-    const response = await api.post(url, data);
-
-    console.log("response: response", response) 
-
-    if(response.data.status == 403) throw new ResponseError(response)
-    if(response.data.status == 500) throw new ResponseError(response)  
-    return response.data;
-  } catch (err: any) {
     if (err.response && err.response.data && err.response.data.errors) {
-      
       const errors = err.response.data.errors;
 
       errors.forEach((error: { message: string }) => {
@@ -369,9 +342,44 @@ export const getCourseRecommendation = async (data: any) => {
         }
       });
     }
-    if(err.response && err.response.data) {
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error);
+    }
 
-      toast.error(err.response.data.error)
+    if (
+      err.response &&
+      err.response.data.message &&
+      !err.response.data.errors
+    ) {
+      toast.error(err.response.data.message);
+    }
+    throw err;
+  }
+};
+
+export const getCourseRecommendation = async (data: any) => {
+  try {
+    console.log("data from util: ", data);
+    let url = "/career/recommended-courses";
+    const response = await api.post(url, data);
+
+    console.log("response: response", response);
+
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
+    return response.data;
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.errors) {
+      const errors = err.response.data.errors;
+
+      errors.forEach((error: { message: string }) => {
+        if (error.message) {
+          toast.error(error.message);
+        }
+      });
+    }
+    if (err.response && err.response.data) {
+      toast.error(err.response.data.error);
     }
 
     if (
@@ -384,5 +392,4 @@ export const getCourseRecommendation = async (data: any) => {
 
     throw err;
   }
-}
-
+};

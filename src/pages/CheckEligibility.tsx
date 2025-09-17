@@ -96,15 +96,27 @@ export default function CheckEligibility() {
   }, [])
 
   useEffect(() => {
-    if (token && token.length > 0) {
+    if (token && token.length > 0 ) {
       setData({
         firstName: user?.firstname || "",
         lastName: user?.lastname || "",
         email: user?.email || ""
+      });
+      localStorage.setItem("userData", JSON.stringify({
+        data: user,
+        message: "User found",
+        ok: true
+      }))
+      setResponseObjTwo({
+        data: user,
+        message: "User found",
+        ok: true
       })
-    }
 
-  }, [])
+      localStorage.setItem("eligibility-data", JSON.stringify({...data, schoolLocation: responseObj?.university?.region}));
+      setDisplayRequirements(true)
+    }
+  }, [responseObj])
 
   const getCourse = async () => {
     if (courseId && courseId.length > 0) {
@@ -177,10 +189,7 @@ export default function CheckEligibility() {
       toast.error("Please select at least one exam type to proceed.");
       return
     }
-
-  // const foundUser = localStorage.getItem("userData");
-  // const foundUserData = foundUser ? JSON.parse(foundUser) : {ok: false};
-
+    
   const newList = [...requirementList, ...recordList]
 
   const maxEntries = 10;
@@ -273,7 +282,7 @@ export default function CheckEligibility() {
       }
 
     } catch (e:any) {
-      toast.error("Error in checking eligibility. Try again later.");
+      console.log("error: ", e)
     } finally {
       setIsLoading(false);
     }
