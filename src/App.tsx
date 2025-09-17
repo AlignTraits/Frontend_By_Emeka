@@ -59,6 +59,8 @@ const Page404 = lazy(() => import("./pages/404"));
 const SetupPassword = lazy(() => import("./pages/auth/SetupPassword"));
 const UsersList = lazy(() => import("./pages/admin/Users"))
 const Waitlist = lazy(() => import("./pages/admin/Waitlist"))
+const TermsAndCondtion = lazy(() => import("./pages/TermsAndCondiotion"))
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"))
 
 
 const router = createBrowserRouter([
@@ -77,6 +79,8 @@ const router = createBrowserRouter([
   { path: "/select-payment", element: <SelectPayment /> },
   { path: "/payment/callback", element: <PaymentCallback /> }, 
   { path: "/check-eligibility/:courseId", element: <CheckEligibility /> },
+  { path: "/terms-and-conditions", element: <TermsAndCondtion /> },
+  { path: "/privacy-policy", element: <PrivacyPolicy /> },
   // { path: "/not-found", element: <Page404 /> },
   { index: true, element: <Home /> },
 
