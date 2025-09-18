@@ -61,6 +61,7 @@ const UsersList = lazy(() => import("./pages/admin/Users"))
 const Waitlist = lazy(() => import("./pages/admin/Waitlist"))
 const TermsAndCondtion = lazy(() => import("./pages/TermsAndCondiotion"))
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"))
+const RefundPolicy = lazy(() => import("./pages/RefundPolicy"))
 
 
 const router = createBrowserRouter([
@@ -81,6 +82,7 @@ const router = createBrowserRouter([
   { path: "/check-eligibility/:courseId", element: <CheckEligibility /> },
   { path: "/terms-and-conditions", element: <TermsAndCondtion /> },
   { path: "/privacy-policy", element: <PrivacyPolicy /> },
+  { path: "/refund-policy", element: <RefundPolicy /> },
   // { path: "/not-found", element: <Page404 /> },
   { index: true, element: <Home /> },
 

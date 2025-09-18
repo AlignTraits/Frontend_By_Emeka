@@ -114,7 +114,7 @@ export default function TermsAndCondtion() {
                 <li>Prices, billing cycles, and payment methods are disclosed at the point of purchase.</li>
                 <li>By subscribing, you authorize AlignTraits (or its payment processor) to charge your payment method.</li>
                 <li>Subscriptions may automatically renew unless canceled before the renewal date.</li>
-                <li>Refunds are handled in accordance with our Refund Policy [link]</li>
+                <li>Refunds are handled in accordance with our <span onClick={() => navigate("/refund-policy")} className="text-blue-600 hover:text-blue-800 underline cursor-pointer">Refund Policy</span></li>
               </ul>
             </section>
 

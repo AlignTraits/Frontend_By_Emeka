@@ -117,17 +117,23 @@ export default function RecommendationResults({setViewState}: RecommendationProp
         <>
           <h2 className="text-lg font-semibold text-[#101828] mb-6 flex items-center">
             {/* <SlGraph className="mr-[10px] font-bold h-8 w-8" /> */}
-            Welcome to Your Career Journey 🌟
+            {user?.careerResults ? "View Results" : "Welcome to Your Career Journey 🌟"}
           </h2>
 
-          <p className="mb-4 text-[#475467] text-sm">
-            This is where it begins! Take a quick step to discover the best career pathways 
-            tailored to your strengths, interests, and goals.
-          </p>
+          {
+            !user?.careerResults &&
+            <>
+              <p className="mb-4 text-[#475467] text-sm">
+                This is where it begins! Take a quick step to discover the best career pathways 
+                tailored to your strengths, interests, and goals.
+              </p>
 
-          <p className="mb-4 text-[#475467] text-sm">
-            👉 Start your personalized career recommendation now and see where your future can take you.
-          </p>
+              <p className="mb-4 text-[#475467] text-sm">
+                👉 Start your personalized career recommendation now and see where your future can take you.
+              </p>
+            </>
+          }
+
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
             {user?.careerResults?.recommendedCareers && user.careerResults.recommendedCareers.map((rec: string, index:number) => (
@@ -144,7 +150,7 @@ export default function RecommendationResults({setViewState}: RecommendationProp
 
           <div className="text-center">
             <button disabled={isLoading} onClick={handleBtnClick} className="bg-[#004085] disabled:opacity-50 hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
-              {"Get Your Career Recommendation"}
+              {user?.careerResults ? "View Results": "Get Your Career Recommendation"}
             </button>
           </div>
         </>
