@@ -85,7 +85,7 @@ export default function CheckEligibility() {
 
   const handleClick = () => {
     // You can open a modal or do nothing
-    console.log('Terms & Privacy clicked');
+    navigate("/terms-and-conditions");
   };  
 
   useEffect(() => {
