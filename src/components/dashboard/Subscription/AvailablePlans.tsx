@@ -179,7 +179,7 @@ const AvailablePlans: React.FC = () => {
               <h3 className="text-xl font-semibold text-gray-900 mb-2">{plan.name}</h3>
               <div className="mb-1">
                 <span className="text-2xl font-bold text-gray-900">{plan.nairaPrice}</span>
-                <span className="text-gray-600 ml-1">/ {plan.dollarPrice}</span>
+                {/* <span className="text-gray-600 ml-1">/ {plan.dollarPrice}</span> */}
               </div>
               <p className="text-gray-500 text-sm">{plan.billing}</p>
             </div>

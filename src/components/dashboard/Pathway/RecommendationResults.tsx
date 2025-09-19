@@ -98,7 +98,7 @@ export default function RecommendationResults({setViewState}: RecommendationProp
   const getRecords = async () => {
     try {
       setIsLoading(true)
-      const response = await getAcademicRecords();
+      const response = await getAcademicRecords({showToast: true});
         if (response?.ok) {
           populateList(response.data[0])
         }
@@ -150,7 +150,7 @@ export default function RecommendationResults({setViewState}: RecommendationProp
 
           <div className="text-center">
             <button disabled={isLoading} onClick={handleBtnClick} className="bg-[#004085] disabled:opacity-50 hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition">
-              {user?.careerResults ? "View Results": "Get Your Career Recommendation"}
+              {user?.careerResults ? "Get Course Recommendation": "Get Your Career Recommendation"}
             </button>
           </div>
         </>

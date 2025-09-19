@@ -221,7 +221,11 @@ export const addDebitCard = async (data: any) => {
   }
 };
 
-export const getAcademicRecords = async () => {
+interface newProps {
+  showToast?: boolean;
+}
+
+export const getAcademicRecords = async ({ showToast = false }: newProps) => {
   try {
     const response = await api.get("/admission-logic/academic-records");
 
@@ -245,7 +249,9 @@ export const getAcademicRecords = async () => {
       err.response.data.message &&
       !err.response.data.errors
     ) {
-      toast.error(err.response.data.message);
+      if (showToast) {
+        toast.error(err.response.data.message);
+      }
     }
 
     throw err;

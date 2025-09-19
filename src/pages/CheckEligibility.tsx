@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { useAuth } from "../contexts/useAuth";
 import BeatLoader from "react-spinners/BeatLoader";
 import { FaLongArrowAltLeft } from "react-icons/fa";
-import { ErrorObjType, RequirementList, SubjectGrade } from "../types/course.types";
+import { ErrorObjType, RequirementList } from "../types/course.types";
 import AdmissionRequirements from "../components/Admin/AdmissionRequirements";
 import { getCourseDetails } from "../services/schools";
 import { toast } from "react-toastify";
 import { checkEligibility, getUser } from "../services/utils";
-import { createAcademicRecords, getAcademicRecords, updateAcademicRecords } from "../services/utils";
+import { createAcademicRecords, updateAcademicRecords } from "../services/utils";
+import { ClipLoader } from "react-spinners";
 
 
 export default function CheckEligibility() {
-  const {error, token, user} = useAuth()
+  const {error, token, user, academicRecord, academicRecordId} = useAuth()
   const { courseId } = useParams<{ courseId: string}>();
   const navigate = useNavigate()
 
   const [agreed, setAgreed] = useState(false);
-  const [adminExamType, setAdminExamType] = useState<string[]>([]);
+  // const [adminExamType, setAdminExamType] = useState<string[]>([]);
 
   const [data, setData] = useState({
     firstName: "",
@@ -30,8 +31,6 @@ export default function CheckEligibility() {
   const [responseObjTwo, setResponseObjTwo] = useState({} as any)
 
   const [requirementList, setRequirementList] = useState<RequirementList[]>([]);
-  const [recordList, setRecordList] = useState<RequirementList[]>([])
-  const [recordId, setRecordId] = useState<string>("")
   const [errorObj, setErrorObj] = useState<ErrorObjType>({
     title: false,
     courseDescription: false,
@@ -48,6 +47,7 @@ export default function CheckEligibility() {
     programLocation: false,
     examType: false
   });
+
  
   const [isLoading, setIsLoading] = useState(false)
   
@@ -90,10 +90,21 @@ export default function CheckEligibility() {
 
   useEffect(() => {
     getCourse()
-
-    getData()
-    
+    setRequirementList([...academicRecord])
   }, [])
+
+  const hasFetched = useRef(false);
+
+  useEffect(() => {
+    // Store academic record in context for this to work
+    if (token && token.length > 0 && academicRecord.length >= 2 && responseObjTwo?.ok && Object.keys(responseObj).length > 0 && !hasFetched.current) {
+      hasFetched.current = true;
+      checkEligibilityTwo()
+      console.log("running func here")
+    } else {
+      setDisplayRequirements(true)
+    }
+  }, [responseObjTwo, responseObj])
 
   useEffect(() => {
     if (token && token.length > 0 ) {
@@ -114,7 +125,6 @@ export default function CheckEligibility() {
       })
 
       localStorage.setItem("eligibility-data", JSON.stringify({...data, schoolLocation: responseObj?.university?.region}));
-      setDisplayRequirements(true)
     }
   }, [responseObj])
 
@@ -131,93 +141,142 @@ export default function CheckEligibility() {
           tempArray.push(tempCourse[`ExamType${i}`])
         }
       }
-      setAdminExamType(tempArray)
-      // console.log("tempArray: ", tempArray)
     }
   }
 
-  const getData = async () => {
-    if (token && token.length > 0) {
-      const response = await getAcademicRecords();
-
-      if (response?.ok) {
-        populateList(response.data[0])
-        setRecordId(response.data[0].id)
-      }
-    }
-  }
-
-  const populateList = (dataParam: any) => {
-    const parsedRequirements: RequirementList[] = [];
-    
-    // Process up to 10 exam types from school data
-    for (let i = 1; i <= 10; i++) {
-      const countryKey = `ExamCountry${i}`;
-      const typeKey = `ExamType${i}`;
-      const subjectsKey = `ExamType${i}Subjects`;
-      const gradesKey = `ExamType${i}SubGrades`;
-      
-      if (dataParam[countryKey] && dataParam[typeKey] && 
-          dataParam[subjectsKey] && dataParam[gradesKey]) {
-        
-        const subjects: SubjectGrade[] = [];
-        
-        // Create subject-grade pairs
-        for (let j = 0; j < dataParam[subjectsKey].length; j++) {
-          subjects.push({
-            id: JSON.stringify(Date.now() + j),
-            subject: dataParam[subjectsKey][j],
-            grade: dataParam[gradesKey][j]
-          });
-        }
-        
-        // Add to requirements list
-        parsedRequirements.push({
-          id: Date.now() + i,
-          location: dataParam[countryKey],
-          examType: dataParam[typeKey],
-          subjects: subjects
-        });
-      }
-    }
-
-    setRecordList(parsedRequirements)
-  }
 
   const handleEligibilityCheck = async () => {
     if (requirementList.length === 0) {
       toast.error("Please select at least one exam type to proceed.");
       return
     }
-    
-  const newList = [...requirementList, ...recordList]
+      
+    const newList = [...requirementList, ...academicRecord]
 
-  const maxEntries = 10;
+    const maxEntries = 10;
 
-  let temPayloadTwo:any = {}
+    let temPayloadTwo:any = {}
 
-  for (let i = 0; i < maxEntries; i++) {
-    if (i < newList.length) {
-      const elem = newList[i];
-      temPayloadTwo[`ExamCountry${i + 1}`] = elem.location;
-      temPayloadTwo[`ExamType${i + 1}`] = elem.examType;
-      temPayloadTwo[`ExamType${i + 1}Subjects`] = elem.subjects.map(sub => sub.subject);
-      temPayloadTwo[`ExamType${i + 1}SubGrades`] = elem.subjects.map(sub => sub.grade);
-    } else {
-      // Pad with nulls
-      temPayloadTwo[`ExamCountry${i + 1}`] = "";
-      temPayloadTwo[`ExamType${i + 1}`] = "";
-      temPayloadTwo[`ExamType${i + 1}Subjects`] = null;
-      temPayloadTwo[`ExamType${i + 1}SubGrades`] = null;
+    for (let i = 0; i < maxEntries; i++) {
+      if (i < newList.length) {
+        const elem = newList[i];
+        temPayloadTwo[`ExamCountry${i + 1}`] = elem.location;
+        temPayloadTwo[`ExamType${i + 1}`] = elem.examType;
+        temPayloadTwo[`ExamType${i + 1}Subjects`] = elem.subjects.map(sub => sub.subject);
+        temPayloadTwo[`ExamType${i + 1}SubGrades`] = elem.subjects.map(sub => sub.grade);
+      } else {
+        // Pad with nulls
+        temPayloadTwo[`ExamCountry${i + 1}`] = "";
+        temPayloadTwo[`ExamType${i + 1}`] = "";
+        temPayloadTwo[`ExamType${i + 1}Subjects`] = null;
+        temPayloadTwo[`ExamType${i + 1}SubGrades`] = null;
+      }
     }
-  }
 
 
     let tempPayload:any = []
 
     let mainPayload:any = {}
 
-    requirementList.forEach((item) => {
+    newList.forEach((item) => {
+      let tempSubject: string[] = []
+      let tempGrade: string[] = []
+
+      item.subjects.forEach((item) => {
+        tempGrade.push(item.grade)
+      })
+
+      item.subjects.forEach((item) => {
+        tempSubject.push(item.subject)
+      })
+
+      tempPayload.push({
+        "examType": item.examType,
+        "subjects": tempSubject,
+        "grades": tempGrade
+      })
+    })
+
+    mainPayload["email"] = token ? user?.email : data.email;
+    mainPayload["courseId"] = courseId;
+    mainPayload["exams"] = tempPayload;
+    mainPayload["preferences"] = {
+      "university": responseObj?.university?.name
+    }
+
+
+    try {
+      setIsLoading(true)
+      console.log("responseObjTwo: ", responseObjTwo)
+      let now = new Date()
+      const expiredate = responseObjTwo?.data?.payment_plan_expires_at ? new Date(responseObjTwo?.data?.payment_plan_expires_at) : now;
+
+      // Update academic records if user is logged-in
+      if (token && token.length > 0) {
+        if (academicRecordId.length > 0) {
+          await updateAcademicRecords(temPayloadTwo, academicRecordId)
+        } else {
+          await createAcademicRecords(temPayloadTwo);
+        }
+      }
+
+      if (responseObjTwo?.data?.subscriptionPlanStatus && expiredate > now && responseObjTwo?.ok) {
+        const response = await checkEligibility(mainPayload);
+        console.log("response: ", response);
+        if (token && token.length > 0) {
+          toast.success("Check eligibility results in your dashboard");
+          setTimeout(() => {
+            navigate("/dashboard/school")
+          }, 1000) 
+        } else {
+          toast.success("Please login and check eligibility results in your dashboard");
+          setTimeout(() => {
+            navigate("/login")
+          }, 1000) 
+        }
+      } else if (!responseObjTwo?.data?.subscriptionPlanStatus || expiredate <= now || !responseObjTwo?.ok) {
+        toast.error("No active subscription, make payment!");
+        localStorage.setItem("eligibilityPayload", JSON.stringify(mainPayload))
+        setTimeout(() => {
+          navigate("/select-payment")
+        }, 1000) 
+      }
+
+    } catch (e:any) {
+      console.log("error: ", e)
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const checkEligibilityTwo = async () => {
+    const newList = [ ...academicRecord ]
+
+    const maxEntries = 10;
+
+    let temPayloadTwo:any = {}
+
+    for (let i = 0; i < maxEntries; i++) {
+      if (i < newList.length) {
+        const elem = newList[i];
+        temPayloadTwo[`ExamCountry${i + 1}`] = elem.location;
+        temPayloadTwo[`ExamType${i + 1}`] = elem.examType;
+        temPayloadTwo[`ExamType${i + 1}Subjects`] = elem.subjects.map(sub => sub.subject);
+        temPayloadTwo[`ExamType${i + 1}SubGrades`] = elem.subjects.map(sub => sub.grade);
+      } else {
+        // Pad with nulls
+        temPayloadTwo[`ExamCountry${i + 1}`] = "";
+        temPayloadTwo[`ExamType${i + 1}`] = "";
+        temPayloadTwo[`ExamType${i + 1}Subjects`] = null;
+        temPayloadTwo[`ExamType${i + 1}SubGrades`] = null;
+      }
+    }
+
+    let tempPayload:any = []
+
+    let mainPayload:any = {}
+
+    newList.forEach((item) => {
       let tempSubject: string[] = []
       let tempGrade: string[] = []
 
@@ -245,34 +304,21 @@ export default function CheckEligibility() {
 
     try {
       setIsLoading(true)
-      console.log("responseObjTwo: ", responseObjTwo)
+      // console.log("responseObjTwo: ", responseObjTwo)
       let now = new Date()
       const expiredate = responseObjTwo?.data?.payment_plan_expires_at ? new Date(responseObjTwo?.data?.payment_plan_expires_at) : now;
 
+      console.log("responseObjTwo: ", responseObjTwo)
+      console.log("mainPayload: ", mainPayload)
+
       // Update academic records if user is logged-in
-
-      if (token && token.length > 0) {
-        if (recordId.length > 0) {
-          await updateAcademicRecords(temPayloadTwo, recordId)
-        } else {
-          await createAcademicRecords(temPayloadTwo);
-        }
-      }
-
       if (responseObjTwo?.data?.subscriptionPlanStatus && expiredate > now && responseObjTwo?.ok) {
         const response = await checkEligibility(mainPayload);
         console.log("response: ", response);
-        if (token && token.length > 0) {
-          toast.success("Check eligibility results in your dashboard");
-          setTimeout(() => {
-            navigate("/dashboard")
-          }, 1000) 
-        } else {
-          toast.success("Please login and check eligibility results in your dashboard");
-          setTimeout(() => {
-            navigate("/login")
-          }, 1000) 
-        }
+        toast.success("Check eligibility results in your dashboard");
+        setTimeout(() => {
+          navigate("/dashboard/school")
+        }, 1000)
       } else if (!responseObjTwo?.data?.subscriptionPlanStatus || expiredate <= now || !responseObjTwo?.ok) {
         toast.error("No active subscription, make payment!");
         localStorage.setItem("eligibilityPayload", JSON.stringify(mainPayload))
@@ -286,6 +332,7 @@ export default function CheckEligibility() {
     } finally {
       setIsLoading(false);
     }
+ 
   }
 
   return (
@@ -301,6 +348,10 @@ export default function CheckEligibility() {
       </div>
 
       {
+        isLoading ?  
+        <div className="h-screen w-full flex flex-col justify-center items-center">
+          <ClipLoader color="#004085" size={40} />
+        </div>:
         displayRequirements ? (
         <div className="mt-[20px] space-y-2 w-[98%] md:w-[650px] px-5 sm:px-0 mx-auto">
           <p className="text-base sm:text-lg font-semibold">Eligibility Check*</p>
@@ -311,7 +362,7 @@ export default function CheckEligibility() {
               requirementList={requirementList}
               setRequirementList={setRequirementList}
               schoolData={null}
-              adminExamType={adminExamType}
+              // adminExamType={adminExamType}
               btnTitle="Exam"
               listTitle="Exam List"
             />

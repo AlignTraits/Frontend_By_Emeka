@@ -34,7 +34,7 @@ export default function AcountRecords() {
     const getRecords = async () => {
       try {
         setIsLoading(true)
-        const response = await getAcademicRecords();
+        const response = await getAcademicRecords({showToast: false});
         // setRecordList(response.data)
         console.log("response: ", response)
         if (response?.ok) {

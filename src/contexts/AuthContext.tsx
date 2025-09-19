@@ -2,6 +2,7 @@ import { ReactNode, useState } from "react";
 import { AuthContext, AuthContextType } from "./authContextDefinition";
 // import { AuthError } from '../types/auth.types'
 import * as authService from "../services/auth.service";
+import { RequirementList } from "../types/course.types";
 import api from "../api/axios";
 
 interface AuthProviderProps {
@@ -20,6 +21,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [datePickerClicked, setDatePickerClicked] = useState(false);
   const [searchAllTerm, setSearchAllTerm] = useState("");
+  const [academicRecord, setAcademicRecord] = useState<RequirementList[]>([]);
+  const [academicRecordId, setAcademicRecordId] = useState("")
   
   const [error, setError] = useState<string | null>(null);
 
@@ -236,7 +239,11 @@ const googleLogin = async () => {
     googleLogin,
     setToken,
     setSearchAllTerm,
-    searchAllTerm
+    searchAllTerm,
+    setAcademicRecord,
+    academicRecord,
+    academicRecordId, 
+    setAcademicRecordId
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
