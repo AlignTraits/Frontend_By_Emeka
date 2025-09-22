@@ -60,26 +60,26 @@ export const checkEligibility = async (data: any) => {
     if (response.data.status == 500) throw new ResponseError(response);
     return response.data;
   } catch (err: any) {
-    if (err.response && err.response.data && err.response.data.errors) {
-      const errors = err.response.data.errors;
+    // if (err.response && err.response.data && err.response.data.errors) {
+    //   const errors = err.response.data.errors;
 
-      errors.forEach((error: { message: string }) => {
-        if (error.message) {
-          toast.error(error.message);
-        }
-      });
-    }
-    if (err.response && err.response.data) {
-      toast.error(err.response.data.error);
-    }
+    //   errors.forEach((error: { message: string }) => {
+    //     if (error.message) {
+    //       toast.error(error.message);
+    //     }
+    //   });
+    // }
+    // if (err.response && err.response.data) {
+    //   toast.error(err.response.data.error);
+    // }
 
-    if (
-      err.response &&
-      err.response.data.message &&
-      !err.response.data.errors
-    ) {
-      toast.error(err.response.data.message);
-    }
+    // if (
+    //   err.response &&
+    //   err.response.data.message &&
+    //   !err.response.data.errors
+    // ) {
+    //   toast.error(err.response.data.message);
+    // }
     throw err;
   }
 };
@@ -221,7 +221,11 @@ export const addDebitCard = async (data: any) => {
   }
 };
 
-export const getAcademicRecords = async () => {
+interface newProps {
+  showToast?: boolean;
+}
+
+export const getAcademicRecords = async ({ showToast = false }: newProps) => {
   try {
     const response = await api.get("/admission-logic/academic-records");
 
@@ -245,7 +249,9 @@ export const getAcademicRecords = async () => {
       err.response.data.message &&
       !err.response.data.errors
     ) {
-      toast.error(err.response.data.message);
+      if (showToast) {
+        toast.error(err.response.data.message);
+      }
     }
 
     throw err;

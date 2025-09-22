@@ -42,7 +42,7 @@ export default function AddCourse({setShowAddCourse, getRecords}: AddCourseProps
 
   const getData = async () => {
     if (token && token.length > 0) {
-      const response = await getAcademicRecords();
+      const response = await getAcademicRecords({showToast: true});
 
       if (response?.ok) {
         populateList(response.data[0])

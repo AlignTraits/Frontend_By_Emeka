@@ -19,6 +19,7 @@ import CourseDetails from "../../components/dashboard/CourseDetails";
 import { courseCategoryList } from "../../data/courseCategories";
 // import csvFile from "../assets/csvFile.csv"
 import { CiSearch } from "react-icons/ci";
+import {useSearchParams} from "react-router-dom"
 
 const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
 
@@ -29,12 +30,11 @@ type Country = {
 };
 
 
-
 export default function SchoolPage() {
   const {setPageDesc, setSearchAllTerm, searchAllTerm, user} = useAuth()
+  
 
-  console.log("user: ", user)
-
+  const [searchParams] = useSearchParams();
   // const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,6 +46,8 @@ export default function SchoolPage() {
   const stateDropdownRef = useRef<HTMLDivElement>(null);
   const [fieldStudy, setFieldStudy] = useState("")
   const [scholarshipOptions, setScholarshipOptions] = useState("")
+  const [filterList, setFilterList] = useState<string[]>([])
+  const [filterOptions, setFilterOptions] = useState<any[]>([])
 
   // State to store selected country and states
   const [countries, setCountries] = useState<Country[]>([]);
@@ -105,6 +107,18 @@ export default function SchoolPage() {
         setDropdownOpen(false);
       }
     };
+
+    let tempList = user?.careerResults?.recommendedCourses ? user?.careerResults?.recommendedCourses.map((elem: any) => elem.title) : []
+
+    // Insert "Eligible Courses" in the filter options
+    let tempListTwo = [...courseCategoryList]
+    tempList.length > 0 && tempListTwo.splice(1, 0 , { id: -1, name: "Eligible Courses" })
+
+    setFilterOptions(tempListTwo)
+
+    setFilterList(tempList || [])
+
+    setActiveTab(searchParams.get("tab") ? parseInt(searchParams.get("tab")!) : 0)
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -221,12 +235,11 @@ export default function SchoolPage() {
       return name.includes(term)
       && (scholarshipOptions === "" || scholarshipOptions.toLowerCase() === s.scholarship?.toLowerCase())
       && (fieldStudy === "" || fieldStudy === s.title)
-      && (activeTab === 0 || activeTab === s.categoryId)
+      && (activeTab === 0 || activeTab === s.categoryId || (activeTab === -1 && filterList.includes(s.title)))
       && (selectedCountry === "" || selectedCountry.toLowerCase() === s.university?.country.toLowerCase())
       && (selectedState === "" || selectedState.toLowerCase() === s.university?.region.toLowerCase());
     });
   }, [courses, searchAllTerm, scholarshipOptions, selectedCountry, selectedState, fieldStudy, activeTab]);
-
 
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
 
@@ -253,7 +266,7 @@ export default function SchoolPage() {
           <div className="w-full">
             <div className='border-b border-b-[#EAECF0] w-[100%]'>
               <div className="w-[1000px] flex px-[20px] mt-[20px] overflow-x-auto scrollbar-hide">
-                {courseCategoryList.map((tab) => {
+                {filterOptions.map((tab) => {
                   return (
                     <button
                       key={tab.id}

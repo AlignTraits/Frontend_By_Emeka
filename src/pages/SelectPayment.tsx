@@ -40,7 +40,7 @@ export default function SelectPayment() {
       title: 'Basic One-Time Plan',
       subtitle: 'Basic',
       billing: 'One-time',
-      price: '$3.99',
+      price: '₦2,000',
       features: [
         'One result only',
         'No future updates',
@@ -53,7 +53,7 @@ export default function SelectPayment() {
       title: 'Local Access Plan',
       subtitle: 'Silver',
       billing: 'Monthly',
-      price: '$8.99',
+      price: '₦5,500',
       features: [
         'Unlimited checks within 1 country',
         'Loan information & course access',
@@ -65,7 +65,7 @@ export default function SelectPayment() {
       title: 'Global Access Plan',
       subtitle: 'Gold',
       billing: 'Monthly',
-      price: '$14.99',
+      price: '₦9,500',
       features: [
         'Access to all country/schools',
         'Loan information & course access',

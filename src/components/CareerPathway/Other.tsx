@@ -60,7 +60,7 @@ const Other = ({setViewState, setCourseFilter, setShowDetails, showDetails}: Oth
 
     const getRecords = async () => {
       try {
-        const response = await getAcademicRecords();
+        const response = await getAcademicRecords({showToast: true});
         const academicRecord:any = {};
 
         let examCounter = 1;

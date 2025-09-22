@@ -43,7 +43,7 @@ const Recommendation = lazy(() => import("./pages/Recommendation"))
 const Questionaire = lazy (() => import("./pages/Questionaire"))
 const CheckEligibility = lazy(() => import("./pages/CheckEligibility"));
 const SelectPayment = lazy(() => import("./pages/SelectPayment"))
-const PaymentPage = lazy(() => import("./pages/PaymentPage"));
+// const PaymentPage = lazy(() => import("./pages/PaymentPage"));
 const CareerPath = lazy(() => import("./pages/dashboard/CareerPath"))
 const ProgressTracker = lazy(() => import("./pages/dashboard/ProgressTracker"))
 const SchoolPage = lazy(() => import("./pages/dashboard/SchoolPage"))
@@ -76,7 +76,7 @@ const router = createBrowserRouter([
   { path: "/search", element: <HomeSearch /> },
   { path: "/career-recommedation", element: <Recommendation /> },
   { path: "/questionaire", element: <Questionaire /> },
-  { path: "/make-payment", element: <PaymentPage /> },
+  // { path: "/make-payment", element: <PaymentPage /> },
   { path: "/select-payment", element: <SelectPayment /> },
   { path: "/payment/callback", element: <PaymentCallback /> }, 
   { path: "/check-eligibility/:courseId", element: <CheckEligibility /> },

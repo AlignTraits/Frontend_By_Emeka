@@ -7,9 +7,11 @@ import { getUserDetails } from "../services/auth.service";
 // import { ClipLoader } from "react-spinners";
 import NewSidebar from "../components/dashboard/NewSidebar";
 // import { toast } from "react-toastify";
+import { getAcademicRecords } from "../services/utils";
+import { RequirementList, SubjectGrade } from "../types/course.types";
 
 export default function DashboardLayout() {
-  const { token, isAuthenticated, setUser } = useAuth();
+  const { token, isAuthenticated, setUser, setAcademicRecord, setAcademicRecordId } = useAuth();
 
   const [open, setOpen] = useState(false); 
   const location = useLocation(); 
@@ -18,6 +20,55 @@ export default function DashboardLayout() {
   const [showFirstTimeUser, setShowFirstTimeUser] = useState(false)
 
   const navigate = useNavigate()
+
+  const getRecord = async () => {
+    try {
+      const response = await getAcademicRecords({showToast: false});
+
+      if (response?.ok) {
+        populateList(response.data[0])
+        setAcademicRecordId(response.data[0].id)
+      }
+    } catch (e: any) {
+      console.log("error: ", e)
+    }
+  }
+
+  const populateList = (dataParam: any) => {
+    const parsedRequirements: RequirementList[] = [];
+    
+    // Process up to 10 exam types from school data
+    for (let i = 1; i <= 10; i++) {
+      const countryKey = `ExamCountry${i}`;
+      const typeKey = `ExamType${i}`;
+      const subjectsKey = `ExamType${i}Subjects`;
+      const gradesKey = `ExamType${i}SubGrades`;
+      
+      if (dataParam[countryKey] && dataParam[typeKey] && 
+          dataParam[subjectsKey] && dataParam[gradesKey]) {
+        
+        const subjects: SubjectGrade[] = [];
+        
+        // Create subject-grade pairs
+        for (let j = 0; j < dataParam[subjectsKey].length; j++) {
+          subjects.push({
+            id: JSON.stringify(Date.now() + j),
+            subject: dataParam[subjectsKey][j],
+            grade: dataParam[gradesKey][j]
+          });
+        }
+        
+        // Add to requirements list
+        parsedRequirements.push({
+          id: Date.now() + i,
+          location: dataParam[countryKey],
+          examType: dataParam[typeKey],
+          subjects: subjects
+        });
+      }
+    }
+    setAcademicRecord(parsedRequirements)
+  }
 
   useEffect(() => {
     if (token) {
@@ -50,32 +101,10 @@ export default function DashboardLayout() {
           if (!response.data?.isCareerPathChecked) {
             return setShowModal(true);
           }
-
-          // let tempDataTwo = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData") as string) : {ok: true};
-
-          // If this is a first time user, redirect to the career pathway
-          // During the career pathway flow, I set userData in localStorage;
-
-          // if (tempDataTwo && !tempDataTwo?.ok) {
-
-          //   toast.success("Welcome back to your Career Pathway");
-
-          //   return setTimeout(() => {
-          //     navigate("/dashboard/career-pathway")
-          //   }, 1500);
-          // }
-
-
-          // if (!response.data?.careerResults) {
-          //   toast.success("Take our quiz and check your career path");
-          //   return setTimeout(() => {
-          //     navigate("/career-recommedation");
-          //   }, 1500);
-          // }
-
-
         }
       }
+
+      getRecord();
       
       getData();
     }

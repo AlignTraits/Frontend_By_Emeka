@@ -59,7 +59,7 @@ const [dataLenth, setDataLength] = useState(0)
 
   const getRecords = async () => {
     try {
-      const response = await getAcademicRecords();
+      const response = await getAcademicRecords({showToast: true});
       if (response?.ok) {
         populateList(response.data[0])
       }
