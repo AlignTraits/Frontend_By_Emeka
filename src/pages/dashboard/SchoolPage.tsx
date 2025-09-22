@@ -108,11 +108,11 @@ export default function SchoolPage() {
       }
     };
 
-    let tempList = user?.careerResults?.recommendedCourses.map((elem: any) => elem.title)
+    let tempList = user?.careerResults?.recommendedCourses ? user?.careerResults?.recommendedCourses.map((elem: any) => elem.title) : []
 
     // Insert "Eligible Courses" in the filter options
     let tempListTwo = [...courseCategoryList]
-    tempListTwo.splice(1, 0 , { id: -1, name: "Eligible Courses" })
+    tempList.length > 0 && tempListTwo.splice(1, 0 , { id: -1, name: "Eligible Courses" })
 
     setFilterOptions(tempListTwo)
 

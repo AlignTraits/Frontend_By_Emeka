@@ -23,7 +23,7 @@ export default function DashboardLayout() {
 
   const getRecord = async () => {
     try {
-      const response = await getAcademicRecords({showToast: true});
+      const response = await getAcademicRecords({showToast: false});
 
       if (response?.ok) {
         populateList(response.data[0])

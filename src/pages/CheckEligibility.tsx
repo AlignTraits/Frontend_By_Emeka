@@ -155,6 +155,7 @@ export default function CheckEligibility() {
 
 
   const handleEligibilityCheck = async () => {
+    console.log("running 1")
     if (requirementList.length === 0) {
       toast.error("Please select at least one exam type to proceed.");
       return
@@ -258,6 +259,10 @@ export default function CheckEligibility() {
   }
 
   const checkEligibilityTwo = async () => {
+    console.log("running 2")
+    if (academicRecord.length < 2) {
+      return
+    }
     const newList = [ ...academicRecord ]
 
     const maxEntries = 10;
