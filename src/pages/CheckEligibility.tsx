@@ -26,6 +26,8 @@ export default function CheckEligibility() {
     lastName: "",
     email: ""
   });
+
+  const [getCourseLoading, setGetCourseLoading] = useState(false)
   
   const [responseObj, setResponseObj] = useState({} as any)
   const [responseObjTwo, setResponseObjTwo] = useState({} as any)
@@ -100,7 +102,6 @@ export default function CheckEligibility() {
     if (token && token.length > 0 && academicRecord.length >= 2 && responseObjTwo?.ok && Object.keys(responseObj).length > 0 && !hasFetched.current) {
       hasFetched.current = true;
       checkEligibilityTwo()
-      console.log("running func here")
     } else {
       setDisplayRequirements(true)
     }
@@ -129,19 +130,27 @@ export default function CheckEligibility() {
   }, [responseObj])
 
   const getCourse = async () => {
-    if (courseId && courseId.length > 0) {
-      const tempCourse = await getCourseDetails(courseId)
+    try {
+      setGetCourseLoading(true)
+      if (courseId && courseId.length > 0) {
+        const tempCourse = await getCourseDetails(courseId)
 
-      setResponseObj(tempCourse)
+        setResponseObj(tempCourse)
 
-      let tempArray:any = []
+        let tempArray:any = []
 
-      for (let i = 1; i < 11; i++) {
-        if (tempCourse[`ExamType${i}`]?.length > 0) {
-          tempArray.push(tempCourse[`ExamType${i}`])
+        for (let i = 1; i < 11; i++) {
+          if (tempCourse[`ExamType${i}`]?.length > 0) {
+            tempArray.push(tempCourse[`ExamType${i}`])
+          }
         }
       }
+    } catch(e:any) {
+      console.log(e)
+    } finally {
+      setGetCourseLoading(false)
     }
+
   }
 
 
@@ -207,7 +216,6 @@ export default function CheckEligibility() {
 
     try {
       setIsLoading(true)
-      console.log("responseObjTwo: ", responseObjTwo)
       let now = new Date()
       const expiredate = responseObjTwo?.data?.payment_plan_expires_at ? new Date(responseObjTwo?.data?.payment_plan_expires_at) : now;
 
@@ -304,12 +312,8 @@ export default function CheckEligibility() {
 
     try {
       setIsLoading(true)
-      // console.log("responseObjTwo: ", responseObjTwo)
       let now = new Date()
       const expiredate = responseObjTwo?.data?.payment_plan_expires_at ? new Date(responseObjTwo?.data?.payment_plan_expires_at) : now;
-
-      console.log("responseObjTwo: ", responseObjTwo)
-      console.log("mainPayload: ", mainPayload)
 
       // Update academic records if user is logged-in
       if (responseObjTwo?.data?.subscriptionPlanStatus && expiredate > now && responseObjTwo?.ok) {
@@ -317,7 +321,7 @@ export default function CheckEligibility() {
         console.log("response: ", response);
         toast.success("Check eligibility results in your dashboard");
         setTimeout(() => {
-          navigate("/dashboard/school")
+          navigate("/dashboard/school?tab=-1")
         }, 1000)
       } else if (!responseObjTwo?.data?.subscriptionPlanStatus || expiredate <= now || !responseObjTwo?.ok) {
         toast.error("No active subscription, make payment!");
@@ -348,7 +352,7 @@ export default function CheckEligibility() {
       </div>
 
       {
-        isLoading ?  
+        isLoading || getCourseLoading ?  
         <div className="h-screen w-full flex flex-col justify-center items-center">
           <ClipLoader color="#004085" size={40} />
         </div>:

@@ -19,6 +19,7 @@ import CourseDetails from "../../components/dashboard/CourseDetails";
 import { courseCategoryList } from "../../data/courseCategories";
 // import csvFile from "../assets/csvFile.csv"
 import { CiSearch } from "react-icons/ci";
+import {useSearchParams} from "react-router-dom"
 
 const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
 
@@ -29,10 +30,11 @@ type Country = {
 };
 
 
-
 export default function SchoolPage() {
   const {setPageDesc, setSearchAllTerm, searchAllTerm, user} = useAuth()
+  
 
+  const [searchParams] = useSearchParams();
   // const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("");
@@ -115,6 +117,8 @@ export default function SchoolPage() {
     setFilterOptions(tempListTwo)
 
     setFilterList(tempList || [])
+
+    setActiveTab(searchParams.get("tab") ? parseInt(searchParams.get("tab")!) : 0)
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
