@@ -32,7 +32,7 @@ const GRADES = [
   "F9"
 ]
 
-const JAMB_SCORE_lLIST = Array.from({ length: 101 }, (_, i) => i.toString());
+const JAMB_SCORE_lLIST = Array.from({ length: 101 }, (_, i) => i.toString()).reverse();
 
 const SUBJECTS = [
   "English",
