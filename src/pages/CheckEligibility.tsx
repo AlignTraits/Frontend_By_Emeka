@@ -93,6 +93,12 @@ export default function CheckEligibility() {
   useEffect(() => {
     getCourse()
     setRequirementList([...academicRecord])
+
+    if (token) {
+      setDisplayRequirements(true)
+    } else {
+      setDisplayRequirements(false)
+    }
   }, [])
 
   const hasFetched = useRef(false);
@@ -102,10 +108,9 @@ export default function CheckEligibility() {
     if (token && token.length > 0 && academicRecord.length >= 2 && responseObjTwo?.ok && Object.keys(responseObj).length > 0 && !hasFetched.current) {
       hasFetched.current = true;
       checkEligibilityTwo()
-    } else {
-      setDisplayRequirements(true)
-    }
+    } 
   }, [responseObjTwo, responseObj])
+
 
   useEffect(() => {
     if (token && token.length > 0 ) {
@@ -227,6 +232,9 @@ export default function CheckEligibility() {
         } else {
           await createAcademicRecords(temPayloadTwo);
         }
+      } else {
+        // temPayloadTwo['email'] = data.email
+        // await createAcademicRecordsByEmail(temPayloadTwo)
       }
 
       if (responseObjTwo?.data?.subscriptionPlanStatus && expiredate > now && responseObjTwo?.ok) {
@@ -235,7 +243,7 @@ export default function CheckEligibility() {
         if (token && token.length > 0) {
           toast.success("Check eligibility results in your dashboard");
           setTimeout(() => {
-            navigate("/dashboard/school")
+            navigate("/dashboard/school?tab=-1")
           }, 1000) 
         } else {
           toast.success("Please login and check eligibility results in your dashboard");
@@ -357,7 +365,7 @@ export default function CheckEligibility() {
       </div>
 
       {
-        isLoading || getCourseLoading ?  
+        getCourseLoading ?  
         <div className="h-screen w-full flex flex-col justify-center items-center">
           <ClipLoader color="#004085" size={40} />
         </div>:

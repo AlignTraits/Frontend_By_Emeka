@@ -32,7 +32,13 @@ const CourseCard = ({courseItem, setCourseDetails, setShowDetails}: CoursesProps
   return (
     <div className="w-[100%] lg:w-[300px] h-[350px] md:h-[400px] rounded-xl border-[2px] border-[#EAECF0] p-[8px] flex flex-col gap-y-[5px] justify-between bg-white">
       <div className="w-[100%] h-[100px] md:h-[150px] rounded-md">
-        <img alt="course Icon" src={courseItem.image} className="h-[100%] w-[100%] rounded-md" />
+        {
+          courseItem.image ? <img alt="course Icon" src={courseItem.image} className="h-[100%] w-[100%] rounded-md" /> :
+          <div className="h-[100%] w-[100%] rounded-md bg-[#F9FAFB] flex justify-center items-center">
+            <p className="text-[#D0D5DD] font-semibold text-[20px]">No Image</p>
+          </div>
+        }
+        
       </div>
 
       <div className="flex gap-x-[5px] md:gap-x-[10px]">

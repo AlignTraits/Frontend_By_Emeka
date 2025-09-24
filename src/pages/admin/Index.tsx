@@ -227,7 +227,6 @@ export default function Index() {
   const getAllWaitist = async () => {
     try {
       const response = await getWaitList(token || "");
-      console.log("user list: ", response)
       setWaitListLength(response?.data?.length || 0)
     } catch (e) {
       console.log("error: ", e)
