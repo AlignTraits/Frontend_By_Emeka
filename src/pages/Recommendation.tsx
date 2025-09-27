@@ -13,6 +13,7 @@ export default function Recommendation() {
 
   const [agreed, setAgreed] = useState(false);
 
+  const [userExist, setUserExist] = useState(false)
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -36,7 +37,9 @@ export default function Recommendation() {
     try {
       setIsLoading(true);
       const response = await getUser(data.email);
-      console.log("response: ", response)
+      if (response?.ok) {
+        return setUserExist(true)
+      }
       localStorage.setItem("userData", JSON.stringify(response))
       navigate("/questionaire");
     } catch (err) {
@@ -66,13 +69,21 @@ export default function Recommendation() {
     }
   }, [])
 
+   const handleNavigate = () => {
+    if (token) {
+      navigate("/dashboard")
+    } else {
+      navigate("/search")
+    }
+  }
+
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white">
       <Header />
 
       <div
         className="flex gap-x-2 items-center ml-4 mt-4 cursor-pointer sm:ml-8 sm:mt-6"
-        onClick={() => navigate(-1)}
+        onClick={handleNavigate}
       >
         <FaLongArrowAltLeft className="text-[#004085] text-lg sm:text-xl" />
         <p className="text-[#004085] text-sm sm:text-base">Back to Explore</p>
@@ -181,6 +192,23 @@ export default function Recommendation() {
           </button>
         </form>
       </div>
+
+    {userExist && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" onClick={() => setUserExist(false)}>
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-[90%]">
+          <p className="mb-4">You already have an account. Please login to continue.</p>
+          <button
+            onClick={() => {
+              setUserExist(false);
+              navigate("/login");
+            }}
+            className="w-full h-12 bg-[#004085] text-white rounded-lg hover:bg-blue-700"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    )}
 
       <div className="h-5 w-full" />
     </div>
