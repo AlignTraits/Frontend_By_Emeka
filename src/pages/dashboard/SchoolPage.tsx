@@ -257,6 +257,15 @@ export default function SchoolPage() {
       title: "School"
     })
   }, [])
+
+  useEffect(() => {
+    if (searchTerm.length === 0) {
+      setSelectedCountry("")
+    } else if (stateSearchTerm.length === 0) {
+      setSelectedState("")
+    }
+  }, [searchTerm, stateSearchTerm])
+
   return (
     <div className="relative w-full bg-[white]">
       {

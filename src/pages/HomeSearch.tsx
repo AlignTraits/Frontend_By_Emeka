@@ -62,7 +62,7 @@ export default function HomeSearch() {
   const [programList, setProgramList] = useState<string[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 12;
 
   const [showDetails, setShowDetails] = useState(false)
   const [courseDetails, setCourseDetails] = useState<Course|null>(null);
@@ -223,7 +223,11 @@ export default function HomeSearch() {
     return courses.filter((s) => {
       // default to empty string if missing
       const name = s.title.toLowerCase();
-      return name.includes(term)
+      const schoolName = s.university?.name || ""
+      const location = s.university?.location || ""
+      const region = s.university?.region || ""
+      return (name.includes(term) || schoolName.toLowerCase().includes(term) || 
+      location.toLowerCase().includes(term) || region.toLowerCase().includes(term))
       && (scholarshipOptions === "" || scholarshipOptions.toLowerCase() === s.scholarship?.toLowerCase())
       && (fieldStudy === "" || fieldStudy === s.title)
       && (activeTab === 0 || activeTab === s.categoryId)
@@ -241,6 +245,14 @@ export default function HomeSearch() {
       return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
     }).slice(start, start + itemsPerPage);
   }, [filteredCourses, currentPage]);
+
+  useEffect(() => {
+    if (searchTerm.length === 0) {
+      setSelectedCountry("")
+    } else if (stateSearchTerm.length === 0) {
+      setSelectedState("")
+    }
+  }, [searchTerm, stateSearchTerm])
 
   return (
     <div className="relative h-screen w-full bg-[white]">
@@ -464,6 +476,7 @@ export default function HomeSearch() {
                       label: scholarshipOptions,
                     }}
                     handleError={() => {}}
+                    
                   />
                 </div>
 

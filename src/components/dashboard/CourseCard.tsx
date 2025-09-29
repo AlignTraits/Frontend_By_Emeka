@@ -5,6 +5,7 @@ import { Course } from '../../types/course.types';
 import locationIcon from "../../assets/locationIcon.svg"
 import { getSchool } from "../../services/schools";
 import { School } from "../../services/schools";
+import courseImage from "../../assets/course.png"
 
 interface SchoolWithCourses extends School {
   courses: Course[];
@@ -34,9 +35,7 @@ const CourseCard = ({courseItem, setCourseDetails, setShowDetails}: CoursesProps
       <div className="w-[100%] h-[100px] md:h-[150px] rounded-md">
         {
           courseItem.image ? <img alt="course Icon" src={courseItem.image} className="h-[100%] w-[100%] rounded-md" /> :
-          <div className="h-[100%] w-[100%] rounded-md bg-[#F9FAFB] flex justify-center items-center">
-            <p className="text-[#D0D5DD] font-semibold text-[20px]">No Image</p>
-          </div>
+            <img alt="course Icon" src={courseImage} className="h-[100%] w-[100%] rounded-md" />
         }
         
       </div>
