@@ -9,7 +9,7 @@ import AdmissionRequirements from "../components/Admin/AdmissionRequirements";
 import { getCourseDetails } from "../services/schools";
 import { toast } from "react-toastify";
 import { checkEligibility, getUser } from "../services/utils";
-import { createAcademicRecords, updateAcademicRecords, createAcademicRecordsByEmail } from "../services/utils";
+import { createAcademicRecords, updateAcademicRecords } from "../services/utils";
 import { ClipLoader } from "react-spinners";
 
 
@@ -237,10 +237,11 @@ export default function CheckEligibility() {
         } else {
           await createAcademicRecords(temPayloadTwo);
         }
-      } else {
-        temPayloadTwo['email'] = data.email
-        await createAcademicRecordsByEmail(temPayloadTwo)
-      }
+      } 
+      // else {
+      //   temPayloadTwo['email'] = data.email
+      //   await createAcademicRecordsByEmail(temPayloadTwo)
+      // }
 
       if (responseObjTwo?.data?.subscriptionPlanStatus && expiredate > now && responseObjTwo?.ok) {
         const response = await checkEligibility(mainPayload);
