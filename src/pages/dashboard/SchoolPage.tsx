@@ -2,7 +2,7 @@
 import { useAuth } from '../../contexts/useAuth';
 import { useState, useEffect, useRef, useMemo } from "react";
 // import { useNavigate } from "react-router-dom";
-import Papa from 'papaparse';
+// import Papa from 'papaparse';
 // import { FiSearch } from "react-icons/fi";
 import { Course } from "../../types/course.types";
 import { ClipLoader } from "react-spinners";
@@ -56,14 +56,12 @@ export default function SchoolPage() {
   const [selectedState, setSelectedState] = useState<string>("")
 
   const [courses, setCourses] = useState<Course[]>([]);
-  const [programList, setProgramList] = useState<string[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 12;
 
   const [showDetails, setShowDetails] = useState(false)
   const [courseDetails, setCourseDetails] = useState<Course|null>(null);
-  const [fieldDropdownOpen, setFieldDropdownOpen] = useState(false);
   // const [categories, setCategories] = useState<CategoryType[]>([]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,21 +141,6 @@ export default function SchoolPage() {
   }, []);
 
   const fieldDropdownRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        fieldDropdownRef.current &&
-        !fieldDropdownRef.current.contains(event.target as Node)
-      ) {
-        setFieldDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
 
   // Load countries from JSON on mount
   useEffect(() => {
@@ -177,34 +160,6 @@ export default function SchoolPage() {
   }
 
   const [activeTab, setActiveTab] = useState(0);
-
-  // const goLogin = () => {
-  //   navigate("/login")
-  // }
-
-  useEffect(() => {
-    Papa.parse("/csvFile.csv", {
-      download: true,
-      header: true,
-      complete: (result) => {
-        const data = result.data;
-
-        // Find the key with course/subject names
-        const key = Object.keys(data[0] as object).find(k =>
-          k.toLowerCase().includes('course') || k.toLowerCase().includes('subject')
-        );
-
-        let uniqueCourses: string[] = [];
-        if (key) {
-          uniqueCourses = Array.from(new Set(
-            data.map(row => (row as any)[key]?.toString().trim()).filter(Boolean)
-          ));
-        }
-
-        setProgramList(uniqueCourses);
-      },
-    });
-  }, []);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -227,14 +182,20 @@ export default function SchoolPage() {
   }, []);
 
   const filteredCourses = useMemo(() => {
-    const term = searchAllTerm.toLowerCase().trim();
+    const term = fieldStudy.toLowerCase().trim();
+
+    console.log("term: ", term)
   
     return courses.filter((s) => {
       // default to empty string if missing
       const name = s.title.toLowerCase();
-      return name.includes(term)
+      const schoolName = s.university?.name || ""
+      const location = s.university?.location || ""
+      const region = s.university?.region || ""
+      return (name.includes(term) || schoolName.toLowerCase().includes(term) || 
+      location.toLowerCase().includes(term) || region.toLowerCase().includes(term))
       && (scholarshipOptions === "" || scholarshipOptions.toLowerCase() === s.scholarship?.toLowerCase())
-      && (fieldStudy === "" || fieldStudy === s.title)
+      // && (fieldStudy === "" || fieldStudy === s.title)
       && (activeTab === 0 || activeTab === s.categoryId || (activeTab === -1 && filterList.includes(s.title)))
       && (selectedCountry === "" || selectedCountry.toLowerCase() === s.university?.country.toLowerCase())
       && (selectedState === "" || selectedState.toLowerCase() === s.university?.region.toLowerCase());
@@ -265,6 +226,8 @@ export default function SchoolPage() {
       setSelectedState("")
     }
   }, [searchTerm, stateSearchTerm])
+
+  console.log("fieldStudy: ", fieldStudy)
 
   return (
     <div className="relative w-full bg-[white]">
@@ -305,13 +268,13 @@ export default function SchoolPage() {
                     className="h-[35px] pl-8 border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
                     placeholder="Search"
                     value={fieldStudy}
-                    onFocus={() => setFieldDropdownOpen(true)}
+                    // onFocus={() => setFieldDropdownOpen(true)}
                     onChange={e => {
                       setFieldStudy(e.target.value);
-                      setFieldDropdownOpen(true);
+                      // setFieldDropdownOpen(true);
                     }}
                   />
-                  {fieldDropdownOpen && (
+                  {/* {fieldDropdownOpen && (
                     <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
                       {programList
                         .filter(typeValue =>
@@ -337,7 +300,7 @@ export default function SchoolPage() {
                         <div className="p-2 text-gray-500">No fields found</div>
                       )}
                     </div>
-                  )}
+                  )} */}
                 </div>
 
 
