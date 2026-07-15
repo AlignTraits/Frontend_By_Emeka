@@ -1,5 +1,4 @@
-
-import { useAuth } from '../../contexts/useAuth';
+import { useAuth } from "../../contexts/useAuth";
 import { useState, useEffect, useRef, useMemo } from "react";
 // import { useNavigate } from "react-router-dom";
 // import Papa from 'papaparse';
@@ -10,8 +9,8 @@ import CustomSelectWithProps from "../../components/dashboard/CustomSelectWithPr
 import { IoIosRefresh } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import CourseCard from "../../components/dashboard/CourseCard";
-import countriesData from "../../data/countries_states.json"
-import fileIcon from "../../assets/IconWrap.svg"
+import countriesData from "../../data/countries_states.json";
+import fileIcon from "../../assets/IconWrap.svg";
 import { getCoursesWithoutToken } from "../../services/schools";
 import CourseDetails from "../../components/dashboard/CourseDetails";
 // import { getCoursesCategories } from "../services/schools";
@@ -19,9 +18,13 @@ import CourseDetails from "../../components/dashboard/CourseDetails";
 import { courseCategoryList } from "../../data/courseCategories";
 // import csvFile from "../assets/csvFile.csv"
 import { CiSearch } from "react-icons/ci";
-import {useSearchParams} from "react-router-dom"
+import { useSearchParams } from "react-router-dom";
 
-const scholarshipList = ["No Scholarship", "Partial Scholarship", "Full Scholarship"]
+const scholarshipList = [
+  "No Scholarship",
+  "Partial Scholarship",
+  "Full Scholarship",
+];
 
 // Define TypeScript types
 type Country = {
@@ -29,14 +32,12 @@ type Country = {
   states: string[];
 };
 
-
 export default function SchoolPage() {
-  const {setPageDesc, setSearchAllTerm, searchAllTerm, user} = useAuth()
-  
+  const { setPageDesc, setSearchAllTerm, searchAllTerm, user } = useAuth();
 
   const [searchParams] = useSearchParams();
   // const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   // const [searchAllTerm, setSearchAllTerm] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
@@ -44,24 +45,24 @@ export default function SchoolPage() {
   const [stateSearchTerm, setStateSearchTerm] = useState<string>("");
   const [stateDropdownOpen, setStateDropdownOpen] = useState<boolean>(false);
   const stateDropdownRef = useRef<HTMLDivElement>(null);
-  const [fieldStudy, setFieldStudy] = useState("")
-  const [scholarshipOptions, setScholarshipOptions] = useState("")
-  const [filterList, setFilterList] = useState<string[]>([])
-  const [filterOptions, setFilterOptions] = useState<any[]>([])
+  const [fieldStudy, setFieldStudy] = useState("");
+  const [scholarshipOptions, setScholarshipOptions] = useState("");
+  const [filterList, setFilterList] = useState<string[]>([]);
+  const [filterOptions, setFilterOptions] = useState<any[]>([]);
 
   // State to store selected country and states
   const [countries, setCountries] = useState<Country[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [states, setStates] = useState<string[]>([]);
-  const [selectedState, setSelectedState] = useState<string>("")
+  const [selectedState, setSelectedState] = useState<string>("");
 
   const [courses, setCourses] = useState<Course[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
 
-  const [showDetails, setShowDetails] = useState(false)
-  const [courseDetails, setCourseDetails] = useState<Course|null>(null);
+  const [showDetails, setShowDetails] = useState(false);
+  const [courseDetails, setCourseDetails] = useState<Course | null>(null);
   // const [categories, setCategories] = useState<CategoryType[]>([]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +71,7 @@ export default function SchoolPage() {
   };
 
   const filteredCountries = countries.filter((country) =>
-    country.name.toLowerCase().includes(searchTerm.toLowerCase())
+    country.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleCountrySelect = (countryName: string) => {
@@ -79,19 +80,21 @@ export default function SchoolPage() {
     const countryData = countries.find((c) => c.name === countryName);
     setStates(countryData ? countryData.states : []);
     setSelectedState(""); // Reset state selection
-    setStateSearchTerm("")
+    setStateSearchTerm("");
     setDropdownOpen(false); // Close the dropdown
   };
 
   const filteredStates = states.filter((state) =>
-    state.toLowerCase().includes(stateSearchTerm.toLowerCase())
+    state.toLowerCase().includes(stateSearchTerm.toLowerCase()),
   );
 
-  const handleStateSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleStateSearchChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setStateSearchTerm(event.target.value);
     setStateDropdownOpen(true); // Open the dropdown when typing
   };
-  
+
   const handleStateSelect = (stateName: string) => {
     setSelectedState(stateName);
     setStateSearchTerm(stateName); // Set the search term to the selected state
@@ -101,22 +104,30 @@ export default function SchoolPage() {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setDropdownOpen(false);
       }
     };
 
-    let tempList = user?.careerResults?.recommendedCourses ? user?.careerResults?.recommendedCourses.map((elem: any) => elem.title) : []
+    let tempList = user?.careerResults?.recommendedCourses
+      ? user?.careerResults?.recommendedCourses.map((elem: any) => elem.title)
+      : [];
 
     // Insert "Eligible Courses" in the filter options
-    let tempListTwo = [...courseCategoryList]
-    tempList.length > 0 && tempListTwo.splice(1, 0 , { id: -1, name: "Eligible Courses" })
+    let tempListTwo = [...courseCategoryList];
+    tempList.length > 0 &&
+      tempListTwo.splice(1, 0, { id: -1, name: "Eligible Courses" });
 
-    setFilterOptions(tempListTwo)
+    setFilterOptions(tempListTwo);
 
-    setFilterList(tempList || [])
+    setFilterList(tempList || []);
 
-    setActiveTab(searchParams.get("tab") ? parseInt(searchParams.get("tab")!) : 0)
+    setActiveTab(
+      searchParams.get("tab") ? parseInt(searchParams.get("tab")!) : 0,
+    );
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -133,7 +144,7 @@ export default function SchoolPage() {
         setStateDropdownOpen(false);
       }
     };
-  
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -148,16 +159,16 @@ export default function SchoolPage() {
   }, []);
 
   const resetFilter = () => {
-    setStates([])
-    setSelectedState("")
-    setStateSearchTerm("")
-    setSelectedCountry("")
-    setSearchTerm("")
-    setSearchAllTerm("")
-    setFieldStudy("")
-    setScholarshipOptions("")
-    setActiveTab(0)
-  }
+    setStates([]);
+    setSelectedState("");
+    setStateSearchTerm("");
+    setSelectedCountry("");
+    setSearchTerm("");
+    setSearchAllTerm("");
+    setFieldStudy("");
+    setScholarshipOptions("");
+    setActiveTab(0);
+  };
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -165,12 +176,12 @@ export default function SchoolPage() {
     const fetchCourses = async () => {
       try {
         setIsLoading(true);
-        const response = await getCoursesWithoutToken()
+        const response = await getCoursesWithoutToken();
 
         setCourses(response);
       } catch (err) {
         // setError(err instanceof Error ? err.message : 'An error occurred');
-        console.log("error: ", err)
+        console.log("error: ", err);
       } finally {
         setIsLoading(false);
       }
@@ -184,97 +195,118 @@ export default function SchoolPage() {
   const filteredCourses = useMemo(() => {
     const term = fieldStudy.toLowerCase().trim();
 
-    console.log("term: ", term)
-  
+    console.log("term: ", term);
+
     return courses.filter((s) => {
       // default to empty string if missing
       const name = s.title.toLowerCase();
-      const schoolName = s.university?.name || ""
-      const location = s.university?.location || ""
-      const region = s.university?.region || ""
-      return (name.includes(term) || schoolName.toLowerCase().includes(term) || 
-      location.toLowerCase().includes(term) || region.toLowerCase().includes(term))
-      && (scholarshipOptions === "" || scholarshipOptions.toLowerCase() === s.scholarship?.toLowerCase())
-      // && (fieldStudy === "" || fieldStudy === s.title)
-      && (activeTab === 0 || activeTab === s.categoryId || (activeTab === -1 && filterList.includes(s.title)))
-      && (selectedCountry === "" || selectedCountry.toLowerCase() === s.university?.country.toLowerCase())
-      && (selectedState === "" || selectedState.toLowerCase() === s.university?.region.toLowerCase());
+      const schoolName = s.university?.name || "";
+      const location = s.university?.location || "";
+      const region = s.university?.region || "";
+      return (
+        (name.includes(term) ||
+          schoolName.toLowerCase().includes(term) ||
+          location.toLowerCase().includes(term) ||
+          region.toLowerCase().includes(term)) &&
+        (scholarshipOptions === "" ||
+          scholarshipOptions.toLowerCase() === s.scholarship?.toLowerCase()) &&
+        // && (fieldStudy === "" || fieldStudy === s.title)
+        (activeTab === 0 ||
+          activeTab === s.categoryId ||
+          (activeTab === -1 && filterList.includes(s.title))) &&
+        (selectedCountry === "" ||
+          selectedCountry.toLowerCase() ===
+            s.university?.country.toLowerCase()) &&
+        (selectedState === "" ||
+          selectedState.toLowerCase() === s.university?.region.toLowerCase())
+      );
     });
-  }, [courses, searchAllTerm, scholarshipOptions, selectedCountry, selectedState, fieldStudy, activeTab]);
+  }, [
+    courses,
+    searchAllTerm,
+    scholarshipOptions,
+    selectedCountry,
+    selectedState,
+    fieldStudy,
+    activeTab,
+  ]);
 
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
 
   const paginatedCourses = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
-    return filteredCourses.sort((a, b) => {
-      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-    }).slice(start, start + itemsPerPage);
+    return filteredCourses
+      .sort((a, b) => {
+        return (
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        );
+      })
+      .slice(start, start + itemsPerPage);
   }, [filteredCourses, currentPage]);
-
 
   useEffect(() => {
     setPageDesc({
       desc: "Welcome to School Page",
-      title: "School"
-    })
-  }, [])
+      title: "School",
+    });
+  }, []);
 
   useEffect(() => {
     if (searchTerm.length === 0) {
-      setSelectedCountry("")
+      setSelectedCountry("");
     } else if (stateSearchTerm.length === 0) {
-      setSelectedState("")
+      setSelectedState("");
     }
-  }, [searchTerm, stateSearchTerm])
+  }, [searchTerm, stateSearchTerm]);
 
-  console.log("fieldStudy: ", fieldStudy)
+  console.log("fieldStudy: ", fieldStudy);
 
   return (
     <div className="relative w-full bg-[white]">
-      {
-        showDetails ? (
-          <CourseDetails courseItem={courseDetails} setShowDetails={setShowDetails} />
-        ) : (
-          <div className="w-full">
-            <div className='border-b border-b-[#EAECF0] w-[100%]'>
-              <div className="w-[1000px] flex px-[20px] mt-[20px] overflow-x-auto scrollbar-hide">
-                {filterOptions.map((tab) => {
-                  return (
-                    <button
-                      key={tab.id}
-                      className={`py-2 px-4 text-[12px] whitespace-nowrap font-semibold border-b-2 font-medium transition 
+      {showDetails ? (
+        <CourseDetails
+          courseItem={courseDetails}
+          setShowDetails={setShowDetails}
+        />
+      ) : (
+        <div className="w-full">
+          <div className="border-b border-b-[#EAECF0] w-[100%]">
+            <div className="w-[1000px] flex px-[20px] mt-[20px] overflow-x-auto scrollbar-hide">
+              {filterOptions.map((tab) => {
+                return (
+                  <button
+                    key={tab.id}
+                    className={`py-2 px-4 text-[12px] whitespace-nowrap font-semibold border-b-2 font-medium transition 
                         ${
                           activeTab === tab.id
                             ? "border-[#003064] text-[#004085] text-[12px] font-semibold"
                             : "border-transparent hover:text-blue-500 text-[#999999]"
                         }`}
-                      onClick={() => setActiveTab(tab.id)}
-                    >
-                      {tab.name}
-                    </button>
-                  );
-                })}
-              </div>
+                    onClick={() => setActiveTab(tab.id)}
+                  >
+                    {tab.name}
+                  </button>
+                );
+              })}
             </div>
+          </div>
 
-
-            <div className="flex justify-between items-center px-[20px] border-b border-b-[#DDDDDD] pb-[10px]">
-              <div className="flex gap-x-[10px] my-[20px]">
-                <div className="flex-1 relative" ref={fieldDropdownRef}>
-                  
-                  <CiSearch className="absolute top-[25%] left-[10px] text-[#999999]" />
-                  <input
-                    type="text"
-                    className="h-[35px] pl-8 border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
-                    placeholder="Search"
-                    value={fieldStudy}
-                    // onFocus={() => setFieldDropdownOpen(true)}
-                    onChange={e => {
-                      setFieldStudy(e.target.value);
-                      // setFieldDropdownOpen(true);
-                    }}
-                  />
-                  {/* {fieldDropdownOpen && (
+          <div className="flex justify-between items-center px-[20px] border-b border-b-[#DDDDDD] pb-[10px]">
+            <div className="flex gap-x-[10px] my-[20px]">
+              <div className="flex-1 relative" ref={fieldDropdownRef}>
+                <CiSearch className="absolute top-[25%] left-[10px] text-[#999999]" />
+                <input
+                  type="text"
+                  className="h-[35px] pl-8 border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+                  placeholder="Search"
+                  value={fieldStudy}
+                  // onFocus={() => setFieldDropdownOpen(true)}
+                  onChange={(e) => {
+                    setFieldStudy(e.target.value);
+                    // setFieldDropdownOpen(true);
+                  }}
+                />
+                {/* {fieldDropdownOpen && (
                     <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
                       {programList
                         .filter(typeValue =>
@@ -301,154 +333,154 @@ export default function SchoolPage() {
                       )}
                     </div>
                   )} */}
-                </div>
+              </div>
 
-
-                <div className="w-[150px] relative" ref={dropdownRef}>
-                  <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
-                  <input
-                    type="text"
-                    className="h-[35px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
-                    placeholder="Country"
-                    value={searchTerm}
-                    onFocus={() => setDropdownOpen(true)} // Open dropdown on focus
-                    onChange={handleSearchChange}
-                  />
-                    {dropdownOpen && (
-                      <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
-                        {filteredCountries.map((country) => (
-                          <div
-                            key={country.name}
-                            className={`p-2 cursor-pointer hover:bg-gray-100 ${
-                              selectedCountry === country.name ? "bg-gray-200" : ""
-                            }`}
-                            onClick={() => handleCountrySelect(country.name)}
-                          >
-                            {country.name}
-                          </div>
-                        ))}
-                        {filteredCountries.length === 0 && (
-                          <div className="p-2 text-gray-500">No countries found</div>
-                        )}
+              <div className="w-[150px] relative" ref={dropdownRef}>
+                <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
+                <input
+                  type="text"
+                  className="h-[35px] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+                  placeholder="Country"
+                  value={searchTerm}
+                  onFocus={() => setDropdownOpen(true)} // Open dropdown on focus
+                  onChange={handleSearchChange}
+                />
+                {dropdownOpen && (
+                  <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
+                    {filteredCountries.map((country) => (
+                      <div
+                        key={country.name}
+                        className={`p-2 cursor-pointer hover:bg-gray-100 ${
+                          selectedCountry === country.name ? "bg-gray-200" : ""
+                        }`}
+                        onClick={() => handleCountrySelect(country.name)}
+                      >
+                        {country.name}
+                      </div>
+                    ))}
+                    {filteredCountries.length === 0 && (
+                      <div className="p-2 text-gray-500">
+                        No countries found
                       </div>
                     )}
-                </div>
+                  </div>
+                )}
+              </div>
 
-                <div className="w-[150px] relative" ref={stateDropdownRef}>
-                  <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
-                  <input
-                    type="text"
-                    className="h-[35px] bg-[white] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
-                    placeholder="Region"
-                    value={stateSearchTerm}
-                    onFocus={() => setStateDropdownOpen(true)} // Open dropdown on focus
-                    onChange={handleStateSearchChange}
-                    disabled={!selectedCountry} // Disable if no country is selected
-                  />
-                  {stateDropdownOpen && (
-                    <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
-                      {filteredStates.map((state, index) => (
-                        <div
-                          key={index}
-                          className={`p-2 cursor-pointer hover:bg-gray-100 ${
-                            selectedState === state ? "bg-gray-200" : ""
-                          }`}
-                          onClick={() => handleStateSelect(state)}
-                        >
-                          {state}
-                        </div>
-                      ))}
-                      {filteredStates.length === 0 && (
-                        <div className="p-2 text-gray-500">No states found</div>
-                      )}
-                    </div>
-                  )}
-                </div>
+              <div className="w-[150px] relative" ref={stateDropdownRef}>
+                <IoIosArrowDown className="absolute top-[25%] right-[10px] text-[#999999]" />
+                <input
+                  type="text"
+                  className="h-[35px] bg-[white] border-[0.8px] border-gray-300 p-2 w-full rounded-md focus:outline-none text-[#999999] text-[14px] font-medium"
+                  placeholder="Region"
+                  value={stateSearchTerm}
+                  onFocus={() => setStateDropdownOpen(true)} // Open dropdown on focus
+                  onChange={handleStateSearchChange}
+                  disabled={!selectedCountry} // Disable if no country is selected
+                />
+                {stateDropdownOpen && (
+                  <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 max-h-[150px] overflow-y-auto z-10">
+                    {filteredStates.map((state, index) => (
+                      <div
+                        key={index}
+                        className={`p-2 cursor-pointer hover:bg-gray-100 ${
+                          selectedState === state ? "bg-gray-200" : ""
+                        }`}
+                        onClick={() => handleStateSelect(state)}
+                      >
+                        {state}
+                      </div>
+                    ))}
+                    {filteredStates.length === 0 && (
+                      <div className="p-2 text-gray-500">No states found</div>
+                    )}
+                  </div>
+                )}
+              </div>
 
-                <div className="w-150px">
-                  <CustomSelectWithProps
-                    placeholder="Scholarship Options"
-                    classNameStyle="h-[35px]"
-                    options={scholarshipList.map((typeValue) => ({
-                      value: typeValue,
-                      label: typeValue,
-                    }))}
-                    onChange={(val) => setScholarshipOptions(val)}
-                    selectedProps={{
-                      value: scholarshipOptions,
-                      label: scholarshipOptions,
-                    }}
-                    handleError={() => {}}
-                  />
-                </div>
+              <div className="w-150px">
+                <CustomSelectWithProps
+                  placeholder="Scholarship Options"
+                  classNameStyle="h-[35px]"
+                  options={scholarshipList.map((typeValue) => ({
+                    value: typeValue,
+                    label: typeValue,
+                  }))}
+                  onChange={(val) => setScholarshipOptions(val)}
+                  selectedProps={{
+                    value: scholarshipOptions,
+                    label: scholarshipOptions,
+                  }}
+                  handleError={() => {}}
+                />
+              </div>
 
-                <button 
-                  onClick={resetFilter}
-                  type="button" 
-                  className="w-[150px] bg-[white] text-[#999999] text-[14px] font-medium py-2 h-[35px] p-2 border border-gray-300 rounded-md
+              <button
+                onClick={resetFilter}
+                type="button"
+                className="w-[150px] bg-[white] text-[#999999] text-[14px] font-medium py-2 h-[35px] p-2 border border-gray-300 rounded-md
                       outline-0 focus:outline-none flex justify-center items-center gap-x-[10px]"
-                  >
-                  <p>Clear Filters</p>
-                  <IoIosRefresh className="w-4 h-4"  />
-                </button>
-
-              </div>
-
-            </div>
-            
-
-            <div className="p-5 flex justify-center">
-              {isLoading && (
-                <div className="mx-auto w-full flex justify-center items-center h-[500px]">
-                  <ClipLoader />
-                </div>
-              )}
-            </div>
-
-            {
-              !isLoading && (
-                <div className="p-5 flex flex-wrap gap-[30px] w-[100%]">
-                  {
-                    paginatedCourses.length > 0 && paginatedCourses.map((elem, i) => (
-                      <CourseCard setShowDetails={setShowDetails} courseItem={elem} key={i} setCourseDetails={setCourseDetails} />
-                    ))
-                  }
-                </div>
-              )
-            }
-
-            {!isLoading && paginatedCourses.length === 0 && (
-              <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[400px]">
-                <img src={fileIcon} alt="Not found" />
-                <p className="text-[#101828] text-[16px] font-semibold">No courses Found</p>
-              </div>
-            )}
-            
-            <div className="flex justify-between items-center px-5 mt-1">
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-                className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
               >
-                Previous
-              </button>
-
-              <span className="text-sm">
-                Showing Page {currentPage} of {totalPages}
-              </span>
-
-              <button
-                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                disabled={currentPage === totalPages}
-                className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
-              >
-                Next
+                <p>Clear Filters</p>
+                <IoIosRefresh className="w-4 h-4" />
               </button>
             </div>
           </div>
-        )
-      }
 
+          <div className="p-5 flex justify-center">
+            {isLoading && (
+              <div className="mx-auto w-full flex justify-center items-center h-[500px]">
+                <ClipLoader />
+              </div>
+            )}
+          </div>
+
+          {!isLoading && (
+            <div className="p-5 flex flex-wrap gap-[30px] w-[100%]">
+              {paginatedCourses.length > 0 &&
+                paginatedCourses.map((elem, i) => (
+                  <CourseCard
+                    setShowDetails={setShowDetails}
+                    courseItem={elem}
+                    key={i}
+                    setCourseDetails={setCourseDetails}
+                  />
+                ))}
+            </div>
+          )}
+
+          {!isLoading && paginatedCourses.length === 0 && (
+            <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[400px]">
+              <img src={fileIcon} alt="Not found" />
+              <p className="text-[#101828] text-[16px] font-semibold">
+                No courses Found
+              </p>
+            </div>
+          )}
+
+          <div className="flex justify-between items-center px-5 mt-1">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
+            >
+              Previous
+            </button>
+
+            <span className="text-sm">
+              Showing Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="h-[20px] w-[40px]"></div>
     </div>

@@ -1,15 +1,12 @@
-import {
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
-import { AuthProvider } from './contexts/AuthContext'
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
 import { lazy, Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DashboardLayout from "./layouts/DashboardLayout";
 import AdminLayout from "./layouts/admin/AdminLayout";
-import AdminDashboardLayout from './layouts/admin/AdminDashboardLayout'
-import Root from "./layouts/Root"
+import AdminDashboardLayout from "./layouts/admin/AdminDashboardLayout";
+import Root from "./layouts/Root";
 
 import SettingsLayout from "./layouts/SettingsLayout";
 // Lazy imports for code splitting
@@ -24,9 +21,9 @@ const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 const Pathfinder = lazy(() => import("./pages/dashboard/Pathfinder"));
 const Community = lazy(() => import("./pages/dashboard/Community"));
-const Admin = lazy(() => import('./pages/admin/Index'));
-const AdminLogin = lazy(() => import('./pages/admin/Login'));
-const Schools = lazy(() => import('./pages/admin/Schools'));
+const Admin = lazy(() => import("./pages/admin/Index"));
+const AdminLogin = lazy(() => import("./pages/admin/Login"));
+const Schools = lazy(() => import("./pages/admin/Schools"));
 const CreateCourse = lazy(() => import("./pages/admin/CreateCourse"));
 const EditSchool = lazy(() => import("./pages/admin/EditSchool"));
 const SchoolCourses = lazy(() => import("./pages/admin/SchoolCourses"));
@@ -37,48 +34,55 @@ const Loans = lazy(() => import("./pages/admin/Loans"));
 const BulkCenter = lazy(() => import("./pages/admin/BulkCenter"));
 const ProfileManagement = lazy(() => import("./pages/admin/ProfileManagement"));
 const HomeSearch = lazy(() => import("./pages/HomeSearch"));
-const OnboardingPage = lazy(() => import("./pages/auth/OnboardingPage"))
+const OnboardingPage = lazy(() => import("./pages/auth/OnboardingPage"));
 const GoogleAuthSuccess = lazy(() => import("./pages/auth/GoogleAuthSuccess"));
-const Recommendation = lazy(() => import("./pages/Recommendation"))
-const Questionaire = lazy (() => import("./pages/Questionaire"))
+const Recommendation = lazy(() => import("./pages/Recommendation"));
+const Questionaire = lazy(() => import("./pages/Questionaire"));
 const CheckEligibility = lazy(() => import("./pages/CheckEligibility"));
-const SelectPayment = lazy(() => import("./pages/SelectPayment"))
+const SelectPayment = lazy(() => import("./pages/SelectPayment"));
 // const PaymentPage = lazy(() => import("./pages/PaymentPage"));
-const CareerPath = lazy(() => import("./pages/dashboard/CareerPath"))
-const ProgressTracker = lazy(() => import("./pages/dashboard/ProgressTracker"))
-const SchoolPage = lazy(() => import("./pages/dashboard/SchoolPage"))
-const SkillRoadMap = lazy(() => import("./pages/dashboard/SkillRoadMap"))
-const AccountSettings = lazy(() => import("./pages/dashboard/AccountSettings"))
-const Profile = lazy(() => import("./pages/dashboard/Profile"))
-const AccountRecords = lazy(() => import("./pages/dashboard/AccountRecords"))
-const SecurityManagement = lazy(() => import("./pages/dashboard/SecurityManagement"))
-const PaymentCallback = lazy(() => import("./pages/PaymentCallback")); 
-const SignUpTwo = lazy(() => import("./pages/auth/RegisterTwo"))
-const Subscription = lazy(() => import("./pages/dashboard/Subscription"))
+const CareerPath = lazy(() => import("./pages/dashboard/CareerPath"));
+const ProgressTracker = lazy(() => import("./pages/dashboard/ProgressTracker"));
+const SchoolPage = lazy(() => import("./pages/dashboard/SchoolPage"));
+const SkillRoadMap = lazy(() => import("./pages/dashboard/SkillRoadMap"));
+const AccountSettings = lazy(() => import("./pages/dashboard/AccountSettings"));
+const Profile = lazy(() => import("./pages/dashboard/Profile"));
+const AccountRecords = lazy(() => import("./pages/dashboard/AccountRecords"));
+const SecurityManagement = lazy(
+  () => import("./pages/dashboard/SecurityManagement"),
+);
+const PaymentCallback = lazy(() => import("./pages/PaymentCallback"));
+const SignUpTwo = lazy(() => import("./pages/auth/RegisterTwo"));
+const Subscription = lazy(() => import("./pages/dashboard/Subscription"));
 const Page404 = lazy(() => import("./pages/404"));
 const SetupPassword = lazy(() => import("./pages/auth/SetupPassword"));
-const UsersList = lazy(() => import("./pages/admin/Users"))
-const Waitlist = lazy(() => import("./pages/admin/Waitlist"))
-const TermsAndCondtion = lazy(() => import("./pages/TermsAndCondiotion"))
-const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"))
-const RefundPolicy = lazy(() => import("./pages/RefundPolicy"))
-
+const UsersList = lazy(() => import("./pages/admin/Users"));
+const Waitlist = lazy(() => import("./pages/admin/Waitlist"));
+const TermsAndCondtion = lazy(() => import("./pages/TermsAndCondiotion"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp /> },
   { path: "/signup-two", element: <SignUpTwo /> },
   { path: "/forgot-password", element: <ForgotPassword /> },
-  { path: '/email-verify', element: <VerifyEmail /> },
-  { path: '/reset-password', element: <ResetPassword title="Reset password" /> },
-  { path: '/setup-password', element: <SetupPassword title="Setup password" /> },
-  { path: '/auth/success', element: <GoogleAuthSuccess /> },
+  { path: "/email-verify", element: <VerifyEmail /> },
+  {
+    path: "/reset-password",
+    element: <ResetPassword title="Reset password" />,
+  },
+  {
+    path: "/setup-password",
+    element: <SetupPassword title="Setup password" />,
+  },
+  { path: "/auth/success", element: <GoogleAuthSuccess /> },
   { path: "/search", element: <HomeSearch /> },
   { path: "/career-recommedation", element: <Recommendation /> },
   { path: "/questionaire", element: <Questionaire /> },
   // { path: "/make-payment", element: <PaymentPage /> },
   { path: "/select-payment", element: <SelectPayment /> },
-  { path: "/payment/callback", element: <PaymentCallback /> }, 
+  { path: "/payment/callback", element: <PaymentCallback /> },
   { path: "/check-eligibility/:courseId", element: <CheckEligibility /> },
   { path: "/terms-and-conditions", element: <TermsAndCondtion /> },
   { path: "/privacy-policy", element: <PrivacyPolicy /> },
@@ -90,9 +94,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
-    children: [
-      { path: 'onboarding-form', element: <OnboardingPage /> },
-    ],
+    children: [{ path: "onboarding-form", element: <OnboardingPage /> }],
   },
   {
     path: "/dashboard",
@@ -102,59 +104,60 @@ const router = createBrowserRouter([
       { index: true, element: <Dashboard /> },
       { path: "pathfinder", element: <Pathfinder /> },
       { path: "community", element: <Community /> },
-      { path: "career-pathway", element: <CareerPath />},
+      { path: "career-pathway", element: <CareerPath /> },
       { path: "progres-tracker", element: <ProgressTracker /> },
-      { path: "school", element: <SchoolPage />},
-      { path: "skill-roadmap", element: <SkillRoadMap />},
-      
+      { path: "school", element: <SchoolPage /> },
+      { path: "skill-roadmap", element: <SkillRoadMap /> },
 
       {
         path: "settings",
         element: <SettingsLayout />, // <-- Add this line
         children: [
           { index: true, element: <AccountSettings /> }, // /dashboard/settings
-          { path: "profile", element: <Profile /> },     // /dashboard/settings/profile
+          { path: "profile", element: <Profile /> }, // /dashboard/settings/profile
           { path: "records", element: <AccountRecords /> }, // /dashboard/settings/records
           { path: "security", element: <SecurityManagement /> }, // /dashboard/settings/security
-          { path: "subscription", element: <Subscription /> }
+          { path: "subscription", element: <Subscription /> },
         ],
       },
     ],
   },
   {
-    path: '/admin',
+    path: "/admin",
     element: <AdminLayout />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '',
+        path: "",
         element: <AdminDashboardLayout />,
         errorElement: <ErrorPage />,
         children: [
           { index: true, element: <Admin /> },
-          { path: 'accounts', element: <ProfileManagement /> },
-          { path: 'bulk-center', element: <BulkCenter /> },
-          { path: 'loans', element: <Loans /> },
-          { path: 'data-management', element: <DataManagement /> },
-          { path: 'waitlist', element: <Waitlist /> },
-          { path: 'users', element: <UsersList /> },
-          { path: 'schools', element: <Schools /> },
-          { path: 'schools/:schoolId/courses', element: <SchoolCourses /> },
-          { path: 'schools/:schoolId/add-course', element: <AddCourse /> },
-          { path: 'schools/:schoolId/course-details/:courseId', element: <CourseDetails /> },
-          { path: 'schools/create-course', element: <CreateCourse /> },
-          { path: 'schools/edit-school', element: <EditSchool /> },
-        ]
+          { path: "accounts", element: <ProfileManagement /> },
+          { path: "bulk-center", element: <BulkCenter /> },
+          { path: "loans", element: <Loans /> },
+          { path: "data-management", element: <DataManagement /> },
+          { path: "waitlist", element: <Waitlist /> },
+          { path: "users", element: <UsersList /> },
+          { path: "schools", element: <Schools /> },
+          { path: "schools/:schoolId/courses", element: <SchoolCourses /> },
+          { path: "schools/:schoolId/add-course", element: <AddCourse /> },
+          {
+            path: "schools/:schoolId/course-details/:courseId",
+            element: <CourseDetails />,
+          },
+          { path: "schools/create-course", element: <CreateCourse /> },
+          { path: "schools/edit-school", element: <EditSchool /> },
+        ],
       },
-      { path: 'login', element: <AdminLogin /> },
+      { path: "login", element: <AdminLogin /> },
       { path: "forgot-password", element: <ForgotPassword fromAdmin={true} /> },
-    ]
+    ],
   },
   {
     path: "*",
     element: <Page404 />,
   },
-
 ]);
 
 function App() {
