@@ -1,5 +1,5 @@
 import { School } from "../services/schools";
-export interface  Course {
+export interface Course {
   id: string;
   title: string;
   image: string;
@@ -9,13 +9,13 @@ export interface  Course {
   scholarshipType: string;
   price: number;
   country: string;
-  profile? : string
-  scholarship?: string
-  currency?: string
-  university? : School
-  programLevel: string
+  profile?: string;
+  scholarship?: string;
+  currency?: string;
+  university?: School;
+  programLevel: string;
   duration: number;
-  updatedAt: string
+  updatedAt: string;
   durationPeriod: string;
   scholarshipInformation: string;
   loanInformation: string;
@@ -33,13 +33,13 @@ export interface  Course {
   courseDurationPeriod: string;
   courseProgramLevel: string;
   courseLocation: string;
-  courseExamType: string; 
+  courseExamType: string;
   courseWebsite: string;
   website: string;
   schoolId: string;
-} 
+}
 
-export interface  Loan {
+export interface Loan {
   id: string;
   name: string;
   time: string;
@@ -47,7 +47,7 @@ export interface  Loan {
   course: string;
   amount: number;
   status: string;
-} 
+}
 
 export interface ErrorObjType {
   title: boolean;
@@ -67,14 +67,14 @@ export interface ErrorObjType {
 }
 
 export interface RequirementList {
-  id: number
+  id: number;
   subjects: SubjectGrade[];
   location: string;
-  examType: string
+  examType: string;
 }
 
 export interface RequirementListNew {
-  id: string
+  id: string;
   subjects: SubjectGrade[];
   country: string;
   examType: string;
@@ -92,10 +92,9 @@ export interface SubjectGradeNew {
   grade: string;
 }
 
-
 export interface Condition {
   examType: string;
-  operator: 'or' | '+';
+  operator: "or" | "+";
 }
 
 export interface Rule {
