@@ -1,181 +1,184 @@
-
-import React,  {useState } from "react"
-
-import AlignTraitBanner from '../assets/aligntraits-banner.svg'
-import OtherUsers from '../assets/other-users.svg'
-import { FiMail,  } from "react-icons/fi"
-import Confetti from '../assets/confetti.svg'
-import Glove from '../assets/Glove.svg'
-import DirectionArrow from '../assets/DirectionArrow.svg'
-import Study from '../assets/study.svg'
-import api from '../api/axios'
-import {toast} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import SuccessCheck from '../assets/success-check.svg'
-import { BeatLoader } from "react-spinners"
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { FiArrowRight, FiCheckCircle } from "react-icons/fi";
+import AlignTraitBanner from "../assets/aligntraits-banner.svg";
+import Confetti from "../assets/confetti.svg";
+import Study from "../assets/study.svg";
+import Glove from "../assets/Glove.svg";
+import DirectionArrow from "../assets/DirectionArrow.svg";
 
 export default function Home() {
-  const date = new Date();
-  const [email, setEmail] = useState('')
-  const [modalOpen, setModalOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  
-  const handleSubmit =async ()=> {
-    const form = {
-      email: email
-    }
-    setIsLoading(true)
-    try {
-      console.log(JSON.stringify(form));
-      const response = await api.post('/waitlist/add-waitlist',JSON.stringify(form) , {
-        headers: {
-          "Content-Type" : 'application/json'
-        }
-      })
-      console.log(response);
-      setIsLoading(false)
-      // toast.success(response.data.message)
-      setModalOpen(true)
-    } catch (err: any) {
-      setIsLoading(false);
-    if (err.response && err.response.data && err.response.data.errors) {
-      
-      console.log(err);
-      const errors = err.response.data.errors;
-      console.log(errors);
-
-      errors.forEach((error: { message: string }) => {
-        if (error.message) {
-          toast.error(error.message);
-        }
-      });
-    }
-    if (err.response && err.response.data) {
-      toast.error(err.response.data.error);
-    }
-
-    if (
-      err.response &&
-      err.response.data.message &&
-      !err.response.data.errors
-    ) {
-      toast.error(err.response.data.message);
-    }
-    throw err;
-  } 
-  }
+  const navigate = useNavigate();
 
   return (
-    <div className="relative flex flex-col justify-center items-center h-screen w-full bg-[#001833] p-5 md:p-10 gap-2 lg:gap-5">
-      <img
-        src={AlignTraitBanner}
-        alt="AlignTraits Banner Image"
-        className=" w-[300px] h-[50px] lg:w-[400px] lg:h-[50px]"
-      />
-      <h1 className="relative text-center text-[#E0E0E0] text-[30px] lg:text-[40px] font-normal lg:font-semibold  md:w-[80%] lg:w-[80%] xl:w-[50%] leading-[40px] lg:eading-[48px]">
-        Discover Your Ideal Career Path with AlignTraits
+    <div className="min-h-screen bg-[#001833] text-white overflow-hidden">
+      {/* Hero Section */}
+      <div className="relative pt-20 pb-16 px-6 md:px-12 lg:px-20 flex flex-col items-center text-center">
+        <img
+          src={AlignTraitBanner}
+          alt="AlignTraits"
+          className="w-[280px] md:w-[360px] mb-8"
+        />
+
+        <h1 className="text-4xl md:text-6xl font-semibold leading-tight max-w-4xl">
+          Discover Your True Career Path with{" "}
+          <span className="text-[#F6C648]">AlignTraits</span>
+        </h1>
+
+        <p className="mt-6 text-lg md:text-xl text-[#E0E0E0] max-w-2xl">
+          Take a quick personality & aptitude assessment. Get personalized
+          course and career recommendations from top universities — designed
+          specifically for you.
+        </p>
+
+        <div className="mt-10 flex flex-col sm:flex-row gap-4">
+          <button
+            onClick={() => navigate("/assessment")}
+            className="bg-[#F6C648] hover:bg-[#f5b92e] text-[#001833] font-semibold px-10 py-4 rounded-full text-lg flex items-center gap-3 transition-all"
+          >
+            Start Free Assessment
+            <FiArrowRight className="text-xl" />
+          </button>
+
+          <button
+            onClick={() => navigate("/login")}
+            className="border border-white/60 hover:bg-white/10 font-medium px-8 py-4 rounded-full text-lg transition-all"
+          >
+            Login
+          </button>
+        </div>
+
         <img
           src={Confetti}
           alt=""
-          className="absolute top-[-20px] xl:top-0 right-0 bottom-0"
+          className="absolute top-12 right-12 hidden xl:block w-24 opacity-80"
         />
-      </h1>
-      <p className=" text-center text-[#E0E0E0] text-[16px] lg:text-[20px] font-medium md:w-[80%] lg:w-[70%] xl:w-[50%] leading-[20px] md:leading-[30px]">
-        Join our waitlist and unlock personalized career recommendations based
-        on your unique personality traits. Simplify your career decisions and
-        empower your future with insights just for you.
-      </p>
-
-      <div className="border-[#E5EFFF] border-[1px] rounded-full flex items-center mt-8 px-2 lg:px-5 py-2 bg-[#F7FAFF] mt-20">
-        <FiMail />
-        <input
-          type="email"
-          placeholder="Enter Your Email"
-          className="ml-2 outline-none text-[14px] text-[#666666] font-normal lg:p-2"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button
-          className="text-[#FFFFFF] text-[14px] font-normal bg-gradient-to-r from-[#0062FF] to-[#65D1FF] px-5 py-2 rounded-full w-[150px]"
-          onClick={() => handleSubmit()}
-          disabled={isLoading}
-        >
-          {isLoading ? <BeatLoader className="w-full"/> : "Secure My Spot"}
-        </button>
       </div>
-      <p className="text-[14px] lg:text-[18px] text-[#E0E0E0] font-normal text-center  md:w-[60%] lg:w-[60%] my-5 lg:mt-10">
-        AlignTraits' AI-driven career guidance is here to revolutionize your
-        future. Join our waitlist today!
-      </p>
-      <div className="flex gap-5 ">
-        <img src={OtherUsers} alt="" />
-        <span className="text-[14px] text-[#F6C648] font-medium my-auto">
-          Join 500+ others who signed up
-        </span>
-      </div>
-      <p className="text-[14px] text-[#F6C648] font-medium ">
-        © {date.getUTCFullYear()} AlignTraits
-      </p>
 
-      <img
-        src={Glove}
-        alt=""
-        className="absolute top-[30%] xl:left-20 left-10 hidden lg:block"
-      />
-      <img
-        src={Study}
-        alt=""
-        className="lg:absolute bottom-[20%] right-10 w-[200px] h-[200px] xl:w-[250px] xl:h-[250px] xl:right-20 xl:bottom-[30%]"
-      />
-      <img
-        src={DirectionArrow}
-        alt=""
-        className="absolute top-[31%] left-[7%] md:top-[30%] md:left-[15%] lg:top-[40%] xl:top-[42%] xl:left-[23%] h-[55px] md:h-[100px] lg:h-[150px] "
-      />
-      {modalOpen && <Modal setModalOpen={setModalOpen} />}
-    </div>
-  );
-} 
+      {/* How It Works */}
+      <div className="bg-white text-[#001833] py-20 px-6">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-center text-4xl font-semibold mb-4">
+            How AlignTraits Works
+          </h2>
+          <p className="text-center text-lg text-gray-600 mb-12 max-w-xl mx-auto">
+            From confusion to clarity in just a few steps
+          </p>
 
-interface ModalProps {
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
+          <div className="grid md:grid-cols-3 gap-10">
+            <div className="text-center">
+              <div className="w-20 h-20 mx-auto bg-[#F6C648] rounded-2xl flex items-center justify-center text-4xl mb-6">
+                1
+              </div>
+              <h3 className="text-2xl font-semibold mb-3">
+                Take the Assessment
+              </h3>
+              <p className="text-gray-600">
+                Answer simple questions about your personality, strengths,
+                interests, and values.
+              </p>
+            </div>
 
-const Modal = ({ setModalOpen }: ModalProps) => {
-  const [isVisible, setIsVisible] = React.useState(true);
+            <div className="text-center">
+              <div className="w-20 h-20 mx-auto bg-[#F6C648] rounded-2xl flex items-center justify-center text-4xl mb-6">
+                2
+              </div>
+              <h3 className="text-2xl font-semibold mb-3">Get Matched</h3>
+              <p className="text-gray-600">
+                Receive personalized course and career recommendations based on
+                your unique traits.
+              </p>
+            </div>
 
-  const handleClose = () => {
-    setIsVisible(false); 
-    setTimeout(() => setModalOpen(false), 300); 
-  };
-
-  return (
-    <div
-      className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-5 md:px-0 transition-opacity duration-300 ease-out ${
-        isVisible ? "opacity-100" : "opacity-0"
-      }`}
-    >
-      <div
-        className={`bg-[#001833] rounded-lg flex flex-col p-5 px-10 lg:px-20 md:w-1/2 w-full xl:w-1/3 gap-5 transform transition-transform duration-300 ease-out ${
-          isVisible ? "scale-100" : "scale-95"
-        }`}
-      >
-        <div className="bg-[#F6C648] w-20 h-20 rounded-full flex items-center mx-auto">
-          <img src={SuccessCheck} alt="" className="w-[60%] h-[60%] mx-auto" />
+            <div className="text-center">
+              <div className="w-20 h-20 mx-auto bg-[#F6C648] rounded-2xl flex items-center justify-center text-4xl mb-6">
+                3
+              </div>
+              <h3 className="text-2xl font-semibold mb-3">
+                Choose with Confidence
+              </h3>
+              <p className="text-gray-600">
+                Explore top universities offering your best-fit courses and make
+                informed decisions.
+              </p>
+            </div>
+          </div>
         </div>
-        <h2 className="text-[30.64px] font-medium leading-[36.77px] text-[#FFFFFF] text-center">
-          We’ve added you to our waiting list!
-        </h2>
-        <p className="text-[13.67px] text-[#FFFFFF] font-normal leading-[16.4px] text-center">
-          We’ll let you know when AlignTraits is ready
+      </div>
+
+      {/* Benefits */}
+      <div className="py-20 px-6 bg-[#001833]">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-semibold mb-6">
+            Why Thousands Trust AlignTraits
+          </h2>
+
+          <div className="grid sm:grid-cols-2 gap-8 mt-12 text-left">
+            <div className="flex gap-4">
+              <FiCheckCircle className="text-[#F6C648] text-3xl mt-1 flex-shrink-0" />
+              <div>
+                <h4 className="text-xl font-medium">Save Time & Money</h4>
+                <p className="text-[#E0E0E0] mt-2">
+                  Stop guessing. Get data-driven recommendations before spending
+                  years on the wrong course.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <FiCheckCircle className="text-[#F6C648] text-3xl mt-1 flex-shrink-0" />
+              <div>
+                <h4 className="text-xl font-medium">Match Your Personality</h4>
+                <p className="text-[#E0E0E0] mt-2">
+                  Courses and careers that align with who you truly are — not
+                  just what’s popular.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <FiCheckCircle className="text-[#F6C648] text-3xl mt-1 flex-shrink-0" />
+              <div>
+                <h4 className="text-xl font-medium">Real University Options</h4>
+                <p className="text-[#E0E0E0] mt-2">
+                  See actual programs from real universities that match your
+                  strengths.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <FiCheckCircle className="text-[#F6C648] text-3xl mt-1 flex-shrink-0" />
+              <div>
+                <h4 className="text-xl font-medium">Career Clarity</h4>
+                <p className="text-[#E0E0E0] mt-2">
+                  Understand what jobs you’ll love and excel in after
+                  graduation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Final CTA */}
+      <div className="bg-gradient-to-br from-[#F6C648] to-[#f5b92e] py-20 text-center text-[#001833]">
+        <h2 className="text-4xl font-bold mb-4">Ready to Find Your Path?</h2>
+        <p className="text-xl mb-8 max-w-md mx-auto">
+          Join thousands of students making confident education decisions.
         </p>
         <button
-          className="bg-[#F6C648] text-[#FFFFFF] text-[20px] font-medium w-[70%] rounded-md mx-auto"
-          onClick={handleClose}
+          onClick={() => navigate("/assessment")}
+          className="bg-[#001833] text-white font-semibold text-xl px-12 py-5 rounded-full hover:bg-black transition-all"
         >
-          Got it
+          Start Your Free Assessment
         </button>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-[#001833] text-[#E0E0E0] py-12 text-center border-t border-white/10">
+        <p>© {new Date().getFullYear()} AlignTraits. All rights reserved.</p>
+      </footer>
     </div>
   );
-};
-
+}

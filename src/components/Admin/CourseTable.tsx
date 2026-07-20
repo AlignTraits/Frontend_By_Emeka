@@ -3,7 +3,7 @@ import { ClipLoader } from "react-spinners";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { MdOutlineEdit } from "react-icons/md";
 import { Course } from "../../types/course.types";
-import fileIcon from "../../assets/IconWrap.svg"
+import fileIcon from "../../assets/IconWrap.svg";
 import { useAuth } from "../../contexts/useAuth";
 import DeleteModal from "./DeleteSchoolModal";
 import { useState } from "react";
@@ -23,76 +23,82 @@ export default function CoursesTable({
   getSchool,
   selectedCourseList,
   setSelectedCourseList,
-  children, // Accept children
+  children,
 }: Props & { children?: React.ReactNode }) {
+  const navigate = useNavigate();
+  const { schoolId } = useParams<{ schoolId: string }>();
+  const { setCurrentCourseID } = useAuth();
 
-  const navigate = useNavigate()
-  const { schoolId } = useParams<{ schoolId: string}>();
-  const {setCurrentCourseID} = useAuth()
+  const [modal, setModal] = useState(false);
+  const [itemForDelete, setItemForDelete] = useState({
+    title: "",
+    id: "",
+  });
 
-const [modal, setModal] = useState(false);
-const [itemForDelete, setItemForDelete] = useState({
-  title: "",
-  id: ""
-})
-  
   const handleEdit = (event: React.MouseEvent, id: string) => {
     event.stopPropagation();
-    setCurrentCourseID(id)
+    setCurrentCourseID(id);
     navigate(`/admin/schools/${schoolId}/add-course`);
-  }
-
+  };
 
   const handleTrashClick = (event: React.MouseEvent, schoolParam: any) => {
-    event.stopPropagation(); // Prevents event from bubbling to parent
-    setItemForDelete(schoolParam)
-    setModal(true)
+    event.stopPropagation();
+    setItemForDelete(schoolParam);
+    setModal(true);
   };
 
   const handleTestClick = (couresID: string) => {
     navigate(`/admin/schools/${schoolId}/course-details/${couresID}`);
-  }
+  };
 
   const handleSelect = (event: React.MouseEvent, id: string) => {
     event.stopPropagation();
 
     if (selectedCourseList.includes(id)) {
-      setSelectedCourseList(() => selectedCourseList.filter((elem) => id !== elem))
+      setSelectedCourseList(() =>
+        selectedCourseList.filter((elem) => id !== elem),
+      );
     } else {
-      let tempList = [...selectedCourseList, id]
-      setSelectedCourseList(tempList)
+      let tempList = [...selectedCourseList, id];
+      setSelectedCourseList(tempList);
     }
-  }
+  };
 
   const formatDate = (date: string) => {
-    // const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };  
     const dateTemp = new Date(date);
-
-    const formattedDate = new Intl.DateTimeFormat('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
+    return new Intl.DateTimeFormat("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
     }).format(dateTemp);
-    return formattedDate;
-  }
+  };
 
   function formatDuration(durationType: string, period: number) {
     const validDurations = ["YEARS", "MONTHS", "WEEKS"];
-  
+
     if (!validDurations.includes(durationType)) {
-      throw new Error("Invalid duration type. Must be one of: YEARS, MONTHS, WEEKS.");
+      return `${period} ${durationType}`;
     }
-  
+
     let formatted = durationType;
     if (period === 1) {
-      formatted = durationType.slice(0, -1); // Remove the 'S'
+      formatted = durationType.slice(0, -1);
     }
-  
+
     return `${period} ${formatted}`;
   }
 
-  
-  
+  // ✅ FIXED: Proper currency formatting
+  const formatCurrency = (
+    amount: number | string,
+    currency: string = "NGN",
+  ) => {
+    const num = typeof amount === "string" ? parseFloat(amount) : amount;
+    if (isNaN(num)) return `${currency} 0`;
+
+    return `${currency} ${num.toLocaleString("en-US")}`;
+  };
+
   return (
     <>
       {isLoading && (
@@ -149,11 +155,13 @@ const [itemForDelete, setItemForDelete] = useState({
                     onClick={() => handleTestClick(course.id)}
                   >
                     <td className="text-[#000000] text-[16px] font-[400] p-[20px] flex gap-2 items-center">
-                      <div onClick={(e) => handleSelect(e, course.id)} className="cursor-pointer border-[#D0D5DD] border-[1px] h-[25px] w-[25px] rounded-md flex justify-center items-center">
-                        {
-                          selectedCourseList.includes(course.id) && 
+                      <div
+                        onClick={(e) => handleSelect(e, course.id)}
+                        className="cursor-pointer border-[#D0D5DD] border-[1px] h-[25px] w-[25px] rounded-md flex justify-center items-center"
+                      >
+                        {selectedCourseList.includes(course.id) && (
                           <div className="h-[15px] w-[15px] bg-[#004085] rounded-[50%]"></div>
-                        }
+                        )}
                       </div>
                       <p>{course.title}</p>
                     </td>
@@ -164,32 +172,42 @@ const [itemForDelete, setItemForDelete] = useState({
                       {formatDuration(course.durationPeriod, course.duration)}
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
-                      {course.currency} {course.price}
+                      {/* ✅ FIXED: Properly formatted currency */}
+                      {formatCurrency(course.price, course.currency)}
                     </td>
                     <td className="text-[#757575] text-[14px] font-[500] p-[20px]">
                       {formatDate(course.updatedAt)}
                     </td>
                     <td className="p-[20px] flex gap-x-[20px] items-center">
-                      <FaRegTrashCan onClick={(e) => handleTrashClick(e, course)} className="text-[#D92D20] h-5 w-5 cursor-pointer" />
-                      
-                      <MdOutlineEdit onClick={(e) => handleEdit(e, course.id)} className="text-[#757575] h-6 w-6 font-[500] cursor-pointer" />
-                      
+                      <FaRegTrashCan
+                        onClick={(e) => handleTrashClick(e, course)}
+                        className="text-[#D92D20] h-5 w-5 cursor-pointer"
+                      />
+
+                      <MdOutlineEdit
+                        onClick={(e) => handleEdit(e, course.id)}
+                        className="text-[#757575] h-6 w-6 font-[500] cursor-pointer"
+                      />
                     </td>
                   </tr>
                 ))}
               </tbody>
             )}
           </table>
-          
+
           {!isLoading && courses.length === 0 && (
             <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[250px]">
               <img src={fileIcon} alt="Not found" />
-              <p className="text-[#101828] text-[16px] font-semibold">No Course Created</p>
+              <p className="text-[#101828] text-[16px] font-semibold">
+                No Course Created
+              </p>
               <p className="text-center text-[#475467] text-[14px] font-normal">
-                You have not created a course yet. Click the “Create<br/> course” Button to create one now!
+                You have not created a course yet. Click the “Create
+                <br /> course” Button to create one now!
               </p>
             </div>
           )}
+
           <div className="absolute bottom-5 left-0 right-0 p-[20px]">
             {children}
           </div>
@@ -205,8 +223,6 @@ const [itemForDelete, setItemForDelete] = useState({
           getSchools={getSchool}
         />
       )}
-
-
     </>
   );
 }
