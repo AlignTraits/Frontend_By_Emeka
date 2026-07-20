@@ -10,11 +10,10 @@ import Root from "./layouts/Root";
 
 import SettingsLayout from "./layouts/SettingsLayout";
 import WaitlistUser from "./pages/Waitlist";
-import CourseDetailsPage from "./components/dashboard/CourseDetails";
 // Lazy imports for code splitting
 
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
-const Home = lazy(() => import("./pages/Home"));
+// const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const SignUp = lazy(() => import("./pages/auth/Register"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
