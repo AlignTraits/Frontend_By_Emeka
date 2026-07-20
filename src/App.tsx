@@ -9,6 +9,8 @@ import AdminDashboardLayout from "./layouts/admin/AdminDashboardLayout";
 import Root from "./layouts/Root";
 
 import SettingsLayout from "./layouts/SettingsLayout";
+import WaitlistUser from "./pages/Waitlist";
+import CourseDetailsPage from "./components/dashboard/CourseDetails";
 // Lazy imports for code splitting
 
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
@@ -77,7 +79,8 @@ const router = createBrowserRouter([
     element: <SetupPassword title="Setup password" />,
   },
   { path: "/auth/success", element: <GoogleAuthSuccess /> },
-  { path: "/search", element: <HomeSearch /> },
+  // { path: "/search", element: <HomeSearch /> },
+  { path: "/waitlist", element: <WaitlistUser /> },
   { path: "/career-recommedation", element: <Recommendation /> },
   { path: "/questionaire", element: <Questionaire /> },
   // { path: "/make-payment", element: <PaymentPage /> },
@@ -88,7 +91,9 @@ const router = createBrowserRouter([
   { path: "/privacy-policy", element: <PrivacyPolicy /> },
   { path: "/refund-policy", element: <RefundPolicy /> },
   // { path: "/not-found", element: <Page404 /> },
-  { index: true, element: <Home /> },
+  // Public course details (protected inside component)
+  // { path: "/course-details/:courseId", element: <CourseDetailsPage /> },
+  { index: true, element: <HomeSearch /> },
 
   {
     path: "/",
