@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/useAuth"; // ← Use your auth context
+// import { useAuth } from "../../contexts/useAuth"; // ← Use your auth context
 import { Course } from "../../types/course.types";
 import locationIcon from "../../assets/locationIcon.svg";
 import { getSchool } from "../../services/schools";
@@ -20,11 +20,11 @@ interface CoursesProps {
 
 const CourseCard = ({
   courseItem,
-  setCourseDetails,
-  setShowDetails,
+  // setCourseDetails,
+  // setShowDetails,
 }: CoursesProps) => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth(); // ← Get auth status from context
+  // const { isAuthenticated } = useAuth(); // ← Get auth status from context
 
   // a state for loginup
   const [loginup, setLoginup] = useState(false);

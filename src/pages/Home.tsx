@@ -1,11 +1,11 @@
-import React from "react";
+// import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FiArrowRight, FiCheckCircle } from "react-icons/fi";
 import AlignTraitBanner from "../assets/aligntraits-banner.svg";
 import Confetti from "../assets/confetti.svg";
-import Study from "../assets/study.svg";
-import Glove from "../assets/Glove.svg";
-import DirectionArrow from "../assets/DirectionArrow.svg";
+// import Study from "../assets/study.svg";
+// import Glove from "../assets/Glove.svg";
+// import DirectionArrow from "../assets/DirectionArrow.svg";
 
 export default function Home() {
   const navigate = useNavigate();
