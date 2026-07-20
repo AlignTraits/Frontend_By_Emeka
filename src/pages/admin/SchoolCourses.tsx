@@ -20,7 +20,12 @@ import AdmissionLogicBulkUpdate from "../../components/Admin/AdmissionLogicBulkU
 import { toast } from "react-toastify";
 import BulkLogoModal from "../../components/Admin/BulkLogoModal";
 
-const UPLOAD_LIST = ["Bulk Upload New", "Bulk Upload Update", "Update Admission Logic", "Bulk Upload Logo"]
+const UPLOAD_LIST = [
+  "Bulk Upload New",
+  "Bulk Upload Update",
+  "Update Admission Logic",
+  "Bulk Upload Logo",
+];
 interface SchoolWithCourses extends School {
   courses: Course[];
 }
@@ -37,11 +42,12 @@ export default function SchoolCourses() {
   const [selectedCourseList, setSelectedCourseList] = useState<string[]>([]);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [showUpdateModalAdmissionLogic, setShowUpdateModalAdmissionLogic] = useState(false);
-  const [showLogoModal, setShowLogoModal] = useState(false)
+  const [showUpdateModalAdmissionLogic, setShowUpdateModalAdmissionLogic] =
+    useState(false);
+  const [showLogoModal, setShowLogoModal] = useState(false);
   // const temSelectedCourses = courses.filter((elem) => selectedCourseList.includes(elem.id));
 
-  const [bulkUploadType, setBulkUploadType] = useState("")
+  const [bulkUploadType, setBulkUploadType] = useState("");
 
   // --- Search and Pagination State ---
   const [searchTerm, setSearchTerm] = useState("");
@@ -67,16 +73,15 @@ export default function SchoolCourses() {
 
   useEffect(() => {
     if (bulkUploadType === "Bulk Upload New") {
-      setShowBulkModal(true) 
+      setShowBulkModal(true);
     } else if (bulkUploadType === "Bulk Upload Update") {
-      setShowUpdateModal(true)
+      setShowUpdateModal(true);
     } else if (bulkUploadType === "Update Admission Logic") {
-      setShowUpdateModalAdmissionLogic(true)
+      setShowUpdateModalAdmissionLogic(true);
     } else if (bulkUploadType === "Bulk Upload Logo") {
-      setShowLogoModal(true)
+      setShowLogoModal(true);
     }
-  }, [bulkUploadType])
-
+  }, [bulkUploadType]);
 
   // Filter courses based on search term
   const filteredCourses = useMemo(() => {
@@ -86,7 +91,7 @@ export default function SchoolCourses() {
     return courses.filter((course) => {
       const title = (course.title ?? "").toLowerCase();
       // const description = (course.description ?? "").toLowerCase();
-      return title.includes(term)
+      return title.includes(term);
     });
   }, [courses, searchTerm]);
 
@@ -99,9 +104,13 @@ export default function SchoolCourses() {
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
   const paginatedCourses = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
-    return filteredCourses.sort((a, b) => {
-      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-    }).slice(start, start + itemsPerPage);
+    return filteredCourses
+      .sort((a, b) => {
+        return (
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        );
+      })
+      .slice(start, start + itemsPerPage);
   }, [filteredCourses, currentPage]);
 
   const handleAddCourse = (event: React.MouseEvent) => {
@@ -132,12 +141,21 @@ export default function SchoolCourses() {
         <div className="flex justify-between items-center gap-x-[10px] border-b border-[#EAECF0] py-[10px]">
           <div className="flex gap-x-[10px] items-center">
             <div>
-              <div onClick={() => navigate(-1)} className="flex gap-x-[5px] items-center">
+              <div
+                onClick={() => navigate(-1)}
+                className="flex gap-x-[5px] items-center"
+              >
                 <IoIosArrowBack className="h-4 w-4" />
-                <p className="text-[#004085] text-[14px] font-medium cursor-pointer">Go back</p>
+                <p className="text-[#004085] text-[14px] font-medium cursor-pointer">
+                  Go back
+                </p>
               </div>
-              <p className="text-[#1E1E1E] text-[20px] font-semibold">{school?.name || "Searching..."}</p>
-              <p className="text-[#999999] text-[14px] font-medium">Manage all courses for {school?.name}</p>
+              <p className="text-[#1E1E1E] text-[20px] font-semibold">
+                {school?.name || "Searching..."}
+              </p>
+              <p className="text-[#999999] text-[14px] font-medium">
+                Manage all courses for {school?.name}
+              </p>
             </div>
           </div>
 
@@ -153,12 +171,20 @@ export default function SchoolCourses() {
               <FiSearch className="absolute left-2 top-1/2 -translate-y-1/2 text-[#999999] w-5 h-5" />
             </div>
 
-            {
-              selectedCourseList.length > 0 ?  
+            {selectedCourseList.length > 0 ? (
               <div className="flex justify-center items-center">
-                {isDeleteLoading ? <ClipLoader /> : <FaTrashAlt  onClick={handleDeleteCourses} className="cursor-pointer text-[#D92D20]" />}
-              </div> : <></>
-            }
+                {isDeleteLoading ? (
+                  <ClipLoader />
+                ) : (
+                  <FaTrashAlt
+                    onClick={handleDeleteCourses}
+                    className="cursor-pointer text-[#D92D20]"
+                  />
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
 
             <CustomSelectWithProps
               placeholder="Bulk Uploads"
@@ -195,64 +221,69 @@ export default function SchoolCourses() {
             setSelectedCourseList={setSelectedCourseList}
             selectedCourseList={selectedCourseList}
           >
-                      {/* Pagination Controls */}
-          <div className="flex justify-between items-center px-5 mt-5">
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
-            >
-              Previous
-            </button>
+            {/* Pagination Controls */}
+            <div className="flex justify-between items-center px-5 mt-5">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
+              >
+                Previous
+              </button>
 
-            <span className="text-sm">
-              Page {currentPage} of {totalPages}
-            </span>
+              <span className="text-sm">
+                Page {currentPage} of {totalPages}
+              </span>
 
-            <button
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(p + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+                className="px-4 py-1 border-[1px] border-[#D0D5DD] rounded-lg disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
           </CoursesTable>
         </div>
-
       </div>
 
-      {showBulkModal && <BulkCourseModal setBulkUploadType={setBulkUploadType} setShowModal={setShowBulkModal} getSchools={fetchSchool} />}
-      {
-        showUpdateModal && 
-        <BulkUpdateCourseModal 
-          setShowModal={setShowUpdateModal} 
+      {showBulkModal && (
+        <BulkCourseModal
           setBulkUploadType={setBulkUploadType}
-          getSchools={fetchSchool} 
-          courseList={courses} 
+          setShowModal={setShowBulkModal}
+          getSchools={fetchSchool}
         />
-      }
-
-      {
-        showUpdateModalAdmissionLogic && 
-        <AdmissionLogicBulkUpdate 
+      )}
+      {showUpdateModal && (
+        <BulkUpdateCourseModal
+          setShowModal={setShowUpdateModal}
           setBulkUploadType={setBulkUploadType}
-          setShowModal={setShowUpdateModalAdmissionLogic} 
-          getSchools={fetchSchool} 
-          courseList={courses} 
+          getSchools={fetchSchool}
+          courseList={courses}
         />
-      }
+      )}
 
-      { showLogoModal && 
-        <BulkLogoModal 
-          apiUrl="/images/bulk-upload-course-images" 
-          payloadType="knownCourseIds" 
-          setBulkUploadType={setBulkUploadType} 
-          setShowModal={setShowLogoModal} 
-          getSchools={fetchSchool} 
-          selectedList={selectedCourseList}  
+      {showUpdateModalAdmissionLogic && (
+        <AdmissionLogicBulkUpdate
+          setBulkUploadType={setBulkUploadType}
+          setShowModal={setShowUpdateModalAdmissionLogic}
+          getSchools={fetchSchool}
+          courseList={courses}
         />
-      }
+      )}
+
+      {showLogoModal && (
+        <BulkLogoModal
+          apiUrl="/images/bulk-upload-course-images"
+          payloadType="knownCourseIds"
+          setBulkUploadType={setBulkUploadType}
+          setShowModal={setShowLogoModal}
+          getSchools={fetchSchool}
+          // selectedList={selectedCourseList}
+        />
+      )}
     </div>
   );
 }
