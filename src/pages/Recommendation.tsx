@@ -13,11 +13,11 @@ export default function Recommendation() {
 
   const [agreed, setAgreed] = useState(false);
 
-  const [userExist, setUserExist] = useState(false)
+  const [userExist, setUserExist] = useState(false);
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
-    email: ""
+    email: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +25,11 @@ export default function Recommendation() {
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const isFormValid = data.firstName.length > 0 && data.lastName.length > 0 && data.email.length > 0 && agreed;
+  const isFormValid =
+    data.firstName.length > 0 &&
+    data.lastName.length > 0 &&
+    data.email.length > 0 &&
+    agreed;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,13 +42,13 @@ export default function Recommendation() {
       setIsLoading(true);
       const response = await getUser(data.email);
       if (response?.ok) {
-        return setUserExist(true)
+        return setUserExist(true);
       }
-      localStorage.setItem("userData", JSON.stringify(response))
+      localStorage.setItem("userData", JSON.stringify(response));
       navigate("/questionaire");
     } catch (err) {
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -54,28 +58,34 @@ export default function Recommendation() {
   };
 
   useEffect(() => {
-    if (token && token.length > 0 ) {
-      localStorage.setItem("pathway-data", JSON.stringify({
-        firstName: user?.firstname || "",
-        lastName: user?.lastname || "",
-        email: user?.email || ""
-      }));
-      localStorage.setItem("userData", JSON.stringify({
-        data: user,
-        message: "User found",
-        ok: true
-      }))
+    if (token && token.length > 0) {
+      localStorage.setItem(
+        "pathway-data",
+        JSON.stringify({
+          firstName: user?.firstname || "",
+          lastName: user?.lastname || "",
+          email: user?.email || "",
+        }),
+      );
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({
+          data: user,
+          message: "User found",
+          ok: true,
+        }),
+      );
       navigate("/questionaire");
     }
-  }, [])
+  }, []);
 
-   const handleNavigate = () => {
+  const handleNavigate = () => {
     if (token) {
-      navigate("/dashboard")
+      navigate("/dashboard");
     } else {
-      navigate("/search")
+      navigate("/search");
     }
-  }
+  };
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-br from-[#CCE0F5] via-[#e9eff7] to-white">
@@ -105,7 +115,10 @@ export default function Recommendation() {
             </div>
           )}
           <div className="w-full max-w-[400px]">
-            <label htmlFor="first-name" className="block text-[15px] sm:text-[16px] font-[600] text-[#101828]">
+            <label
+              htmlFor="first-name"
+              className="block text-[15px] sm:text-[16px] font-[600] text-[#101828]"
+            >
               First Name
             </label>
             <div className="relative">
@@ -193,22 +206,27 @@ export default function Recommendation() {
         </form>
       </div>
 
-    {userExist && (
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" onClick={() => setUserExist(false)}>
-        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-[90%]">
-          <p className="mb-4">You already have an account. Please login to continue.</p>
-          <button
-            onClick={() => {
-              setUserExist(false);
-              navigate("/login");
-            }}
-            className="w-full h-12 bg-[#004085] text-white rounded-lg hover:bg-blue-700"
-          >
-            Login
-          </button>
+      {userExist && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+          onClick={() => setUserExist(false)}
+        >
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-[90%]">
+            <p className="mb-4">
+              You already have an account. Please login to continue.
+            </p>
+            <button
+              onClick={() => {
+                setUserExist(false);
+                navigate("/login");
+              }}
+              className="w-full h-12 bg-[#004085] text-white rounded-lg hover:bg-blue-700"
+            >
+              Login
+            </button>
+          </div>
         </div>
-      </div>
-    )}
+      )}
 
       <div className="h-5 w-full" />
     </div>
