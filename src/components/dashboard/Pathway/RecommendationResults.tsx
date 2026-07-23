@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { SubjectGrade, RequirementListNew } from "../../../types/course.types";
 import AddCourse from "../../../pages/AddCourse";
 
+import { FaArrowRight } from "react-icons/fa";
+
 interface RecommendationProps {
   setViewState: React.Dispatch<React.SetStateAction<number>>;
   setExplorePath: React.Dispatch<React.SetStateAction<string>>;
@@ -130,7 +132,7 @@ export default function RecommendationResults({
           <h2 className="text-lg font-semibold text-[#101828] mb-6 flex items-center">
             {/* <SlGraph className="mr-[10px] font-bold h-8 w-8" /> */}
             {user?.careerResults
-              ? "View Results"
+              ? "View Results 1"
               : "Welcome to Your Career Journey 🌟"}
           </h2>
 
@@ -161,14 +163,19 @@ export default function RecommendationResults({
                     }}
                     className="bg-white cursor-pointer border border-gray-100 shadow-sm rounded-lg p-4 hover:shadow-md transition"
                   >
-                    <h3 className="text-[12px] font-bold text-[#212529] mb-1">
-                      {rec}
-                    </h3>
-                    <p className="text-[12px] font-medium text-[#757575]">
-                      Explore Path
-                    </p>
+                    <div className="flex items-center justify-between mb-2">
+                      <div>
+                        <h3 className="text-[12px] font-bold text-[#212529] mb-1">
+                          {rec}{" "}
+                        </h3>
+                        <p className="text-[12px] font-medium text-[#757575]">
+                          Explore Path
+                        </p>
+                      </div>
+                      <FaArrowRight className="ml-2 text-[#004085]" />
+                    </div>
                   </div>
-                )
+                ),
               )}
           </div>
 

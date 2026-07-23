@@ -23,7 +23,7 @@ const ExplorePath = ({
   const navigate = useNavigate();
 
   const testObj = careerPath.richRecommendations.find(
-    (course: any) => course.career === explorePath
+    (course: any) => course.career === explorePath,
   );
 
   const {
@@ -170,7 +170,7 @@ const ExplorePath = ({
           onClick={handleClick}
           className="h-[40px] bg-[#004085] items-center text-center disabled:opacity-50 hover:bg-blue-800 text-white font-medium py-1 px-5 rounded-lg transition"
         >
-          Get Your Career Recommendation
+          Get Course Recommendation
         </button>
 
         <button
