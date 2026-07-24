@@ -35,7 +35,7 @@ export default function CareerPath() {
   useEffect(() => {
     setPageDesc({
       desc: "Here’s a list of career pathway for you.",
-      title: "Career Pathway 1",
+      title: "Career Pathway",
     });
 
     if (!user?.isCareerPathChecked) {
