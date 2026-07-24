@@ -83,7 +83,7 @@ export default function Recommendation() {
     if (token) {
       navigate("/dashboard");
     } else {
-      navigate("/search");
+      navigate("/");
     }
   };
 

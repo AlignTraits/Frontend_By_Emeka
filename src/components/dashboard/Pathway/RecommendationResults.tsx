@@ -8,6 +8,7 @@ import { SubjectGrade, RequirementListNew } from "../../../types/course.types";
 import AddCourse from "../../../pages/AddCourse";
 
 import { FaArrowRight } from "react-icons/fa";
+import { RotateCcw } from "lucide-react";
 
 interface RecommendationProps {
   setViewState: React.Dispatch<React.SetStateAction<number>>;
@@ -132,7 +133,7 @@ export default function RecommendationResults({
           <h2 className="text-lg font-semibold text-[#101828] mb-6 flex items-center">
             {/* <SlGraph className="mr-[10px] font-bold h-8 w-8" /> */}
             {user?.careerResults
-              ? "View Results 1"
+              ? "View Results"
               : "Welcome to Your Career Journey 🌟"}
           </h2>
 
@@ -179,15 +180,21 @@ export default function RecommendationResults({
               )}
           </div>
 
-          <div className="text-center">
+          <div className="text-center flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
               disabled={isLoading}
               onClick={handleBtnClick}
               className="bg-[#004085] disabled:opacity-50 hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition"
             >
               {user?.careerResults
-                ? "Get Course Recommendation"
-                : "Get Your Career Recommendation"}
+                ? "Get Recommendation"
+                : "Get Career Recommendation"}
+            </button>
+            <button
+              onClick={() => navigate("/career-recommedation")}
+              className="h-[40px] border border-[#D1D5DB] flex gap-x-[5px] items-center justify-center bg-[white] disabled:opacity-50 text-[#374151] font-medium py-1 px-5 rounded-lg transition"
+            >
+              <RotateCcw /> <span className="text-[#374151]">Retake</span>
             </button>
           </div>
         </>
