@@ -121,7 +121,7 @@ export const createAcademicRecordsByEmail = async (data: any) => {
   try {
     const response = await api.post(
       "/admission-logic/academic-records-by-email",
-      data
+      data,
     );
 
     if (response.data.status == 403) throw new ResponseError(response);
@@ -157,7 +157,7 @@ export const updateAcademicRecords = async (data: any, id: string) => {
   try {
     const response = await api.put(
       `/admission-logic/academic-records/${id}`,
-      data
+      data,
     );
 
     if (response.data.status == 403) throw new ResponseError(response);
@@ -192,7 +192,7 @@ export const updateAcademicRecords = async (data: any, id: string) => {
 export const deleteAcademicRecords = async (id: string) => {
   try {
     const response = await api.delete(
-      `/admission-logic/academic-records/${id}`
+      `/admission-logic/academic-records/${id}`,
     );
 
     if (response.data.status == 403) throw new ResponseError(response);
@@ -467,4 +467,10 @@ export const getCareerPath = async () => {
 
     throw err;
   }
+};
+
+// src/utils/access.ts
+export const hasActiveAccess = (user: any): boolean => {
+  if (!user?.payment_plan || !user?.payment_plan_expires_at) return false;
+  return new Date(user.payment_plan_expires_at).getTime() > Date.now();
 };
