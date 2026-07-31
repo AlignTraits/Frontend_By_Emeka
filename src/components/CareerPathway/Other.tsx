@@ -1,6 +1,7 @@
 import { IoMdArrowForward, IoIosArrowForward } from "react-icons/io";
 import { IoMdBookmarks } from "react-icons/io";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getCoursesWithoutToken } from "../../services/schools";
 import { ClipLoader } from "react-spinners";
 import Details from "./Details";
@@ -8,9 +9,9 @@ import { Course } from "../../types/course.types";
 import {
   getAcademicRecords,
   getCourseRecommendation,
+  hasActiveAccess,
 } from "../../services/utils";
 import { useAuth } from "../../contexts/useAuth";
-import { hasActiveAccess } from "../../services/utils";
 import PaywallModal from "../Paywall/PaywallModal";
 
 interface ItemProps {
@@ -19,26 +20,24 @@ interface ItemProps {
   handleClick: (param: string) => void;
 }
 
-const Items = ({ color, text, handleClick }: ItemProps) => {
-  return (
-    <div
-      className="border-[2px] cursor-pointer shadow-md h-[70px] w-full rounded-xl flex justify-between px-[20px] items-center"
-      style={{ borderColor: color }}
-      onClick={() => handleClick(text)}
-    >
-      <div className="flex gap-x-[20px] items-center">
-        <div
-          className="h-[50px] w-[50px] rounded-full flex items-center justify-center"
-          style={{ backgroundColor: color }}
-        >
-          <IoMdBookmarks size={30} className="text-[white]" />
-        </div>
-        <p>{text}</p>
+const Items = ({ color, text, handleClick }: ItemProps) => (
+  <div
+    className="border-[2px] cursor-pointer shadow-md h-[70px] w-full rounded-xl flex justify-between px-[20px] items-center"
+    style={{ borderColor: color }}
+    onClick={() => handleClick(text)}
+  >
+    <div className="flex gap-x-[20px] items-center">
+      <div
+        className="h-[50px] w-[50px] rounded-full flex items-center justify-center"
+        style={{ backgroundColor: color }}
+      >
+        <IoMdBookmarks size={30} className="text-white" />
       </div>
-      <IoIosArrowForward />
+      <p>{text}</p>
     </div>
-  );
-};
+    <IoIosArrowForward />
+  </div>
+);
 
 interface OtherProps {
   setViewState: React.Dispatch<React.SetStateAction<number>>;
@@ -54,18 +53,17 @@ const Other = ({
   showDetails,
 }: OtherProps) => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
-  const [hasAccess, setHasAccess] = useState(hasActiveAccess(user));
-  const [showPaywall, setShowPaywall] = useState(!hasActiveAccess(user));
+  // loading | no-records | no-access | ready
+  const [stage, setStage] = useState<
+    "loading" | "no-records" | "no-access" | "ready"
+  >("loading");
 
-  const handlePageChange = (filter: string) => {
-    setCourseFilter(filter);
-    setViewState(2);
-  };
-
+  const [showPaywall, setShowPaywall] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [filterItem, setFilterItem] = useState<string>("");
+  const [filterItem, setFilterItem] = useState("");
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
   const colors = [
@@ -77,61 +75,97 @@ const Other = ({
     "#E91E63",
   ];
 
-  const getRecords = async () => {
-    try {
-      const response = await getAcademicRecords({ showToast: true });
-      const academicRecord: any = {};
-      let examCounter = 1;
-
-      response?.data.forEach((record: any) => {
-        if (record.ExamType1) {
-          academicRecord[`ExamType${examCounter}`] = record.ExamType1;
-          academicRecord[`ExamType${examCounter}Subjects`] =
-            record.ExamType1Subjects;
-          academicRecord[`ExamType${examCounter}SubGrades`] =
-            record.ExamType1SubGrades;
-          examCounter++;
-        }
-      });
-
-      const courseResponse = await getCourseRecommendation({ academicRecord });
-      setFilterItem(courseResponse.data[0]?.title || "");
-    } catch (err: any) {
-      console.log("error: ", err);
-    }
-  };
-
-  const fetchCourses = async () => {
-    try {
-      setIsLoading(true);
-      const response = await getCoursesWithoutToken();
-      setCourses(response);
-    } catch (err) {
-      console.log("error: ", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Re-check access whenever the auth user changes (e.g. after PaywallModal unlocks)
+  // ── 1. Gate: academic records first, then payment ──
   useEffect(() => {
-    const access = hasActiveAccess(user);
-    setHasAccess(access);
-    setShowPaywall(!access);
+    let cancelled = false;
+
+    const runChecks = async () => {
+      try {
+        const response = await getAcademicRecords({ showToast: false });
+        const hasRecords =
+          Array.isArray(response?.data) && response.data.length > 0;
+
+        if (cancelled) return;
+
+        if (!hasRecords) {
+          setStage("no-records");
+          return;
+        }
+
+        // Has records → check payment plan
+        if (!hasActiveAccess(user)) {
+          setStage("no-access");
+          return;
+        }
+
+        setStage("ready");
+      } catch {
+        // API error / no records → treat as no records
+        if (!cancelled) setStage("no-records");
+      }
+    };
+
+    runChecks();
+    return () => {
+      cancelled = true;
+    };
   }, [user]);
 
-  // Only fetch the paid recommendation data once access is confirmed
+  // ── 2. Load recommendation only when ready ──
   useEffect(() => {
-    if (!hasAccess) return;
-    fetchCourses();
-    getRecords();
-  }, [hasAccess]);
+    if (stage !== "ready") return;
+
+    let cancelled = false;
+
+    const load = async () => {
+      try {
+        setIsLoading(true);
+
+        const courseList = await getCoursesWithoutToken();
+        if (cancelled) return;
+        setCourses(courseList);
+
+        const response = await getAcademicRecords({ showToast: true });
+        const academicRecord: any = {};
+        let examCounter = 1;
+
+        response?.data?.forEach((record: any) => {
+          if (record.ExamType1) {
+            academicRecord[`ExamType${examCounter}`] = record.ExamType1;
+            academicRecord[`ExamType${examCounter}Subjects`] =
+              record.ExamType1Subjects;
+            academicRecord[`ExamType${examCounter}SubGrades`] =
+              record.ExamType1SubGrades;
+            examCounter++;
+          }
+        });
+
+        const courseResponse = await getCourseRecommendation({
+          academicRecord,
+        });
+        if (cancelled) return;
+        setFilterItem(courseResponse?.data?.[0]?.title || "");
+      } catch (err) {
+        console.log("load error:", err);
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    };
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [stage]);
 
   useEffect(() => {
-    setSelectedCourse(
-      courses.find((course) => course.title === filterItem) || null,
-    );
-  }, [filterItem]);
+    setSelectedCourse(courses.find((c) => c.title === filterItem) || null);
+  }, [filterItem, courses]);
+
+  const handlePageChange = (filter: string) => {
+    setCourseFilter(filter);
+    setViewState(2);
+  };
 
   const handleViewDetails = (course: Course) => {
     setShowDetails(true);
@@ -139,16 +173,46 @@ const Other = ({
   };
 
   const handleUnlocked = () => {
-    // The polling in PaywallModal already confirmed access server-side;
-    // flip local state immediately so the UI doesn't wait on a slow context refresh.
-    setHasAccess(true);
     setShowPaywall(false);
+    setStage("ready"); // user paid → show results
   };
 
-  if (!hasAccess) {
+  // ── RENDER ──────────────────────────────────────────
+
+  if (stage === "loading") {
+    return (
+      <div className="mt-5 flex justify-center items-center h-[200px] border border-[#757575] rounded-md">
+        <ClipLoader />
+      </div>
+    );
+  }
+
+  // No academic records → navigate to the form
+  if (stage === "no-records") {
+    return (
+      <div className="mt-5 flex flex-col items-center justify-center h-[300px] border border-[#757575] rounded-md text-center px-6">
+        <p className="text-[#212121] text-[16px] font-medium mb-2">
+          Add your academic records first
+        </p>
+        <p className="text-[#757575] text-sm mb-4">
+          We need your exam results to recommend the best courses for you.
+        </p>
+        <button
+          // Change this path to your real academic-records route
+          onClick={() => navigate("/dashboard/settings/records")}
+          className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-2 px-6 rounded-lg transition"
+        >
+          Add Academic Records
+        </button>
+      </div>
+    );
+  }
+
+  // Has records, no active plan → paywall
+  if (stage === "no-access") {
     return (
       <>
-        <div className="mt-5 flex flex-col items-center justify-center h-[300px] border-[#757575] border-[1px] rounded-md text-center px-6">
+        <div className="mt-5 flex flex-col items-center justify-center h-[300px] border border-[#757575] rounded-md text-center px-6">
           <p className="text-[#212121] text-[16px] font-medium mb-2">
             Your course recommendation is ready.
           </p>
@@ -173,6 +237,7 @@ const Other = ({
     );
   }
 
+  // stage === "ready"
   return (
     <>
       {showDetails && selectedCourse ? (
@@ -184,16 +249,16 @@ const Other = ({
           </p>
 
           {isLoading ? (
-            <div className="flex justify-center items-center h-[200px] border-[#757575] border-[1px] rounded-md">
+            <div className="flex justify-center items-center h-[200px] border border-[#757575] rounded-md">
               <ClipLoader />
             </div>
           ) : courses.length === 0 || !selectedCourse ? (
-            <div className="flex justify-center items-center h-[200px] text-[#212121] border-[#757575] border-[1px] rounded-md">
+            <div className="flex justify-center items-center h-[200px] text-[#212121] border border-[#757575] rounded-md">
               No Recommended course available
             </div>
           ) : (
-            <div className="w-full h-[370px] lg:h-max mt-2 p-5 border-[#757575] border-[1px] rounded-md flex flex-col space-y-[10px] lg:flex-row lg:items-center px-5 gap-x-[40px]">
-              <img src={selectedCourse?.image} className="h-[150px]" />
+            <div className="w-full h-[370px] lg:h-max mt-2 p-5 border border-[#757575] rounded-md flex flex-col space-y-[10px] lg:flex-row lg:items-center px-5 gap-x-[40px]">
+              <img src={selectedCourse?.image} className="h-[150px]" alt="" />
               <div className="h-[150px] flex flex-col justify-between">
                 <div>
                   <p className="text-[18px] lg:text-[24px] font-semibold">
@@ -202,7 +267,7 @@ const Other = ({
                   <p className="text-[#212121] text-[16px]">
                     {selectedCourse.university?.name}
                   </p>
-                  <p className="text-[#007BFF] text-[14px] md:text-[16px] font-normal">
+                  <p className="text-[#007BFF] text-[14px] md:text-[16px]">
                     {selectedCourse.university?.region} /{" "}
                     {selectedCourse.university?.country}
                   </p>
@@ -218,10 +283,10 @@ const Other = ({
                     onClick={() => handlePageChange(selectedCourse.title)}
                     className="flex bg-[#004085] p-2 items-center gap-x-[20px] rounded-xl"
                   >
-                    <p className="text-[white] text-[12px] lg:text-[14px]">
+                    <p className="text-white text-[12px] lg:text-[14px]">
                       Other Schools With Similar Courses
                     </p>
-                    <IoMdArrowForward className="text-[white]" />
+                    <IoMdArrowForward className="text-white" />
                   </button>
                 </div>
               </div>
@@ -235,23 +300,22 @@ const Other = ({
               </p>
               <div className="flex flex-col gap-y-[20px] mt-2">
                 {courses.map((courseElem, index) => {
+                  if (courseElem.title === filterItem) return null;
                   const randomColor =
                     colors[Math.floor(Math.random() * colors.length)];
-                  if (courseElem.title !== filterItem) {
-                    return (
-                      <Items
-                        key={index}
-                        text={courseElem.title}
-                        color={randomColor}
-                        handleClick={handlePageChange}
-                      />
-                    );
-                  }
+                  return (
+                    <Items
+                      key={index}
+                      text={courseElem.title}
+                      color={randomColor}
+                      handleClick={handlePageChange}
+                    />
+                  );
                 })}
               </div>
             </div>
           ) : (
-            <div className="mt-5 flex justify-center items-center h-[200px] text-[#212121] border-[#757575] border-[1px] rounded-md">
+            <div className="mt-5 flex justify-center items-center h-[200px] text-[#212121] border border-[#757575] rounded-md">
               No other courses available
             </div>
           )}
@@ -270,12 +334,18 @@ export default Other;
 // import { ClipLoader } from "react-spinners";
 // import Details from "./Details";
 // import { Course } from "../../types/course.types";
-// import { getAcademicRecords, getCourseRecommendation } from "../../services/utils";
+// import {
+//   getAcademicRecords,
+//   getCourseRecommendation,
+// } from "../../services/utils";
+// import { useAuth } from "../../contexts/useAuth";
+// import { hasActiveAccess } from "../../services/utils";
+// import PaywallModal from "../Paywall/PaywallModal";
 
 // interface ItemProps {
 //   color: string;
 //   text: string;
-//   handleClick: (param: string) => void
+//   handleClick: (param: string) => void;
 // }
 
 // const Items = ({ color, text, handleClick }: ItemProps) => {
@@ -294,151 +364,410 @@ export default Other;
 //         </div>
 //         <p>{text}</p>
 //       </div>
-
 //       <IoIosArrowForward />
 //     </div>
 //   );
 // };
+
 // interface OtherProps {
 //   setViewState: React.Dispatch<React.SetStateAction<number>>;
 //   setCourseFilter: React.Dispatch<React.SetStateAction<string>>;
 //   setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
 //   showDetails: boolean;
 // }
-// const Other = ({setViewState, setCourseFilter, setShowDetails, showDetails}: OtherProps) => {
+
+// const Other = ({
+//   setViewState,
+//   setCourseFilter,
+//   setShowDetails,
+//   showDetails,
+// }: OtherProps) => {
+//   const { user } = useAuth();
+
+//   const [hasAccess, setHasAccess] = useState(hasActiveAccess(user));
+//   const [showPaywall, setShowPaywall] = useState(!hasActiveAccess(user));
 
 //   const handlePageChange = (filter: string) => {
 //     setCourseFilter(filter);
 //     setViewState(2);
-//   }
+//   };
 
 //   const [isLoading, setIsLoading] = useState(false);
-
 //   const [courses, setCourses] = useState<Course[]>([]);
 //   const [filterItem, setFilterItem] = useState<string>("");
-//   const [selectedCourse, setSelectedCourse] = useState<Course|null>(null);
+//   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
-//   // const [courseDetails, setCourseDetails] = useState<Course|null>(null);
+//   const colors = [
+//     "#F6C648",
+//     "#4CAF50",
+//     "#2196F3",
+//     "#FF5722",
+//     "#9C27B0",
+//     "#E91E63",
+//   ];
 
-//   const colors = ["#F6C648", "#4CAF50", "#2196F3", "#FF5722", "#9C27B0", "#E91E63"];
+//   const getRecords = async () => {
+//     try {
+//       const response = await getAcademicRecords({ showToast: true });
+//       const academicRecord: any = {};
+//       let examCounter = 1;
 
-//     const getRecords = async () => {
-//       try {
-//         const response = await getAcademicRecords({showToast: true});
-//         const academicRecord:any = {};
-
-//         let examCounter = 1;
-
-//         response?.data.forEach((record: any) => {
-//           if (record.ExamType1) {
-//             academicRecord[`ExamType${examCounter}`] = record.ExamType1;
-//             academicRecord[`ExamType${examCounter}Subjects`] = record.ExamType1Subjects;
-//             academicRecord[`ExamType${examCounter}SubGrades`] = record.ExamType1SubGrades;
-//             examCounter++;
-//           }
-//         });
-
-//         const tempPayload = {
-//           "academicRecord": academicRecord
+//       response?.data.forEach((record: any) => {
+//         if (record.ExamType1) {
+//           academicRecord[`ExamType${examCounter}`] = record.ExamType1;
+//           academicRecord[`ExamType${examCounter}Subjects`] =
+//             record.ExamType1Subjects;
+//           academicRecord[`ExamType${examCounter}SubGrades`] =
+//             record.ExamType1SubGrades;
+//           examCounter++;
 //         }
+//       });
 
-//         const courseResponse = await getCourseRecommendation(tempPayload);
-//         console.log("courseResponse: ", courseResponse)
-//         setFilterItem(courseResponse.data[0]?.title || "")
-
-//       } catch (err: any) {
-//         console.log("error: ", err)
-//       }
+//       const courseResponse = await getCourseRecommendation({ academicRecord });
+//       setFilterItem(courseResponse.data[0]?.title || "");
+//     } catch (err: any) {
+//       console.log("error: ", err);
 //     }
-//     const fetchCourses = async () => {
-//       try {
-//         setIsLoading(true);
-//         const response = await getCoursesWithoutToken()
+//   };
 
-//         setCourses(response);
-//       } catch (err) {
-//         // setError(err instanceof Error ? err.message : 'An error occurred');
-//         console.log("error: ", err)
-//       } finally {
-//         setIsLoading(false);
-//       }
-//     };
-//     useEffect(() => {
-//       fetchCourses();
-//       getRecords();
-
-//       // handleGetCoursesCategories();
-//     }, []);
-
-//     useEffect(() => {
-//       setSelectedCourse(courses.find((course) => course.title === filterItem) || null);
-//     }, [filterItem])
-
-//     const handleViewDetails = (course: Course) => {
-//       setShowDetails(true);
-//       setCourseFilter(course.title);
+//   const fetchCourses = async () => {
+//     try {
+//       setIsLoading(true);
+//       const response = await getCoursesWithoutToken();
+//       setCourses(response);
+//     } catch (err) {
+//       console.log("error: ", err);
+//     } finally {
+//       setIsLoading(false);
 //     }
+//   };
+
+//   // Re-check access whenever the auth user changes (e.g. after PaywallModal unlocks)
+//   useEffect(() => {
+//     const access = hasActiveAccess(user);
+//     setHasAccess(access);
+//     setShowPaywall(!access);
+//   }, [user]);
+
+//   // Only fetch the paid recommendation data once access is confirmed
+//   useEffect(() => {
+//     if (!hasAccess) return;
+//     fetchCourses();
+//     getRecords();
+//   }, [hasAccess]);
+
+//   useEffect(() => {
+//     setSelectedCourse(
+//       courses.find((course) => course.title === filterItem) || null,
+//     );
+//   }, [filterItem]);
+
+//   const handleViewDetails = (course: Course) => {
+//     setShowDetails(true);
+//     setCourseFilter(course.title);
+//   };
+
+//   const handleUnlocked = () => {
+//     // The polling in PaywallModal already confirmed access server-side;
+//     // flip local state immediately so the UI doesn't wait on a slow context refresh.
+//     setHasAccess(true);
+//     setShowPaywall(false);
+//   };
+
+//   if (!hasAccess) {
+//     return (
+//       <>
+//         <div className="mt-5 flex flex-col items-center justify-center h-[300px] border-[#757575] border-[1px] rounded-md text-center px-6">
+//           <p className="text-[#212121] text-[16px] font-medium mb-2">
+//             Your course recommendation is ready.
+//           </p>
+//           <p className="text-[#757575] text-sm mb-4">
+//             Choose a plan to view it.
+//           </p>
+//           <button
+//             onClick={() => setShowPaywall(true)}
+//             className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-2 px-6 rounded-lg transition"
+//           >
+//             View Recommendation
+//           </button>
+//         </div>
+
+//         {showPaywall && (
+//           <PaywallModal
+//             onUnlocked={handleUnlocked}
+//             onClose={() => setShowPaywall(false)}
+//           />
+//         )}
+//       </>
+//     );
+//   }
 
 //   return (
 //     <>
-//       {
-//         showDetails && selectedCourse ? <Details courseItem={selectedCourse} setShowDetails={setShowDetails}  /> :
-//             <div className="mt-5">
-//       <p className="text-[#212121] text-[16px] font-medium">What course are you picking?</p>
-
-//       {
-//         isLoading ? <div className="flex justify-center items-center h-[200px] border-[#757575] border-[1px] rounded-md">
-//           <ClipLoader />
-//         </div>:
-//         courses.length === 0 || !selectedCourse ?
-//         <div className="flex justify-center items-center h-[200px] text-[#212121] border-[#757575] border-[1px] rounded-md">No Recommended course available</div> :
-//         <div className="w-full h-[370px] lg:h-max mt-2 p-5 border-[#757575] border-[1px] rounded-md flex flex-col space-y-[10px] lg:flex-row lg:items-center px-5 gap-x-[40px]">
-//           <img src={selectedCourse?.image} className="h-[150px]" />
-
-//           <div className="h-[150px] flex flex-col justify-between">
-//             <div>
-//               <p className="text-[18px] lg:text-[24px] font-semibold">{selectedCourse.title}</p>
-//               <p className="text-[#212121] text-[16px]">{selectedCourse.university?.name}</p>
-//               <p className="text-[#007BFF] text-[14px] md:text-[16px] font-normal ">
-//                 {selectedCourse.university?.region} / {selectedCourse.university?.country}
-//               </p>
-//             </div>
-//             <div className="flex gap-x-[20px]">
-//               <button onClick={() => handleViewDetails(selectedCourse)} className="flex bg-[#F6C648] text-[#1C1C1C] text-[12px] lg:text-[14px] text-[14px] p-2 flex items-center rounded-xl">View Details</button>
-//               <button onClick={() => handlePageChange(selectedCourse.title)} className="flex bg-[#004085] p-2 flex items-center gap-x-[20px] rounded-xl">
-//                 <p className="text-[white] text-[12px] lg:text-[14px]">Other Schools With Similar Courses</p>
-//                 <IoMdArrowForward className="text-[white]" />
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       }
-
-//       {
-//         courses.length > 1 ?
+//       {showDetails && selectedCourse ? (
+//         <Details courseItem={selectedCourse} setShowDetails={setShowDetails} />
+//       ) : (
 //         <div className="mt-5">
-//           <p className="text-[#212121] text-[16px] font-medium">Other courses from recomended career path:</p>
+//           <p className="text-[#212121] text-[16px] font-medium">
+//             What course are you picking?
+//           </p>
 
-//           <div className="flex flex-col gap-y-[20px] mt-2">
-//             {
-//               courses.map((courseElem, index) => {
-//                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
-//                 if (courseElem.title !== filterItem) {
-//                   return <Items key={index} text={courseElem.title} color={randomColor} handleClick={handlePageChange} />
-//                 }
-//               })
-//             }
-//           </div>
-//         </div> :
-//         <div className="mt-5 flex justify-center items-center h-[200px] text-[#212121] border-[#757575] border-[1px] rounded-md">No other courses available</div>
+//           {isLoading ? (
+//             <div className="flex justify-center items-center h-[200px] border-[#757575] border-[1px] rounded-md">
+//               <ClipLoader />
+//             </div>
+//           ) : courses.length === 0 || !selectedCourse ? (
+//             <div className="flex justify-center items-center h-[200px] text-[#212121] border-[#757575] border-[1px] rounded-md">
+//               No Recommended course available
+//             </div>
+//           ) : (
+//             <div className="w-full h-[370px] lg:h-max mt-2 p-5 border-[#757575] border-[1px] rounded-md flex flex-col space-y-[10px] lg:flex-row lg:items-center px-5 gap-x-[40px]">
+//               <img src={selectedCourse?.image} className="h-[150px]" />
+//               <div className="h-[150px] flex flex-col justify-between">
+//                 <div>
+//                   <p className="text-[18px] lg:text-[24px] font-semibold">
+//                     {selectedCourse.title}
+//                   </p>
+//                   <p className="text-[#212121] text-[16px]">
+//                     {selectedCourse.university?.name}
+//                   </p>
+//                   <p className="text-[#007BFF] text-[14px] md:text-[16px] font-normal">
+//                     {selectedCourse.university?.region} /{" "}
+//                     {selectedCourse.university?.country}
+//                   </p>
+//                 </div>
+//                 <div className="flex gap-x-[20px]">
+//                   <button
+//                     onClick={() => handleViewDetails(selectedCourse)}
+//                     className="flex bg-[#F6C648] text-[#1C1C1C] text-[12px] lg:text-[14px] p-2 items-center rounded-xl"
+//                   >
+//                     View Details
+//                   </button>
+//                   <button
+//                     onClick={() => handlePageChange(selectedCourse.title)}
+//                     className="flex bg-[#004085] p-2 items-center gap-x-[20px] rounded-xl"
+//                   >
+//                     <p className="text-[white] text-[12px] lg:text-[14px]">
+//                       Other Schools With Similar Courses
+//                     </p>
+//                     <IoMdArrowForward className="text-[white]" />
+//                   </button>
+//                 </div>
+//               </div>
+//             </div>
+//           )}
 
-//       }
-
-//     </div>
-//       }
+//           {courses.length > 1 ? (
+//             <div className="mt-5">
+//               <p className="text-[#212121] text-[16px] font-medium">
+//                 Other courses from recomended career path:
+//               </p>
+//               <div className="flex flex-col gap-y-[20px] mt-2">
+//                 {courses.map((courseElem, index) => {
+//                   const randomColor =
+//                     colors[Math.floor(Math.random() * colors.length)];
+//                   if (courseElem.title !== filterItem) {
+//                     return (
+//                       <Items
+//                         key={index}
+//                         text={courseElem.title}
+//                         color={randomColor}
+//                         handleClick={handlePageChange}
+//                       />
+//                     );
+//                   }
+//                 })}
+//               </div>
+//             </div>
+//           ) : (
+//             <div className="mt-5 flex justify-center items-center h-[200px] text-[#212121] border-[#757575] border-[1px] rounded-md">
+//               No other courses available
+//             </div>
+//           )}
+//         </div>
+//       )}
 //     </>
-
-//   )
-// }
+//   );
+// };
 
 // export default Other;
+
+// // import { IoMdArrowForward, IoIosArrowForward } from "react-icons/io";
+// // import { IoMdBookmarks } from "react-icons/io";
+// // import { useEffect, useState } from "react";
+// // import { getCoursesWithoutToken } from "../../services/schools";
+// // import { ClipLoader } from "react-spinners";
+// // import Details from "./Details";
+// // import { Course } from "../../types/course.types";
+// // import { getAcademicRecords, getCourseRecommendation } from "../../services/utils";
+
+// // interface ItemProps {
+// //   color: string;
+// //   text: string;
+// //   handleClick: (param: string) => void
+// // }
+
+// // const Items = ({ color, text, handleClick }: ItemProps) => {
+// //   return (
+// //     <div
+// //       className="border-[2px] cursor-pointer shadow-md h-[70px] w-full rounded-xl flex justify-between px-[20px] items-center"
+// //       style={{ borderColor: color }}
+// //       onClick={() => handleClick(text)}
+// //     >
+// //       <div className="flex gap-x-[20px] items-center">
+// //         <div
+// //           className="h-[50px] w-[50px] rounded-full flex items-center justify-center"
+// //           style={{ backgroundColor: color }}
+// //         >
+// //           <IoMdBookmarks size={30} className="text-[white]" />
+// //         </div>
+// //         <p>{text}</p>
+// //       </div>
+
+// //       <IoIosArrowForward />
+// //     </div>
+// //   );
+// // };
+// // interface OtherProps {
+// //   setViewState: React.Dispatch<React.SetStateAction<number>>;
+// //   setCourseFilter: React.Dispatch<React.SetStateAction<string>>;
+// //   setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
+// //   showDetails: boolean;
+// // }
+// // const Other = ({setViewState, setCourseFilter, setShowDetails, showDetails}: OtherProps) => {
+
+// //   const handlePageChange = (filter: string) => {
+// //     setCourseFilter(filter);
+// //     setViewState(2);
+// //   }
+
+// //   const [isLoading, setIsLoading] = useState(false);
+
+// //   const [courses, setCourses] = useState<Course[]>([]);
+// //   const [filterItem, setFilterItem] = useState<string>("");
+// //   const [selectedCourse, setSelectedCourse] = useState<Course|null>(null);
+
+// //   // const [courseDetails, setCourseDetails] = useState<Course|null>(null);
+
+// //   const colors = ["#F6C648", "#4CAF50", "#2196F3", "#FF5722", "#9C27B0", "#E91E63"];
+
+// //     const getRecords = async () => {
+// //       try {
+// //         const response = await getAcademicRecords({showToast: true});
+// //         const academicRecord:any = {};
+
+// //         let examCounter = 1;
+
+// //         response?.data.forEach((record: any) => {
+// //           if (record.ExamType1) {
+// //             academicRecord[`ExamType${examCounter}`] = record.ExamType1;
+// //             academicRecord[`ExamType${examCounter}Subjects`] = record.ExamType1Subjects;
+// //             academicRecord[`ExamType${examCounter}SubGrades`] = record.ExamType1SubGrades;
+// //             examCounter++;
+// //           }
+// //         });
+
+// //         const tempPayload = {
+// //           "academicRecord": academicRecord
+// //         }
+
+// //         const courseResponse = await getCourseRecommendation(tempPayload);
+// //         console.log("courseResponse: ", courseResponse)
+// //         setFilterItem(courseResponse.data[0]?.title || "")
+
+// //       } catch (err: any) {
+// //         console.log("error: ", err)
+// //       }
+// //     }
+// //     const fetchCourses = async () => {
+// //       try {
+// //         setIsLoading(true);
+// //         const response = await getCoursesWithoutToken()
+
+// //         setCourses(response);
+// //       } catch (err) {
+// //         // setError(err instanceof Error ? err.message : 'An error occurred');
+// //         console.log("error: ", err)
+// //       } finally {
+// //         setIsLoading(false);
+// //       }
+// //     };
+// //     useEffect(() => {
+// //       fetchCourses();
+// //       getRecords();
+
+// //       // handleGetCoursesCategories();
+// //     }, []);
+
+// //     useEffect(() => {
+// //       setSelectedCourse(courses.find((course) => course.title === filterItem) || null);
+// //     }, [filterItem])
+
+// //     const handleViewDetails = (course: Course) => {
+// //       setShowDetails(true);
+// //       setCourseFilter(course.title);
+// //     }
+
+// //   return (
+// //     <>
+// //       {
+// //         showDetails && selectedCourse ? <Details courseItem={selectedCourse} setShowDetails={setShowDetails}  /> :
+// //             <div className="mt-5">
+// //       <p className="text-[#212121] text-[16px] font-medium">What course are you picking?</p>
+
+// //       {
+// //         isLoading ? <div className="flex justify-center items-center h-[200px] border-[#757575] border-[1px] rounded-md">
+// //           <ClipLoader />
+// //         </div>:
+// //         courses.length === 0 || !selectedCourse ?
+// //         <div className="flex justify-center items-center h-[200px] text-[#212121] border-[#757575] border-[1px] rounded-md">No Recommended course available</div> :
+// //         <div className="w-full h-[370px] lg:h-max mt-2 p-5 border-[#757575] border-[1px] rounded-md flex flex-col space-y-[10px] lg:flex-row lg:items-center px-5 gap-x-[40px]">
+// //           <img src={selectedCourse?.image} className="h-[150px]" />
+
+// //           <div className="h-[150px] flex flex-col justify-between">
+// //             <div>
+// //               <p className="text-[18px] lg:text-[24px] font-semibold">{selectedCourse.title}</p>
+// //               <p className="text-[#212121] text-[16px]">{selectedCourse.university?.name}</p>
+// //               <p className="text-[#007BFF] text-[14px] md:text-[16px] font-normal ">
+// //                 {selectedCourse.university?.region} / {selectedCourse.university?.country}
+// //               </p>
+// //             </div>
+// //             <div className="flex gap-x-[20px]">
+// //               <button onClick={() => handleViewDetails(selectedCourse)} className="flex bg-[#F6C648] text-[#1C1C1C] text-[12px] lg:text-[14px] text-[14px] p-2 flex items-center rounded-xl">View Details</button>
+// //               <button onClick={() => handlePageChange(selectedCourse.title)} className="flex bg-[#004085] p-2 flex items-center gap-x-[20px] rounded-xl">
+// //                 <p className="text-[white] text-[12px] lg:text-[14px]">Other Schools With Similar Courses</p>
+// //                 <IoMdArrowForward className="text-[white]" />
+// //               </button>
+// //             </div>
+// //           </div>
+// //         </div>
+// //       }
+
+// //       {
+// //         courses.length > 1 ?
+// //         <div className="mt-5">
+// //           <p className="text-[#212121] text-[16px] font-medium">Other courses from recomended career path:</p>
+
+// //           <div className="flex flex-col gap-y-[20px] mt-2">
+// //             {
+// //               courses.map((courseElem, index) => {
+// //                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
+// //                 if (courseElem.title !== filterItem) {
+// //                   return <Items key={index} text={courseElem.title} color={randomColor} handleClick={handlePageChange} />
+// //                 }
+// //               })
+// //             }
+// //           </div>
+// //         </div> :
+// //         <div className="mt-5 flex justify-center items-center h-[200px] text-[#212121] border-[#757575] border-[1px] rounded-md">No other courses available</div>
+
+// //       }
+
+// //     </div>
+// //       }
+// //     </>
+
+// //   )
+// // }
+
+// // export default Other;
