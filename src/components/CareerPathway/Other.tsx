@@ -1,7 +1,8 @@
+// src/components/dashboard/Other.tsx
 import { IoMdArrowForward, IoIosArrowForward } from "react-icons/io";
 import { IoMdBookmarks } from "react-icons/io";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
 import { getCoursesWithoutToken } from "../../services/schools";
 import { ClipLoader } from "react-spinners";
 import Details from "./Details";
@@ -13,6 +14,8 @@ import {
 } from "../../services/utils";
 import { useAuth } from "../../contexts/useAuth";
 import PaywallModal from "../Paywall/PaywallModal";
+// ⚠️ adjust this path to wherever ManageRecord actually lives in your tree
+import ManageRecord from "../AccountRecords/ManageRecord";
 
 interface ItemProps {
   color: string;
@@ -53,13 +56,14 @@ const Other = ({
   showDetails,
 }: OtherProps) => {
   const { user } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // loading | no-records | no-access | ready
   const [stage, setStage] = useState<
     "loading" | "no-records" | "no-access" | "ready"
   >("loading");
 
+  const [showRecordModal, setShowRecordModal] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
@@ -75,43 +79,39 @@ const Other = ({
     "#E91E63",
   ];
 
-  // ── 1. Gate: academic records first, then payment ──
-  useEffect(() => {
-    let cancelled = false;
+  // ── Gate: academic records first, then payment ──
+  const runChecks = useCallback(async () => {
+    try {
+      setStage("loading");
+      const response = await getAcademicRecords({ showToast: false });
+      const hasRecords =
+        Array.isArray(response?.data) && response.data.length > 0;
 
-    const runChecks = async () => {
-      try {
-        const response = await getAcademicRecords({ showToast: false });
-        const hasRecords =
-          Array.isArray(response?.data) && response.data.length > 0;
-
-        if (cancelled) return;
-
-        if (!hasRecords) {
-          setStage("no-records");
-          return;
-        }
-
-        // Has records → check payment plan
-        if (!hasActiveAccess(user)) {
-          setStage("no-access");
-          return;
-        }
-
-        setStage("ready");
-      } catch {
-        // API error / no records → treat as no records
-        if (!cancelled) setStage("no-records");
+      if (!hasRecords) {
+        setStage("no-records");
+        setShowRecordModal(true); // pop up immediately, no page navigation
+        return;
       }
-    };
 
-    runChecks();
-    return () => {
-      cancelled = true;
-    };
+      if (!hasActiveAccess(user)) {
+        setStage("no-access");
+        setShowPaywall(true); // pop up immediately
+        return;
+      }
+
+      setStage("ready");
+    } catch {
+      // API error / no records → treat as no records
+      setStage("no-records");
+      setShowRecordModal(true);
+    }
   }, [user]);
 
-  // ── 2. Load recommendation only when ready ──
+  useEffect(() => {
+    runChecks();
+  }, [runChecks]);
+
+  // ── Load recommendation only when ready ──
   useEffect(() => {
     if (stage !== "ready") return;
 
@@ -172,6 +172,12 @@ const Other = ({
     setCourseFilter(course.title);
   };
 
+  // Called by ManageRecord's own getRecords() prop after a successful save
+  const handleRecordSaved = () => {
+    setShowRecordModal(false);
+    runChecks(); // re-run gate → may land on no-access (paywall) or ready
+  };
+
   const handleUnlocked = () => {
     setShowPaywall(false);
     setStage("ready"); // user paid → show results
@@ -187,28 +193,40 @@ const Other = ({
     );
   }
 
-  // No academic records → navigate to the form
+  // No academic records → popup form, with a fallback card if it's dismissed
   if (stage === "no-records") {
     return (
-      <div className="mt-5 flex flex-col items-center justify-center h-[300px] border border-[#757575] rounded-md text-center px-6">
-        <p className="text-[#212121] text-[16px] font-medium mb-2">
-          Add your academic records first
-        </p>
-        <p className="text-[#757575] text-sm mb-4">
-          We need your exam results to recommend the best courses for you.
-        </p>
-        <button
-          // Change this path to your real academic-records route
-          onClick={() => navigate("/dashboard/settings/records")}
-          className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-2 px-6 rounded-lg transition"
-        >
-          Add Academic Records
-        </button>
-      </div>
+      <>
+        <div className="mt-5 flex flex-col items-center justify-center h-[300px] border border-[#757575] rounded-md text-center px-6">
+          <p className="text-[#212121] text-[16px] font-medium mb-2">
+            Add your academic records first
+          </p>
+          <p className="text-[#757575] text-sm mb-4">
+            We need your exam results to recommend the best courses for you.
+          </p>
+          <button
+            onClick={() => setShowRecordModal(true)}
+            className="bg-[#004085] hover:bg-blue-800 text-white font-medium py-2 px-6 rounded-lg transition"
+          >
+            Add Academic Records
+          </button>
+        </div>
+
+        {showRecordModal && (
+          <ManageRecord
+            setShowModal={setShowRecordModal}
+            editRecord={null}
+            recordList={[]}
+            getRecords={handleRecordSaved}
+            setEditRecord={() => {}}
+            recordId={null}
+          />
+        )}
+      </>
     );
   }
 
-  // Has records, no active plan → paywall
+  // Has records, no active plan → payment popup, with a fallback card if dismissed
   if (stage === "no-access") {
     return (
       <>
