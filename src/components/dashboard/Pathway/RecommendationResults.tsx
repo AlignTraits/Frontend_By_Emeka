@@ -187,7 +187,7 @@ export default function RecommendationResults({
               className="bg-[#004085] disabled:opacity-50 hover:bg-blue-800 text-white font-medium py-4 px-5 rounded-2xl transition"
             >
               {user?.careerResults
-                ? "Get Recommendation"
+                ? "Get Course Recommendation"
                 : "Get Career Recommendation"}
             </button>
             <button
