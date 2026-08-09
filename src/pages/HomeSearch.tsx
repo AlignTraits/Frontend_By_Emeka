@@ -217,7 +217,7 @@ export default function HomeSearch() {
         const response = await getCoursesWithoutToken();
         console.log("what did the API send back?", response);
 
-        setCourses(response);
+        setCourses(Array.isArray(response) ? response : response?.data ?? []);
       } catch (err) {
         // setError(err instanceof Error ? err.message : 'An error occurred');
         console.log("error: ", err);
@@ -232,9 +232,10 @@ export default function HomeSearch() {
   }, []);
 
   const filteredCourses = useMemo(() => {
-    const term = searchAllTerm.toLowerCase().trim();
+  const term = searchAllTerm.toLowerCase().trim();
+  const safeCourses = Array.isArray(courses) ? courses : [];
 
-    return courses.filter((s) => {
+  return safeCourses.filter((s) => {
       // default to empty string if missing
       const name = s.title.toLowerCase();
       const schoolName = s.university?.name || "";
