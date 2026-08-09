@@ -215,6 +215,7 @@ export default function HomeSearch() {
       try {
         setIsLoading(true);
         const response = await getCoursesWithoutToken();
+        console.log("what did the API send back?", response);
 
         setCourses(response);
       } catch (err) {
