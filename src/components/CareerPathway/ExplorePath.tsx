@@ -212,9 +212,9 @@ const ExplorePath = ({
   };
 
   return (
-    <div className="w-full mx-auto p-6 space-y-6">
-      {showAddCourse ? (
-        <AddCourse getRecords={getRecords} setShowAddCourse={setShowAddCourse} />
+    <div className="w-full max-w-2xl mx-auto mt-[50px] bg-white border-[1px] border-[#ccc] shadow-md rounded-xl p-6">
+    <AddCourse getRecords={getRecords} setShowAddCourse={setShowAddCourse} />
+  </div>
       ) : (
         <>
           <div ref={breakdownRef}>
