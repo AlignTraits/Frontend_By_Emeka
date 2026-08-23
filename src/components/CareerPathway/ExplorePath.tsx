@@ -244,7 +244,7 @@ const ExplorePath = ({
               </div>
 
               <div className="mt-4 text-slate-700 text-sm leading-relaxed">
-                <p>{personalityNarrative}</p>
+                <p className="whitespace-pre-line">{personalityNarrative}</p>
               </div>
             </div>
           </div>
