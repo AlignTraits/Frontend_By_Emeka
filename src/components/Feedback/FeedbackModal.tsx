@@ -4,7 +4,7 @@ import "./FeedbackModal.css";
 
 interface FeedbackModalProps {
   // How long to wait after mount before showing the check-in, in ms.
-  // Defaults to 30s to match "a minute after viewing their personality overview".
+  // Defaults to 15s to match "a minute after viewing their personality overview".
   delayMs?: number;
   // A tag so feedback submissions (and the "don't ask again" flag) can be
   // scoped to where they were collected, e.g. "personality-overview".
@@ -17,7 +17,7 @@ type Choice = "yes" | "no" | null;
 type Step = 1 | 2 | 3;
 
 export default function FeedbackModal({
-  delayMs = 30000,
+  delayMs = 15000,
   source = "personality-overview",
 }: FeedbackModalProps) {
   const [visible, setVisible] = useState(false);
