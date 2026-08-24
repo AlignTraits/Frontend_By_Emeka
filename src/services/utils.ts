@@ -50,6 +50,31 @@ export const sendCareerPath = async (data: any) => {
   }
 };
 
+//This is the logic for my feedback modal, it will be used to send feedback to the backend
+export const sendFeedback = async (data: {
+  source: string;
+  isClear: boolean;
+  message: string;
+}) => {
+  try {
+    const response = await api.post("/feedback", data);
+
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
+    return response.data;
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.errors) {
+      const errors = err.response.data.errors;
+      errors.forEach((error: { message: string }) => {
+        if (error.message) {
+          toast.error(error.message);
+        }
+      });
+    }
+    throw err;
+  }
+};
+
 export const checkEligibility = async (data: any) => {
   try {
     const response = await api.post("/server/eligible/answers", data);

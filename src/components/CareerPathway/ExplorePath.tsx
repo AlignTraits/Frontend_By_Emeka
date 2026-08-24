@@ -11,6 +11,8 @@ import { getAcademicRecords } from "../../services/utils";
 import { SubjectGrade, RequirementListNew } from "../../types/course.types";
 import AddCourse from "../../pages/AddCourse";
 
+import FeedbackModal from "../Feedback/FeedbackModal";
+
 interface ExplorePathProps {
   careerPath: any;
   explorePath: string;
@@ -383,10 +385,11 @@ const ExplorePath = ({
           </div>
         </div>
       )}
+     <FeedbackModal source="personality-overview" />
     </div>
   );
 };
-
+    
 export default ExplorePath;
 
 //import {
