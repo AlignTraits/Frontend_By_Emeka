@@ -63,12 +63,13 @@ const OnboardingPage = () => {
   useEffect(() => {
     let tempData = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") as string) : null;
     setEmail(tempData.email)
-    useEffect(() => {
-  if (user?.firstname) setFirstName(user.firstname)
-  if (user?.lastname) setLastName(user.lastname)
-}, [user])
     // setTokenNew(tempData.token)
   }, [])
+
+  useEffect(() => {
+    if (user?.firstname) setFirstName(user.firstname)
+    if (user?.lastname) setLastName(user.lastname)
+  }, [user])
 
 
   const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -199,6 +200,7 @@ const OnboardingPage = () => {
       dob: string | null;
       region: string;
       email: string;
+      contactNumber: string;
       // image?: string;
     } = {
       firstname: firstName,
@@ -207,6 +209,7 @@ const OnboardingPage = () => {
       dob: formatted,
       region: selectedCountry,
       email: email,
+      contactNumber: phone,
       // image: photo
     }
 
@@ -301,7 +304,8 @@ return (
             <input
               type="text"
               placeholder="Enter First Name"
-              onFocus={() => setErrorObj((prev) => ({...prev, firstName: disabled}))}
+              onFocus={() => setErrorObj((prev) => ({...prev, firstName: false}))}
+              disabled
               name="firstName"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
@@ -314,7 +318,8 @@ return (
             <input
               type="text"
               placeholder="Enter Last Name"
-              onFocus={() => setErrorObj((prev) => ({...prev, lastName: disabled}))}
+              onFocus={() => setErrorObj((prev) => ({...prev, lastName: false}))}
+              disabled
               name="lastName"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
