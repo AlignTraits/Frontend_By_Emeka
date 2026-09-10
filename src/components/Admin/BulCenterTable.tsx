@@ -6,65 +6,64 @@ import { ApiResponseItem } from "../../types/school.types";
 import BulkCenterModal from "./BulkCenterModal";
 import { useState } from "react";
 
-
 interface Props {
   isLoading: boolean;
-  bulkHistory: ApiResponseItem[]
+  bulkHistory: ApiResponseItem[];
 }
 
-export default function BulkCenterTable({
-  isLoading,
-  bulkHistory
-}: Props) {
+export default function BulkCenterTable({ isLoading, bulkHistory }: Props) {
+  const [showModal, setShowModal] = useState(false);
 
-  const [showModal, setShowModal] = useState(false)
-
-  const [previewDetails, setPreviewDetails] = useState<ApiResponseItem>()
+  const [previewDetails, setPreviewDetails] = useState<ApiResponseItem>();
 
   function formatDateTime(dateString: string): string {
     const date = new Date(dateString);
-  
+
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "long",
       day: "numeric",
     };
-  
+
     const datePart = date.toLocaleDateString("en-US", options);
     const timePart = date.toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
     });
-  
+
     return `${datePart} ${timePart}`;
   }
 
   const renderStatus = (status: string) => {
     if (status !== "Completed") {
-      return <p className="h-[25px] w-[80px] bg-[#FEF3F2] flex justify-center items-center text-[#B42318] text-[12px] border-[1px] border-[#FECDCA] rounded-[20px]">Failed</p>
+      return (
+        <p className="h-[25px] w-[80px] bg-[#FEF3F2] flex justify-center items-center text-[#B42318] text-[12px] border-[1px] border-[#FECDCA] rounded-[20px]">
+          Failed
+        </p>
+      );
     } else {
-      return <p className="h-[25px] w-[80px] bg-[#F0F9FF] flex justify-center items-center text-[#026AA2] text-[12px] border-[1px] border-[#B9E6FE] rounded-[20px]">Completed</p>
+      return (
+        <p className="h-[25px] w-[80px] bg-[#F0F9FF] flex justify-center items-center text-[#026AA2] text-[12px] border-[1px] border-[#B9E6FE] rounded-[20px]">
+          Completed
+        </p>
+      );
     }
-  }
+  };
 
-  const renderSuccessRecords = (successCount:number) => {
+  const renderSuccessRecords = (successCount: number) => {
     if (successCount === 0) {
-      return <></>
+      return <></>;
     }
-    return (
-      <p className="text-[14px] text-[#067647]">{successCount} Success</p>
-    )
-  }
-  const renderFailedRecords = (failedCount:number) => {
+    return <p className="text-[14px] text-[#067647]">{successCount} Success</p>;
+  };
+  const renderFailedRecords = (failedCount: number) => {
     if (failedCount === 0) {
-      return <></>
+      return <></>;
     }
-    return (
-      <p className="text-[14px] text-[#B42318]">{failedCount} Failed</p>
-    )
-  }
-  
+    return <p className="text-[14px] text-[#B42318]">{failedCount} Failed</p>;
+  };
+
   return (
     <>
       {isLoading && (
@@ -144,19 +143,30 @@ export default function BulkCenterTable({
                       <p>{item.entity}</p>
                     </td>
                     <td className="p-[10px] text-[14px]">
-                      {item.metadata?.failedMessages?.length > 0 ? renderStatus("Failed") : renderStatus("Completed")}
+                      {item.metadata?.failedMessages?.length > 0
+                        ? renderStatus("Failed")
+                        : renderStatus("Completed")}
                     </td>
                     <td className="mt-3 p-[10px] text-[14px]">
                       {renderSuccessRecords(item.metadata?.successCount)}
                       {renderFailedRecords(item.metadata?.failedCount)}
                     </td>
                     <td className="p-[10px] text-[14px] capitalize">
-                      <p>{item.user.username || item.user.firstname || item.user.lastname }</p>
+                      {/* <p>{item.user.username || item.user.firstname || item.user.lastname }</p> */}
+                      <p>
+                        {item.user?.username ||
+                          item.user?.firstname ||
+                          item.user?.lastname ||
+                          "Unknown user"}
+                      </p>
                     </td>
-                    <td className="p-[10px] text-[14px] cursor-pointer" onClick={() => {
-                      setPreviewDetails(item)
-                      setShowModal(true)
-                    }}>
+                    <td
+                      className="p-[10px] text-[14px] cursor-pointer"
+                      onClick={() => {
+                        setPreviewDetails(item);
+                        setShowModal(true);
+                      }}
+                    >
                       <p className="underline">Details</p>
                     </td>
                   </tr>
@@ -167,14 +177,20 @@ export default function BulkCenterTable({
           {!isLoading && bulkHistory.length === 0 && (
             <div className="flex flex-col justify-center items-center gap-y-[10px] w-full h-[400px]">
               <img src={fileIcon} alt="Not found" />
-              <p className="text-[#101828] text-[16px] font-semibold">No Bulk Center Created</p>
+              <p className="text-[#101828] text-[16px] font-semibold">
+                No Bulk Center Created
+              </p>
             </div>
           )}
         </div>
       )}
 
-      {showModal && previewDetails && <BulkCenterModal setModal={setShowModal} previewDetails={previewDetails} />}
-
+      {showModal && previewDetails && (
+        <BulkCenterModal
+          setModal={setShowModal}
+          previewDetails={previewDetails}
+        />
+      )}
     </>
   );
 }
