@@ -128,7 +128,7 @@ export default function BulkCenterModal({
 
           <div>
             <p className="text-[#737373] text-[14px]">Status</p>
-            {previewDetails.metadata?.failedMessages.length > 0
+            {(previewDetails.metadata?.failedMessages?.length ?? 0) > 0
               ? renderStatus("Failed")
               : renderStatus("Completed")}
           </div>
