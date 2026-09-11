@@ -7,7 +7,7 @@ import {toast} from "react-toastify";
 
 
 const TOKEN_KEY = 'auth_token'
-const COOKIE_EXPIRY = 0.0208 // days
+const COOKIE_EXPIRY = 30 // days
 
 export const setToken = (token: string ): void => {
   Cookies.set(TOKEN_KEY, token, { expires: COOKIE_EXPIRY })

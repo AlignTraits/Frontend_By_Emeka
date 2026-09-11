@@ -337,12 +337,6 @@ return (
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
           <p className="text-[15px] sm:text-[16px] font-medium text-[#1E1E1E]">Required Subjects*</p>
-          <button
-            onClick={addSubject}
-            className="text-[#1E1E1E] text-[13px] sm:text-[14px] font-semibold border-[#DDDDDD] border h-[40px] sm:h-[44px] w-full sm:w-[127px] rounded-md hover:bg-gray-50"
-          >
-            Add Subjects
-          </button>
         </div>
 
         {subjectList.length === 0 && (
@@ -437,6 +431,15 @@ return (
             </div>
           ))}
         </div>
+
+        <div className="w-full flex justify-end">
+  <button
+    onClick={addSubject}
+    className="text-[#1E1E1E] text-[13px] sm:text-[14px] font-semibold border-[#DDDDDD] border h-[40px] sm:h-[44px] w-full sm:w-[127px] rounded-md hover:bg-gray-50"
+  >
+    Add Subjects
+  </button>
+</div>
 
         <div className="w-full flex flex-col sm:flex-row justify-end gap-2 sm:gap-x-[20px] mt-4">
           <button 

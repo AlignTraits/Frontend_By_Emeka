@@ -25,7 +25,7 @@ countriesData.map((elem:any) => {
 })
 
 const OnboardingPage = () => {
-  const {token} = useAuth()
+  const {token, user} = useAuth()
   // const [token, setTokenNew] = useState("")
   // const navigate = useNavigate()
   const [firstName, setFirstName] = useState("")
@@ -65,6 +65,11 @@ const OnboardingPage = () => {
     setEmail(tempData.email)
     // setTokenNew(tempData.token)
   }, [])
+
+  useEffect(() => {
+    if (user?.firstname) setFirstName(user.firstname)
+    if (user?.lastname) setLastName(user.lastname)
+  }, [user])
 
 
   const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -195,6 +200,7 @@ const OnboardingPage = () => {
       dob: string | null;
       region: string;
       email: string;
+      contactNumber: string;
       // image?: string;
     } = {
       firstname: firstName,
@@ -203,6 +209,7 @@ const OnboardingPage = () => {
       dob: formatted,
       region: selectedCountry,
       email: email,
+      contactNumber: phone,
       // image: photo
     }
 
@@ -298,6 +305,7 @@ return (
               type="text"
               placeholder="Enter First Name"
               onFocus={() => setErrorObj((prev) => ({...prev, firstName: false}))}
+              disabled
               name="firstName"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
@@ -311,6 +319,7 @@ return (
               type="text"
               placeholder="Enter Last Name"
               onFocus={() => setErrorObj((prev) => ({...prev, lastName: false}))}
+              disabled
               name="lastName"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
