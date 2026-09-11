@@ -3,42 +3,48 @@ import { FiX } from "react-icons/fi";
 // import { ApiResponseItem } from "../../types/school.types";
 interface ModalProps {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  previewDetails: any
+  previewDetails: any;
 }
 
-export default function BulkCenterModal({setModal, previewDetails }: ModalProps) {
-
-  console.log("previewDetails: ", previewDetails)
+export default function BulkCenterModal({
+  setModal,
+  previewDetails,
+}: ModalProps) {
+  console.log("previewDetails: ", previewDetails);
 
   const handleClose = () => {
-    setModal(false)
-  }
+    setModal(false);
+  };
   const generateCSV = () => {
-    const failedItems:any = previewDetails.metadata?.failedItems ?? [];
-  
+    const failedItems: any = previewDetails.metadata?.failedItems ?? [];
+
     let csvRows: string[] = [];
-  
-    failedItems.forEach((item:any) => {
+
+    failedItems.forEach((item: any) => {
       const headers = Object.keys(item);
       const values = Object.values(item);
-  
+
       csvRows.push(headers.join(","));
-      csvRows.push(values.map(value => `"${String(value).replace(/"/g, '""')}"`).join(","));
+      csvRows.push(
+        values
+          .map((value) => `"${String(value).replace(/"/g, '""')}"`)
+          .join(","),
+      );
       csvRows.push(""); // Empty row for spacing
     });
-  
+
     // If you also want to include failedMessages in the CSV
     if (previewDetails.metadata?.failedMessages?.length) {
       csvRows.push("Error Messages");
-      previewDetails.metadata.failedMessages.forEach((message:any) => {
+      previewDetails.metadata.failedMessages.forEach((message: any) => {
         csvRows.push(`"${message}"`);
       });
     }
-  
+
     const csvContent = csvRows.join("\n");
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
-  
+
     const a = document.createElement("a");
     a.href = url;
     a.download = "errorReport.csv";
@@ -46,63 +52,72 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-  }
+  };
   function formatDateTime(dateString: string): string {
     const date = new Date(dateString);
-  
+
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "long",
       day: "numeric",
     };
-  
+
     const datePart = date.toLocaleDateString("en-US", options);
     const timePart = date.toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
     });
-  
+
     return `${datePart} ${timePart}`;
   }
 
   const renderStatus = (status: string) => {
     if (status !== "Completed") {
-      return <p className="h-[25px] w-[80px] bg-[#FEF3F2] flex justify-center items-center text-[#B42318] text-[12px] border-[1px] border-[#FECDCA] rounded-[20px]">Failed</p>
+      return (
+        <p className="h-[25px] w-[80px] bg-[#FEF3F2] flex justify-center items-center text-[#B42318] text-[12px] border-[1px] border-[#FECDCA] rounded-[20px]">
+          Failed
+        </p>
+      );
     } else {
-      return <p className="h-[25px] w-[80px] bg-[#F0F9FF] flex justify-center items-center text-[#026AA2] text-[12px] border-[1px] border-[#B9E6FE] rounded-[20px]">Completed</p>
+      return (
+        <p className="h-[25px] w-[80px] bg-[#F0F9FF] flex justify-center items-center text-[#026AA2] text-[12px] border-[1px] border-[#B9E6FE] rounded-[20px]">
+          Completed
+        </p>
+      );
     }
-  }
+  };
 
-  const renderSuccessRecords = (successCount:number) => {
+  const renderSuccessRecords = (successCount: number) => {
     if (successCount === 0) {
-      return <></>
+      return <></>;
     }
-    return (
-      <p className="text-[14px] text-[#067647]">{successCount} Success</p>
-    )
-  }
-  const renderFailedRecords = (failedCount:number) => {
+    return <p className="text-[14px] text-[#067647]">{successCount} Success</p>;
+  };
+  const renderFailedRecords = (failedCount: number) => {
     if (failedCount === 0) {
-      return <></>
+      return <></>;
     }
-    return (
-      <p className="text-[14px] text-[#B42318]">{failedCount} Failed</p>
-    )
-  }
+    return <p className="text-[14px] text-[#B42318]">{failedCount} Failed</p>;
+  };
 
   return (
-    <div 
-      className="fixed inset-0 flex items-center justify-center items-center bg-black bg-opacity-50 z-[200]"
-    >
+    <div className="fixed inset-0 flex items-center justify-center items-center bg-black bg-opacity-50 z-[200]">
       <div className="bg-white rounded-lg w-[533px] relative size-max p-[20px] flex flex-col gap-y-[20px]">
         <div className="flex flex-col gap-y-[5px]">
-          <p className="text-[18px] text-[#1E1E1E] font-semibold">Upload Details</p>
+          <p className="text-[18px] text-[#1E1E1E] font-semibold">
+            Upload Details
+          </p>
 
-          <p className="text-[12px] text-[#737373] font-normal">Detailed information about this upload.</p>
+          <p className="text-[12px] text-[#737373] font-normal">
+            Detailed information about this upload.
+          </p>
         </div>
 
-        <FiX className="cursor-pointer absolute right-6 top-[30px] -translate-y-1/2 text-[#595959] w-5 h-5" onClick={handleClose} />
+        <FiX
+          className="cursor-pointer absolute right-6 top-[30px] -translate-y-1/2 text-[#595959] w-5 h-5"
+          onClick={handleClose}
+        />
 
         <div className="flex">
           <div className="w-[200px]">
@@ -113,10 +128,11 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
 
           <div>
             <p className="text-[#737373] text-[14px]">Status</p>
-            {previewDetails.metadata?.failedMessages.length > 0 ? renderStatus("Failed") : renderStatus("Completed")}
+            {(previewDetails.metadata?.failedMessages?.length ?? 0) > 0
+              ? renderStatus("Failed")
+              : renderStatus("Completed")}
           </div>
         </div>
-
 
         <div className="flex">
           <div className="w-[200px]">
@@ -135,7 +151,14 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
           <div className="w-[200px]">
             <p className="text-[#737373] text-[14px]">Updated By</p>
 
-            <p className="capitalize">{previewDetails.user.username || previewDetails.user.firstname || previewDetails.user.lastname }</p>
+            {/* <p className="capitalize">{previewDetails.user.username || previewDetails.user.firstname || previewDetails.user.lastname }</p> */}
+
+            <p className="capitalize">
+              {previewDetails.user?.username ||
+                previewDetails.user?.firstname ||
+                previewDetails.user?.lastname ||
+                "Unknown user"}
+            </p>
           </div>
 
           <div>
@@ -155,33 +178,35 @@ export default function BulkCenterModal({setModal, previewDetails }: ModalProps)
           </div>
         </div>
 
-      {
-        previewDetails.metadata?.failedMessages.length > 0 &&
-        <>
-          <div>
-            <p className="text-[#1E1E1E] text-[14px] font-medium">Error</p>
+        {/* {previewDetails.metadata?.failedMessages.length > 0 && ( */}
+        {(previewDetails.metadata?.failedMessages?.length ?? 0) > 0 && (
+          <>
+            <div>
+              <p className="text-[#1E1E1E] text-[14px] font-medium">Error</p>
 
-            <div className="mt-1 border-[1px] border-dashed border-[#F04438] min-h-[100px] bg-[#FBEAE9] rounded-lg p-2 flex flex-col gap-y-[2px]">
-              {
-                previewDetails.metadata?.failedMessages.slice(0, 4).map((elem:any, i: number) => 
-                  <div key={i} className="flex gap-x-[10px] items-center">
-                    <div className="h-[6px] w-[6px] bg-[#B42318] rounded-[50%]"></div>
-                    <p className="text-[#B42318] text-[14px] font-medium">{elem}</p>
-                  </div>
-                )
-              }
+              <div className="mt-1 border-[1px] border-dashed border-[#F04438] min-h-[100px] bg-[#FBEAE9] rounded-lg p-2 flex flex-col gap-y-[2px]">
+                {previewDetails.metadata?.failedMessages
+                  .slice(0, 4)
+                  .map((elem: any, i: number) => (
+                    <div key={i} className="flex gap-x-[10px] items-center">
+                      <div className="h-[6px] w-[6px] bg-[#B42318] rounded-[50%]"></div>
+                      <p className="text-[#B42318] text-[14px] font-medium">
+                        {elem}
+                      </p>
+                    </div>
+                  ))}
+              </div>
             </div>
-          </div>
 
-          <button onClick={generateCSV} className="w-full h-[40px] rounded-lg bg-[#004085] text-[#ffffff]">
-            Download Error Report
-          </button>
-        </>
-      }
-
-
+            <button
+              onClick={generateCSV}
+              className="w-full h-[40px] rounded-lg bg-[#004085] text-[#ffffff]"
+            >
+              Download Error Report
+            </button>
+          </>
+        )}
       </div>
-
     </div>
   );
 }
