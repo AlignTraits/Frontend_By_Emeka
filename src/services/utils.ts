@@ -499,3 +499,63 @@ export const hasActiveAccess = (user: any): boolean => {
   if (!user?.payment_plan || !user?.payment_plan_expires_at) return false;
   return new Date(user.payment_plan_expires_at).getTime() > Date.now();
 };
+
+export const getSavedCards = async () => {
+  try {
+    const response = await api.get("/monthly/payment/cards");
+
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
+    return response.data;
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.errors) {
+      const errors = err.response.data.errors;
+      errors.forEach((error: { message: string }) => {
+        if (error.message) {
+          toast.error(error.message);
+        }
+      });
+    }
+    throw err;
+  }
+};
+
+export const removeSavedCard = async (authorization_code: string) => {
+  try {
+    const response = await api.delete(`/monthly/payment/cards/${authorization_code}`);
+
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
+    return response.data;
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.errors) {
+      const errors = err.response.data.errors;
+      errors.forEach((error: { message: string }) => {
+        if (error.message) {
+          toast.error(error.message);
+        }
+      });
+    }
+    throw err;
+  }
+};
+
+export const getUserActivity = async () => {
+  try {
+    const response = await api.get("/users/activity");
+
+    if (response.data.status == 403) throw new ResponseError(response);
+    if (response.data.status == 500) throw new ResponseError(response);
+    return response.data;
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.errors) {
+      const errors = err.response.data.errors;
+      errors.forEach((error: { message: string }) => {
+        if (error.message) {
+          toast.error(error.message);
+        }
+      });
+    }
+    throw err;
+  }
+};
