@@ -5,6 +5,7 @@ import { CiCalendar } from "react-icons/ci";
 import { useState } from "react";
 import UpgradePlanModal from "./UpgradePlanModal";
 import { useAuth } from '../../../contexts/useAuth';
+import { PLAN_DETAILS } from "../../../data/planData";
 
 interface PlanOverviewType {
 
@@ -42,7 +43,10 @@ const PlanOverview = ({setActiveTab}: PlanOverviewType) => {
     return `${year}-${month}-${day}`;
   }
 
-  const benefits = ["Unlimited checks within one country", "Loan information and course access", "Editable exam records"]
+  const currentPlanDetail = user?.payment_plan ? PLAN_DETAILS[user.payment_plan] : undefined;
+  const benefits = currentPlanDetail?.benefits ?? [];
+  const isActive = !!user?.subscriptionPlanStatus;
+
   return (
     <>
     <div className="h-auto w-full border border-[#EAECF0] shadow-md rounded-xl p-5">
@@ -53,9 +57,9 @@ const PlanOverview = ({setActiveTab}: PlanOverviewType) => {
           <p className="text-[#212529] font-bold">Current Plan</p>
         </div>
 
-        <div className="flex gap-x-2 w-fit px-5 py-1 justify-center items-center bg-[#E0FFF0] rounded-2xl">
-          <FaRegCheckCircle className="text-[#17B26A]" />
-          <p className="text-[#17B26A]">Active</p>
+        <div className={`flex gap-x-2 w-fit px-5 py-1 justify-center items-center rounded-2xl ${isActive ? "bg-[#E0FFF0]" : "bg-[#FEE4E2]"}`}>
+          <FaRegCheckCircle className={isActive ? "text-[#17B26A]" : "text-[#F04438]"} />
+          <p className={isActive ? "text-[#17B26A]" : "text-[#F04438]"}>{isActive ? "Active" : "Expired"}</p>
         </div>
       </div>
 
@@ -63,13 +67,15 @@ const PlanOverview = ({setActiveTab}: PlanOverviewType) => {
   <div className="flex flex-col md:flex-row justify-between gap-y-6 gap-x-10 mt-5">
     {/* Left block */}
     <div>
-      <p className="text-[#212529] text-[16px] font-medium">{splitString(user?.payment_plan)}</p>
-      <p className="text-[#757575] text-[16px] font-medium">₦5,500 / $8.99</p>
+      <p className="text-[#212529] text-[16px] font-medium">{splitString(user?.payment_plan) || "No active plan"}</p>
+      {currentPlanDetail && (
+        <p className="text-[#757575] text-[16px] font-medium">{currentPlanDetail.nairaPrice} / {currentPlanDetail.dollarPrice}</p>
+      )}
 
       <div className="flex gap-x-2 items-center mt-5">
         <CiCalendar className="text-[#000000]" />
         <p className="text-red-500 text-[14px] font-medium">
-          Expires on {user?.payment_plan_expires_at && formatDateToYYYYMMDD(new Date(user?.payment_plan_expires_at))}
+          Expires on {user?.payment_plan_expires_at && formatDateToYYYYMMDD(new Date(user?.payment_plan_expires_at))}
         </p>
       </div>
     </div>
@@ -79,12 +85,16 @@ const PlanOverview = ({setActiveTab}: PlanOverviewType) => {
       <p className="text-[#212529] text-[16px] font-medium">Plan Benefits</p>
 
       <div className="flex flex-col gap-y-2 mt-2">
-        {benefits.map((elem, i) => (
-          <div key={i} className="flex gap-x-2 items-center">
-            <FaRegCheckCircle className="text-[#17B26A]" />
-            <p className="text-[#757575] font-medium text-[12px]">{elem}</p>
-          </div>
-        ))}
+        {benefits.length > 0 ? (
+          benefits.map((elem, i) => (
+            <div key={i} className="flex gap-x-2 items-center">
+              <FaRegCheckCircle className="text-[#17B26A]" />
+              <p className="text-[#757575] font-medium text-[12px]">{elem}</p>
+            </div>
+          ))
+        ) : (
+          <p className="text-[#757575] font-medium text-[12px]">No plan selected yet</p>
+        )}
       </div>
     </div>
   </div>
