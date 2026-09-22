@@ -9,6 +9,8 @@ export interface User {
   emailVerified?: string;
   role?: string | null;
   createdAt?: string | null;
+  lastLoginAt?: string | null;
+  passwordChangedAt?: string | null;
   gender?: string | null;
   dob?: string | null;
   ageRange?: string | null;
@@ -22,6 +24,7 @@ export interface User {
   payment_plan_expires_at?: string;
   careerResults?: any;
   isCareerPathChecked?: boolean;
+  subscriptionPlanStatus?: boolean;
   //   provider?: 'email' | 'google' | 'facebook' | 'apple';
 }
 
