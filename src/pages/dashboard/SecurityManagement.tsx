@@ -11,9 +11,22 @@ export interface Credentials {
   confirmPassword: string;
 }
 
+const timeAgo = (isoDate?: string | null) => {
+  if (!isoDate) return "Never";
+  const diffMs = Date.now() - new Date(isoDate).getTime();
+  const minutes = Math.floor(diffMs / 60000);
+  if (minutes < 1) return "Just now";
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 30) return `${days} day${days === 1 ? "" : "s"} ago`;
+  const months = Math.floor(days / 30);
+  return `${months} month${months === 1 ? "" : "s"} ago`;
+};
 
 export default function SkillRoadMap() {
-  const {setPageDesc, token, logout} = useAuth()
+  const {setPageDesc, token, logout, user} = useAuth()
 
   const [credentials, setCredentials] = useState<Credentials>({
     currentPassword: "",
@@ -224,17 +237,17 @@ export default function SkillRoadMap() {
           <div className='flex flex-col gap-y-[20px]'>
             <div className='flex justify-between'>
               <p className='text-[14px]'>Last password change</p>
-              <p className='text-[14px]'>30 days ago</p>
+              <p className='text-[14px]'>{timeAgo(user?.passwordChangedAt)}</p>
             </div>
 
             <div className='flex justify-between'>
               <p className='text-[14px]'>Last login</p>
-              <p className='text-[14px]'>Today at 2:30 PM</p>
+              <p className='text-[14px]'>{timeAgo(user?.lastLoginAt)}</p>
             </div>
 
             <div className='flex justify-between'>
               <p className='text-[14px]'>Account created</p>
-              <p className='text-[14px]'>3 months ago</p>
+              <p className='text-[14px]'>{timeAgo(user?.createdAt)}</p>
             </div>
           </div>
         </div>
