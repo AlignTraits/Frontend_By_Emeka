@@ -305,7 +305,7 @@ return (
               type="text"
               placeholder="Enter First Name"
               onFocus={() => setErrorObj((prev) => ({...prev, firstName: false}))}
-              disabled
+              disabled={false}
               name="firstName"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
@@ -319,7 +319,7 @@ return (
               type="text"
               placeholder="Enter Last Name"
               onFocus={() => setErrorObj((prev) => ({...prev, lastName: false}))}
-              disabled
+              disabled={false}
               name="lastName"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
