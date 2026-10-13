@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import PricingCard from "../components/Payment/PricingCard";
+import { PLAN_LIST } from "../data/planData";
 
 export default function SelectPayment() {
   const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
@@ -32,47 +33,13 @@ export default function SelectPayment() {
     return `${String(mins).padStart(2, "0")} : ${String(secs).padStart(2, "0")}`;
   };
 
-  const plans = [
-    {
-      title: "Basic One-Time Plan",
-      subtitle: "Basic",
-      billing: "One-time",
-      price: "₦2,000",
-      features: [
-        "One result only",
-        "No future updates",
-        "No access to scholarships",
-        "No access to loan information",
-      ],
-      isActive: false,
-    },
-    {
-      title: "Local Access Plan",
-      subtitle: "Silver",
-      billing: "Monthly",
-      price: "₦5,500",
-      features: [
-        "Unlimited checks within 1 country",
-        "Loan information & course access",
-        "Editable exam records",
-      ],
-      isActive: true,
-    },
-    {
-      title: "Global Access Plan",
-      subtitle: "Gold",
-      billing: "Monthly",
-      price: "₦9,500",
-      features: [
-        "Access to all country/schools",
-        "Loan information & course access",
-        "Editable exam records",
-        "Scholarships, global support",
-        "New school priority access",
-      ],
-      isActive: false,
-    },
-  ];
+  const plans = PLAN_LIST.map((plan) => ({
+    title: plan.title,
+    subtitle: plan.tier,
+    billing: plan.label,
+    price: `${plan.nairaPrice} / ${plan.dollarPrice}`,
+    features: plan.benefits,
+  }));
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-[#e9eff7] to-[#CCE0F5]">

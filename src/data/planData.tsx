@@ -1,65 +1,73 @@
-import React from "react";
-import { Crown } from "lucide-react";
-import { FaRegStar } from "react-icons/fa";
-import { FaRegCheckCircle } from "react-icons/fa";
-
 export interface PlanDetail {
   id: string;
-  name: string;
-  icon: React.ReactNode;
+  planKey: string; // matches the backend PaymentPlan enum / user.payment_plan
+  label: string; // "One-time" | "Monthly"
+  title: string;
+  tier: string; // "Basic" | "Silver" | "Gold"
   nairaPrice: string;
   dollarPrice: string;
-  billing: string;
   benefits: string[];
-  buttonText: string;
+  highlighted: boolean;
 }
 
-// Single source of truth for plan pricing/benefits, keyed by the backend's
-// PaymentPlan enum value (user.payment_plan). Both AvailablePlans.tsx and
-// PlanOverview.tsx read from this so they can't drift out of sync again.
-export const PLAN_DETAILS: Record<string, PlanDetail> = {
-  BASIC_ONETIME: {
+// Single source of truth for plan names, prices and benefits.
+// The naira prices MUST match PRICES in the backend (monthlyPaymentService.ts):
+// BASIC_ONETIME = 35000 kobo, LOCAL_MONTHLY = 110000 kobo, GLOBAL_MONTHLY = 370000 kobo.
+export const PLAN_LIST: PlanDetail[] = [
+  {
     id: "basic",
-    name: "Basic Plan",
-    icon: <FaRegCheckCircle className="w-6 h-6 text-green-500" />,
-    nairaPrice: "₦2,000",
-    dollarPrice: "$3.99",
-    billing: "One-time",
+    planKey: "BASIC_ONETIME",
+    label: "One-time",
+    title: "Basic One-Time Plan",
+    tier: "Basic",
+    nairaPrice: "₦350",
+    dollarPrice: "$0.26",
     benefits: [
       "One result only",
       "No future updates",
-      "No access to scholarships/loans information",
+      "No access to scholarships",
+      "No access to loan information",
     ],
-    buttonText: "BASIC_ONETIME",
+    highlighted: false,
   },
-  LOCAL_MONTHLY: {
+  {
     id: "silver",
-    name: "Silver Plan",
-    icon: <FaRegStar className="w-6 h-6 text-green-500" />,
-    nairaPrice: "₦5,500",
-    dollarPrice: "$8.99",
-    billing: "per month",
+    planKey: "LOCAL_MONTHLY",
+    label: "Monthly",
+    title: "Local Access Plan",
+    tier: "Silver",
+    nairaPrice: "₦1,100",
+    dollarPrice: "$0.81",
     benefits: [
-      "Unlimited checks within one country",
-      "Loan information and course access",
+      "Unlimited checks within 1 country",
+      "Loan information & course access",
       "Editable exam records",
     ],
-    buttonText: "LOCAL_MONTHLY",
+    highlighted: true,
   },
-  GLOBAL_MONTHLY: {
+  {
     id: "gold",
-    name: "Gold Plan",
-    icon: <Crown className="w-6 h-6 text-yellow-500" />,
-    nairaPrice: "₦9,500",
-    dollarPrice: "$14.99",
-    billing: "per month",
+    planKey: "GLOBAL_MONTHLY",
+    label: "Monthly",
+    title: "Global Access Plan",
+    tier: "Gold",
+    nairaPrice: "₦3,700",
+    dollarPrice: "$2.71",
     benefits: [
-      "Access to all countries/schools",
-      "Loan information and course access",
+      "Access to all country/schools",
+      "Loan information & course access",
       "Editable exam records",
-      "Scholarships & global support",
+      "Scholarships, global support",
       "New school priority access",
     ],
-    buttonText: "GLOBAL_MONTHLY",
+    highlighted: false,
   },
-};
+];
+
+export const PLAN_DETAILS: Record<string, PlanDetail> = PLAN_LIST.reduce(
+  (acc, plan) => {
+    acc[plan.planKey] = plan;
+    return acc;
+  },
+  {} as Record<string, PlanDetail>,
+);

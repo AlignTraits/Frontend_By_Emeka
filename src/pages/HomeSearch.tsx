@@ -18,6 +18,7 @@ import { courseCategoryList } from "../data/courseCategories";
 // import csvFile from "../assets/csvFile.csv"
 import { FiMenu } from "react-icons/fi";
 import { LiaTimesSolid } from "react-icons/lia";
+import { useAuth } from "../contexts/useAuth";
 
 // type CategoryType = {
 //   id: number;
@@ -43,7 +44,14 @@ type Country = {
 
 export default function HomeSearch() {
   const navigate = useNavigate();
+  const { token } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [token]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchAllTerm, setSearchAllTerm] = useState("");
@@ -341,23 +349,26 @@ export default function HomeSearch() {
         </div>
       </div>
 
-      {/* Mobile menu dropdown */}
+      {/* Mobile menu, left side drawer */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-10 z-[1099]"
+          className="fixed inset-0 bg-black bg-opacity-30 z-[1099]"
           onClick={() => setMobileMenuOpen(false)}
         >
-          <div className="md:hidden absolute right-5 top-[150px] bg-white shadow-lg rounded-md z-[1100] flex flex-col space-y-5 w-[90%] h-[250px] justify-center items-center">
+          <div
+            className="md:hidden fixed left-0 top-0 h-full w-[75%] max-w-[300px] bg-white shadow-lg z-[1100] flex flex-col gap-y-5 px-6 py-8"
+            onClick={(e) => e.stopPropagation()}
+          >
             <LiaTimesSolid
               onClick={() => setMobileMenuOpen(false)}
-              className="absolute right-[20px] top-[20px] h-6 w-6 "
+              className="h-6 w-6 self-end cursor-pointer"
             />
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 navigate("/career-recommedation");
               }}
-              className="w-[70%] px-10 py-3 text-[12px] text-[white] rounded-lg bg-[#004085] font-semibold hover:bg-[#f4f8fb]"
+              className="w-full px-10 py-3 text-[12px] text-[white] rounded-lg bg-[#004085] font-semibold hover:bg-[#f4f8fb]"
             >
               Career Recommendation
             </button>
@@ -366,7 +377,7 @@ export default function HomeSearch() {
                 setMobileMenuOpen(false);
                 goLogin();
               }}
-              className="w-[70%] text-[12px] bg-[#F6C648] px-10 py-3 text-[#1E1E1E] rounded-lg font-semibold hover:bg-[#f4f8fb]"
+              className="w-full text-[12px] bg-[#F6C648] px-10 py-3 text-[#1E1E1E] rounded-lg font-semibold hover:bg-[#f4f8fb]"
             >
               Login
             </button>

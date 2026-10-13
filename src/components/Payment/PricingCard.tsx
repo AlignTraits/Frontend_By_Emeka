@@ -70,11 +70,11 @@ const PricingCard: React.FC<PricingCardProps> = ({
         "relative cursor-pointer flex flex-col p-4 sm:p-6 rounded-2xl shadow-md w-full max-w-[320px] min-w-[220px] h-[420px] sm:w-[300px] sm:h-[450px] transition-all duration-300",
         {
           "bg-white": !isActive,
-          "bg-blue-900 text-white": isActive,
+          "bg-[#004085] text-white": isActive,
         },
       )}
     >
-      <div className="absolute top-[-18px] right-[0px] text-[#000] font-medium text-xs sm:text-sm text-center mb-2">
+      <div className="absolute top-[-18px] left-[0px] text-[#000] font-medium text-xs sm:text-sm text-center mb-2">
         {type}
       </div>
       <h3 className="text-lg sm:text-xl font-semibold text-center mb-1">
@@ -104,12 +104,12 @@ const PricingCard: React.FC<PricingCardProps> = ({
         className={classNames(
           "w-full py-2 rounded font-semibold transition text-sm sm:text-base",
           {
-            "bg-yellow-400 text-black hover:bg-yellow-500": isActive,
-            "bg-blue-900 text-white hover:bg-blue-800": !isActive,
+            "bg-[#F6C648] text-[#1C1C1C] hover:bg-yellow-400": isActive,
+            "bg-[#004085] text-white hover:bg-blue-800": !isActive,
           },
         )}
       >
-        {isLoading ? <BeatLoader /> : "Select Plan"}
+        {isLoading ? <BeatLoader /> : "Select"}
       </button>
     </div>
   );

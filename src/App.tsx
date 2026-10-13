@@ -7,6 +7,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import AdminLayout from "./layouts/admin/AdminLayout";
 import AdminDashboardLayout from "./layouts/admin/AdminDashboardLayout";
 import Root from "./layouts/Root";
+import AnalyticsTracker from "./components/AnalyticsTracker";
 
 import SettingsLayout from "./layouts/SettingsLayout";
 import WaitlistUser from "./pages/Waitlist";
@@ -198,6 +199,7 @@ function App() {
       >
         <RouterProvider router={router} />
       </Suspense>
+      <AnalyticsTracker router={router} />
       <ToastContainer position="top-right" autoClose={3000} />
     </AuthProvider>
   );

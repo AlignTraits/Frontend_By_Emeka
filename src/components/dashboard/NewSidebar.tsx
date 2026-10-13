@@ -263,27 +263,6 @@ const NewSidebar = ({
             </NavLink>
 
             <NavLink
-              to="/dashboard/settings"
-              className={({ isActive }) =>
-                `flex items-center p-2 text-[12px] font-bold rounded-md transition-colors ${
-                  isActive || accountPath
-                    ? "text-white bg-[#004085]"
-                    : "text-[#5D5D5B] hover:bg-gray-100"
-                }`
-              }
-              end
-            >
-              <IoSettingsSharp className="w-5 h-5 mr-3" />
-              <span
-                className={
-                  accountPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"
-                }
-              >
-                Account Settings
-              </span>
-            </NavLink>
-
-            <NavLink
               to="/dashboard/skill-roadmap"
               className={({ isActive }) =>
                 `flex items-center p-2 text-[12px] font-bold rounded-md transition-colors ${
@@ -326,6 +305,27 @@ const NewSidebar = ({
                 }
               >
                 Progress Tracker
+              </span>
+            </NavLink>
+
+            <NavLink
+              to="/dashboard/settings"
+              className={({ isActive }) =>
+                `flex items-center p-2 text-[12px] font-bold rounded-md transition-colors ${
+                  isActive || accountPath
+                    ? "text-white bg-[#004085]"
+                    : "text-[#5D5D5B] hover:bg-gray-100"
+                }`
+              }
+              end
+            >
+              <IoSettingsSharp className="w-5 h-5 mr-3" />
+              <span
+                className={
+                  accountPath ? "text-white bg-[#004085]" : "text-[#5D5D5B]"
+                }
+              >
+                Account Settings
               </span>
             </NavLink>
           </>

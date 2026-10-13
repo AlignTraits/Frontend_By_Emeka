@@ -3,15 +3,15 @@ import { useAuth } from "../../../contexts/useAuth";
 import { BeatLoader } from "react-spinners";
 import { makePayment } from "../../../services/utils";
 import { toast } from "react-toastify";
-import { PLAN_DETAILS } from "../../../data/planData";
+import { PLAN_LIST } from "../../../data/planData";
+import { trackEvent } from "../../../services/analytics";
 
 const AvailablePlans: React.FC = () => {
   const { user } = useAuth();
-  const [loadingPlanId, setLoadingPlanId] = React.useState<string | null>(null);
+  const [loadingPlanKey, setLoadingPlanKey] = React.useState<string | null>(null);
 
-  // Guard against an empty/undefined transactions array - reduce() throws
-  // on an empty array with no initial value, which crashed this page for
-  // any user with zero transactions.
+  // reduce() throws on an empty array with no starting value, which crashed this
+  // page for anyone with zero transactions, so only reduce when there is data.
   const latest =
     user?.transactions && user.transactions.length > 0
       ? user.transactions.reduce((latestTx, currentTx) => {
@@ -21,11 +21,12 @@ const AvailablePlans: React.FC = () => {
         })
       : undefined;
 
-  const handleClick = async (planKey: string) => {
-    setLoadingPlanId(planKey);
+  const handleSelect = async (planKey: string) => {
+    setLoadingPlanKey(planKey);
+    trackEvent("select_plan", { plan: planKey });
 
     try {
-      let data = await makePayment({
+      const data = await makePayment({
         paymentPlan: planKey,
         firstname: user?.firstname,
         lastname: user?.lastname,
@@ -34,7 +35,7 @@ const AvailablePlans: React.FC = () => {
       });
 
       if (data?.ok) {
-        toast.success(`Redirecting you to payment...`);
+        toast.success("Redirecting you to payment...");
         setTimeout(() => {
           window.open(data.data.authorization_url, "_blank");
         }, 2000);
@@ -42,83 +43,74 @@ const AvailablePlans: React.FC = () => {
     } catch (err: any) {
       toast.error(err.message);
     } finally {
-      setLoadingPlanId(null);
+      setLoadingPlanKey(null);
     }
-  };
-
-  const splitString = (text: any) => {
-    if (typeof text === "string") {
-      return text.replace(/_/g, " ");
-    }
-    return text;
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Choose Your Plan
-        </h2>
-        <p className="text-gray-600">
-          Select the plan that best fits your needs
-        </p>
+    <div className="w-full max-w-6xl mx-auto px-2 py-6">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-1">Choose Your Plan</h2>
+        <p className="text-gray-600">Select the plan that best fits your needs</p>
       </div>
 
-      {/* Plans Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {Object.values(PLAN_DETAILS).map((plan) => {
-          const isCurrentPlan = user?.payment_plan === plan.buttonText;
-          const isLoading = loadingPlanId === plan.id;
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6">
+        {PLAN_LIST.map((plan) => {
+          const isCurrentPlan = user?.payment_plan === plan.planKey;
+          const isLoading = loadingPlanKey === plan.planKey;
+          const dark = plan.highlighted;
 
           return (
-            <div
-              key={plan.id}
-              className={`relative bg-white rounded-xl border ${isCurrentPlan ? "border-green-400 border-2" : "border-gray-200"} p-6 shadow-sm`}
-            >
-              {/* Current Plan Badge */}
-              {isCurrentPlan && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    Current Plan
-                  </span>
-                </div>
-              )}
+            <div key={plan.planKey} className="relative">
+              <p className="absolute -top-7 left-0 text-[18px] font-medium text-[#1C1C1C]">
+                {plan.label}
+              </p>
 
-              {/* Plan Header */}
-              <div className="text-center mb-6">
-                <div className="flex justify-center mb-3">{plan.icon}</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {plan.name}
-                </h3>
-                <div className="mb-1">
-                  <span className="text-2xl font-bold text-gray-900">
-                    {plan.nairaPrice}
-                  </span>
-                </div>
-                <p className="text-gray-500 text-sm">{plan.billing}</p>
-              </div>
-
-              {/* Features List */}
-              <div className="space-y-3 mb-6">
-                {plan.benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <span className="text-[#17B26A]">✓</span>
-                    <span className="text-sm text-gray-600 leading-relaxed">
-                      {benefit}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Action Button */}
-              <button
-                className={`w-full py-3 px-4 rounded-lg font-medium transition-colors duration-200 ${isCurrentPlan ? "bg-blue-400 text-white" : "bg-gray-800 text-white"}`}
-                disabled={isCurrentPlan || isLoading}
-                onClick={() => handleClick(plan.buttonText)}
+              <div
+                className={`flex flex-col h-full rounded-3xl border p-6 shadow-md ${
+                  dark
+                    ? "bg-[#004085] text-white border-[#004085]"
+                    : "bg-white text-[#1C1C1C] border-gray-300"
+                }`}
               >
-                {isLoading ? <BeatLoader /> : isCurrentPlan ? "Current Plan" : splitString(plan.buttonText)}
-              </button>
+                <h3 className="text-center text-[20px] font-bold">{plan.title}</h3>
+                <p
+                  className={`text-center text-[22px] font-medium mt-6 ${
+                    dark ? "text-white" : "text-gray-500"
+                  }`}
+                >
+                  {plan.tier}
+                </p>
+                <div
+                  className={`h-[1px] w-[85%] mx-auto mt-4 ${
+                    dark ? "bg-white" : "bg-gray-300"
+                  }`}
+                />
+
+                <ul className="mt-6 space-y-3 flex-1 list-disc pl-6 text-[15px]">
+                  {plan.benefits.map((benefit) => (
+                    <li key={benefit}>{benefit}</li>
+                  ))}
+                </ul>
+
+                <p className="text-center text-[22px] font-semibold mt-8">
+                  {plan.nairaPrice} / {plan.dollarPrice}
+                </p>
+
+                <button
+                  disabled={isCurrentPlan || isLoading}
+                  onClick={() => handleSelect(plan.planKey)}
+                  className={`mt-6 w-full h-[48px] rounded-lg font-semibold ${
+                    isCurrentPlan
+                      ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                      : dark
+                        ? "bg-[#F6C648] text-[#1C1C1C]"
+                        : "bg-[#004085] text-white"
+                  }`}
+                >
+                  {isLoading ? <BeatLoader size={8} /> : isCurrentPlan ? "Current Plan" : "Select"}
+                </button>
+              </div>
             </div>
           );
         })}

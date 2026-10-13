@@ -111,14 +111,14 @@ const [dataLenth, setDataLength] = useState(0)
     <div className='py-10 px-5'>
       <div className='flex flex-col lg:flex-row justify-between gap-[10px]'>
         <AccountCards handleNavigate={() => navigate("/dashboard/settings/profile")} textTwo="Update Profile" title='Profile Completion' desc='Complete your profile for better recommendations'>
-          <p className='text-[#212529] text-[18px] font-bold'>${profileFiil}%</p>
+          <p className='text-[#212529] text-[18px] font-bold'>{profileFiil}%</p>
         </AccountCards>
 
         <AccountCards handleNavigate={() => navigate("/dashboard/settings/records")} textTwo="Manage Records" title='Academic Records' desc='Records uploaded'>
           <p className='text-[#212529] text-[18px] font-bold'>{dataLenth}</p>
         </AccountCards>
 
-        <AccountCards handleNavigate={() => navigate("/dashboard/settings/security")} textTwo="Security Settings" title='Account Security' desc='Last password change: 30 days ago'>
+        <AccountCards handleNavigate={() => navigate("/dashboard/settings/security")} textTwo="Security Settings" title='Account Security' desc='Manage your password and login security'>
           <p className='text-[#17B26A] text-[18px] font-bold'>Secure</p>
         </AccountCards>
       </div>
