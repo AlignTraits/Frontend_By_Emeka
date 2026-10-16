@@ -12,7 +12,7 @@ export interface PlanDetail {
 
 // Single source of truth for plan names, prices and benefits.
 // The naira prices MUST match PRICES in the backend (monthlyPaymentService.ts):
-// BASIC_ONETIME = 35000 kobo, LOCAL_MONTHLY = 110000 kobo, GLOBAL_MONTHLY = 370000 kobo.
+// BASIC_ONETIME = 110000 kobo, LOCAL_MONTHLY = 370000 kobo, GLOBAL_MONTHLY = 550000 kobo.
 export const PLAN_LIST: PlanDetail[] = [
   {
     id: "basic",
@@ -20,8 +20,8 @@ export const PLAN_LIST: PlanDetail[] = [
     label: "One-time",
     title: "Basic One-Time Plan",
     tier: "Basic",
-    nairaPrice: "₦350",
-    dollarPrice: "$0.26",
+    nairaPrice: "₦1,100",
+    dollarPrice: "$0.81",
     benefits: [
       "One result only",
       "No future updates",
@@ -36,8 +36,8 @@ export const PLAN_LIST: PlanDetail[] = [
     label: "Monthly",
     title: "Local Access Plan",
     tier: "Silver",
-    nairaPrice: "₦1,100",
-    dollarPrice: "$0.81",
+    nairaPrice: "₦3,700",
+    dollarPrice: "$2.71",
     benefits: [
       "Unlimited checks within 1 country",
       "Loan information & course access",
@@ -51,8 +51,8 @@ export const PLAN_LIST: PlanDetail[] = [
     label: "Monthly",
     title: "Global Access Plan",
     tier: "Gold",
-    nairaPrice: "₦3,700",
-    dollarPrice: "$2.71",
+    nairaPrice: "₦5,500",
+    dollarPrice: "$4.03",
     benefits: [
       "Access to all country/schools",
       "Loan information & course access",

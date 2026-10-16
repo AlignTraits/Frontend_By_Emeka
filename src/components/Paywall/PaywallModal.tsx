@@ -23,8 +23,8 @@ const plans: Plan[] = [
     label: "One-time",
     title: "Basic One-Time Plan",
     tier: "Basic",
-    nairaPrice: "₦350",
-    usdPrice: "$0.26",
+    nairaPrice: "₦1,100",
+    usdPrice: "$0.81",
     features: [
       "One result only",
       "No future updates",
@@ -39,8 +39,8 @@ const plans: Plan[] = [
     label: "Monthly",
     title: "Local Access Plan",
     tier: "Silver",
-    nairaPrice: "₦1,100",
-    usdPrice: "$0.81",
+    nairaPrice: "₦3,700",
+    usdPrice: "$2.71",
     features: [
       "Unlimited checks within 1 country",
       "Loan information & course access",
@@ -54,8 +54,8 @@ const plans: Plan[] = [
     label: "Monthly",
     title: "Global Access Plan",
     tier: "Gold",
-    nairaPrice: "₦3,700",
-    usdPrice: "$2.71",
+    nairaPrice: "₦5,500",
+    usdPrice: "$4.03",
     features: [
       "Access to all country/schools",
       "Loan information & course access",
