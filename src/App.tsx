@@ -1,5 +1,10 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { useAuth } from "./contexts/useAuth";
 import { lazy, Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -63,6 +68,15 @@ const Waitlist = lazy(() => import("./pages/admin/Waitlist"));
 const TermsAndCondtion = lazy(() => import("./pages/TermsAndCondiotion"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
+const LandingPage = lazy(() => import("./landing/LandingPage"));
+
+// The landing page lives at "/". Anyone already signed in (the session lasts 30 days)
+// goes straight to their dashboard, as the old home page did.
+function LandingOrDashboard() {
+  const { token } = useAuth();
+  if (token) return <Navigate to="/dashboard" replace />;
+  return <LandingPage />;
+}
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -79,7 +93,7 @@ const router = createBrowserRouter([
     element: <SetupPassword title="Setup password" />,
   },
   { path: "/auth/success", element: <GoogleAuthSuccess /> },
-  // { path: "/search", element: <HomeSearch /> },
+  { path: "/search", element: <HomeSearch /> },
   { path: "/waitlist", element: <WaitlistUser /> },
   { path: "/career-recommedation", element: <Recommendation /> },
   { path: "/questionaire", element: <Questionaire /> },
@@ -93,7 +107,8 @@ const router = createBrowserRouter([
   // { path: "/not-found", element: <Page404 /> },
   // Public course details (protected inside component)
   // { path: "/course-details/:courseId", element: <CourseDetailsPage /> },
-  { index: true, element: <HomeSearch /> },
+  { path: "/landing", element: <Navigate to="/" replace /> },
+  { index: true, element: <LandingOrDashboard /> },
 
   {
     path: "/",

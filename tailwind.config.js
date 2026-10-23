@@ -1,5 +1,8 @@
+import landingPreset from './tailwind.landing-preset.js';
+
 /** @type {import('tailwindcss').Config} */
 export default {
+  presets: [landingPreset],
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
