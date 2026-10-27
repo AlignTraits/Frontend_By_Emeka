@@ -1,0 +1,48 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 24px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.arrow {
+  transition: transform 0.15s ease;
+}
+
+.button:hover .arrow {
+  transform: translateX(3px);
+}
+
+.primary {
+  background: var(--at-navy);
+  color: var(--at-white);
+}
+
+.primary:hover {
+  background: var(--at-navy-60-shade);
+}
+
+/* Gold always carries Navy text (6.3 to 1, brand guide accessible pairings) */
+.gold {
+  background: var(--at-gold);
+  color: var(--at-navy);
+}
+
+.gold:hover {
+  background: var(--at-gold-80-tint);
+}
+
+.gold:focus-visible {
+  outline-color: var(--at-white);
+}

@@ -1,0 +1,116 @@
+/*
+  AlignTraits design tokens for the Loan page.
+  Every colour comes from the AlignTraits brand guidelines v1.0, section 06 Colour.
+  The tokens are set on the page wrapper (.at-loan), not on :root, so they never
+  change anything elsewhere in the app.
+*/
+
+/* Fira Sans, the brand headline face (ExtraBold 800 and Bold 700). Self-hosted from public/fonts.
+   latin-ext carries the naira sign and the Hausa, Igbo and Yoruba letters. */
+@font-face {
+  font-family: 'AT Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/fira-sans-700-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'AT Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/fira-sans-700-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'AT Fira Sans';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/fira-sans-800-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'AT Fira Sans';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/fira-sans-800-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.at-loan {
+  /* Core palette */
+  --at-navy: #004085; /* Foundation Navy: headlines, anchoring panels, primary buttons */
+  --at-blue: #007aff; /* Clarity Blue: links, selected states, large accent text */
+  --at-gold: #f6c648; /* Sunrise Gold: one highlight per layout, always with Navy text */
+  --at-white: #ffffff; /* Clean White: default background */
+
+  /* Ramps (tints mix with white, shades mix with black) */
+  --at-navy-60-shade: #002650;
+  --at-navy-60-tint: #668cb6;
+  --at-navy-40-tint: #99b3ce;
+  --at-navy-20-tint: #ccd9e7;
+  --at-navy-10-tint: #e6ecf3;
+  --at-blue-40-tint: #99caff;
+  --at-blue-10-tint: #e6f2ff;
+  --at-gold-80-shade: #c59e3a;
+  --at-gold-80-tint: #f8d16d;
+  --at-gold-20-tint: #fdf4da;
+
+  /* Supporting neutrals and interface colours */
+  --at-ink: #002650; /* Body text */
+  --at-slate: #33669d; /* Secondary text */
+  --at-line: #dbe4ee; /* Hairlines */
+  --at-mist: #f2f5f9; /* Cards, surfaces */
+  --at-blue-600: #0071ed; /* Small blue text, buttons */
+  --at-success: #1b7f4d; /* Confirmations */
+  --at-error: #c23b3b; /* Errors */
+
+  /* Semantic roles used by the components */
+  --color-heading: var(--at-navy);
+  --color-text: var(--at-ink);
+  --color-text-muted: var(--at-slate);
+  --color-accent: var(--at-blue);
+  --color-surface: var(--at-white);
+  --color-surface-alt: var(--at-mist);
+  --color-border: var(--at-line);
+  --color-panel: var(--at-navy);
+  --color-on-panel: var(--at-white);
+  --color-on-panel-muted: var(--at-navy-20-tint);
+  --color-on-panel-accent: var(--at-blue-40-tint);
+  --color-focus: var(--at-blue);
+
+  /* Typography: brand guide section 07. Fira Sans for headlines, Inter for reading.
+     'AT Inter' is the self-hosted Inter that the landing page already loads. */
+  --font-heading: 'AT Fira Sans', 'Fira Sans', 'Noto Sans', system-ui, sans-serif;
+  --font-body: 'AT Inter', 'Inter', 'Noto Sans', system-ui, sans-serif;
+
+  /* Layout */
+  --container: 1120px;
+  --gutter: 24px;
+  --section-y: 112px;
+
+  /* Shape and depth */
+  --radius-sm: 6px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(0, 38, 80, 0.04), 0 8px 24px rgba(0, 38, 80, 0.05);
+  --shadow-raised: 0 24px 48px rgba(0, 20, 45, 0.28);
+}
+
+@media (max-width: 1023px) {
+  .at-loan {
+    --section-y: 88px;
+  }
+}
+
+@media (max-width: 639px) {
+  .at-loan {
+    --gutter: 20px;
+    --section-y: 64px;
+  }
+}

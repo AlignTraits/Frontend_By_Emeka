@@ -1,0 +1,39 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  height: 23px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.neutral {
+  background: var(--at-navy-10-tint);
+  color: var(--at-slate);
+}
+
+.neutral .dot {
+  background: var(--at-navy-60-tint);
+}
+
+.highlight {
+  background: var(--at-gold-20-tint);
+  color: var(--at-navy);
+}
+
+.highlight .dot {
+  background: var(--at-gold-80-shade);
+}

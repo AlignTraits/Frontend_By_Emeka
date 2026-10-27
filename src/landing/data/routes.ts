@@ -18,9 +18,9 @@ export const ROUTES = {
   forUniversities: '#',
   tutorialCenters: '#',
   requestPilot: '#',
-  loans: '#',
-  incomeSharePlan: '#',
-  scholarships: '#',
-  forInvestors: '#',
+  loans: '/finances/loans',
+  incomeSharePlan: '/finances/income-share-plan',
+  scholarships: '/finances/scholarships',
+  forInvestors: '/finances/investors',
   partnerWithAlignTraits: '#',
 } as const;

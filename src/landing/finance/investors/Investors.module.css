@@ -1,0 +1,237 @@
+/* For Investors page */
+
+/* Why AlignTraits: two stat cards */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.stat {
+  padding: 26px 24px 28px;
+  border-radius: var(--radius-lg);
+}
+
+.statDark {
+  background: var(--color-panel);
+  color: var(--color-on-panel-muted);
+}
+
+.statLight {
+  border: 1px solid var(--at-line);
+  background: var(--at-mist);
+  color: var(--color-text-muted);
+}
+
+.figure {
+  font-family: var(--font-heading);
+  font-size: clamp(32px, 1.6vw + 18px, 42px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.statDark .figure {
+  color: var(--at-gold);
+}
+
+.statLight .figure {
+  color: var(--color-heading);
+}
+
+.statText {
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.source {
+  grid-column: 1 / -1;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* What we will report to you */
+.privacy {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 420px;
+  margin-top: 24px;
+  padding: 16px 18px;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-md);
+  background: var(--at-white);
+  color: var(--color-text);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.privacy svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--at-navy);
+}
+
+.report {
+  padding: 26px 26px 22px;
+  border-radius: var(--radius-lg);
+  background: var(--at-white);
+  box-shadow: var(--shadow-raised);
+}
+
+.reportHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--at-line);
+}
+
+.reportLabel {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.reportTitle {
+  margin-top: 2px;
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.reportRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--at-line);
+}
+
+.reportName {
+  color: var(--color-heading);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.reportDetail {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.reportFoot {
+  margin-top: 14px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* Where we are today */
+.tableWrap {
+  margin-top: 32px;
+  overflow: hidden;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-lg);
+  background: var(--at-white);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 16px 24px;
+  background: var(--at-mist);
+  color: var(--color-heading);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.table td {
+  padding: 20px 24px;
+  border-top: 1px solid var(--at-line);
+  vertical-align: middle;
+}
+
+.area {
+  width: 32%;
+  color: var(--color-heading);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.statusCell {
+  width: 18%;
+}
+
+.meaning {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.stageIntro {
+  max-width: 560px;
+}
+
+@media (max-width: 767px) {
+  .stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .report {
+    padding: 22px 18px 18px;
+  }
+
+  .reportRow {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Table becomes stacked cards */
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+    padding: 18px 20px;
+    border-top: 1px solid var(--at-line);
+  }
+
+  .table tr:first-child {
+    border-top: 0;
+  }
+
+  .table td {
+    padding: 0;
+    border-top: 0;
+  }
+
+  .area,
+  .statusCell {
+    width: auto;
+  }
+
+  .meaning {
+    grid-column: 1 / -1;
+  }
+}

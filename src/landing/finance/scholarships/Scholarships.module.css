@@ -1,0 +1,225 @@
+/* Scholarships and awards page */
+
+/* Hero photo */
+.media {
+  padding-bottom: calc(var(--section-y) * 0.4);
+}
+
+.photo {
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: var(--at-mist);
+}
+
+.photo img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2240 / 960;
+  object-fit: cover;
+}
+
+/* List header with filter chips */
+.listHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.listBody {
+  max-width: 560px;
+  margin-top: 12px;
+  color: var(--color-text-muted);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.chip {
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-pill);
+  background: var(--at-mist);
+  color: var(--at-ink);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  border-color: var(--at-navy-40-tint);
+}
+
+.chipActive {
+  border-color: var(--at-navy);
+  background: var(--at-navy);
+  color: var(--at-white);
+}
+
+/* Cards */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 36px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 22px 24px;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-lg);
+  background: var(--at-white);
+  box-shadow: var(--shadow-card);
+}
+
+.cardTop {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cardTitle {
+  margin-top: 16px;
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.funder {
+  margin-top: 4px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--at-line);
+  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 16px;
+  margin-bottom: 22px;
+}
+
+.fields dt {
+  color: var(--at-ink);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.fields dd {
+  margin-top: 2px;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  margin-top: auto;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-pill);
+  color: var(--at-navy);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.details:hover {
+  border-color: var(--at-navy);
+  background: var(--at-navy-10-tint);
+}
+
+.empty {
+  margin-top: 36px;
+  padding: 28px;
+  border: 1px dashed var(--at-navy-40-tint);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* What every listing tells you */
+.anatomyCard {
+  padding: 8px 22px;
+}
+
+.anatomyItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--at-line);
+}
+
+.anatomyItem:last-child {
+  border-bottom: 0;
+}
+
+.anatomyIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--at-mist);
+  color: var(--at-navy);
+}
+
+.anatomyTitle {
+  color: var(--color-heading);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.anatomyText {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+@media (max-width: 1023px) {
+  .listHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .photo {
+    border-radius: var(--radius-lg);
+  }
+
+  .photo img {
+    aspect-ratio: 4 / 3;
+  }
+}

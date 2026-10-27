@@ -1,0 +1,108 @@
+/*
+  Base styles for the Loan page.
+  Everything is scoped to the page wrapper (.at-loan), so the rest of the app keeps its own styles.
+  The element resets use :where(.at-loan) so they stay as weak as plain element rules, and every
+  component class still wins over them, as in the original design build.
+  The class names are prefixed "at-loan-" so they cannot clash with Tailwind (Tailwind has its own .container).
+*/
+@import './tokens.css';
+
+.at-loan,
+.at-loan *,
+.at-loan *::before,
+.at-loan *::after {
+  box-sizing: border-box;
+}
+
+.at-loan {
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+:where(.at-loan) h1,
+:where(.at-loan) h2,
+:where(.at-loan) h3,
+:where(.at-loan) h4,
+:where(.at-loan) p,
+:where(.at-loan) ul,
+:where(.at-loan) ol,
+:where(.at-loan) dl,
+:where(.at-loan) dd,
+:where(.at-loan) figure {
+  margin: 0;
+}
+
+:where(.at-loan) ul,
+:where(.at-loan) ol {
+  padding: 0;
+  list-style: none;
+}
+
+:where(.at-loan) img,
+:where(.at-loan) svg {
+  display: block;
+}
+
+:where(.at-loan) img {
+  max-width: 100%;
+  height: auto;
+}
+
+:where(.at-loan) a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:where(.at-loan) button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+:where(.at-loan) :focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.at-loan .at-loan-container {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.at-loan .visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The register-interest form lands under the sticky navbar, so leave room above it. */
+.at-loan #register-interest {
+  scroll-margin-top: 96px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .at-loan *,
+  .at-loan *::before,
+  .at-loan *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
