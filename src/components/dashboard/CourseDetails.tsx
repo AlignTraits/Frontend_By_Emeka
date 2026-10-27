@@ -9,6 +9,7 @@ import LoanInfo from "./TabInfos/LoadInfo";
 import { getSchool } from "../../services/schools";
 import { School } from "../../services/schools";
 import { Course } from "../../types/course.types";
+import { getScholarshipsForCourse } from "../../data/scholarships";
 
 interface CoursesProps {
   courseItem: Course | null;
@@ -40,7 +41,10 @@ const CourseDetails = ({ courseItem, setShowDetails }: CoursesProps) => {
 
     let newTempNav = [...TAB_NAV];
 
-    if (courseItem?.scholarship && courseItem.scholarship.length > 0) {
+    if (
+      (courseItem?.scholarship && courseItem.scholarship.length > 0) ||
+      getScholarshipsForCourse(courseItem).length > 0
+    ) {
       newTempNav.push("Scholarship Information");
     }
     if (courseItem?.loanInformation && courseItem.loanInformation.length > 0) {

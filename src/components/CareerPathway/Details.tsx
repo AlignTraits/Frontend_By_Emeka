@@ -9,6 +9,7 @@ import LoanInfo from "../dashboard/TabInfos/LoadInfo";
 import { getSchool } from "../../services/schools";
 import { School } from "../../services/schools";
 import { Course } from "../../types/course.types";
+import { getScholarshipsForCourse } from "../../data/scholarships";
 import { FaPlus } from "react-icons/fa";
 import locationIcon from "../../assets/locationIcon.svg";
 import { RiGraduationCapFill } from "react-icons/ri";
@@ -53,7 +54,10 @@ const Details = ({ courseItem, setShowDetails }: CoursesProps) => {
 
     let newTempNav = [...TAB_NAV];
 
-    if (courseItem?.scholarship && courseItem.scholarship.length > 0) {
+    if (
+      (courseItem?.scholarship && courseItem.scholarship.length > 0) ||
+      getScholarshipsForCourse(courseItem).length > 0
+    ) {
       newTempNav.push("Scholarship Information");
     }
     if (courseItem?.loanInformation && courseItem.loanInformation.length > 0) {
@@ -152,7 +156,7 @@ const Details = ({ courseItem, setShowDetails }: CoursesProps) => {
       </div>
 
       <div className="mt-10 flex gap-[20px]">
-        <div className="border-[1px] border-[#EAECF0] shadow-md rounded-xl p-5 w-[75%] h-[350px]">
+        <div className="border-[1px] border-[#EAECF0] shadow-md rounded-xl p-5 w-[75%] min-h-[350px]">
           <div className="flex border-b border-b-[#EAECF0] mt-[20px] size-max gap-x-[10px]">
             {tempNav.map((tab, index) => {
               const tabKey = `tab${index + 1}`;
