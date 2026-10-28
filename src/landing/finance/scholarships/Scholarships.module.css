@@ -1,11 +1,8 @@
 /* Scholarships and awards page */
 
-/* Hero photo */
-.media {
-  padding-bottom: calc(var(--section-y) * 0.4);
-}
-
+/* Hero photo (sits inside the hero, see PageHero's media) */
 .photo {
+  display: block;
   overflow: hidden;
   border-radius: var(--radius-xl);
   background: var(--at-mist);

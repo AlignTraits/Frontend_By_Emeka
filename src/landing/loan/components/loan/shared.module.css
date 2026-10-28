@@ -5,6 +5,7 @@
 }
 
 .alt {
+  composes: at-bg-mist from global;
   background: var(--color-surface-alt);
 }
 

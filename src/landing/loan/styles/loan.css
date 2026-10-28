@@ -93,6 +93,33 @@
   border: 0;
 }
 
+/*
+  Section rhythm, shared by every page built on these styles (Loans, the Finances pages and
+  Community), and matching the home page:
+  - every section has --section-y above and below its content;
+  - two neighbouring sections on the same background share one gap instead of doubling it;
+  - a hero keeps its own space under the navbar (set in its module), and --hero-bottom below.
+  Tinted sections carry .at-bg-mist or .at-bg-navy (added by their CSS modules with composes);
+  every other section counts as white.
+*/
+.at-loan > section {
+  padding-bottom: var(--section-y);
+}
+
+.at-loan > section:not(.at-hero) {
+  padding-top: var(--section-y);
+}
+
+.at-loan > section.at-hero {
+  padding-bottom: var(--hero-bottom, var(--section-y));
+}
+
+.at-loan > section:not(.at-bg-mist, .at-bg-navy) + section:not(.at-bg-mist, .at-bg-navy),
+.at-loan > section.at-bg-mist + section.at-bg-mist,
+.at-loan > section.at-bg-navy + section.at-bg-navy {
+  padding-top: 0;
+}
+
 /* The register-interest form lands under the sticky navbar, so leave room above it. */
 .at-loan #register-interest {
   scroll-margin-top: 96px;

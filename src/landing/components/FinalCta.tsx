@@ -7,7 +7,7 @@ import { SmartLink } from './ui/SmartLink.tsx';
 export function FinalCta() {
   return (
     <section aria-labelledby="final-cta-heading" className="bg-white">
-      <div className="mx-auto w-full max-w-[1280px] px-4 pb-14 sm:px-6 lg:px-8 min-[1360px]:px-0 xl:pb-[95px]">
+      <div className="mx-auto w-full max-w-[1280px] px-4 pb-14 sm:px-6 sm:pb-16 lg:px-8 min-[1360px]:px-0 xl:pb-[112px]">
         <div className="flex flex-col gap-10 rounded-[24px] bg-at-ink px-6 py-12 sm:px-10 sm:py-16 xl:flex-row xl:items-end xl:justify-between xl:rounded-[32px] xl:px-14 xl:pb-[78.8px] xl:pt-[81.2px]">
           <div>
             <h2

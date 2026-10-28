@@ -89,7 +89,7 @@ export function InvestorsPage() {
 
       <Steps id="investor-steps-title" title={STEPS.title} items={STEPS.items} />
 
-      <section className={shared.section} aria-labelledby="stage-title" style={{ paddingTop: 0 }}>
+      <section className={shared.section} aria-labelledby="stage-title">
         <div className="at-loan-container">
           <div className={styles.stageIntro}>
             <h2 id="stage-title" className={shared.h2}>

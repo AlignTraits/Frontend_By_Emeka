@@ -33,6 +33,17 @@
   text-underline-offset: 2px;
 }
 
+/* A photo under the hero text */
+.heroMedia {
+  margin-top: 56px;
+}
+
+@media (max-width: 639px) {
+  .heroMedia {
+    margin-top: 40px;
+  }
+}
+
 /* ---------- Status pills ---------- */
 .pill {
   display: inline-flex;
@@ -83,6 +94,11 @@
   color: var(--at-error);
 }
 
+.pillInfo {
+  background: var(--at-blue-10-tint);
+  color: var(--at-blue-600);
+}
+
 /* Pills on the navy panels */
 .pillOnDark.pillSuccess {
   background: rgba(27, 127, 77, 0.28);
@@ -109,6 +125,7 @@
 
 /* ---------- Navy panel with three cards ---------- */
 .panel {
+  composes: at-bg-navy from global;
   background: var(--color-panel);
   color: var(--color-on-panel);
 }

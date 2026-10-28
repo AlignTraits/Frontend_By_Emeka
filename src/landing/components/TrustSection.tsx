@@ -13,8 +13,8 @@ export function TrustSection() {
     <section aria-labelledby="trust-heading" className="bg-white">
       <div
         className={cx(
-          'mx-auto w-full max-w-[1294.7px] px-4 pb-14 sm:px-6 lg:px-8 min-[1360px]:px-0',
-          'xl:pb-[85px] xl:pt-[8.9px]',
+          'mx-auto w-full max-w-[1294.7px] px-4 pb-14 sm:px-6 sm:pb-16 lg:px-8 min-[1360px]:px-0',
+          'xl:pb-[112px] xl:pt-[8.9px]',
         )}
       >
         <div className="grid items-start gap-12 xl:grid-cols-[1.161fr_1fr] xl:gap-x-6">

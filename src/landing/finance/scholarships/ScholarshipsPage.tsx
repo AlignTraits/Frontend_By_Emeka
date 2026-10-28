@@ -50,10 +50,7 @@ export function ScholarshipsPage() {
           cta: { label: HERO.cta, href: LINKS.seeOpenScholarships },
           helper: <JoinFreeHelper />,
         }}
-      />
-
-      <div className={styles.media}>
-        <div className="at-loan-container">
+        media={
           <picture className={styles.photo}>
             <source
               type="image/webp"
@@ -70,8 +67,8 @@ export function ScholarshipsPage() {
               decoding="async"
             />
           </picture>
-        </div>
-      </div>
+        }
+      />
 
       <ScholarshipList />
 

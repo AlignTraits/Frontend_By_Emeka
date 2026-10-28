@@ -8,7 +8,8 @@
 export const ROUTES = {
   home: '/',
   students: '/search',
-  community: '/dashboard/community',
+  /* The public Community page. The signed-in Community feed stays at /dashboard/community. */
+  community: '/community',
   login: '/login',
   checkChances: '/career-recommedation',
   freeSnapshot: '/career-recommedation',

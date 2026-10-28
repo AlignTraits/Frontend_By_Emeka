@@ -5,6 +5,7 @@ import logoUrl from '../assets/brand/aligntraits-logo.svg';
 import { NAV, NAV_CTA, NAV_LOGIN } from '../data/landing-content.ts';
 import { ROUTES } from '../data/routes.ts';
 import type { LinkItem } from '../data/types.ts';
+import { useActiveRoute } from '../hooks/useActiveRoute.ts';
 import { focusLight } from '../lib/styles.ts';
 import { MobileNavDrawer } from './MobileNavDrawer.tsx';
 import { SmartLink } from './ui/SmartLink.tsx';
@@ -13,6 +14,12 @@ const navItem = cx(
   'inline-flex h-11 items-center gap-1 rounded-md text-[15px] font-normal leading-6 text-at-warm transition-colors hover:text-at-ink motion-reduce:transition-none',
   focusLight,
 );
+
+/**
+ * The page on screen: Blue 600 (#0071ED), the brand guide's Clarity Blue for small text on white
+ * (4.6 to 1), plus a medium weight so colour is not the only signal.
+ */
+const navItemActive = '!font-medium !text-[#0071ED] hover:!text-[#0058b9]';
 
 /**
  * Space before each item. At 1280px and wider these are the design's own gaps, measured from
@@ -42,6 +49,8 @@ interface DesktopDropdownProps {
 /** Click or keyboard disclosure menu (Enter, Space, Escape). No hover-only behaviour. */
 function DesktopDropdown({ label, items, className }: DesktopDropdownProps) {
   const [open, setOpen] = useState(false);
+  const isActive = useActiveRoute();
+  const sectionActive = items.some((item) => isActive(item.href));
   const wrapperRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
@@ -81,7 +90,7 @@ function DesktopDropdown({ label, items, className }: DesktopDropdownProps) {
         aria-expanded={open}
         aria-controls={menuId}
         onClick={() => setOpen((value) => !value)}
-        className={navItem}
+        className={cx(navItem, sectionActive && navItemActive)}
       >
         {label}
         <ChevronDown
@@ -102,8 +111,10 @@ function DesktopDropdown({ label, items, className }: DesktopDropdownProps) {
               <SmartLink
                 href={item.href}
                 onClick={() => setOpen(false)}
+                aria-current={isActive(item.href) ? 'page' : undefined}
                 className={cx(
                   'flex min-h-11 items-center rounded-lg px-3 text-[15px] leading-6 text-at-warm hover:bg-at-mist hover:text-at-ink',
+                  isActive(item.href) && navItemActive,
                   focusLight,
                 )}
               >
@@ -119,6 +130,7 @@ function DesktopDropdown({ label, items, className }: DesktopDropdownProps) {
 
 export function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const isActive = useActiveRoute();
   const toggleRef = useRef<HTMLButtonElement>(null);
   const drawerId = useId();
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
@@ -153,13 +165,18 @@ export function Navbar() {
               <SmartLink
                 key={entry.label}
                 href={entry.href}
-                className={cx(navItem, GAP_BY_LABEL[entry.label])}
+                aria-current={isActive(entry.href) ? 'page' : undefined}
+                className={cx(navItem, GAP_BY_LABEL[entry.label], isActive(entry.href) && navItemActive)}
               >
                 {entry.label}
               </SmartLink>
             ),
           )}
-          <SmartLink href={NAV_LOGIN.href} className={cx(navItem, gapBefore.login)}>
+          <SmartLink
+            href={NAV_LOGIN.href}
+            aria-current={isActive(NAV_LOGIN.href) ? 'page' : undefined}
+            className={cx(navItem, gapBefore.login, isActive(NAV_LOGIN.href) && navItemActive)}
+          >
             {NAV_LOGIN.label}
           </SmartLink>
           <SmartLink

@@ -73,6 +73,7 @@ const LoanPage = lazy(() => import("./landing/loan/LoanPage"));
 const ScholarshipsPage = lazy(() => import("./landing/finance/scholarships/ScholarshipsPage"));
 const IncomeSharePage = lazy(() => import("./landing/finance/income-share/IncomeSharePage"));
 const InvestorsPage = lazy(() => import("./landing/finance/investors/InvestorsPage"));
+const CommunityPage = lazy(() => import("./landing/community/CommunityPage"));
 
 // The landing page lives at "/". Anyone already signed in (the session lasts 30 days)
 // goes straight to their dashboard, as the old home page did.
@@ -116,6 +117,7 @@ const router = createBrowserRouter([
   { path: "/finances/scholarships", element: <ScholarshipsPage /> },
   { path: "/finances/income-share-plan", element: <IncomeSharePage /> },
   { path: "/finances/investors", element: <InvestorsPage /> },
+  { path: "/community", element: <CommunityPage /> },
   { index: true, element: <LandingOrDashboard /> },
 
   {

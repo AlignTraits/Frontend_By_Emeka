@@ -17,19 +17,30 @@ import stepStyles from './Steps.module.css';
 
 /* ---------------- Status pill ---------------- */
 
-export type PillTone = 'success' | 'gold' | 'neutral' | 'danger';
+export type PillTone = 'success' | 'gold' | 'neutral' | 'danger' | 'info';
 
 const PILL_TONE: Record<PillTone, string> = {
   success: f.pillSuccess,
   gold: f.pillGold,
   neutral: f.pillNeutral,
   danger: f.pillDanger,
+  info: f.pillInfo,
 };
 
-export function Pill({ tone, onDark = false, children }: { tone: PillTone; onDark?: boolean; children: ReactNode }) {
+export function Pill({
+  tone,
+  onDark = false,
+  dot = true,
+  children,
+}: {
+  tone: PillTone;
+  onDark?: boolean;
+  dot?: boolean;
+  children: ReactNode;
+}) {
   return (
     <span className={`${f.pill} ${PILL_TONE[tone]} ${onDark ? f.pillOnDark : ''}`}>
-      <span className={f.pillDot} aria-hidden="true" />
+      {dot && <span className={f.pillDot} aria-hidden="true" />}
       {children}
     </span>
   );
@@ -48,7 +59,8 @@ export interface HeroContent {
   helper?: ReactNode;
 }
 
-export function PageHero({ content, id }: { content: HeroContent; id: string }) {
+/** `media` (a photo, say) sits under the hero text, inside the hero, so it shares the hero's spacing. */
+export function PageHero({ content, id, media }: { content: HeroContent; id: string; media?: ReactNode }) {
   const { eyebrow, titleStart, titleAccent, titleEnd, subtitle, note, cta, helper } = content;
   return (
     <section className={heroStyles.hero} aria-labelledby={id}>
@@ -72,6 +84,7 @@ export function PageHero({ content, id }: { content: HeroContent; id: string }) 
         </ButtonLink>
         {helper && <p className={heroStyles.helper}>{helper}</p>}
       </div>
+      {media && <div className={`at-loan-container ${f.heroMedia}`}>{media}</div>}
     </section>
   );
 }

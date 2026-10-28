@@ -4,6 +4,7 @@ import { useId, useRef, useState } from 'react';
 import type { RefObject } from 'react';
 import { NAV, NAV_CTA, NAV_LOGIN } from '../data/landing-content.ts';
 import type { LinkItem } from '../data/types.ts';
+import { useActiveRoute } from '../hooks/useActiveRoute.ts';
 import { useDrawerA11y } from '../hooks/useDrawerA11y.ts';
 import { focusLight } from '../lib/styles.ts';
 import { SmartLink } from './ui/SmartLink.tsx';
@@ -20,6 +21,9 @@ interface MobileNavDrawerProps {
 const row =
   'flex min-h-12 w-full items-center justify-between rounded-lg px-2 text-left text-[17px] font-medium leading-6 text-at-ink';
 
+/* The page on screen, in Blue 600 like the desktop navbar. */
+const rowActive = '!text-[#0071ED]';
+
 interface DrawerGroupProps {
   label: string;
   items: readonly LinkItem[];
@@ -27,7 +31,10 @@ interface DrawerGroupProps {
 }
 
 function DrawerGroup({ label, items, onNavigate }: DrawerGroupProps) {
-  const [open, setOpen] = useState(false);
+  const isActive = useActiveRoute();
+  const sectionActive = items.some((item) => isActive(item.href));
+  /* Open the group that holds the current page, so it is visible straight away. */
+  const [open, setOpen] = useState(sectionActive);
   const panelId = useId();
 
   return (
@@ -37,7 +44,7 @@ function DrawerGroup({ label, items, onNavigate }: DrawerGroupProps) {
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
-        className={cx(row, focusLight)}
+        className={cx(row, sectionActive && rowActive, focusLight)}
       >
         {label}
         <ChevronDown
@@ -54,8 +61,10 @@ function DrawerGroup({ label, items, onNavigate }: DrawerGroupProps) {
               <SmartLink
                 href={item.href}
                 onClick={onNavigate}
+                aria-current={isActive(item.href) ? 'page' : undefined}
                 className={cx(
                   'flex min-h-11 items-center rounded-lg px-2 text-[15px] leading-6 text-at-warm',
+                  isActive(item.href) && `${rowActive} font-medium`,
                   focusLight,
                 )}
               >
@@ -75,6 +84,7 @@ function DrawerGroup({ label, items, onNavigate }: DrawerGroupProps) {
  */
 export function MobileNavDrawer({ open, onClose, toggleRef, id }: MobileNavDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
+  const isActive = useActiveRoute();
   useDrawerA11y({ open, onClose, drawerRef, toggleRef });
 
   if (!open) return null;
@@ -92,7 +102,12 @@ export function MobileNavDrawer({ open, onClose, toggleRef, id }: MobileNavDrawe
               <DrawerGroup key={entry.label} label={entry.label} items={entry.items} onNavigate={onClose} />
             ) : (
               <li key={entry.label} className="border-b-2 border-at-line">
-                <SmartLink href={entry.href} onClick={onClose} className={cx(row, focusLight)}>
+                <SmartLink
+                  href={entry.href}
+                  onClick={onClose}
+                  aria-current={isActive(entry.href) ? 'page' : undefined}
+                  className={cx(row, isActive(entry.href) && rowActive, focusLight)}
+                >
                   {entry.label}
                 </SmartLink>
               </li>

@@ -1,6 +1,6 @@
 .hero {
+  composes: at-hero from global;
   padding-top: 119px;
-  padding-bottom: 72px;
   text-align: center;
 }
 

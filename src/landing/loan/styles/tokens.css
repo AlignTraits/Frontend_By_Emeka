@@ -102,15 +102,17 @@
   --shadow-raised: 0 24px 48px rgba(0, 20, 45, 0.28);
 }
 
-@media (max-width: 1023px) {
+/* Section spacing matches the home page: 112px on desktop, 64px on tablets and small laptops,
+   56px on phones. */
+@media (max-width: 1279px) {
   .at-loan {
-    --section-y: 88px;
+    --section-y: 64px;
   }
 }
 
 @media (max-width: 639px) {
   .at-loan {
     --gutter: 20px;
-    --section-y: 64px;
+    --section-y: 56px;
   }
 }

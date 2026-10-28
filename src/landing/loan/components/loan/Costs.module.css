@@ -1,5 +1,5 @@
 .section {
-  padding-bottom: calc(var(--section-y) + 4px);
+  composes: at-bg-navy from global;
   background: var(--color-panel);
   color: var(--color-on-panel);
 }
