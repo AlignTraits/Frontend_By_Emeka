@@ -1,0 +1,1173 @@
+/*
+  Institutions pages: For Schools, For Universities and Tutorial centres.
+  They sit on the Loan page tokens and base styles (.at-loan), like the Finances and Community
+  pages, so type, colours and section spacing match across the site.
+*/
+
+/* ================= Shared pieces ================= */
+.lead {
+  margin-top: 20px;
+  color: var(--color-text-muted);
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.lead + .lead {
+  margin-top: 14px;
+}
+
+.strongText {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.onDark {
+  color: var(--color-on-panel);
+}
+
+.onDarkMuted {
+  color: var(--color-on-panel-muted);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 64px;
+}
+
+.splitWide {
+  grid-template-columns: minmax(0, 480fr) minmax(0, 576fr);
+}
+
+.splitTop {
+  align-items: start;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  background: var(--at-gold-20-tint);
+  color: var(--at-navy);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.footnote {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--at-line);
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.source {
+  margin-top: 16px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* ================= Hero photo ================= */
+.heroPhoto {
+  position: relative;
+  display: block;
+}
+
+.heroPhoto picture,
+.heroPhoto img {
+  display: block;
+}
+
+.heroPhoto img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1120 / 475;
+  border-radius: var(--radius-xl);
+  object-fit: cover;
+}
+
+.pin {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px 0 10px;
+  border-radius: var(--radius-pill);
+  background: var(--at-white);
+  box-shadow: 0 6px 18px rgba(0, 38, 80, 0.16);
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pin svg {
+  color: var(--at-gold-80-shade);
+}
+
+/* ================= School: question bubbles ================= */
+.bubbles {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.bubbles li {
+  padding: 12px 20px;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-pill);
+  background: var(--at-mist);
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.bubbles li:nth-child(2) {
+  margin-left: 40px;
+}
+
+/* Tutorial centre: question cards */
+.questionCards {
+  display: grid;
+  gap: 12px;
+}
+
+.questionCards li {
+  padding: 20px 28px;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-md);
+  background: var(--at-white);
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 25px;
+}
+
+/* ================= Navy section with cards ================= */
+.navyGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.navyGrid2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.navyCard {
+  padding: 32px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.navyIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--at-gold);
+}
+
+.navyCardTitle {
+  margin-top: 28px;
+  color: var(--color-on-panel);
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 27px;
+}
+
+.navyCardText {
+  margin-top: 12px;
+  color: var(--color-on-panel-muted);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+/* ================= School: who comes ================= */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.chips li {
+  padding: 11px 20px;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-pill);
+  background: var(--at-white);
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.chips li.chipDark {
+  border-color: var(--at-navy);
+  background: var(--at-navy);
+  color: var(--at-white);
+}
+
+/* ================= School: what you do there ================= */
+.iconCards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.iconCard {
+  padding: 28px;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-lg);
+  background: var(--at-white);
+}
+
+.iconTile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--at-blue-10-tint);
+  color: var(--at-navy);
+}
+
+.iconCardText {
+  margin-top: 28px;
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 26px;
+}
+
+/* ================= Tables (events, stage) ================= */
+.tableWrap {
+  margin-top: 40px;
+  overflow: hidden;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-lg);
+  background: var(--at-white);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 16px 24px;
+  background: var(--at-mist);
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.table td {
+  padding: 20px 24px;
+  border-top: 1px solid var(--at-line);
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 22px;
+  vertical-align: middle;
+}
+
+.eventName {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.eventNote {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 10px 16px;
+  border: 1px dashed var(--at-gold-80-shade);
+  border-radius: var(--radius-sm);
+  background: var(--at-gold-20-tint);
+  color: var(--at-navy);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.stageRow td:last-child {
+  width: 1%;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ================= After-steps note ================= */
+.afterSteps {
+  max-width: 640px;
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--at-line);
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+/* ================= Pilot band (Not a partner yet?) ================= */
+.pilotBand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 56px;
+  border-radius: var(--radius-xl);
+  background: var(--at-blue-10-tint);
+}
+
+.pilotBandTitle {
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 1.2vw + 16px, 36px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.pilotBandText {
+  max-width: 480px;
+  margin-top: 14px;
+  color: var(--color-text-muted);
+  font-size: 16px;
+  line-height: 26px;
+}
+
+/* ================= Universities: problem cards ================= */
+.problemCards {
+  display: grid;
+  gap: 16px;
+}
+
+.problemCard {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 20px;
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  background: var(--at-mist);
+}
+
+.problemIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--at-white);
+  color: var(--at-navy);
+}
+
+.problemTitle {
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.problemText {
+  margin-top: 6px;
+  color: var(--color-text-muted);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+/* ================= Illustrative cards ================= */
+.card {
+  padding: 28px;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-lg);
+  background: var(--at-white);
+  box-shadow: var(--shadow-card);
+}
+
+.cardHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cardTitle {
+  color: var(--color-heading);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.quoteBar {
+  margin-top: 28px;
+  padding-left: 20px;
+  border-left: 3px solid var(--at-navy);
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+/* Requirements table inside a card */
+.reqTable {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.reqTable th {
+  padding: 10px 8px 12px 0;
+  border-bottom: 1px solid var(--at-line);
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.reqTable td {
+  padding: 16px 8px 16px 0;
+  border-bottom: 1px solid var(--at-line);
+  color: var(--color-text);
+  font-size: 14px;
+  line-height: 21px;
+  vertical-align: middle;
+}
+
+.reqTable td:first-child {
+  color: var(--color-heading);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.reqTable tr:last-child td {
+  border-bottom: 0;
+}
+
+.pct {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pct::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.pctFull {
+  background: #e8f5ee;
+  color: var(--at-success);
+}
+
+.pctPart {
+  background: var(--at-gold-20-tint);
+  color: var(--at-navy);
+}
+
+.pctPart::before {
+  background: var(--at-gold-80-shade);
+}
+
+/* Rows of label and value inside a card */
+.rows {
+  margin-top: 8px;
+}
+
+.rows > div {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--at-line);
+}
+
+.rows dt {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.rows dd {
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 23px;
+}
+
+.rows dd strong {
+  display: block;
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+.courseChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.courseChip {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--at-blue-10-tint);
+  color: var(--at-navy);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.fitPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* ================= Photo with a badge ================= */
+.photoWrap {
+  position: relative;
+}
+
+.photoWrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-xl);
+  object-fit: cover;
+}
+
+.photoBadge {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px 9px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--at-white);
+  box-shadow: 0 6px 18px rgba(0, 38, 80, 0.16);
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.photoBadge svg {
+  color: var(--at-success);
+}
+
+/* ================= Universities: scholarship box ================= */
+.navyBox {
+  display: grid;
+  grid-template-columns: minmax(0, 520fr) minmax(0, 428fr);
+  align-items: center;
+  gap: 56px;
+  padding: 56px;
+  border-radius: var(--radius-xl);
+  background: var(--color-panel);
+}
+
+.navyBoxTitle {
+  color: var(--color-on-panel);
+  font-family: var(--font-heading);
+  font-size: clamp(30px, 1.6vw + 15px, 38px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.goldLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+  color: var(--at-gold);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.goldLink svg {
+  transition: transform 0.15s ease;
+}
+
+.goldLink:hover svg {
+  transform: translateX(3px);
+}
+
+.offerCard {
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.offerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.goldTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  background: var(--at-gold);
+  color: var(--at-navy);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.darkTag {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--color-on-panel-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.offerUni {
+  margin-top: 24px;
+  color: var(--color-on-panel-muted);
+  font-size: 13px;
+}
+
+.offerCourse {
+  margin-top: 4px;
+  color: var(--color-on-panel);
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+}
+
+.offerAward {
+  margin-top: 6px;
+  color: var(--color-on-panel);
+  font-size: 15px;
+  line-height: 23px;
+}
+
+.offerRows {
+  margin-top: 20px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.offerRows > div {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.offerRows dt {
+  color: var(--color-on-panel-muted);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.offerRows dd {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--color-on-panel);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.offerRows dd svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--at-gold);
+}
+
+.offerFoot {
+  margin-top: 10px;
+  color: var(--color-on-panel-muted);
+  font-size: 12px;
+}
+
+/* ================= Universities: big stat ================= */
+.statRule {
+  margin-top: 40px;
+  padding-top: 48px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.bigStat {
+  color: var(--at-gold);
+  font-family: var(--font-heading);
+  font-size: clamp(64px, 6vw + 20px, 112px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.statText {
+  color: var(--color-on-panel-muted);
+  font-size: 18px;
+  line-height: 29px;
+}
+
+.statText + .statText {
+  margin-top: 16px;
+  color: var(--color-on-panel);
+}
+
+.statSource {
+  margin-top: 20px;
+  color: var(--color-on-panel-muted);
+  font-size: 12px;
+}
+
+/* ================= Universities: neutral by design ================= */
+.centred {
+  max-width: 760px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.centredIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: var(--at-blue-10-tint);
+  color: var(--at-navy);
+}
+
+.centred h2 {
+  margin-top: 24px;
+}
+
+.centredStrong {
+  margin-top: 20px;
+  color: var(--color-heading);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+/* ================= Tutorial: research quote ================= */
+.research {
+  margin-top: 56px;
+  padding: 40px;
+  border-left: 4px solid var(--at-gold);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  background: var(--at-mist);
+}
+
+.research p {
+  max-width: 820px;
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: clamp(19px, 0.6vw + 14px, 23px);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.research .source {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* Tutorial: what your tutors see */
+.resultLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.resultLine strong {
+  display: inline;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.option {
+  padding: 16px;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-md);
+  background: var(--at-mist);
+}
+
+.optionName {
+  margin-top: 12px;
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+.optionUni {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.optionCost {
+  margin-top: 12px;
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.levelPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.levelPill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.levelRealistic {
+  background: #e8f5ee;
+  color: var(--at-success);
+}
+
+.levelSafety {
+  background: var(--at-blue-10-tint);
+  color: var(--at-blue-600);
+}
+
+.levelStretch {
+  background: var(--at-gold-20-tint);
+  color: var(--at-navy);
+}
+
+.levelStretch::before {
+  background: var(--at-gold-80-shade);
+}
+
+/* Tutorial: stay yours, pilot and safe note */
+.stack {
+  display: grid;
+  gap: 24px;
+}
+
+.yoursBox {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 40px 48px;
+  border-radius: var(--radius-xl);
+  background: var(--at-mist);
+}
+
+.yoursIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: var(--at-white);
+  box-shadow: var(--shadow-card);
+  color: var(--at-navy);
+}
+
+.yoursTitle {
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: clamp(26px, 1vw + 16px, 34px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.yoursText {
+  margin-top: 6px;
+  color: var(--color-text-muted);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.pilotSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 616fr) minmax(0, 504fr);
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: var(--at-blue-10-tint);
+}
+
+.pilotSplitCopy {
+  align-self: center;
+  padding: 56px;
+}
+
+.pilotSplitCopy .pilotBandText {
+  margin-bottom: 28px;
+}
+
+.pilotSplit picture,
+.pilotSplit img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.safeNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px 28px;
+  border: 1px solid var(--at-line);
+  border-radius: var(--radius-lg);
+  background: var(--at-white);
+  color: var(--color-text-muted);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.safeNote svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--at-success);
+}
+
+.safeNote strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* ================= Smaller screens ================= */
+@media (max-width: 1023px) {
+  .split,
+  .splitWide,
+  .navyBox {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  .navyGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .iconCards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pilotBand {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px;
+  }
+
+  .pilotSplit {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pilotSplit img {
+    aspect-ratio: 16 / 10;
+    height: auto;
+  }
+
+  .navyBox {
+    padding: 40px;
+  }
+
+  .photoWrap {
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 767px) {
+  .navyGrid,
+  .navyGrid2,
+  .options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Tables become stacked rows */
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .table tr {
+    display: grid;
+    gap: 6px;
+    padding: 18px 20px;
+    border-top: 1px solid var(--at-line);
+  }
+
+  .table tr:first-child {
+    border-top: 0;
+  }
+
+  .table td {
+    padding: 0;
+    border-top: 0;
+  }
+
+  .table td[data-label]::before {
+    content: attr(data-label) ': ';
+    color: var(--color-text-muted);
+    font-size: 13px;
+  }
+
+  .stageRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .stageRow td:last-child {
+    width: auto;
+  }
+
+  .reqTable thead {
+    display: none;
+  }
+
+  .reqTable tr {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 6px 12px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--at-line);
+  }
+
+  .reqTable td {
+    padding: 0;
+    border: 0;
+  }
+
+  .reqTable td:last-child {
+    grid-column: 1 / -1;
+    color: var(--color-text-muted);
+  }
+
+  .rows > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+}
+
+@media (max-width: 639px) {
+  .heroPhoto img {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+  }
+
+  .pin {
+    height: 30px;
+    padding: 0 12px 0 8px;
+    font-size: 12px;
+  }
+
+  .bubbles li {
+    font-size: 15px;
+  }
+
+  .bubbles li:nth-child(2) {
+    margin-left: 20px;
+  }
+
+  .questionCards li {
+    padding: 16px 20px;
+    font-size: 16px;
+  }
+
+  .pilotBand,
+  .navyBox,
+  .research,
+  .pilotSplitCopy {
+    padding: 28px 22px;
+  }
+
+  .card,
+  .offerCard {
+    padding: 22px 18px;
+  }
+
+  .yoursBox {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px 22px;
+  }
+
+  .problemCard {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    padding: 22px;
+  }
+
+  .safeNote {
+    padding: 18px 20px;
+  }
+}

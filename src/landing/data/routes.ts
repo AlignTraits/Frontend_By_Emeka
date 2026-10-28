@@ -7,7 +7,8 @@
  */
 export const ROUTES = {
   home: '/',
-  students: '/search',
+  /* The home page is the Students page. */
+  students: '/',
   /* The public Community page. The signed-in Community feed stays at /dashboard/community. */
   community: '/community',
   login: '/login',
@@ -15,13 +16,14 @@ export const ROUTES = {
   freeSnapshot: '/career-recommedation',
   matchReport: '#',
   fundingOptions: '#',
-  forSchools: '#',
-  forUniversities: '#',
-  tutorialCenters: '#',
-  requestPilot: '#',
+  forSchools: '/institutions/schools',
+  forUniversities: '/institutions/universities',
+  tutorialCenters: '/institutions/tutorial-centres',
+  requestPilot: '/institutions/request-a-pilot',
   loans: '/finances/loans',
   incomeSharePlan: '/finances/income-share-plan',
   scholarships: '/finances/scholarships',
   forInvestors: '/finances/investors',
-  partnerWithAlignTraits: '#',
+  partnerWithAlignTraits: '/institutions/request-a-pilot',
+  ambassadors: '/community/ambassadors',
 } as const;

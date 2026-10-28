@@ -1,0 +1,705 @@
+/*
+  Website forms: ambassador application and pilot request.
+  Built on the Loan page tokens (.at-loan) so they match the rest of the site.
+*/
+
+/* ================= Page layout ================= */
+.page {
+  composes: at-hero at-bg-mist from global;
+  padding-top: 72px;
+  background: var(--color-surface-alt);
+}
+
+.head {
+  max-width: 600px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  background: var(--at-navy-10-tint);
+  color: var(--at-navy);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.title {
+  margin-top: 18px;
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: clamp(34px, 1.6vw + 22px, 46px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.accent {
+  color: var(--color-accent);
+}
+
+.sub {
+  margin-top: 14px;
+  color: var(--color-text-muted);
+  font-size: 17px;
+  line-height: 27px;
+}
+
+.trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+  margin-top: 18px;
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.trust svg {
+  color: var(--at-success);
+}
+
+.card {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--at-white);
+  box-shadow: var(--shadow-card);
+}
+
+/* Pilot page: words and steps on the left, form on the right */
+.splitPage {
+  display: grid;
+  grid-template-columns: minmax(0, 440fr) minmax(0, 600fr);
+  grid-template-areas:
+    'head form'
+    'steps form';
+  grid-template-rows: auto 1fr;
+  column-gap: 72px;
+  align-items: start;
+}
+
+.splitPage .head {
+  grid-area: head;
+  margin: 0;
+  text-align: left;
+}
+
+.splitPage .trust {
+  justify-content: flex-start;
+}
+
+.splitPage .card {
+  grid-area: form;
+  margin: 0;
+}
+
+.steps {
+  grid-area: steps;
+  margin-top: 40px;
+}
+
+.stepsTitle {
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 27px;
+}
+
+.stepList {
+  margin-top: 20px;
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 16px;
+  padding-bottom: 22px;
+}
+
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 38px;
+  bottom: 4px;
+  left: 15.5px;
+  width: 1px;
+  background: var(--color-border);
+}
+
+.num {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--at-navy);
+  color: var(--at-white);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stepTitle {
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.stepText {
+  margin-top: 2px;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+/* ================= Form ================= */
+.group + .group {
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid var(--color-border);
+}
+
+.groupTitle {
+  margin-bottom: 18px;
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.field {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.field + .field,
+.row + .field,
+.field + .row,
+.row + .row {
+  margin-top: 20px;
+}
+
+.reveal + .field,
+.reveal + .row {
+  margin-top: 20px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.row > .field + .field {
+  margin-top: 0;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  padding: 0;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.optional {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.input {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--at-white);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 16px; /* 16px stops phones zooming in on focus */
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.input::placeholder {
+  color: var(--at-navy-40-tint);
+}
+
+.input:hover {
+  border-color: var(--at-navy-20-tint);
+}
+
+.input:focus {
+  border-color: var(--at-blue);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.14);
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--at-error);
+}
+
+.select {
+  padding-right: 44px;
+  appearance: none;
+  background: var(--at-white)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23004085' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E")
+    no-repeat right 16px center;
+  cursor: pointer;
+}
+
+.placeholder {
+  color: var(--at-navy-40-tint);
+}
+
+.select option {
+  color: var(--color-text);
+}
+
+.textarea {
+  height: 112px;
+  padding: 14px 16px;
+  line-height: 24px;
+  resize: vertical;
+}
+
+.phone {
+  display: flex;
+}
+
+.cc {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 14px;
+  border: 1.5px solid var(--color-border);
+  border-right: 0;
+  border-radius: 12px 0 0 12px;
+  background: var(--at-mist);
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.phone .input {
+  border-radius: 0 12px 12px 0;
+}
+
+.help,
+.helpAbove {
+  margin-top: 8px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.helpAbove {
+  margin: -4px 0 10px;
+}
+
+.count {
+  float: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.error {
+  margin-top: 8px;
+  color: var(--at-error);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 19px;
+}
+
+/* One-tap choices */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cols2,
+.cols3,
+.cols4 {
+  display: grid;
+}
+
+.cols2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cols3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.cols4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--at-white);
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.chip:hover {
+  border-color: var(--at-navy-40-tint);
+}
+
+.chipOn,
+.chipOn:hover {
+  border-color: var(--at-navy);
+  background: var(--at-navy);
+  color: var(--at-white);
+}
+
+.chipInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip:focus-within {
+  outline: 2px solid var(--at-blue);
+  outline-offset: 2px;
+}
+
+fieldset[aria-invalid='true'] .chip:not(.chipOn) {
+  border-color: #e7b3b3;
+}
+
+/* Parent or guardian block, only for students under 18 */
+.reveal {
+  margin-top: 16px;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  background: var(--at-blue-10-tint);
+}
+
+.revealTitle {
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.revealLead {
+  margin: 2px 0 14px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.reveal .input,
+.reveal .cc {
+  border-color: #c6dcf5;
+}
+
+/* Optional note, folded away */
+.addNote {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  color: var(--at-blue-600);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.addNote span {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+/* Confirmation tick */
+.confirm {
+  margin-top: 28px;
+}
+
+.check {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  color: var(--color-text);
+  font-size: 14px;
+  line-height: 21px;
+  cursor: pointer;
+}
+
+.checkInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.box {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--at-navy-20-tint);
+  border-radius: 6px;
+  background: var(--at-white);
+  color: var(--at-white);
+}
+
+.checkInput:checked + .box {
+  border-color: var(--at-navy);
+  background: var(--at-navy);
+}
+
+.checkInput:focus-visible + .box {
+  outline: 2px solid var(--at-blue);
+  outline-offset: 2px;
+}
+
+.checkInput[aria-invalid='true'] + .box {
+  border-color: var(--at-error);
+}
+
+.privacy {
+  margin: 8px 0 0 34px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.privacy a {
+  color: var(--at-blue-600);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.submit {
+  display: flex;
+  width: 100%;
+  height: 54px;
+  margin-top: 24px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--at-navy);
+  color: var(--at-white);
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
+}
+
+.submit:hover {
+  background: var(--at-navy-60-shade);
+}
+
+.submit:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.after {
+  margin-top: 12px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.formProblem {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #fdecec;
+  color: var(--at-error);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.formProblem a {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Hidden from people; bots fill it in */
+.trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ================= Success ================= */
+.done {
+  text-align: center;
+}
+
+.doneIcon {
+  display: inline-grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #e8f5ee;
+  color: var(--at-success);
+}
+
+.doneTitle {
+  margin-top: 20px;
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.doneText {
+  max-width: 440px;
+  margin: 12px auto 0;
+  color: var(--color-text-muted);
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.doneNext {
+  max-width: 440px;
+  margin: 24px auto 0;
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  background: var(--at-mist);
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 24px;
+  text-align: left;
+}
+
+.doneLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  color: var(--at-blue-600);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* ================= Smaller screens ================= */
+@media (max-width: 1023px) {
+  .splitPage {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'head'
+      'form'
+      'steps';
+    grid-template-rows: auto;
+  }
+
+  .splitPage .head {
+    max-width: 600px;
+    margin: 0 auto 28px;
+    text-align: center;
+  }
+
+  .splitPage .trust {
+    justify-content: center;
+  }
+
+  .splitPage .card {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .steps {
+    width: 100%;
+    max-width: 600px;
+    margin: 48px auto 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .page {
+    padding-top: 40px;
+  }
+
+  .card {
+    padding: 24px 20px;
+    border-radius: var(--radius-lg);
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .cols4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cols3 {
+    gap: 6px;
+  }
+
+  .chip {
+    padding: 0 8px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .chips:not(.cols2):not(.cols3):not(.cols4) .chip {
+    padding: 0 14px;
+  }
+
+  /* Narrow grid chips: the filled colour already shows the choice, so drop the tick for room. */
+  .cols2 .chip svg,
+  .cols3 .chip svg,
+  .cols4 .chip svg {
+    display: none;
+  }
+
+  .reveal {
+    padding: 16px;
+  }
+}

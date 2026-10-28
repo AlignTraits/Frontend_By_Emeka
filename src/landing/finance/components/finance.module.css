@@ -33,6 +33,91 @@
   text-underline-offset: 2px;
 }
 
+/* Hero: ticked lines and the "who this is for" line */
+.heroPoints {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.heroPoints li {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+  text-align: left;
+}
+
+.heroPoints svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--at-success);
+}
+
+.heroAudience {
+  max-width: 640px;
+  margin-top: 18px;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+}
+
+/* Closing band: main button with a quieter second link */
+.ctaButtons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+.ctaActionWide {
+  width: auto;
+}
+
+.ctaActionWide .ctaButtons > a:first-child {
+  width: auto;
+  margin-top: 0;
+}
+
+.ctaSecondary {
+  color: var(--at-white);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+  text-underline-offset: 4px;
+}
+
+.ctaSecondary:hover {
+  text-decoration-color: var(--at-white);
+}
+
+@media (max-width: 639px) {
+  .ctaActionWide {
+    width: 100%;
+  }
+
+  .ctaActionWide .ctaButtons {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .ctaActionWide .ctaButtons > a:first-child {
+    width: 100%;
+    min-height: 50px;
+    padding-block: 12px;
+    white-space: normal;
+  }
+}
+
 /* A photo under the hero text */
 .heroMedia {
   margin-top: 56px;

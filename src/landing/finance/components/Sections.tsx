@@ -11,6 +11,7 @@ import ctaStyles from '../../loan/components/loan/CtaBand.module.css';
 import { ButtonLink } from '../../loan/components/ui/Button';
 import { ArrowRight, Close, Plus, ShieldCheck } from '../../loan/components/ui/Icons';
 import { SmartLink } from '../../components/ui/SmartLink';
+import { Check } from 'lucide-react';
 import { Info, Lock, MessageCircle, Warning } from './icons';
 import f from './finance.module.css';
 import stepStyles from './Steps.module.css';
@@ -52,8 +53,12 @@ export interface HeroContent {
   eyebrow?: string;
   titleStart: string;
   titleAccent: string;
-  titleEnd?: string;
+  titleEnd?: ReactNode;
   subtitle: string;
+  /* Extra lines under the subtitle, each with a tick. */
+  points?: string[];
+  /* Who the page is for, in a short bold line. */
+  audience?: string;
   note?: { icon: 'shield' | 'info'; text: string };
   cta: { label: string; href: string };
   helper?: ReactNode;
@@ -61,7 +66,7 @@ export interface HeroContent {
 
 /** `media` (a photo, say) sits under the hero text, inside the hero, so it shares the hero's spacing. */
 export function PageHero({ content, id, media }: { content: HeroContent; id: string; media?: ReactNode }) {
-  const { eyebrow, titleStart, titleAccent, titleEnd, subtitle, note, cta, helper } = content;
+  const { eyebrow, titleStart, titleAccent, titleEnd, subtitle, points, audience, note, cta, helper } = content;
   return (
     <section className={heroStyles.hero} aria-labelledby={id}>
       <div className={`at-loan-container ${heroStyles.inner}`}>
@@ -71,6 +76,17 @@ export function PageHero({ content, id, media }: { content: HeroContent; id: str
           {titleEnd ?? ''}
         </h1>
         <p className={heroStyles.subtitle}>{subtitle}</p>
+        {points && points.length > 0 && (
+          <ul className={f.heroPoints}>
+            {points.map((point) => (
+              <li key={point}>
+                <Check size={16} />
+                {point}
+              </li>
+            ))}
+          </ul>
+        )}
+        {audience && <p className={f.heroAudience}>{audience}</p>}
 
         {note && (
           <div className={heroStyles.note}>
@@ -96,11 +112,14 @@ export function Steps({
   title,
   items,
   alt = false,
+  after,
 }: {
   id: string;
   title: string;
   items: { title: string; body: string }[];
   alt?: boolean;
+  /* Anything to show under the steps, such as a short note. */
+  after?: ReactNode;
 }) {
   return (
     <section className={`${shared.section} ${alt ? shared.alt : ''}`} aria-labelledby={id}>
@@ -124,6 +143,7 @@ export function Steps({
             </li>
           ))}
         </ol>
+        {after}
       </div>
     </section>
   );
@@ -402,13 +422,18 @@ export function CtaBandLink({
   id,
   titleStart,
   titleAccent,
+  titleEnd = '.',
   button,
+  secondary,
   helper,
 }: {
   id: string;
   titleStart: string;
   titleAccent: string;
+  titleEnd?: string;
   button: { label: string; href: string };
+  /* A quieter second link beside the button, e.g. "Request a pilot". */
+  secondary?: { label: string; href: string };
   helper?: ReactNode;
 }) {
   return (
@@ -417,13 +442,21 @@ export function CtaBandLink({
         <div className={ctaStyles.band}>
           <div className={ctaStyles.copy}>
             <h2 id={id} className={ctaStyles.title}>
-              {titleStart} <span className={ctaStyles.accent}>{titleAccent}</span>.
+              {titleStart} <span className={ctaStyles.accent}>{titleAccent}</span>
+              {titleEnd}
             </h2>
           </div>
-          <div className={ctaStyles.action}>
-            <ButtonLink href={button.href} variant="gold" className={ctaStyles.submit}>
-              {button.label}
-            </ButtonLink>
+          <div className={`${ctaStyles.action} ${secondary ? f.ctaActionWide : ''}`}>
+            <div className={f.ctaButtons}>
+              <ButtonLink href={button.href} variant="gold" className={ctaStyles.submit}>
+                {button.label}
+              </ButtonLink>
+              {secondary && (
+                <SmartLink href={secondary.href} className={f.ctaSecondary}>
+                  {secondary.label}
+                </SmartLink>
+              )}
+            </div>
             {helper && <p className={ctaStyles.helper}>{helper}</p>}
           </div>
         </div>

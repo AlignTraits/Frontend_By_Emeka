@@ -27,14 +27,18 @@ interface HeroOrbitProps {
   replaced by still tiles when the device asks for reduced motion.
 */
 
-const OUTER_COUNT = 12;
-const INNER_COUNT = 10;
-const ROW_COUNT = 12;
+const OUTER_COUNT = 10;
+const INNER_COUNT = 8;
+const ROW_COUNT = 10;
+/* Never more than this many photos on screen at once, so the hero stays calm. */
+const MAX_SHOWN_WIDE = 6; // 1280px and wider
+const MAX_SHOWN = 4; // 1024px to 1279px
 const OUTER_LAP = 120; // seconds per lap, clockwise
 const INNER_LAP = 90; // seconds per lap, anticlockwise
 const ROW_SPEED = 18; // pixels per second
 const CAPTION = 26; // caption height under each tile
-const CLEAR = 28; // space kept between a tile and the hero text
+const CLEAR = 44; // space kept between a tile and the hero text
+const SPACE = 40; // least space between two photos
 
 type Ring = 'outer' | 'inner' | 'row';
 
@@ -47,6 +51,8 @@ interface Tile {
   photo: number;
   ready: boolean;
   opacity: number;
+  x: number;
+  y: number;
   /* Random fade cycle */
   shown: boolean;
   nextChange: number;
@@ -80,6 +86,8 @@ export function HeroOrbit({ photos, contentRef, stageRef }: HeroOrbitProps) {
         photo: -1,
         ready: false,
         opacity: 0,
+        x: 0,
+        y: 0,
         shown: true,
         nextChange: 0,
         hiddenUntil: 0,
@@ -166,8 +174,10 @@ export function HeroOrbit({ photos, contentRef, stageRef }: HeroOrbitProps) {
         geo.inner = big ? 116 : 96;
         geo.outer = big ? 100 : 84;
         const side = Math.max(0, geo.w / 2 - geo.half);
-        geo.innerRx = geo.half + side * 0.48;
-        geo.outerRx = geo.w / 2 - 20;
+        /* The inner ring sits fully clear of the text at its widest point; the outer ring sits
+           further out, near the screen edge, with room between the two. */
+        geo.innerRx = Math.max(geo.half + side * 0.48, geo.half + geo.inner / 2 + CLEAR + 64);
+        geo.outerRx = Math.max(geo.w / 2 - 20, geo.innerRx + (geo.inner + geo.outer) / 2 + SPACE);
         const roomUp = geo.cy - 20 - geo.outer / 2;
         const roomDown = geo.h - geo.cy - 20 - geo.outer / 2 - CAPTION;
         geo.outerRy = Math.max(120, Math.min(roomUp, roomDown));
@@ -180,7 +190,7 @@ export function HeroOrbit({ photos, contentRef, stageRef }: HeroOrbitProps) {
         const r = rowEl.getBoundingClientRect();
         geo.rowW = r.width;
         geo.rowTile = r.width >= 640 ? 88 : 76;
-        geo.rowGap = geo.rowTile + 28;
+        geo.rowGap = geo.rowTile + 60;
         for (const t of rowTiles) t.el.style.setProperty('--tile', `${geo.rowTile}px`);
       }
     };
@@ -224,6 +234,8 @@ export function HeroOrbit({ photos, contentRef, stageRef }: HeroOrbitProps) {
     const frameOrbit = (dt: number) => {
       const { cx, cy, half } = geo;
       const boxes: { x: number; y: number; s: number }[] = [];
+      const cap = geo.w >= 1280 ? MAX_SHOWN_WIDE : MAX_SHOWN;
+      let shown = orbitTiles.filter((t) => t.opacity > 0.05).length;
 
       for (const tile of orbitOrder) {
         const outer = tile.ring === 'outer';
@@ -258,11 +270,17 @@ export function HeroOrbit({ photos, contentRef, stageRef }: HeroOrbitProps) {
           assign(tile);
         }
 
-        /* An outer tile steps aside while it crosses an inner one. */
+        /* Keep photos apart: an outer tile steps aside near an inner one, and a hidden tile does
+           not appear next to a photo already showing. */
+        const near = (b: { x: number; y: number; s: number }) =>
+          Math.abs(b.x - x) < (b.s + size) / 2 + SPACE && Math.abs(b.y - y) < (b.s + size) / 2 + CAPTION + SPACE;
         let clearOfOthers = 1;
-        if (outer) {
-          for (const b of boxes) {
-            if (Math.abs(b.x - x) < (b.s + size) / 2 + 12 && Math.abs(b.y - y) < (b.s + size) / 2 + CAPTION) clearOfOthers = 0;
+        if (outer && boxes.some(near)) clearOfOthers = 0;
+        if (tile.opacity <= 0.05) {
+          for (const other of orbitTiles) {
+            if (other === tile || other.opacity <= 0.05) continue;
+            const s2 = other.ring === 'outer' ? geo.outer : geo.inner;
+            if (near({ x: other.x, y: other.y, s: s2 })) clearOfOthers = 0;
           }
         }
 
@@ -270,9 +288,16 @@ export function HeroOrbit({ photos, contentRef, stageRef }: HeroOrbitProps) {
         const visible = zone * edge > 0.5;
         const cycle = fadeCycle(tile, time, visible);
         const base = outer ? 0.62 : 1;
-        const target = base * zone * edge * clearOfOthers * cycle * (tile.ready ? 1 : 0);
+        let target = base * zone * edge * clearOfOthers * cycle * (tile.ready ? 1 : 0);
+        /* A hidden tile waits its turn while the cap is reached. */
+        if (tile.opacity <= 0.05 && target > 0) {
+          if (shown >= cap) target = 0;
+          else shown += 1;
+        }
         place(tile, x, y, size, target, dt);
-        if (!outer && tile.opacity > 0.05) boxes.push({ x, y, s: size });
+        tile.x = x;
+        tile.y = y;
+        if (!outer && (tile.opacity > 0.05 || target > 0)) boxes.push({ x, y, s: size });
       }
     };
 

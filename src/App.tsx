@@ -74,6 +74,11 @@ const ScholarshipsPage = lazy(() => import("./landing/finance/scholarships/Schol
 const IncomeSharePage = lazy(() => import("./landing/finance/income-share/IncomeSharePage"));
 const InvestorsPage = lazy(() => import("./landing/finance/investors/InvestorsPage"));
 const CommunityPage = lazy(() => import("./landing/community/CommunityPage"));
+const AmbassadorPage = lazy(() => import("./landing/community/ambassador/AmbassadorPage"));
+const SchoolsPage = lazy(() => import("./landing/institutions/schools/SchoolsPage"));
+const UniversitiesPage = lazy(() => import("./landing/institutions/universities/UniversitiesPage"));
+const TutorialCentresPage = lazy(() => import("./landing/institutions/tutorial-centres/TutorialCentresPage"));
+const PilotPage = lazy(() => import("./landing/institutions/pilot/PilotPage"));
 
 // The landing page lives at "/". Anyone already signed in (the session lasts 30 days)
 // goes straight to their dashboard, as the old home page did.
@@ -118,6 +123,11 @@ const router = createBrowserRouter([
   { path: "/finances/income-share-plan", element: <IncomeSharePage /> },
   { path: "/finances/investors", element: <InvestorsPage /> },
   { path: "/community", element: <CommunityPage /> },
+  { path: "/community/ambassadors", element: <AmbassadorPage /> },
+  { path: "/institutions/schools", element: <SchoolsPage /> },
+  { path: "/institutions/universities", element: <UniversitiesPage /> },
+  { path: "/institutions/tutorial-centres", element: <TutorialCentresPage /> },
+  { path: "/institutions/request-a-pilot", element: <PilotPage /> },
   { index: true, element: <LandingOrDashboard /> },
 
   {

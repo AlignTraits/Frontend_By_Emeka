@@ -29,8 +29,8 @@ import techCourse from './assets/hero/tech-course.webp';
 export const LINKS = {
   join: '/signup',
   forSchools: ROUTES.forSchools,
-  /* No page yet: the ambassador application form and the Insider plan page. */
-  applyAmbassador: '#',
+  applyAmbassador: ROUTES.ambassadors,
+  /* No page yet: the Insider plan page. */
   insiders: '#',
   /* The WhatsApp group used for enquiries (same link as the flyers and the Scholarships page). */
   whatsapp: 'https://chat.whatsapp.com/LS7jfa4W5iFLP49rYoR9IX?mode=gi_t',
