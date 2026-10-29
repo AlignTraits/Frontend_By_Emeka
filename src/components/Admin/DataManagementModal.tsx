@@ -9,7 +9,6 @@ import { HiOutlineDownload } from "react-icons/hi";
 import { BeatLoader } from "react-spinners";
 import api from "../../api/axios";
 import {toast} from 'react-toastify'
-import axios from "axios";
 import EnhancedDatePicker from "../dashboard/EnhancedDatePicker";
 interface ModalProps {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -63,41 +62,41 @@ export default function DataManagementModal({setModal, categoryType }: ModalProp
     setIsLoading(true)
 
     try {
+      // The API sends the CSV straight back (it is no longer saved in a public
+      // folder), so download it in one request with the admin's login.
       const response = await api.get(`bulk/download?format=csv&entity=${categoryType.toLowerCase()}&startDate=${newStartDate.toISOString().split("T")[0]}&endDate=${newEndDate.toISOString().split("T")[0]}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        responseType: "blob",
       })
 
-      if (response.status === 200) {
-        const responseTwo = await axios.get(`https://backend-oo07.onrender.com${response.data.fileUrl}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            responseType: "blob",  // Expect blob from the API
-          },
-        })
+      const blob = new Blob([response.data], { type: "text/csv;charset=utf-8;" });
+      const url = window.URL.createObjectURL(blob);
 
-        const blob = new Blob([responseTwo.data], { type: "text/csv;charset=utf-8;" });
-        const url = window.URL.createObjectURL(blob);
-  
-        // Create a temporary link element
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${categoryType}Data.csv`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-  
-        window.URL.revokeObjectURL(url);
-      } else {
-        throw "Error in downloading file"
-      }
+      // Create a temporary link element
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${categoryType}Data.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      window.URL.revokeObjectURL(url);
       setIsLoading(false)
       setModal(false)
     } catch (e: any) {
       setIsLoading(false)
       setModal(false)
-      toast.error(e.response.data.message)
+      let message = "Error downloading file!"
+      try {
+        const body = e?.response?.data
+        if (body instanceof Blob) message = JSON.parse(await body.text())?.message || message
+        else if (body?.message) message = body.message
+      } catch {
+        /* keep the default message */
+      }
+      toast.error(message)
       // toast.error("Error downloading file!")
 
       // console.error("Error downloading file:", e);

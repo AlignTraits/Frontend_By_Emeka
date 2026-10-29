@@ -8,7 +8,7 @@ import { ErrorObjType, RequirementList } from "../types/course.types";
 import AdmissionRequirements from "../components/Admin/AdmissionRequirements";
 import { getCourseDetails } from "../services/schools";
 import { toast } from "react-toastify";
-import { checkEligibility, getUser } from "../services/utils";
+import { checkEligibility, lookupAccount } from "../services/utils";
 import {
   createAcademicRecords,
   updateAcademicRecords,
@@ -85,7 +85,9 @@ export default function CheckEligibility() {
       );
       setIsLoading(true);
       try {
-        const response = await getUser(data.email);
+        // Only "does this email have an account?" is asked. The answer holds no
+        // personal data, so nothing sensitive is kept in the browser.
+        const response = await lookupAccount(data.email.trim());
         if (response?.ok) {
           setUserExist(true);
         } else {

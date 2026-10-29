@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { BeatLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { makePayment, getUser, hasActiveAccess } from "../../services/utils";
+import { makePayment, getMe, hasActiveAccess } from "../../services/utils";
 import { useAuth } from "../../contexts/useAuth";
 
 interface Plan {
@@ -111,7 +111,7 @@ const PaywallModal = ({ onUnlocked, onClose }: PaywallModalProps) => {
 
       try {
         if (!user?.email) return;
-        const response = await getUser(user.email);
+        const response = await getMe();
         const freshUser = response?.data;
 
         if (hasActiveAccess(freshUser)) {

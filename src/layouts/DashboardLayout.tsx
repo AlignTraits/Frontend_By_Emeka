@@ -6,8 +6,12 @@ import Header from "../components/dashboard/Header";
 import { getUserDetails } from "../services/auth.service";
 // import { ClipLoader } from "react-spinners";
 import NewSidebar from "../components/dashboard/NewSidebar";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { getAcademicRecords } from "../services/utils";
+import {
+  hasPendingEligibilityCheck,
+  runPendingEligibilityCheck,
+} from "../services/pendingCheck";
 import { RequirementList, SubjectGrade } from "../types/course.types";
 
 export default function DashboardLayout() {
@@ -83,11 +87,19 @@ export default function DashboardLayout() {
     if (token) {
       async function getData() {
         let response;
+        let pendingDone = false;
         setIsloading(true);
         try {
           response = await getUserDetails(token as string);
           localStorage.setItem("user", JSON.stringify(response.data));
           setUser(response.data);
+
+          // Finish an eligibility check that was waiting for this student to
+          // log in, for example after paying before they had a password.
+          if (hasPendingEligibilityCheck()) {
+            pendingDone = await runPendingEligibilityCheck(response?.data?.email);
+            if (pendingDone) toast.success("Your eligibility results are ready.");
+          }
         } catch (error) {
           console.error("Error fetching user details:", error);
         } finally {
@@ -95,6 +107,10 @@ export default function DashboardLayout() {
 
           if (response.data.firstname === "" || !response.data.gender) {
             return navigate("/onboarding-form");
+          }
+
+          if (pendingDone) {
+            return navigate("/dashboard/school?tab=-1");
           }
 
           // For firsttime users

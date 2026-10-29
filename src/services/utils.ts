@@ -75,9 +75,13 @@ export const sendFeedback = async (data: {
   }
 };
 
+// Runs the paid check for the logged in student. The server uses the account
+// from the login token, so any email in the payload is dropped before sending.
 export const checkEligibility = async (data: any) => {
   try {
-    const response = await api.post("/server/eligible/answers", data);
+    const payload = { ...(data ?? {}) };
+    delete payload.email;
+    const response = await api.post("/server/eligible/answers", payload);
 
     console.log("response: from API", response);
 
@@ -112,42 +116,6 @@ export const checkEligibility = async (data: any) => {
 export const createAcademicRecords = async (data: any) => {
   try {
     const response = await api.post("/admission-logic/academic-records", data);
-
-    if (response.data.status == 403) throw new ResponseError(response);
-    if (response.data.status == 500) throw new ResponseError(response);
-    return response.data;
-  } catch (err: any) {
-    if (err.response && err.response.data && err.response.data.errors) {
-      const errors = err.response.data.errors;
-
-      errors.forEach((error: { message: string }) => {
-        if (error.message) {
-          toast.error(error.message);
-        }
-      });
-    }
-    if (err.response && err.response.data) {
-      toast.error(err.response.data.error);
-    }
-
-    if (
-      err.response &&
-      err.response.data.message &&
-      !err.response.data.errors
-    ) {
-      toast.error(err.response.data.message);
-    }
-
-    throw err;
-  }
-};
-
-export const createAcademicRecordsByEmail = async (data: any) => {
-  try {
-    const response = await api.post(
-      "/admission-logic/academic-records-by-email",
-      data,
-    );
 
     if (response.data.status == 403) throw new ResponseError(response);
     if (response.data.status == 500) throw new ResponseError(response);
@@ -358,37 +326,23 @@ export const makePayment = async (data: any) => {
   }
 };
 
-export const getUser = async (email: string) => {
+// For visitors: does this email already have an account? The answer is only
+// { ok: true } or { ok: false }. No profile, payments or results are returned.
+export const lookupAccount = async (email: string) => {
   try {
-    const response = await api.get(`/users/email/${email}`);
-
-    if (response.data.status == 403) throw new ResponseError(response);
-    if (response.data.status == 500) throw new ResponseError(response);
-    return response.data;
+    const response = await api.post("/users/lookup", { email });
+    return response.data as { ok: boolean; message: string };
   } catch (err: any) {
-    if (err.response && err.response.data && err.response.data.errors) {
-      const errors = err.response.data.errors;
-
-      errors.forEach((error: { message: string }) => {
-        if (error.message) {
-          toast.error(error.message);
-        }
-      });
-    }
-    if (err.response && err.response.data) {
-      toast.error(err.response.data.error);
-    }
-
-    if (
-      err.response &&
-      err.response.data.message &&
-      !err.response.data.errors
-    ) {
-      toast.error(err.response.data.message);
-    }
-
+    const message = err?.response?.data?.message;
+    if (message) toast.error(message);
     throw err;
   }
+};
+
+// The logged in student's own record (needs the login token).
+export const getMe = async () => {
+  const response = await api.get("/users");
+  return response.data;
 };
 
 export const deleteCard = async (authId: string, token: string) => {

@@ -25,11 +25,13 @@ const AnalyticsTracker = ({ router }: { router: AppRouter }) => {
       }
     };
 
-    send(router.state.location.pathname + router.state.location.search);
+    // Only the path is sent. ?query and #hash can carry codes from emails and
+    // sign in, and those must never reach analytics.
+    send(router.state.location.pathname);
 
     return router.subscribe((state) => {
       if (state.navigation.state === "idle") {
-        send(state.location.pathname + state.location.search);
+        send(state.location.pathname);
       }
     });
   }, [router]);

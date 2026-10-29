@@ -1,9 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import {
   AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Code, 
   Heading1, Heading2, Heading3, Heading4, Image, Italic, Link, 
   List, ListOrdered, Strikethrough, Type, Underline
 } from 'lucide-react';
+
+// Course descriptions are stored as HTML and can arrive from bulk CSV uploads.
+// Clean them before they touch the page, so a planted <script> or onerror=...
+// can never run in an admin's browser (and steal their login).
+const clean = (html: string) =>
+  DOMPurify.sanitize(html ?? '', { USE_PROFILES: { html: true } });
 
 interface TextEditorProps {
   initialValue?: string;
@@ -29,8 +36,9 @@ const TextEditorTwo: React.FC<TextEditorProps> = ({
 
   useEffect(() => {
     if (editorRef.current && initialValue !== content) {
-      editorRef.current.innerHTML = initialValue;
-      setContent(initialValue);
+      const safe = clean(initialValue);
+      editorRef.current.innerHTML = safe;
+      setContent(safe);
     }
   }, [initialValue]);
 
@@ -44,7 +52,7 @@ const TextEditorTwo: React.FC<TextEditorProps> = ({
   const formatDoc = (command: string, value: string = '') => {
     document.execCommand(command, false, value);
     if (editorRef.current) {
-      setContent(editorRef.current.innerHTML);
+      setContent(clean(editorRef.current.innerHTML));
     }
   };
 
@@ -64,7 +72,7 @@ const TextEditorTwo: React.FC<TextEditorProps> = ({
 
   const handleContentChange = () => {
     if (editorRef.current) {
-      setContent(editorRef.current.innerHTML);
+      setContent(clean(editorRef.current.innerHTML));
     }
   };
 

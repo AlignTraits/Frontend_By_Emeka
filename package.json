@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^1.7.7",
     "classnames": "^2.5.1",
+    "dompurify": "^3.4.17",
     "framer-motion": "^12.15.0",
     "html2canvas": "^1.4.1",
     "install": "^0.13.0",

@@ -50,9 +50,24 @@ export const signUp = async (credentials: SignUpCredentials): Promise<AuthRespon
   return data
 }
 
-export const signUpTwo = async (credentials: LoginCredentials) => {
+// Visitors who used the quiz, a check or a payment before they had a password.
+// Step 1: email them a 6 digit code (and a link carrying the same code).
+export const sendSetupCode = async (email: string) => {
+  const response = await api.post('/auth/send-setup-link', { email })
+  return response.data as { ok: boolean; message: string }
+}
+
+// Step 2: the code plus the new password. On success the server logs them in
+// and returns a login token.
+export const signUpTwo = async (credentials: LoginCredentials & { token: string }) => {
   const response = await api.post('/auth/add-password-after-eligibility', credentials);
-  return response;
+  return response.data as { ok: boolean; message: string; data?: { token: string } };
+}
+
+// After Google sign in, swap the one time code from the address for a login token.
+export const exchangeGoogleCode = async (code: string) => {
+  const response = await api.post('/google-auth/exchange', { code })
+  return response.data as { ok: boolean; message: string; data?: { token: string } }
 }
 
 export const forgotPasswordRequest = async (email: string): Promise<void> => {

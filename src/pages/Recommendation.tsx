@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import { useAuth } from "../contexts/useAuth";
 import BeatLoader from "react-spinners/BeatLoader";
 import { FaLongArrowAltLeft } from "react-icons/fa";
-import { getUser } from "../services/utils";
+import { lookupAccount } from "../services/utils";
 
 export default function Recommendation() {
   const { error, user, token } = useAuth();
@@ -40,7 +40,7 @@ export default function Recommendation() {
 
     try {
       setIsLoading(true);
-      const response = await getUser(data.email);
+      const response = await lookupAccount(data.email.trim());
       if (response?.ok) {
         return setUserExist(true);
       }

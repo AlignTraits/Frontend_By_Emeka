@@ -34,7 +34,13 @@ export default function Login() {
       } else {
         console.error("Unexpected status:", status);
       }
-    } catch (err) {
+    } catch (err: any) {
+      // Accounts made by the quiz, a check or a payment have no password yet:
+      // send them to set one (we email them a 6 digit code there).
+      if (err?.response?.data?.code === "PASSWORD_NOT_SET") {
+        navigate(`/setup-password?email=${encodeURIComponent(credentials.email.trim())}`);
+        return;
+      }
       console.error("Login failed:", err);
     }
   };
